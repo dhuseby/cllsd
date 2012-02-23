@@ -4,4 +4,4 @@ syntax: glob
 *.a
 .*.swp
 .sconsign.dblite
-cbot
+cllsd

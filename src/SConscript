@@ -1,5 +1,7 @@
 env = Environment(CC='gcc', CCFLAGS='-O0 -gstabs+')
 env.Program(target = 'cllsd', 
 		source = ['main.c',
-				  'hashtable.c'],
+				  'hashtable.c',
+				  'array.c',
+				  'llsd.c'],
 		LIBS   = ['rt'] )

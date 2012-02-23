@@ -21,10 +21,11 @@
 #include <string.h>
 #include <time.h>
 #include <sys/time.h>
-#include "hashtable.h"
-#include "btree.h"
+#include "debug.h"
 #include "macros.h"
+#include "llsd.h"
 
+#if 0
 typedef struct wf_s
 {
 	int8_t *	buffer;
@@ -191,7 +192,7 @@ void test_btree( wf_t * const wf, bt_t * const btree )
 		bt_add( btree, pword, (void*)i );
 	}
 }
-
+#endif
 struct timespec diff( struct timespec start, struct timespec end )
 {
 	struct timespec tmp;
@@ -215,19 +216,17 @@ uint32_t ts_in_ms( struct timespec t )
 
 int main(int argc, char** argv)
 {
-	wf_t * wf;
-	ht_t * ht;
-	bt_t * bt;
+	llsd_t * llsd;
 	struct timespec tstart;
 	struct timespec tstop;
 
 	if ( argc != 2 )
 	{
-		printf( "usage: %s <word file>\n", argv[0] );
+		printf( "usage: %s <llsd file>\n", argv[0] );
 		return EXIT_FAILURE;
 	}
 
-
+#if 0
 	/* set up */
 	wf = wf_new( argv[1] );
 	ht = ht_new( 65536, fnv_key_hash, NULL, key_eq, NULL );
@@ -252,6 +251,7 @@ int main(int argc, char** argv)
 	bt_delete( bt );
 	ht_delete( ht );
 	wf_delete( wf );
+#endif
 
 	return EXIT_SUCCESS;
 }

@@ -26,8 +26,8 @@
 /* the hashtable iterator type */
 typedef int_t ht_itr_t;
 
-/* the hash table opaque handle */
-typedef struct ht_s ht_t;
+/* the hash table opaque tuple type */
+typedef struct tuple_s tuple_t;
 
 /* the key hashing function type,
  * this must return a hash value > 0 because 0 is
@@ -42,6 +42,24 @@ typedef int (*key_eq_fn)(void const * const l, void const * const r);
 /* define the value delete function type */
 typedef void (*ht_delete_fn)(void * value);
 
+/* the hash table structure */
+typedef struct ht_s
+{
+	key_hash_fn			khfn;				/* key hash function */
+	key_eq_fn			kefn;				/* key compare function */
+	ht_delete_fn		kdfn;				/* key delete function */
+	ht_delete_fn		vdfn;				/* value delete function */
+	uint_t				prime_index;		/* the index of the table size */
+	uint_t				num_tuples;			/* number of tuples in the table */
+	uint_t				initial_capacity;   /* the initial capacity value */
+	float				load_factor;		/* load level that triggers resize */
+	tuple_t*			tuples;				/* pointer to tuple table */
+#ifdef USE_THREADING
+	pthread_mutex_t		lock;				/* hashtable lock */
+#endif
+} ht_t;
+
+
 #ifdef USE_THREADING
 /* threading protection */
 void ht_lock(ht_t * const htable);
@@ -49,6 +67,17 @@ int ht_try_lock(ht_t * const htable);
 void ht_unlock(ht_t * const htable);
 pthread_mutex_t * ht_get_mutex(ht_t * const htable);
 #endif
+
+void ht_initialize
+(
+	ht_t * const htable, 
+	uint_t initial_capacity, 
+	key_hash_fn khfn, 
+	ht_delete_fn vdfn,
+	key_eq_fn kefn,
+	ht_delete_fn kdfn
+);
+void ht_deinitialize(ht_t * const htable);
 
 /* dynamically allocates and initializes a hashtable */
 /* NOTE: If NULL is passed in for the key_hash_fn function, the pointer to the 

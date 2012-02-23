@@ -58,23 +58,6 @@ typedef struct tuple_s
 	void *				value;				/* pointer to the value */
 } tuple_t;
 
-/* the hash table structure */
-struct ht_s
-{
-	key_hash_fn			khfn;				/* key hash function */
-	key_eq_fn			kefn;				/* key compare function */
-	ht_delete_fn		kdfn;				/* key delete function */
-	ht_delete_fn		vdfn;				/* value delete function */
-	uint_t				prime_index;		/* the index of the table size */
-	uint_t				num_tuples;			/* number of tuples in the table */
-	uint_t				initial_capacity;   /* the initial capacity value */
-	float				load_factor;		/* load level that triggers resize */
-	tuple_t*			tuples;				/* pointer to tuple table */
-#ifdef USE_THREADING
-	pthread_mutex_t		lock;				/* hashtable lock */
-#endif
-};
-
 
 /* the default key hashing function just casts the pointer value to an uint_t */
 static uint_t default_key_hash(void const * const key)
@@ -129,7 +112,7 @@ pthread_mutex_t * ht_get_mutex(ht_t * const htable)
 #endif
 
 /* initializes a hashtable */
-static void ht_initialize
+void ht_initialize
 (
 	ht_t * const htable, 
 	uint_t initial_capacity, 
@@ -217,7 +200,7 @@ ht_t* ht_new
 
 
 /* deinitialize a hashtable. */
-static void ht_deinitialize(ht_t * const htable)
+void ht_deinitialize(ht_t * const htable)
 {
 	int_t ret = 0;
 	int_t i = 0;
