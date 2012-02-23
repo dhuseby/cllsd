@@ -20,12 +20,64 @@
 #include <stdarg.h>
 #include <string.h>
 #include <assert.h>
+#include <arpa/inet.h>
 
 #include "debug.h"
 #include "macros.h"
 #include "hashtable.h"
 #include "array.h"
 #include "llsd.h"
+
+/* constants */
+llsd_t const undefined =
+{
+	.type_ = LLSD_UNDEF,
+	.value.bool_ = FALSE
+};
+
+llsd_uuid_t const zero_uuid = 
+{ 
+	.bits = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 } 
+};
+
+llsd_string_t const false_string = 
+{
+	.dyn = FALSE,
+	.escaped = FALSE,
+	.str = "false"
+};
+llsd_string_t const true_string = 
+{
+	.dyn = FALSE,
+	.escaped = FALSE,
+	.str = "true"
+};
+
+uint8_t zero_data [] = { '0' };
+llsd_binary_t const false_binary =
+{
+	.dyn = FALSE,
+	.size = 1,
+	.data = zero_data
+};
+uint8_t one_data[] = { '1' };
+llsd_binary_t const true_binary =
+{
+	.dyn = FALSE,
+	.size = 1,
+	.data = one_data
+};
+llsd_binary_t const empty_binary =
+{
+	.dyn = FALSE,
+	.size = 0,
+	.data = 0
+};
+llsd_uri_t const empty_uri = 
+{
+	.dyn = FALSE,
+	.uri = ""
+};
 
 
 #define FNV_PRIME (0x01000193)
@@ -171,10 +223,9 @@ llsd_t * llsd_new( llsd_type_t type_, ... )
 	uint8_t * a2;
 	double a3;
 	
-	CHECK_PTR_RET_MSG( llsd, NULL, "failed to heap allocate llsd object\n" );
-
 	/* allocate the llsd object */
 	llsd = CALLOC(1, sizeof(llsd_t));
+	CHECK_PTR_RET_MSG( llsd, NULL, "failed to heap allocate llsd object\n" );
 
 	switch( type_ )
 	{
@@ -483,4 +534,198 @@ llsd_binary_t llsd_as_binary( llsd_t * llsd )
 	}
 }
 
+static llsd_t * llsd_reserve_binary( uint32_t size )
+{
+	llsd_t * llsd = CALLOC( 1, sizeof(llsd_t) + size );
+	llsd->type_ = LLSD_BINARY;
+	llsd->value.binary_.dyn = TRUE;
+	llsd->value.binary_.size = size;
+	llsd->value.binary_.data = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
+	return llsd;
+}
+
+static llsd_t * llsd_reserve_string( uint32_t size )
+{
+	llsd_t * llsd = CALLOC( 1, sizeof(llsd_t) + size + 1 );
+	llsd->type_ = LLSD_STRING;
+	llsd->value.string_.dyn = TRUE;
+	llsd->value.string_.escaped = FALSE;
+	llsd->value.string_.str = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
+	return llsd;
+}
+
+static llsd_t * llsd_reserve_uri( uint32_t size )
+{
+	llsd_t * llsd = CALLOC( 1, sizeof(llsd_t) + size + 1 );
+	llsd->type_ = LLSD_URI;
+	llsd->value.uri_.dyn = TRUE;
+	llsd->value.uri_.uri = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
+	return llsd;
+}
+
+llsd_t * llsd_parse_binary( FILE * fin )
+{
+	int i;
+	uint8_t p;
+	uint32_t t1;
+	double t2;
+	uint16_t t3[UUID_LEN];
+	llsd_t * llsd;
+	llsd_t * key;
+
+	CHECK_PTR_RET( fin, NULL );
+
+	while( !feof( fin ) )
+	{
+		/* read the type marker */
+		fread( &p, sizeof(uint8_t), 1, fin );
+
+		switch( p )
+		{
+			case '!':
+				return llsd_new( LLSD_UNDEF );
+			case '1':
+				return llsd_new( LLSD_BOOLEAN, TRUE );
+			case '0':
+				return llsd_new( LLSD_BOOLEAN, FALSE );
+			case 'i':
+				fread( &t1, sizeof(uint32_t), 1, fin );
+				return llsd_new( LLSD_INTEGER, ntohl( t1 ) );
+			case 'r':
+				fread( &t2, sizeof(double), 1, fin );
+				return llsd_new( LLSD_REAL, ntohd( t2 ) );
+			case 'u':
+				fread( t3, sizeof(uint8_t), UUID_LEN, fin );
+				return llsd_new( LLSD_UUID, t3 );
+			case 'b':
+				fread( &t1, sizeof(uint32_t), 1, fin );
+				t1 = ntohl( t1 );
+				llsd = llsd_reserve_binary( t1 );
+				fread( &(llsd->value.bool_), sizeof(uint8_t), t1, fin );
+				return llsd;
+			case 's':
+				fread( &t1, sizeof(uint32_t), 1, fin );
+				t1 = ntohl( t1 );
+				llsd = llsd_reserve_string( t1 ); /* allocates t1 + 1 bytes */
+				fread( llsd->value.string_.str, sizeof(uint8_t), t1 + 1, fin );
+				/* TODO: detect if it is escaped and set the escaped flag */
+				return llsd;
+			case 'l':
+				fread( &t1, sizeof(uint32_t), 1, fin );
+				t1 = ntohl( t1 );
+				llsd = llsd_reserve_uri( t1 ); /* allocates t1 + 1 bytes */
+				fread( llsd->value.uri_.uri, sizeof(uint8_t), t1 + 1, fin );
+				return llsd;
+			case 'd':
+				fread( &t2, sizeof(double), 1, fin );
+				t2 = ntohd( t2 );
+				return llsd_new( LLSD_DATE, t2 );
+			case '[':
+				fread( &t1, sizeof(uint32_t), 1, fin );
+				t1 = ntohl( t1 );
+				llsd = llsd_new_empty_array();
+				for ( i = 0; i < t1; ++i )
+				{
+					/* parse and append the array member */
+					llsd_array_append( llsd, llsd_parse_binary( fin ) );
+				}
+				fread( &p, sizeof(uint8_t), 1, fin );
+				if ( p != ']' )
+				{
+					WARN( "array didn't end with ']'\n" );
+				}
+				return llsd;
+			case '{':
+				fread( &t1, sizeof(uint32_t), 1, fin );
+				t1 = ntohl( t1 );
+				llsd = llsd_new_empty_map();
+				for ( i = 0; i < t1; ++i )
+				{
+					/* parse the key */
+					key = llsd_parse_binary( fin );
+					if ( llsd_get_type( key ) != LLSD_STRING )
+					{
+						WARN( "key is not an LLSD_STRING\n" );
+					}
+
+					/* parse and append the key/value pair */
+					llsd_map_insert( llsd, key, llsd_parse_binary( fin ) );
+				}
+				fread( &p, sizeof(uint8_t), 1, fin );
+				if ( p != '}' )
+				{
+					WARN( "map didn't end with '}'\n" );
+				}
+				return llsd;
+		}
+	}
+}
+
+llsd_t * llsd_parse_notation( FILE * fin )
+{
+
+
+
+
+}
+
+llsd_t * llsd_parse_xml( FILE * fin )
+{
+}
+
+#define SIG_LEN (18)
+llsd_t * llsd_parse( FILE *fin )
+{
+	uint8_t sig[18];
+
+	CHECK_RET_MSG( fin, NULL, "invalid file pointer\n" );
+
+	fread( sig, sizeof(uint8_t), SIG_LEN, fin );
+	if ( strncmp( sig, "<? LLSD/Binary ?>\n", SIG_LEN ) == 0 )
+	{
+		return llsd_parse_binary( fin );
+	}
+	else if ( strncmp( sig, "<?llsd/notation?>\n", SIG_LEN ) == 0 )
+	{
+		return llsd_parse_notation( fin );
+	}
+	else
+	{
+		rewind( fin );
+		return llsd_parse_xml( fin );
+	}
+}
+
+void llsd_format_xml( llsd_t * llsd, FILE * fout )
+{
+}
+
+void llsd_format_notation( llsd_t * llsd, FILE * fout )
+{
+}
+
+void llsd_format_binary( llsd_t * llsd, FILE * fout )
+{
+}
+
+void llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout )
+{
+	CHECK_PTR( llsd );
+	CHECK_PTR( fout );
+
+	switch ( fmt )
+	{
+		case LLSD_ENC_XML:
+			llsd_format_xml( llsd, fout );
+			break;
+		case LLSD_ENC_NOTATION:
+			llsd_format_notation( llsd, fout );
+			break;
+		case LLSD_ENC_BINARY:
+			llsd_format_binary( llsd, fout );
+			break;
+		case LLSD_ENC_JSON:
+			WARN( "JSON encoding not supported yet\n" );
+	}
+}
 

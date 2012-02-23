@@ -40,10 +40,10 @@ typedef enum llsd_type_e
 
 typedef enum llsd_serializer_s
 {
-	LLSD_XML,
-	LLSD_NOTATION,
-	LLSD_JSON,
-	LLSD_BINARY
+	LLSD_ENC_XML,
+	LLSD_ENC_NOTATION,
+	LLSD_ENC_JSON,
+	LLSD_ENC_BINARY
 } llsd_serializer_t;
 
 #ifndef TRUE
@@ -92,16 +92,6 @@ struct llsd_map_s
 	ht_t		ht;
 };
 
-/* iterator type */
-typedef struct llsd_itr_s
-{
-	llsd_t *		obj;
-	union
-	{
-		array_itr_t	aitr;
-		ht_itr_t	mitr;
-	}				itr;
-} llsd_itr_t;
 
 /* the llsd types */
 typedef int						llsd_bool_t;
@@ -135,56 +125,16 @@ typedef struct llsd_s
 	}					value;
 } llsd_t;
 
-/* constants */
-llsd_t const undefined =
+/* iterator type */
+typedef struct llsd_itr_s
 {
-	.type_ = LLSD_UNDEF,
-	.value.bool_ = FALSE
-};
-
-llsd_uuid_t const zero_uuid = 
-{ 
-	.bits = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 } 
-};
-
-llsd_string_t const false_string = 
-{
-	.dyn = FALSE,
-	.escaped = FALSE,
-	.str = "false"
-};
-llsd_string_t const true_string = 
-{
-	.dyn = FALSE,
-	.escaped = FALSE,
-	.str = "true"
-};
-
-uint8_t const * const zero_data = { '0' };
-llsd_binary_t const false_binary =
-{
-	.dyn = FALSE,
-	.size = 1,
-	.data = zero_data
-};
-uint8_t const * const one_data = { '1' };
-llsd_binary_t const true_binary =
-{
-	.dyn = FALSE,
-	.size = 1,
-	.data = one_data
-};
-llsd_binary_t const empty_binary =
-{
-	.dyn = FALSE,
-	.size = 0,
-	.data = 0
-};
-llsd_uri_t const empty_uri = 
-{
-	.dyn = FALSE,
-	.uri = ""
-};
+	llsd_t *		obj;
+	union
+	{
+		array_itr_t	aitr;
+		ht_itr_t	mitr;
+	}				itr;
+} llsd_itr_t;
 
 
 /* new/delete llsd objects */
