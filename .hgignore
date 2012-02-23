@@ -4,4 +4,4 @@ syntax: glob
 *.a
 .*.swp
 .sconsign.dblite
-cllsd
+test_llsd

@@ -1,0 +1,181 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ASSERT	macros.h	29;"	d
+C	macros.h	54;"	d
+CALLOC	macros.h	45;"	d
+CHECK	macros.h	34;"	d
+CHECK_MSG	macros.h	35;"	d
+CHECK_PTR	macros.h	38;"	d
+CHECK_PTR_MSG	macros.h	39;"	d
+CHECK_PTR_RET	macros.h	40;"	d
+CHECK_PTR_RET_MSG	macros.h	41;"	d
+CHECK_RET	macros.h	36;"	d
+CHECK_RET_MSG	macros.h	37;"	d
+DEBUG	debug.h	17;"	d
+DEBUG	debug.h	20;"	d
+DEBUG	debug.h	22;"	d
+DEBUG_ON	debug.h	25;"	d
+FALSE	llsd.h	44;"	d
+FALSE	macros.h	25;"	d
+FREE	macros.h	47;"	d
+LLSD_ARRAY	llsd.h	/^	LLSD_ARRAY,$/;"	e	enum:llsd_type_e
+LLSD_BINARY	llsd.h	/^	LLSD_BINARY,$/;"	e	enum:llsd_type_e
+LLSD_BOOLEAN	llsd.h	/^	LLSD_BOOLEAN,$/;"	e	enum:llsd_type_e
+LLSD_DATE	llsd.h	/^	LLSD_DATE,$/;"	e	enum:llsd_type_e
+LLSD_H	llsd.h	18;"	d
+LLSD_INTEGER	llsd.h	/^	LLSD_INTEGER,$/;"	e	enum:llsd_type_e
+LLSD_MAP	llsd.h	/^	LLSD_MAP$/;"	e	enum:llsd_type_e
+LLSD_REAL	llsd.h	/^	LLSD_REAL,$/;"	e	enum:llsd_type_e
+LLSD_STRING	llsd.h	/^	LLSD_STRING,$/;"	e	enum:llsd_type_e
+LLSD_UNDEF	llsd.h	/^	LLSD_UNDEF,$/;"	e	enum:llsd_type_e
+LLSD_URI	llsd.h	/^	LLSD_URI,$/;"	e	enum:llsd_type_e
+LLSD_UUID	llsd.h	/^	LLSD_UUID,$/;"	e	enum:llsd_type_e
+LOG	macros.h	31;"	d
+MALLOC	macros.h	44;"	d
+MEMCPY	macros.h	48;"	d
+MEMSET	macros.h	49;"	d
+REALLOC	macros.h	46;"	d
+T	macros.h	52;"	d
+TRUE	llsd.h	40;"	d
+TRUE	macros.h	26;"	d
+UT	macros.h	53;"	d
+WARN	macros.h	30;"	d
+__ARRAY_H__	array.h	18;"	d
+__HASHTABLE_H__	hashtable.h	18;"	d
+__MACROS_H__	macros.h	18;"	d
+__UINT__	array.h	21;"	d
+__UINT__	hashtable.h	21;"	d
+aitr	llsd.h	/^		array_itr_t	aitr;$/;"	m	union:llsd_itr_s::__anon1
+array	llsd.c	/^	array_t		array;$/;"	m	struct:llsd_array_s	file:
+array_clear	array.c	/^void array_clear(array_t * const array)$/;"	f
+array_deinitialize	array.c	/^void array_deinitialize(array_t * const array)$/;"	f
+array_delete	array.c	/^void array_delete(array_t * const array)$/;"	f
+array_get	array.c	/^void* array_get($/;"	f
+array_get_free_node	array.c	/^static array_node_t* array_get_free_node(array_t * const array)$/;"	f	file:
+array_get_head	array.h	106;"	d
+array_get_tail	array.h	107;"	d
+array_grow	array.c	/^static int array_grow(array_t * const array)$/;"	f	file:
+array_initialize	array.c	/^void array_initialize( array_t * const array, delete_fn pfn )$/;"	f
+array_itr_begin	array.c	/^array_itr_t array_itr_begin(array_t const * const array)$/;"	f
+array_itr_end	array.c	/^array_itr_t array_itr_end(array_t const * const array)$/;"	f
+array_itr_end_t	array.c	/^array_itr_t const array_itr_end_t = -1;$/;"	v
+array_itr_head	array.h	79;"	d
+array_itr_next	array.c	/^array_itr_t array_itr_next($/;"	f
+array_itr_t	array.h	/^typedef int_t array_itr_t;$/;"	t
+array_itr_tail	array.c	/^array_itr_t array_itr_tail(array_t const * const array)$/;"	f
+array_lock	array.c	/^void array_lock(array_t * const array)$/;"	f
+array_mutex	array.c	/^pthread_mutex_t * array_mutex(array_t * const array)$/;"	f
+array_new	array.c	/^array_t * array_new( delete_fn pfn )$/;"	f
+array_node_s	array.c	/^struct array_node_s$/;"	s	file:
+array_node_t	array.h	/^typedef struct array_node_s array_node_t;$/;"	t	typeref:struct:array_node_s
+array_pop	array.c	/^void * array_pop($/;"	f
+array_pop_head	array.h	99;"	d
+array_pop_tail	array.h	100;"	d
+array_push	array.c	/^void array_push($/;"	f
+array_push_head	array.h	92;"	d
+array_push_tail	array.h	93;"	d
+array_put_free_node	array.c	/^static void array_put_free_node($/;"	f	file:
+array_s	array.h	/^typedef struct array_s$/;"	s
+array_size	array.c	/^int_t array_size(array_t const * const array)$/;"	f
+array_t	array.h	/^} array_t;$/;"	t	typeref:struct:array_s
+array_try_lock	array.c	/^int array_try_lock(array_t * const array)$/;"	f
+array_unlock	array.c	/^void array_unlock(array_t * const array)$/;"	f
+buffer_size	array.h	/^    uint_t        	buffer_size;            \/* number of slots in the node array *\/$/;"	m	struct:array_s
+data	array.c	/^    void *					data;                   \/* pointer to the data *\/$/;"	m	struct:array_node_s	file:
+data_head	array.h	/^    int_t         	data_head;              \/* head node of the data circular list *\/$/;"	m	struct:array_s
+default_key_eq	hashtable.c	/^static int default_key_eq(void const * const l, void const * const r)$/;"	f	file:
+default_key_hash	hashtable.c	/^static uint_t default_key_hash(void const * const key)$/;"	f	file:
+default_load_factor	hashtable.c	/^float const default_load_factor = 0.65f;$/;"	v
+delete_fn	array.h	/^typedef void (*delete_fn)(void*);$/;"	t
+diff	main.c	/^struct timespec diff( struct timespec start, struct timespec end )$/;"	f
+free_head	array.h	/^    int_t         	free_head;              \/* head node of the free circular list *\/$/;"	m	struct:array_s
+hash	hashtable.c	/^	uint_t				hash;				\/* hash value of the key *\/$/;"	m	struct:tuple_s	file:
+hashtable_primes	hashtable.c	/^uint_t const hashtable_primes[] =$/;"	v
+ht	llsd.c	/^	ht_t		ht;$/;"	m	struct:llsd_map_s	file:
+ht_add	hashtable.c	/^int ht_add( ht_t * const htable, $/;"	f
+ht_add_prehash	hashtable.c	/^int ht_add_prehash( ht_t * const htable, $/;"	f
+ht_clear	hashtable.c	/^int ht_clear(ht_t * const htable)$/;"	f
+ht_compact	hashtable.c	/^int ht_compact(ht_t * const htable)$/;"	f
+ht_deinitialize	hashtable.c	/^void ht_deinitialize(ht_t * const htable)$/;"	f
+ht_delete	hashtable.c	/^void ht_delete(ht_t * const htable)$/;"	f
+ht_delete_fn	hashtable.h	/^typedef void (*ht_delete_fn)(void * value);$/;"	t
+ht_find	hashtable.c	/^void * ht_find(ht_t const * const htable, void const * const key)$/;"	f
+ht_find_index	hashtable.c	/^static int ht_find_index$/;"	f	file:
+ht_find_prehash	hashtable.c	/^void * ht_find_prehash( ht_t const * const htable,$/;"	f
+ht_get_mutex	hashtable.c	/^pthread_mutex_t * ht_get_mutex(ht_t * const htable)$/;"	f
+ht_get_resize_load_factor	hashtable.c	/^float ht_get_resize_load_factor(ht_t const * const htable)$/;"	f
+ht_grow	hashtable.c	/^static int ht_grow(ht_t * const htable, uint_t new_prime_index)$/;"	f	file:
+ht_initialize	hashtable.c	/^void ht_initialize$/;"	f
+ht_itr_begin	hashtable.c	/^ht_itr_t ht_itr_begin(ht_t const * const htable)$/;"	f
+ht_itr_end	hashtable.c	/^ht_itr_t ht_itr_end(ht_t const * const htable)$/;"	f
+ht_itr_get	hashtable.c	/^void* ht_itr_get(ht_t const * const htable, ht_itr_t const itr)$/;"	f
+ht_itr_next	hashtable.c	/^ht_itr_t ht_itr_next(ht_t const * const htable, ht_itr_t const itr)$/;"	f
+ht_itr_t	hashtable.h	/^typedef int_t ht_itr_t;$/;"	t
+ht_load	hashtable.c	/^float ht_load(ht_t * const htable)$/;"	f
+ht_lock	hashtable.c	/^void ht_lock(ht_t * const htable)$/;"	f
+ht_needs_to_grow	hashtable.c	/^static int ht_needs_to_grow(ht_t const * const htable, $/;"	f	file:
+ht_new	hashtable.c	/^ht_t* ht_new$/;"	f
+ht_remove	hashtable.c	/^void * ht_remove(ht_t * const htable, void const * const key)$/;"	f
+ht_remove_prehash	hashtable.c	/^void * ht_remove_prehash( ht_t * const htable,$/;"	f
+ht_s	hashtable.h	/^typedef struct ht_s$/;"	s
+ht_set_resize_load_factor	hashtable.c	/^int ht_set_resize_load_factor(ht_t * const htable, float load)$/;"	f
+ht_size	hashtable.c	/^uint_t ht_size(ht_t * const htable)$/;"	f
+ht_t	hashtable.h	/^} ht_t;$/;"	t	typeref:struct:ht_s
+ht_try_lock	hashtable.c	/^int ht_try_lock(ht_t * const htable)$/;"	f
+ht_unlock	hashtable.c	/^void ht_unlock(ht_t * const htable)$/;"	f
+initial_capacity	array.c	/^uint_t const initial_capacity = 16;$/;"	v
+initial_capacity	hashtable.h	/^	uint_t				initial_capacity;   \/* the initial capacity value *\/$/;"	m	struct:ht_s
+int_t	array.h	/^	typedef int32_t int_t;$/;"	t
+int_t	array.h	/^	typedef int64_t int_t;$/;"	t
+int_t	hashtable.h	/^	typedef int32_t int_t;$/;"	t
+itr	llsd.h	/^	}				itr;$/;"	m	struct:llsd_itr_s	typeref:union:llsd_itr_s::__anon1
+kdfn	hashtable.h	/^	ht_delete_fn		kdfn;				\/* key delete function *\/$/;"	m	struct:ht_s
+kefn	hashtable.h	/^	key_eq_fn			kefn;				\/* key compare function *\/$/;"	m	struct:ht_s
+key	hashtable.c	/^	void *				key;				\/* pointer to the key *\/$/;"	m	struct:tuple_s	file:
+key_eq_fn	hashtable.h	/^typedef int (*key_eq_fn)(void const * const l, void const * const r);$/;"	t
+key_hash_fn	hashtable.h	/^typedef uint_t (*key_hash_fn)(void const * const key);$/;"	t
+khfn	hashtable.h	/^	key_hash_fn			khfn;				\/* key hash function *\/$/;"	m	struct:ht_s
+llsd_array_s	llsd.c	/^struct llsd_array_s$/;"	s	file:
+llsd_array_t	llsd.h	/^typedef struct llsd_array_s llsd_array_t;$/;"	t	typeref:struct:llsd_array_s
+llsd_deinitialize	llsd.c	/^static void llsd_deinitialize( llsd_t * llsd )$/;"	f	file:
+llsd_delete	llsd.c	/^void llsd_delete( llsd_t * llsd )$/;"	f
+llsd_get_type	llsd.c	/^llsd_type_t llsd_get_type( llsd_t * llsd )$/;"	f
+llsd_initialize	llsd.c	/^static void llsd_initialize( llsd_t * llsd )$/;"	f	file:
+llsd_itr_s	llsd.h	/^typedef struct llsd_itr_s$/;"	s
+llsd_itr_t	llsd.h	/^} llsd_itr_t;$/;"	t	typeref:struct:llsd_itr_s
+llsd_map_s	llsd.c	/^struct llsd_map_s$/;"	s	file:
+llsd_map_t	llsd.h	/^typedef struct llsd_map_s llsd_map_t;$/;"	t	typeref:struct:llsd_map_s
+llsd_new	llsd.c	/^llsd_t * llsd_new( void )$/;"	f
+llsd_s	llsd.c	/^struct llsd_s$/;"	s	file:
+llsd_t	llsd.h	/^typedef struct llsd_s llsd_t;$/;"	t	typeref:struct:llsd_s
+llsd_type_e	llsd.h	/^typedef enum llsd_type_e$/;"	g
+llsd_type_t	llsd.h	/^} llsd_type_t;$/;"	t	typeref:enum:llsd_type_e
+load_factor	hashtable.h	/^	float				load_factor;		\/* load level that triggers resize *\/$/;"	m	struct:ht_s
+lock	array.h	/^    pthread_mutex_t lock;                   \/* list lock *\/$/;"	m	struct:array_s
+lock	hashtable.h	/^	pthread_mutex_t		lock;				\/* hashtable lock *\/$/;"	m	struct:ht_s
+main	main.c	/^int main(int argc, char** argv)$/;"	f
+mitr	llsd.h	/^		ht_itr_t	mitr;$/;"	m	union:llsd_itr_s::__anon1
+next	array.c	/^    struct array_node_s *	next;                   \/* next link *\/$/;"	m	struct:array_node_s	typeref:struct:array_node_s::array_node_s	file:
+node_buffer	array.h	/^    array_node_t*   node_buffer;            \/* buffer of nodes *\/$/;"	m	struct:array_s
+num_nodes	array.h	/^    uint_t        	num_nodes;              \/* number of nodes in the list *\/$/;"	m	struct:array_s
+num_primes	hashtable.c	/^uint_t const num_primes = 41;$/;"	v
+num_tuples	hashtable.h	/^	uint_t				num_tuples;			\/* number of tuples in the table *\/$/;"	m	struct:ht_s
+obj	llsd.h	/^	llsd_t *		obj;$/;"	m	struct:llsd_itr_s
+pfn	array.h	/^    delete_fn       pfn;                    \/* destruction function for each node *\/$/;"	m	struct:array_s
+prev	array.c	/^    struct array_node_s *	prev;                   \/* prev link *\/$/;"	m	struct:array_node_s	typeref:struct:array_node_s::array_node_s	file:
+prime_index	hashtable.h	/^	uint_t				prime_index;		\/* the index of the table size *\/$/;"	m	struct:ht_s
+ts_in_ms	main.c	/^uint32_t ts_in_ms( struct timespec t )$/;"	f
+tuple_s	hashtable.c	/^typedef struct tuple_s$/;"	s	file:
+tuple_t	hashtable.c	/^} tuple_t;$/;"	t	typeref:struct:tuple_s	file:
+tuple_t	hashtable.h	/^typedef struct tuple_s tuple_t;$/;"	t	typeref:struct:tuple_s
+tuples	hashtable.h	/^	tuple_t*			tuples;				\/* pointer to tuple table *\/$/;"	m	struct:ht_s
+type	llsd.c	/^	llsd_type_t		type;$/;"	m	struct:llsd_s	file:
+uint_t	array.h	/^	typedef uint32_t uint_t;$/;"	t
+uint_t	array.h	/^	typedef uint64_t uint_t;$/;"	t
+uint_t	hashtable.h	/^	typedef uint32_t uint_t;$/;"	t
+value	hashtable.c	/^	void *				value;				\/* pointer to the value *\/$/;"	m	struct:tuple_s	file:
+vdfn	hashtable.h	/^	ht_delete_fn		vdfn;				\/* value delete function *\/$/;"	m	struct:ht_s
