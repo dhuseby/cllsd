@@ -27,36 +27,6 @@
 #include "array.h"
 #include "llsd.h"
 
-struct llsd_array_s
-{
-	array_t		array;
-};
-
-#define DEFAULT_MAP_CAPACITY (5)
-struct llsd_map_s
-{
-	ht_t		ht;
-};
-
-struct llsd_s
-{
-	llsd_type_t			type_;
-	union
-	{
-		llsd_bool_t		bool_;
-		llsd_int_t		int_;
-		llsd_real_t		real_;
-		llsd_uuid_t		uuid_;
-		llsd_string_t	string_;
-		llsd_date_t		date_;
-		llsd_uri_t		uri_;
-		llsd_binary_t	binary_;
-		llsd_array_t	array_;
-		llsd_map_t		map_;
-
-	}					value;
-};
-
 
 #define FNV_PRIME (0x01000193)
 static uint32_t fnv_key_hash(void const * const key)
@@ -74,6 +44,7 @@ static uint32_t fnv_key_hash(void const * const key)
 	return hash;
 }
 
+
 static int key_eq(void const * const l, void const * const r)
 {
 	llsd_t * llsd_l = (llsd_t *)l;
@@ -82,7 +53,6 @@ static int key_eq(void const * const l, void const * const r)
 	CHECK_RET_MSG( llsd_r->type_ == LLSD_STRING, -1, "map key compare function received non-string as right side\n" );
 	return (strcmp( llsd_l->value.string_.str, llsd_r->value.string_.str ) == 0);
 }
-
 
 
 static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
@@ -158,6 +128,7 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 	}
 }
 
+
 static void llsd_deinitialize( llsd_t * llsd )
 {
 	CHECK_PTR( llsd );
@@ -190,8 +161,6 @@ static void llsd_deinitialize( llsd_t * llsd )
 			break;
 	}
 }
-
-
 
 
 llsd_t * llsd_new( llsd_type_t type_, ... )

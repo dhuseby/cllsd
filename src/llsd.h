@@ -38,6 +38,14 @@ typedef enum llsd_type_e
 
 } llsd_type_t;
 
+typedef enum llsd_serializer_s
+{
+	LLSD_XML,
+	LLSD_NOTATION,
+	LLSD_JSON,
+	LLSD_BINARY
+} llsd_serializer_t;
+
 #ifndef TRUE
 #define TRUE (1)
 #endif
@@ -73,65 +81,16 @@ struct llsd_uri_s
 	uint8_t *			uri;
 };
 
-/* the types clients should use */
-typedef int						llsd_bool_t;
-typedef int32_t					llsd_int_t;
-typedef double					llsd_real_t;
-typedef struct llsd_uuid_s		llsd_uuid_t;
-typedef struct llsd_string_s	llsd_string_t;
-typedef double					llsd_date_t;
-typedef struct llsd_uri_s		llsd_uri_t;
-typedef struct llsd_binary_s	llsd_binary_t;
-
-/* constants */
-static llsd_uuid_t const zero_uuid = 
-{ 
-	.bits = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 } 
-};
-static llsd_string_t const false_string = 
+struct llsd_array_s
 {
-	.dyn = FALSE,
-	.escaped = FALSE,
-	.str = "false"
-};
-static llsd_string_t const true_string = 
-{
-	.dyn = FALSE,
-	.escaped = FALSE,
-	.str = "true"
+	array_t		array;
 };
 
-static uint8_t zero_data[] = { '0' };
-static llsd_binary_t const false_binary =
+#define DEFAULT_MAP_CAPACITY (5)
+struct llsd_map_s
 {
-	.dyn = FALSE,
-	.size = 1,
-	.data = zero_data
+	ht_t		ht;
 };
-static uint8_t one_data[] = { '1' };
-static llsd_binary_t const true_binary =
-{
-	.dyn = FALSE,
-	.size = 1,
-	.data = one_data
-};
-static llsd_binary_t const empty_binary =
-{
-	.dyn = FALSE,
-	.size = 0,
-	.data = 0
-};
-static llsd_uri_t const empty_uri = 
-{
-	.dyn = FALSE,
-	.uri = ""
-};
-
-
-/* opaque types */
-typedef struct llsd_s llsd_t;
-typedef struct llsd_array_s llsd_array_t;
-typedef struct llsd_map_s llsd_map_t;
 
 /* iterator type */
 typedef struct llsd_itr_s
@@ -143,6 +102,90 @@ typedef struct llsd_itr_s
 		ht_itr_t	mitr;
 	}				itr;
 } llsd_itr_t;
+
+/* the llsd types */
+typedef int						llsd_bool_t;
+typedef int32_t					llsd_int_t;
+typedef double					llsd_real_t;
+typedef struct llsd_uuid_s		llsd_uuid_t;
+typedef struct llsd_string_s	llsd_string_t;
+typedef double					llsd_date_t;
+typedef struct llsd_uri_s		llsd_uri_t;
+typedef struct llsd_binary_s	llsd_binary_t;
+typedef struct llsd_array_s		llsd_array_t;
+typedef struct llsd_map_s		llsd_map_t;
+
+
+typedef struct llsd_s
+{
+	llsd_type_t			type_;
+	union
+	{
+		llsd_bool_t		bool_;
+		llsd_int_t		int_;
+		llsd_real_t		real_;
+		llsd_uuid_t		uuid_;
+		llsd_string_t	string_;
+		llsd_date_t		date_;
+		llsd_uri_t		uri_;
+		llsd_binary_t	binary_;
+		llsd_array_t	array_;
+		llsd_map_t		map_;
+
+	}					value;
+} llsd_t;
+
+/* constants */
+llsd_t const undefined =
+{
+	.type_ = LLSD_UNDEF,
+	.value.bool_ = FALSE
+};
+
+llsd_uuid_t const zero_uuid = 
+{ 
+	.bits = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 } 
+};
+
+llsd_string_t const false_string = 
+{
+	.dyn = FALSE,
+	.escaped = FALSE,
+	.str = "false"
+};
+llsd_string_t const true_string = 
+{
+	.dyn = FALSE,
+	.escaped = FALSE,
+	.str = "true"
+};
+
+uint8_t const * const zero_data = { '0' };
+llsd_binary_t const false_binary =
+{
+	.dyn = FALSE,
+	.size = 1,
+	.data = zero_data
+};
+uint8_t const * const one_data = { '1' };
+llsd_binary_t const true_binary =
+{
+	.dyn = FALSE,
+	.size = 1,
+	.data = one_data
+};
+llsd_binary_t const empty_binary =
+{
+	.dyn = FALSE,
+	.size = 0,
+	.data = 0
+};
+llsd_uri_t const empty_uri = 
+{
+	.dyn = FALSE,
+	.uri = ""
+};
+
 
 /* new/delete llsd objects */
 llsd_t * llsd_new( llsd_type_t type_, ... );
@@ -179,6 +222,12 @@ llsd_itr_t llsd_itr_end( llsd_t * llsd );
 /* get the next value in the array/map */
 void llsd_itr_get( llsd_itr_t itr, llsd_t ** value, llsd_t ** key );
 #endif
+
+/* serialize/deserialize interface */
+llsd_t * llsd_parse( FILE * fin );
+void llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout );
+
+
 
 #endif/*LLSD_H*/
 
