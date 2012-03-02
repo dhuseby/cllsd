@@ -34,7 +34,11 @@ typedef enum llsd_type_e
 	LLSD_URI,
 	LLSD_BINARY,
 	LLSD_ARRAY,
-	LLSD_MAP
+	LLSD_MAP,
+
+	LLSD_TYPE_LAST,
+	LLSD_TYPE_FIRST = LLSD_UNDEF,
+	LLSD_TYPE_COUNT = LLSD_TYPE_LAST - LLSD_TYPE_FIRST
 
 } llsd_type_t;
 
@@ -126,16 +130,7 @@ typedef struct llsd_s
 } llsd_t;
 
 /* iterator type */
-typedef struct llsd_itr_s
-{
-	llsd_t *		obj;
-	union
-	{
-		array_itr_t	aitr;
-		ht_itr_t	mitr;
-	}				itr;
-} llsd_itr_t;
-
+typedef int32_t llsd_itr_t;
 
 /* new/delete llsd objects */
 llsd_t * llsd_new( llsd_type_t type_, ... );
@@ -161,23 +156,27 @@ llsd_string_t llsd_as_string( llsd_t * llsd );
 llsd_date_t llsd_as_date( llsd_t * llsd );
 llsd_uri_t llsd_as_uri( llsd_t * llsd );
 llsd_binary_t llsd_as_binary( llsd_t * llsd );
+llsd_array_t llsd_as_array( llsd_t * llsd );
+llsd_map_t llsd_as_map( llsd_t * llsd );
 
-#if 0
+/* append to containers */
+void llsd_array_append( llsd_t * arr, llsd_t * data );
+void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data );
+
 /* iterator interface */
-llsd_itr_t llsd_itr_next( llsd_itr_t itr );
-llsd_itr_t llsd_itr_prev( llsd_itr_t itr );
 llsd_itr_t llsd_itr_begin( llsd_t * llsd );
 llsd_itr_t llsd_itr_end( llsd_t * llsd );
+llsd_itr_t llsd_itr_rbegin( llsd_t * llsd );
+#define llsd_itr_rend(x) llsd_itr_end(x)
+llsd_itr_t llsd_itr_next( llsd_t * llsd, llsd_itr_t itr );
+llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr );
 
 /* get the next value in the array/map */
-void llsd_itr_get( llsd_itr_t itr, llsd_t ** value, llsd_t ** key );
-#endif
+int llsd_itr_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key );
 
 /* serialize/deserialize interface */
 llsd_t * llsd_parse( FILE * fin );
 void llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout );
-
-
 
 #endif/*LLSD_H*/
 

@@ -793,21 +793,29 @@ ht_itr_t ht_itr_begin(ht_t const * const htable)
 {
 	CHECK_PTR_RET(htable, -1);
 
-	/* start at -1 and find the first real, non-filler tuple */
-	return ht_itr_next(htable, (ht_itr_t)-1);
+	/* start at 0 and find the first real, non-filler tuple */
+	return ht_itr_next(htable, (ht_itr_t)0);
 }
 
+ht_itr_t ht_itr_end(ht_t const * const htable)
+{
+	CHECK_PTR_RET(htable, -1);
+	return -1;
+}
+
+ht_itr_t ht_itr_rbegin(ht_t const * const htable)
+{
+	CHECK_PTR_RET(htable, -1);
+
+	/* start at hashtable_primes[htable->prime_index] and search down to find
+	 * the first non-filler tuple */
+	return ht_itr_rnext(htable, (ht_itr_t)(hashtable_primes[htable->prime_index] - 1));
+}
 
 ht_itr_t ht_itr_next(ht_t const * const htable, ht_itr_t const itr)
 {
 	int_t i = itr;
 	CHECK_PTR_RET(htable, -1);
-
-	/* if they aren't at the beginning or end, increment the itr so that it moves to the
-	 * next item in the hashtable instead of matching the same one always.
-	 */
-	if((i >= -1) && (i < (int_t)hashtable_primes[htable->prime_index]))
-		i++;
 
 	if(i >= (int_t)hashtable_primes[htable->prime_index])
 		return ht_itr_end(htable);
@@ -824,13 +832,27 @@ ht_itr_t ht_itr_next(ht_t const * const htable, ht_itr_t const itr)
 	return -1;
 }
 
-ht_itr_t ht_itr_end(ht_t const * const htable)
+ht_itr_t ht_itr_rnext(ht_t const * const htable, ht_itr_t const itr)
 {
+	int_t i = itr;
 	CHECK_PTR_RET(htable, -1);
+
+	if(i < (int_t)0)
+		return ht_itr_rend(htable);
+
+	for(; i >= (int_t)0; i--)
+	{
+		/* if is is a live tuple, return the itr to that */
+		if((htable->tuples[i].hash != 0) &&
+		   (htable->tuples[i].key != NULL) &&
+		   (htable->tuples[i].value != NULL))
+			return i;
+	}
+
 	return -1;
 }
 
-void* ht_itr_get(ht_t const * const htable, ht_itr_t const itr)
+void* ht_itr_get(ht_t const * const htable, ht_itr_t const itr, void** key)
 {
 	CHECK_PTR_RET(htable, NULL);
 	CHECK_RET(itr != -1, NULL);
@@ -840,6 +862,11 @@ void* ht_itr_get(ht_t const * const htable, ht_itr_t const itr)
 	   (htable->tuples[itr].key == NULL) ||
 	   (htable->tuples[itr].value == NULL))
 		return NULL;
+
+	if ( key != NULL )
+	{
+		(*key) = htable->tuples[itr].key;
+	}
 
 	/* return the value at the iterator location in the tuple list */
 	return htable->tuples[itr].value;

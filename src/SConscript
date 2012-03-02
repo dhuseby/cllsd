@@ -2,7 +2,3 @@ env = Environment(CC='gcc', CCFLAGS='-O0 -gstabs+')
 env.Library('llsd', ['array.c',
 					 'hashtable.c',
 					 'llsd.c'])
-env.Program(target = 'test_llsd', 
-		source = ['test_llsd.c'],
-		LIBS   = ['llsd'],
-		LIBPATH = '.')

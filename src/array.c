@@ -403,7 +403,6 @@ array_itr_t array_itr_begin(array_t const * const array)
 /* get an iterator to the end of the array */
 array_itr_t array_itr_end(array_t const * const array)
 {
-    CHECK_PTR_RET(array, array_itr_end_t);
     return array_itr_end_t;
 }
 
@@ -453,6 +452,41 @@ array_itr_t array_itr_next(
     return (array_itr_t)(((uint_t)node - (uint_t)array->node_buffer) / sizeof(array_node_t));
 }
 
+array_itr_t array_itr_rnext(
+    array_t const * const array, 
+    array_itr_t const itr)
+{
+    array_node_t* node = NULL;
+	
+    CHECK_PTR_RET(array, array_itr_end_t);
+    CHECK_RET(array_size(array) > 0, array_itr_end_t);
+    CHECK_RET(itr != array_itr_end_t, array_itr_end_t);
+
+    /* get a pointer to the node the iterator points to */
+    node = &(array->node_buffer[itr]);
+
+    /* check that we got a valid node pointer */
+    CHECK_RET(node != NULL, array_itr_end_t);
+
+    /* check to see if we've gone full circle */
+    if(node == &array->node_buffer[array->data_head])
+    {
+        /* yep so return -1 */
+        return array_itr_end_t;
+    }
+
+	/* now get the previous node pointer */
+	node = array->node_buffer[itr].prev;
+
+    /* check that we got a valid node pointer */
+    CHECK_RET(node != NULL, array_itr_end_t);
+
+    /* check that the node is still in the data list */
+    CHECK_RET(node->data != NULL, array_itr_end_t);
+
+    /* return the index of the node */
+    return (array_itr_t)(((uint_t)node - (uint_t)array->node_buffer) / sizeof(array_node_t));
+}
 
 /* 
  * push a piece of data into the list at the iterator position
@@ -568,7 +602,7 @@ void * array_pop(
 }
 
 /* get a pointer to the data at the location specified by the iterator */
-void* array_get(
+void* array_itr_get(
     array_t const * const array, 
     array_itr_t const itr)
 {

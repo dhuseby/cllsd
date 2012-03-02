@@ -78,11 +78,16 @@ array_itr_t array_itr_begin(array_t const * const array);
 array_itr_t array_itr_end(array_t const * const array);
 #define array_itr_head(x) array_itr_begin(x)
 array_itr_t array_itr_tail(array_t const * const array);
+#define array_itr_rbegin(x) array_itr_tail(x)
+#define array_itr_rend(x) array_itr_end(x)
 
 /* iterator manipulation functions */
 array_itr_t array_itr_next(
     array_t const * const array, 
     array_itr_t const itr);
+array_itr_t array_itr_rnext(
+	array_t const * const array,
+	array_itr_t const itr );
 
 /* O(1) functions for adding items to the array */
 void array_push(
@@ -100,7 +105,7 @@ void* array_pop(
 #define array_pop_tail(array) array_pop(array, array_itr_end(array))
 
 /* functions for getting a reference to an item in the array */
-void* array_get(
+void* array_itr_get(
     array_t const * const array, 
     array_itr_t const itr);
 #define array_get_head(array) array_get(array, array_itr_head(array))

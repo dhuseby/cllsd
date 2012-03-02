@@ -1,0 +1,10 @@
+env = Environment(CC='gcc', CCFLAGS='-O0 -gstabs+ -Isrc')
+#llsd = File('../llsd.a')
+env.Program(target = 'test_all', 
+		source = ['test_all.c',
+				  'test_binary.c',
+				  'test_notation.c',
+				  'test_xml.c'],
+		LIBS   = ['llsd',
+				  'cunit'],
+		LIBPATH = '../src/')

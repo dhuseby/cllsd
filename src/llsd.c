@@ -14,6 +14,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
+#ifndef _BSD_SOURCE
+#define _BSD_SOURCE
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -21,6 +25,7 @@
 #include <string.h>
 #include <assert.h>
 #include <arpa/inet.h>
+#include <endian.h>
 
 #include "debug.h"
 #include "macros.h"
@@ -78,7 +83,31 @@ llsd_uri_t const empty_uri =
 	.dyn = FALSE,
 	.uri = ""
 };
-
+llsd_array_t const empty_array =
+{
+	.array = {
+		.pfn = 0,
+		.num_nodes = 0,
+		.buffer_size = 0,
+		.data_head = -1,
+		.free_head = -1,
+		.node_buffer = 0
+	}
+};
+llsd_map_t const empty_map =
+{
+	.ht = {
+		.khfn = 0,
+		.kefn = 0,
+		.kdfn = 0,
+		.vdfn = 0,
+		.prime_index = 0,
+		.num_tuples = 0,
+		.initial_capacity = 0,
+		.load_factor = 0.0f,
+		.tuples = 0,
+	}
+};
 
 #define FNV_PRIME (0x01000193)
 static uint32_t fnv_key_hash(void const * const key)
@@ -433,6 +462,28 @@ llsd_uuid_t llsd_as_uuid( llsd_t * llsd )
 	return zero_uuid;
 }
 
+llsd_array_t llsd_as_array( llsd_t * llsd )
+{
+	CHECK_PTR_RET_MSG( llsd, empty_array, "invalid llsd pointer\n" );
+	if ( llsd->type_ != LLSD_ARRAY )
+	{
+		WARN( "illegal conversion of non-array llsd to array\n");
+		return empty_array;
+	}
+	return (llsd_array_t)llsd->value.array_;
+}
+
+llsd_map_t llsd_as_map( llsd_t * llsd )
+{
+	CHECK_PTR_RET_MSG( llsd, empty_map, "invalid llsd pointer\n" );
+	if ( llsd->type_ != LLSD_MAP )
+	{
+		WARN( "illegal conversion of non-map llsd to map\n");
+		return empty_map;
+	}
+	return (llsd_map_t)llsd->value.map_;
+}
+
 llsd_string_t llsd_as_string( llsd_t * llsd )
 {
 	static int8_t tmp[11];
@@ -534,6 +585,109 @@ llsd_binary_t llsd_as_binary( llsd_t * llsd )
 	}
 }
 
+void llsd_array_append( llsd_t * arr, llsd_t * data )
+{
+	CHECK_PTR( arr );
+	CHECK_PTR( data );
+	CHECK_MSG( llsd_get_type(arr) == LLSD_ARRAY, "trying to append data to non array\n" );
+	array_push_tail( &(arr->value.array_.array), (void*)data );
+}
+
+void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data )
+{
+	CHECK_PTR( map );
+	CHECK_PTR( key );
+	CHECK_PTR( data );
+	CHECK_MSG( llsd_get_type(map) == LLSD_MAP, "trying to insert k-v-p into non map\n" );
+	CHECK_MSG( llsd_get_type(key) == LLSD_STRING, "trying to use non-string as key\n" );
+	ht_add( &(map->value.map_.ht), (void*)key, (void*)data );
+}
+
+llsd_itr_t llsd_itr_begin( llsd_t * llsd )
+{
+	CHECK_PTR_RET( llsd, (llsd_itr_t)-1 );
+
+	switch ( llsd_get_type( llsd ) )
+	{
+		case LLSD_ARRAY:
+			return (llsd_itr_t)array_itr_begin( &(llsd->value.array_.array) );
+		case LLSD_MAP:
+			return (llsd_itr_t)ht_itr_begin( &(llsd->value.map_.ht) );
+	}
+	return (llsd_itr_t)0;
+}
+
+llsd_itr_t llsd_itr_end( llsd_t * llsd )
+{
+	return (llsd_itr_t)-1;
+}
+
+llsd_itr_t llsd_itr_rbegin( llsd_t * llsd )
+{
+	CHECK_PTR_RET( llsd, (llsd_itr_t)-1 );
+	
+	switch ( llsd_get_type( llsd ) )
+	{
+		case LLSD_ARRAY:
+			return (llsd_itr_t)array_itr_rbegin( &(llsd->value.array_.array) );
+		case LLSD_MAP:
+			return (llsd_itr_t)ht_itr_rbegin( &(llsd->value.map_.ht) );
+	}
+	return (llsd_itr_t)0;
+}
+
+llsd_itr_t llsd_itr_next( llsd_t * llsd, llsd_itr_t itr )
+{
+	switch ( llsd_get_type( llsd ) )
+	{
+		case LLSD_ARRAY:
+			return (llsd_itr_t)array_itr_next( &(llsd->value.array_.array), (array_itr_t)itr );
+		case LLSD_MAP:
+			return (llsd_itr_t)ht_itr_next( &(llsd->value.map_.ht), (ht_itr_t)itr );
+	}
+	return (llsd_itr_t)-1;
+}
+
+llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr )
+{
+	switch ( llsd_get_type( llsd ) )
+	{
+		case LLSD_ARRAY:
+			return (llsd_itr_t)array_itr_rnext( &(llsd->value.array_.array), (array_itr_t)itr );
+		case LLSD_MAP:
+			return (llsd_itr_t)ht_itr_rnext( &(llsd->value.map_.ht), (ht_itr_t)itr );
+	}
+	return (llsd_itr_t)-1;
+}
+
+int llsd_itr_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key )
+{
+	llsd_t * k;
+	llsd_t * v;
+	CHECK_PTR_RET( value, FALSE );
+	CHECK_PTR_RET( key, FALSE );
+	CHECK_PTR_RET( llsd, FALSE );
+	CHECK_RET( itr != -1, FALSE );
+
+	switch ( llsd_get_type( llsd ) )
+	{
+		case LLSD_ARRAY:
+			(*value) = (llsd_t*)array_itr_get( &(llsd->value.array_.array), itr );
+			(*key) = NULL;
+			return TRUE;
+		case LLSD_MAP:
+			(*value) = (llsd_t*)ht_itr_get( &(llsd->value.map_.ht), itr, (void**)key );
+
+			return TRUE;
+	}
+
+	/* non-container iterator just references the llsd */
+	(*value) = llsd;
+	(*key) = NULL;
+	return TRUE;
+}
+
+
 static llsd_t * llsd_reserve_binary( uint32_t size )
 {
 	llsd_t * llsd = CALLOC( 1, sizeof(llsd_t) + size );
@@ -568,7 +722,10 @@ llsd_t * llsd_parse_binary( FILE * fin )
 	int i;
 	uint8_t p;
 	uint32_t t1;
-	double t2;
+	union {
+		uint64_t	ull;
+		double		d;
+	} t2;
 	uint16_t t3[UUID_LEN];
 	llsd_t * llsd;
 	llsd_t * key;
@@ -593,7 +750,8 @@ llsd_t * llsd_parse_binary( FILE * fin )
 				return llsd_new( LLSD_INTEGER, ntohl( t1 ) );
 			case 'r':
 				fread( &t2, sizeof(double), 1, fin );
-				return llsd_new( LLSD_REAL, ntohd( t2 ) );
+				t2.ull = be64toh( t2.ull );
+				return llsd_new( LLSD_REAL, t2.d );
 			case 'u':
 				fread( t3, sizeof(uint8_t), UUID_LEN, fin );
 				return llsd_new( LLSD_UUID, t3 );
@@ -618,8 +776,8 @@ llsd_t * llsd_parse_binary( FILE * fin )
 				return llsd;
 			case 'd':
 				fread( &t2, sizeof(double), 1, fin );
-				t2 = ntohd( t2 );
-				return llsd_new( LLSD_DATE, t2 );
+				t2.ull = be64toh( t2.ull );
+				return llsd_new( LLSD_DATE, t2.d );
 			case '[':
 				fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
@@ -706,6 +864,117 @@ void llsd_format_notation( llsd_t * llsd, FILE * fout )
 
 void llsd_format_binary( llsd_t * llsd, FILE * fout )
 {
+	uint32_t s;
+	uint8_t p;
+	uint32_t t1;
+	union {
+		uint64_t	ull;
+		double		d;
+	} t2;
+	uint16_t t3[UUID_LEN];
+
+	llsd_itr_t itr;
+	llsd_t *k, *v;
+
+	switch ( llsd_get_type( llsd ) )
+	{
+		case LLSD_UNDEF:
+			p = '!';
+			fwrite( &p, sizeof(uint8_t), 1, fout );
+			break;
+		case LLSD_BOOLEAN:
+			p = ( llsd_as_bool( llsd ) == TRUE ) ? '1' : '0';
+			fwrite( &p, sizeof(uint8_t), 1, fout );
+			break;
+		case LLSD_INTEGER:
+			p = 'i';
+			t1 = htonl( llsd_as_int( llsd ) );
+			fwrite( &p, sizeof(uint8_t), 1, fout );
+			fwrite( &t1, sizeof(uint32_t), 1, fout );
+			break;
+		case LLSD_REAL:
+			p = 'r';
+			t2.d = llsd_as_real( llsd );
+			t2.ull = htobe64( t2.ull );
+			fwrite( &p, sizeof(uint8_t), 1, fout );
+			fwrite( &t2, sizeof(uint64_t), 1, fout );
+			break;
+		case LLSD_UUID:
+			p = 'u';
+			fwrite( &p, sizeof(uint8_t), 1, fout );
+			fwrite( &(llsd->value.uuid_.bits[0]), sizeof(uint8_t), UUID_LEN, fout );
+			break;
+		case LLSD_STRING:
+			p = 's';
+			s = strlen( llsd_as_string( llsd ).str );
+			t1 = htonl( s );
+			fwrite( &p, sizeof(uint8_t), 1, fout );
+			fwrite( &t1, sizeof(uint32_t), 1, fout );
+			fwrite( llsd_as_string( llsd ).str, sizeof(uint8_t), s, fout );
+			break;
+		case LLSD_DATE:
+			p = 'd';
+			t2.d = llsd_as_date( llsd );
+			t2.ull = htobe64( t2.ull );
+			fwrite( &p, sizeof(uint8_t), 1, fout );
+			fwrite( &t2, sizeof(uint64_t), 1, fout );
+			break;
+		case LLSD_URI:
+			p = 'l';
+			s = strlen( llsd_as_uri( llsd ).uri );
+			t1 = htonl( s );
+			fwrite( &p, sizeof(uint8_t), 1, fout );
+			fwrite( &t1, sizeof(uint32_t), 1, fout );
+			fwrite( llsd_as_uri( llsd ).uri, sizeof(uint8_t), s, fout );
+			break;
+		case LLSD_BINARY:
+			p = 'b';
+			s = llsd_as_binary( llsd ).size;
+			t1 = htonl( s );
+			fwrite( &p, sizeof(uint8_t), 1, fout );
+			fwrite( &t1, sizeof(uint32_t), 1, fout );
+			fwrite( llsd_as_binary( llsd ).data, sizeof(uint8_t), s, fout );
+			break;
+		case LLSD_ARRAY:
+			p = '[';
+			s = array_size( &(llsd->value.array_.array) );
+			t1 = htonl( s );
+			fwrite( &p, sizeof(uint8_t), 1, fout );
+			fwrite( &t1, sizeof(uint32_t), 1, fout );
+
+			itr = llsd_itr_begin( llsd );
+			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
+			{
+				llsd_itr_get( llsd, itr, &v, &k );
+				if ( k != NULL )
+				{
+					WARN( "received key from array itr_get\n" );
+				}
+				llsd_format_binary( v, fout );
+			}
+
+			p = ']';
+			fwrite( &p, sizeof(uint8_t), 1, fout );
+			break;
+		case LLSD_MAP:
+			p = '{';
+			s = ht_size( &(llsd->value.map_.ht) );
+			t1 = htonl( s );
+			fwrite( &p, sizeof(uint8_t), 1, fout );
+			fwrite( &t1, sizeof(uint8_t), 1, fout );
+
+			itr = llsd_itr_begin( llsd );
+			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
+			{
+				llsd_itr_get( llsd, itr, &v, &k );
+				llsd_format_binary( k, fout );
+				llsd_format_binary( v, fout );
+			}
+
+			p = '}';
+			fwrite( &p, sizeof(uint8_t), 1, fout );
+			break;
+	}
 }
 
 void llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout )

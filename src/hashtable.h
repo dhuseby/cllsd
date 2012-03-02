@@ -154,12 +154,20 @@ void * ht_remove_prehash( ht_t * const htable,
 
 /* Iterator based access to the hashtable */
 ht_itr_t ht_itr_begin(ht_t const * const htable);
+ht_itr_t ht_itr_end(ht_t const * const htable);
+ht_itr_t ht_itr_rbegin(ht_t const * const hatable);
+#define ht_itr_rend(x) ht_itr_end(x)
+
 ht_itr_t ht_itr_next(
     ht_t const * const htable, 
     ht_itr_t const itr);
-ht_itr_t ht_itr_end(ht_t const * const htable);
+ht_itr_t ht_itr_rnext(
+	ht_t const * const htable,
+	ht_itr_t const itr);
+
 void* ht_itr_get(
     ht_t const * const htable, 
-    ht_itr_t const itr);
+    ht_itr_t const itr,
+	void** const key);
 
 #endif
