@@ -139,7 +139,6 @@ void ht_initialize
 		i++;
 
 	/* allocate room for the key/value structs */
-	WARN("heap allocating %d ht tuples\n", hashtable_primes[i]);
 	htable->tuples = (tuple_t*)CALLOC(hashtable_primes[i], sizeof(tuple_t));
 	ASSERT(htable->tuples != NULL);
 

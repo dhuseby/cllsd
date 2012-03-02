@@ -31,6 +31,7 @@
 #include "test_binary.h"
 
 static llsd_serializer_t format;
+FILE* tmpf;
 
 static int init_binary_suite( void )
 {
@@ -42,6 +43,42 @@ static int deinit_binary_suite( void )
 {
 	return 0;
 }
+
+/* expected values */
+size_t expected_sizes[ LLSD_TYPE_COUNT ] = 
+{
+	1,		/* LLSD_UNDEF */
+	1,		/* LLSD_BOOLEAN */
+	5,		/* LLSD_INTEGER */
+	9,		/* LLSD_REAL */
+	17,		/* LLSD_UUID */
+	13,		/* LLSD_STRING 's' + 'Hello World!' */
+	9,		/* LLSD_DATE */
+	19,		/* LLSD_URI 'l' + 'http://ixquick.com' */
+	15,		/* LLSD_BINARY 'b' + 32-bit size + '0123456789' */
+	6,		/* LLSD_ARRAY '[' + 32-bit size + ']' */
+	6		/* LLSD_MAP '{' + 32-bit size + '}' */
+};
+
+uint8_t const * const undef_ = { '!' };
+uint8_t const * const boolean_ = { '1' };
+uint8_t const * const integer_ = { 0x0d, 0x0c, 0x0b, 0x0a };
+uint8_t const * const real_ = 
+
+uint8_t * expected_data[ LLSD_TYPE_COUNT ] =
+{
+	undef_,
+	boolean_,
+	integer_,
+	real_,
+	uuid_,
+	string_,
+	date_,
+	uri_,
+	binary_,
+	array_,
+	map_,
+};
 
 /* include the test functions */
 #include "test_functions.c"

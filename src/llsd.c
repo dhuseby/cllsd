@@ -33,6 +33,21 @@
 #include "array.h"
 #include "llsd.h"
 
+int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT] =
+{
+	T("UNDEF"),
+	T("BOOLEAN"),
+	T("INTEGER"),
+	T("REAL"),
+	T("UUID"),
+	T("STRING"),
+	T("DATE"),
+	T("URI"),
+	T("BINARY"),
+	T("ARRAY"),
+	T("MAP")
+};
+
 /* constants */
 llsd_t const undefined =
 {
@@ -331,6 +346,12 @@ llsd_type_t llsd_get_type( llsd_t * llsd )
 {
 	CHECK_PTR_RET( llsd, LLSD_UNDEF );
 	return llsd->type_;
+}
+
+int8_t const * llsd_get_type_string( llsd_type_t type_ )
+{
+	CHECK_RET( ((type_ >= LLSD_TYPE_FIRST) && (type_ <= LLSD_TYPE_LAST)), NULL );
+	return llsd_type_strings[ type_ ];
 }
 
 int llsd_get_size( llsd_t * llsd )
@@ -717,7 +738,7 @@ static llsd_t * llsd_reserve_uri( uint32_t size )
 	return llsd;
 }
 
-llsd_t * llsd_parse_binary( FILE * fin )
+static llsd_t * llsd_parse_binary( FILE * fin )
 {
 	int i;
 	uint8_t p;
@@ -819,16 +840,14 @@ llsd_t * llsd_parse_binary( FILE * fin )
 	}
 }
 
-llsd_t * llsd_parse_notation( FILE * fin )
+static llsd_t * llsd_parse_notation( FILE * fin )
 {
-
-
-
-
+	return NULL;
 }
 
-llsd_t * llsd_parse_xml( FILE * fin )
+static llsd_t * llsd_parse_xml( FILE * fin )
 {
+	return NULL;
 }
 
 #define SIG_LEN (18)
@@ -854,16 +873,19 @@ llsd_t * llsd_parse( FILE *fin )
 	}
 }
 
-void llsd_format_xml( llsd_t * llsd, FILE * fout )
+static size_t llsd_format_xml( llsd_t * llsd, FILE * fout )
 {
+	return 0;
 }
 
-void llsd_format_notation( llsd_t * llsd, FILE * fout )
+static size_t llsd_format_notation( llsd_t * llsd, FILE * fout )
 {
+	return 0;
 }
 
-void llsd_format_binary( llsd_t * llsd, FILE * fout )
+static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 {
+	size_t num = 0;
 	uint32_t s;
 	uint8_t p;
 	uint32_t t1;
@@ -880,67 +902,67 @@ void llsd_format_binary( llsd_t * llsd, FILE * fout )
 	{
 		case LLSD_UNDEF:
 			p = '!';
-			fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			break;
 		case LLSD_BOOLEAN:
 			p = ( llsd_as_bool( llsd ) == TRUE ) ? '1' : '0';
-			fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			break;
 		case LLSD_INTEGER:
 			p = 'i';
 			t1 = htonl( llsd_as_int( llsd ) );
-			fwrite( &p, sizeof(uint8_t), 1, fout );
-			fwrite( &t1, sizeof(uint32_t), 1, fout );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
 			break;
 		case LLSD_REAL:
 			p = 'r';
 			t2.d = llsd_as_real( llsd );
 			t2.ull = htobe64( t2.ull );
-			fwrite( &p, sizeof(uint8_t), 1, fout );
-			fwrite( &t2, sizeof(uint64_t), 1, fout );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t2, sizeof(uint64_t), 1, fout ) * sizeof(uint64_t) );
 			break;
 		case LLSD_UUID:
 			p = 'u';
-			fwrite( &p, sizeof(uint8_t), 1, fout );
-			fwrite( &(llsd->value.uuid_.bits[0]), sizeof(uint8_t), UUID_LEN, fout );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += fwrite( &(llsd->value.uuid_.bits[0]), sizeof(uint8_t), UUID_LEN, fout );
 			break;
 		case LLSD_STRING:
 			p = 's';
 			s = strlen( llsd_as_string( llsd ).str );
 			t1 = htonl( s );
-			fwrite( &p, sizeof(uint8_t), 1, fout );
-			fwrite( &t1, sizeof(uint32_t), 1, fout );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
 			fwrite( llsd_as_string( llsd ).str, sizeof(uint8_t), s, fout );
 			break;
 		case LLSD_DATE:
 			p = 'd';
 			t2.d = llsd_as_date( llsd );
 			t2.ull = htobe64( t2.ull );
-			fwrite( &p, sizeof(uint8_t), 1, fout );
-			fwrite( &t2, sizeof(uint64_t), 1, fout );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t2, sizeof(uint64_t), 1, fout ) * sizeof(uint64_t) );
 			break;
 		case LLSD_URI:
 			p = 'l';
 			s = strlen( llsd_as_uri( llsd ).uri );
 			t1 = htonl( s );
-			fwrite( &p, sizeof(uint8_t), 1, fout );
-			fwrite( &t1, sizeof(uint32_t), 1, fout );
-			fwrite( llsd_as_uri( llsd ).uri, sizeof(uint8_t), s, fout );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
+			num += fwrite( llsd_as_uri( llsd ).uri, sizeof(uint8_t), s, fout );
 			break;
 		case LLSD_BINARY:
 			p = 'b';
 			s = llsd_as_binary( llsd ).size;
 			t1 = htonl( s );
-			fwrite( &p, sizeof(uint8_t), 1, fout );
-			fwrite( &t1, sizeof(uint32_t), 1, fout );
-			fwrite( llsd_as_binary( llsd ).data, sizeof(uint8_t), s, fout );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
+			num += fwrite( llsd_as_binary( llsd ).data, sizeof(uint8_t), s, fout );
 			break;
 		case LLSD_ARRAY:
 			p = '[';
 			s = array_size( &(llsd->value.array_.array) );
 			t1 = htonl( s );
-			fwrite( &p, sizeof(uint8_t), 1, fout );
-			fwrite( &t1, sizeof(uint32_t), 1, fout );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
 
 			itr = llsd_itr_begin( llsd );
 			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
@@ -950,34 +972,34 @@ void llsd_format_binary( llsd_t * llsd, FILE * fout )
 				{
 					WARN( "received key from array itr_get\n" );
 				}
-				llsd_format_binary( v, fout );
+				num += llsd_format_binary( v, fout );
 			}
 
 			p = ']';
-			fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			break;
 		case LLSD_MAP:
 			p = '{';
 			s = ht_size( &(llsd->value.map_.ht) );
 			t1 = htonl( s );
-			fwrite( &p, sizeof(uint8_t), 1, fout );
-			fwrite( &t1, sizeof(uint8_t), 1, fout );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += fwrite( &t1, sizeof(uint8_t), 1, fout );
 
 			itr = llsd_itr_begin( llsd );
 			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
 			{
 				llsd_itr_get( llsd, itr, &v, &k );
-				llsd_format_binary( k, fout );
-				llsd_format_binary( v, fout );
+				num += llsd_format_binary( k, fout );
+				num += llsd_format_binary( v, fout );
 			}
 
 			p = '}';
-			fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			break;
 	}
 }
 
-void llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout )
+size_t llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout )
 {
 	CHECK_PTR( llsd );
 	CHECK_PTR( fout );
@@ -985,16 +1007,14 @@ void llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout )
 	switch ( fmt )
 	{
 		case LLSD_ENC_XML:
-			llsd_format_xml( llsd, fout );
-			break;
+			return llsd_format_xml( llsd, fout );
 		case LLSD_ENC_NOTATION:
-			llsd_format_notation( llsd, fout );
-			break;
+			return llsd_format_notation( llsd, fout );
 		case LLSD_ENC_BINARY:
-			llsd_format_binary( llsd, fout );
-			break;
+			return llsd_format_binary( llsd, fout );
 		case LLSD_ENC_JSON:
 			WARN( "JSON encoding not supported yet\n" );
 	}
+	return 0;
 }
 

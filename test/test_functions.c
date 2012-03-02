@@ -19,11 +19,44 @@
  * deserializer functions are specified when the suites are initialized.
  */
 
-static void test_newdel( void )
+static llsd * get_llsd( llsd_type_t llsd )
 {
 	uint8_t bits[UUID_LEN] = { 1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6 };
 	int8_t const * const str = T("Hello World!");
 	int8_t const * const url = T("http://www.ixquit.com");
+
+	/* construct the llsd */
+	switch( type_ )
+	{
+		case LLSD_BOOLEAN:
+		case LLSD_INTEGER:
+			return llsd_new( type_, 1 );
+
+		case LLSD_REAL:
+		case LLSD_DATE:
+			return llsd_new( type_, 1.0 );
+
+		case LLSD_UUID:
+			return llsd_new( type_, bits );
+
+		case LLSD_STRING:
+			return llsd_new( type_, str, strlen( str ) );
+
+		case LLSD_URI:
+			return llsd_new( type_, url );
+
+		case LLSD_BINARY:
+			return llsd_new( type_, UUID_LEN, bits );
+
+		case LLSD_UNDEF:
+		case LLSD_ARRAY:
+		case LLSD_MAP:
+			return llsd_new( type_ );
+	}
+}
+
+static void test_newdel( void )
+{
 	llsd_t* llsd;
 	llsd_type_t type_;
 
@@ -31,48 +64,75 @@ static void test_newdel( void )
 	{
 		/* take a measure of the heap size */
 
-
 		/* construct the llsd */
-		switch( type_ )
-		{
-			case LLSD_BOOLEAN:
-			case LLSD_INTEGER:
-				llsd = llsd_new( type_, 1 );
-				break;
+		llsd = get_llsd( type_ );
 
-			case LLSD_DATE:
-				llsd = llsd_new( type_, 1.0 );
-				break;
-
-			case LLSD_UUID:
-				llsd = llsd_new( type_, bits );
-				break;
-
-			case LLSD_STRING:
-				llsd = llsd_new( type_, strlen( str ), str );
-				break;
-
-			case LLSD_URI:
-				llsd = llsd_new( type_, url );
-				break;
-
-			case LLSD_BINARY:
-				llsd = llsd_new( type_, UUID_LEN, bits );
-				break;
-
-			case LLSD_UNDEF:
-			case LLSD_ARRAY:
-			case LLSD_MAP:
-				llsd = llsd_new( type_ );
-				break;
-		}
+		/* check the type */
+		CU_ASSERT( type_ == llsd_get_type( llsd ) );
 
 		/* delete the llsd */
 		llsd_delete( llsd );
+		llsd = NULL;
 
 		/* check the heap size again */
 
-		/* asser that the heap size after delete is the same as before new */
+		/* assert that the heap size after delete is the same as before new */
+	}
+}
+
+#define BUF_SIZE (4096)
+static void test_serialization( void )
+{
+	llsd_t* llsd;
+	llsd_type_t type_;
+	size_t s = 0;
+	uint8_t * buf = CALLOC( BUF_SIZE, sizeof(uint8_t) );
+	CU_ASSERT( NULL != buf );
+
+	for ( type_ = LLSD_TYPE_FIRST; type_ < LLSD_TYPE_LAST; type_++ )
+	{
+		WARN( "tmp file: %s\n", fname );
+		tmpf = fmemopen( buf, BUF_SIZE, "w+b" );
+		CU_ASSERT( NULL != tmpf );
+
+		/* construct the llsd */
+		llsd = get_llsd( type_ );
+
+		/* check the type */
+		CU_ASSERT( type_ == llsd_get_type( llsd ) );
+
+		/* serialize it to the file */
+		s = llsd_format( llsd, format, tmpf );
+		fclose( tmpf );
+		tmpf = NULL;
+
+		/* delete the llsd */
+		llsd_delete( llsd );
+		llsd = NULL;
+
+		/* check that the correct number of bytes were written */
+		CU_ASSERT( expected_sizes[ type_ ] == s );
+
+		/* check that the expected data was written */
+		CU_ASSERT( 0 == memcmp( buf, expected_data[ type_ ], s ) );
+
+		/* reopen the buffer */
+		tmpf = fmemopen( buf, BUF_SIZE, "r+b" );
+		CU_ASSERT( NULL != tmpf );
+
+		/* try to deserialize the llsd */
+		llsd = llsd_parse( tmpf );
+		CU_ASSERT( NULL != llsd );
+
+		/* check the type */
+		CU_ASSERT( type_ == llsd_get_type( llsd ) );
+
+		/* clean up */
+		fclose( tmpf );
+		tmpf = NULL;
+		llsd_delete( llsd );
+		llsd = NULL;
+		memset( buf, 0, BUF_SIZE );
 	}
 }
 

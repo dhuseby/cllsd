@@ -48,6 +48,7 @@ typedef enum llsd_serializer_s
 	LLSD_ENC_NOTATION,
 	LLSD_ENC_JSON,
 	LLSD_ENC_BINARY
+
 } llsd_serializer_t;
 
 #ifndef TRUE
@@ -127,6 +128,7 @@ typedef struct llsd_s
 		llsd_map_t		map_;
 
 	}					value;
+
 } llsd_t;
 
 /* iterator type */
@@ -142,6 +144,7 @@ void llsd_delete( void * p );
 
 /* get the type of the particular object */
 llsd_type_t llsd_get_type( llsd_t * llsd );
+int8_t const * llsd_get_type_string( llsd_type_t type_ );
 
 /* get the size of the cotainer types */
 int llsd_get_size( llsd_t * llsd );
@@ -176,7 +179,7 @@ int llsd_itr_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key 
 
 /* serialize/deserialize interface */
 llsd_t * llsd_parse( FILE * fin );
-void llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout );
+size_t llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout );
 
 #endif/*LLSD_H*/
 
