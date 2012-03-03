@@ -31,7 +31,7 @@
 #include "test_binary.h"
 
 static llsd_serializer_t format;
-FILE* tmpf;
+static FILE* tmpf;
 
 static int init_binary_suite( void )
 {
@@ -60,12 +60,19 @@ size_t expected_sizes[ LLSD_TYPE_COUNT ] =
 	6		/* LLSD_MAP '{' + 32-bit size + '}' */
 };
 
-uint8_t const * const undef_ = { '!' };
-uint8_t const * const boolean_ = { '1' };
-uint8_t const * const integer_ = { 0x0d, 0x0c, 0x0b, 0x0a };
-uint8_t const * const real_ = 
+uint8_t const undef_[] = { '!' };
+uint8_t const boolean_[]= { '1' };
+uint8_t const integer_[] = { 'i', 0x00, 0x00, 0x00, 0x01 };
+uint8_t const real_[] = { 'r', 0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+uint8_t const uuid_[] = { 'u', 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };
+uint8_t const string_[] = { 's', 0x00, 0x00, 0x00, 0x0c, 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '!' };
+uint8_t const date_[] = { 'd', 0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+uint8_t const uri_[] = { 'l', 0x00, 0x00, 0x00, 0x16, 'h', 't', 't', 'p', ':', '/', '/', 'w', 'w', 'w', '.', 'i', 'x', 'q', 'u', 'i', 'c', 'k', '.', 'c', 'o', 'm' };
+uint8_t const binary_[] = { 'b', 0x00, 0x00, 0x00, 0x10, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };
+uint8_t const array_[] = { '[', 0x00, 0x00, 0x00, 0x00, ']' };
+uint8_t const map_[] = { '{', 0x00, 0x00, 0x00, 0x00, '}' };
 
-uint8_t * expected_data[ LLSD_TYPE_COUNT ] =
+uint8_t const * const expected_data[ LLSD_TYPE_COUNT ] =
 {
 	undef_,
 	boolean_,

@@ -44,18 +44,18 @@ static int deinit_notation_suite( void )
 }
 
 /* include the test functions */
-#include "test_functions.c"
+/*#include "test_functions.c"*/
 
 CU_pSuite add_notation_tests()
 {
 	CU_pSuite pSuite = NULL;
 
 	/* add the suite to the registry */
-	pSuite = CU_add_suite("Notation LLSD Tests", init_notation_suite, deinit_notation_suite);
-	CHECK_PTR_RET( pSuite, NULL );
+	/*pSuite = CU_add_suite("Notation LLSD Tests", init_notation_suite, deinit_notation_suite);
+	CHECK_PTR_RET( pSuite, NULL );*/
 
 	/* add in the tests */
-	CHECK_PTR_RET( add_tests( pSuite ), NULL );
+	/*CHECK_PTR_RET( add_tests( pSuite ), NULL );*/
 
 	return pSuite;
 }

@@ -928,7 +928,7 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			break;
 		case LLSD_STRING:
 			p = 's';
-			s = strlen( llsd_as_string( llsd ).str );
+			s = strlen( llsd->value.string_.str );
 			t1 = htonl( s );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
@@ -943,7 +943,7 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			break;
 		case LLSD_URI:
 			p = 'l';
-			s = strlen( llsd_as_uri( llsd ).uri );
+			s = strlen( llsd->value.uri_.uri );
 			t1 = htonl( s );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
@@ -951,11 +951,11 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			break;
 		case LLSD_BINARY:
 			p = 'b';
-			s = llsd_as_binary( llsd ).size;
+			s = llsd->value.binary_.size;
 			t1 = htonl( s );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
-			num += fwrite( llsd_as_binary( llsd ).data, sizeof(uint8_t), s, fout );
+			num += fwrite( llsd->value.binary_.data, sizeof(uint8_t), s, fout );
 			break;
 		case LLSD_ARRAY:
 			p = '[';
