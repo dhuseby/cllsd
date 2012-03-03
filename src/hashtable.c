@@ -36,12 +36,10 @@ float const default_load_factor = 0.65f;
 /* this list of primes are the table size used by the hashtable.  each prime 
  * is roughly double the size of the previous prime to get amortized resize
  * operations. */
-uint_t const num_primes = 41;
+uint_t const num_primes = 30;
 uint_t const hashtable_primes[] =
 {
-	2, 3, 5, 7, 11, 13, 17, 19, 23,
-	29, 31, 37, 41, 43, 47, 53, 97,
-	193, 389, 769, 1543, 3079,
+	0, 7, 13, 29, 53, 97, 193, 389, 769, 1543, 3079,
 	6151, 12289, 24593, 49157,
 	98317, 196613, 393241, 786433,
 	1572869, 3145739, 6291469,
@@ -125,22 +123,23 @@ void ht_initialize
 	uint_t i = 0;
 	CHECK_PTR(htable);
 
-#ifdef USE_THREADING
-	/* initialize the mutex */
-	pthread_mutex_init(&htable->lock, 0);
-#endif
-	
+    /* zero out the memory */
+    memset(htable, 0, sizeof(ht_t));
+
 	/* set the default load factor */
 	htable->load_factor = default_load_factor;
 
-	/* figure out the initial table size */
-	while(((uint_t)(hashtable_primes[i] * htable->load_factor) < initial_capacity) &&
-		  (i < (num_primes - 1)))
-		i++;
+	if ( initial_capacity > 0 )
+	{
+		/* figure out the initial table size */
+		while(((uint_t)(hashtable_primes[i] * htable->load_factor) < initial_capacity) &&
+			  (i < (num_primes - 1)))
+			i++;
 
-	/* allocate room for the key/value structs */
-	htable->tuples = (tuple_t*)CALLOC(hashtable_primes[i], sizeof(tuple_t));
-	ASSERT(htable->tuples != NULL);
+		/* allocate room for the key/value structs */
+		htable->tuples = (tuple_t*)CALLOC(hashtable_primes[i], sizeof(tuple_t));
+		ASSERT(htable->tuples != NULL);
+	}
 
 	/* store the prime index */
 	htable->prime_index = i;
@@ -168,6 +167,11 @@ void ht_initialize
 	
 	/* save the initial capacity */
 	htable->initial_capacity = initial_capacity;
+
+#ifdef USE_THREADING
+	/* initialize the mutex */
+	pthread_mutex_init(&htable->lock, 0);
+#endif
 }
 
 
@@ -207,41 +211,44 @@ void ht_deinitialize(ht_t * const htable)
 	tuple_t* tuple = NULL;
 	CHECK_PTR(htable);
 
-	/* get the table size */
-	table_size = hashtable_primes[htable->prime_index];
-
-	/* get a pointer to the first tuple */
-	tuple = htable->tuples;
-
-	/* go through the tuples and free the keys and values */
-	for(i = 0; i < table_size; i++)
+	if ( htable->tuples != NULL )
 	{
-		if(tuple->hash == 0)
+		/* get the table size */
+		table_size = hashtable_primes[htable->prime_index];
+
+		/* get a pointer to the first tuple */
+		tuple = htable->tuples;
+
+		/* go through the tuples and free the keys and values */
+		for(i = 0; i < table_size; i++)
 		{
+			if(tuple->hash == 0)
+			{
+				tuple++;
+				continue;
+			}
+
+			if((tuple->key != NULL) && (htable->kdfn != NULL))
+			{
+				/* clean up the key */
+				(*(htable->kdfn))(tuple->key);
+			}
+			tuple->key = NULL;
+
+			if((tuple->value != NULL) && (htable->vdfn != NULL))
+			{
+				/* clean up the value */
+				(*(htable->vdfn))(tuple->value);
+			}
+			tuple->value = NULL;
+
+			/* move to the next tuple in the list */
 			tuple++;
-			continue;
 		}
 
-		if((tuple->key != NULL) && (htable->kdfn != NULL))
-		{
-			/* clean up the key */
-			(*(htable->kdfn))(tuple->key);
-		}
-		tuple->key = NULL;
-
-		if((tuple->value != NULL) && (htable->vdfn != NULL))
-		{
-			/* clean up the value */
-			(*(htable->vdfn))(tuple->value);
-		}
-		tuple->value = NULL;
-
-		/* move to the next tuple in the list */
-		tuple++;
+		/* free the tuple memory */
+		FREE((void*)htable->tuples);
 	}
-
-	/* free the tuple memory */
-	FREE((void*)htable->tuples);
 
 #ifdef USE_THREADING
 	/* destroy the lock */
@@ -322,81 +329,84 @@ static int ht_grow(ht_t * const htable, uint_t new_prime_index)
 	tuples = (tuple_t *)CALLOC(new_table_size, sizeof(tuple_t));
 	CHECK_PTR_RET(tuples, 0);
 
-	/* go through the old table and hash the items into the new table */
-	tuple = htable->tuples;
-	for(i = 0; i < old_table_size; i++)
+	if ( htable->tuples != NULL )
 	{
-		/* skip empty and erased tuples */
-		if(tuple->hash == 0)
+		/* go through the old table and hash the items into the new table */
+		tuple = htable->tuples;
+		for(i = 0; i < old_table_size; i++)
 		{
-			/* if the hash value is 0, the key and
-			 * value pointers should be NULL */
-			ASSERT(tuple->key == NULL);
-			ASSERT(tuple->value == NULL);
-
-			/* move to the next tuple in the old table */
-			tuple++;
-			continue;
-		}
-
-		/* handle the keys that have had their values removed */
-		if((tuple->key == NULL) || (tuple->value == NULL))
-		{
-			/* if either key or value pointer is NULL they
-			 * both should be NULL */
-			ASSERT(tuple->key == NULL);
-			ASSERT(tuple->value == NULL);
-
-			/* zero out the key */
-			tuple->hash = 0;
-
-			/* move to the next tuple in the old table */
-			tuple++;
-			continue;
-		}
-
-		/* get the hash of the key */
-		hash = tuple->hash;
-
-		/* get the starting index of the probing */
-		j = (hash % new_table_size);
-		
-		/* use linear probing to find a slot */
-		while(tuples[j].hash != 0)
-		{
-			/* check for hash collisions */
-			if(hash == tuples[j].hash)
+			/* skip empty and erased tuples */
+			if(tuple->hash == 0)
 			{
-				/* if the hash values match then there better be 
-				 * a key in the new table and the keys better not
-				 * match!  this should never happen since ht_add
-				 * prevents this from ever happening but it's still
-				 * nice to check for it here. */
-				ASSERT(tuples[j].key != NULL);
-				ASSERT(!(*(htable->kefn))(tuple->key, tuples[j].key));
+				/* if the hash value is 0, the key and
+				 * value pointers should be NULL */
+				ASSERT(tuple->key == NULL);
+				ASSERT(tuple->value == NULL);
+
+				/* move to the next tuple in the old table */
+				tuple++;
+				continue;
 			}
 
-			/* move to the next test index */
-			j = ((j + 1) % new_table_size);
+			/* handle the keys that have had their values removed */
+			if((tuple->key == NULL) || (tuple->value == NULL))
+			{
+				/* if either key or value pointer is NULL they
+				 * both should be NULL */
+				ASSERT(tuple->key == NULL);
+				ASSERT(tuple->value == NULL);
+
+				/* zero out the key */
+				tuple->hash = 0;
+
+				/* move to the next tuple in the old table */
+				tuple++;
+				continue;
+			}
+
+			/* get the hash of the key */
+			hash = tuple->hash;
+
+			/* get the starting index of the probing */
+			j = (hash % new_table_size);
+			
+			/* use linear probing to find a slot */
+			while(tuples[j].hash != 0)
+			{
+				/* check for hash collisions */
+				if(hash == tuples[j].hash)
+				{
+					/* if the hash values match then there better be 
+					 * a key in the new table and the keys better not
+					 * match!  this should never happen since ht_add
+					 * prevents this from ever happening but it's still
+					 * nice to check for it here. */
+					ASSERT(tuples[j].key != NULL);
+					ASSERT(!(*(htable->kefn))(tuple->key, tuples[j].key));
+				}
+
+				/* move to the next test index */
+				j = ((j + 1) % new_table_size);
+			}
+
+			ASSERT(tuples[j].hash == 0);
+
+			/* we found a slot, copy the tuple from the old table to
+			 * the new one */
+			tuples[j].hash = tuple->hash;
+			tuples[j].key = tuple->key;
+			tuples[j].value = tuple->value;
+			
+			/* update the count of tuples in the new table */
+			new_num_tuples++;
+
+			/* move to the next tuple */
+			tuple++;
 		}
 
-		ASSERT(tuples[j].hash == 0);
-
-		/* we found a slot, copy the tuple from the old table to
-		 * the new one */
-		tuples[j].hash = tuple->hash;
-		tuples[j].key = tuple->key;
-		tuples[j].value = tuple->value;
-		
-		/* update the count of tuples in the new table */
-		new_num_tuples++;
-
-		/* move to the next tuple */
-		tuple++;
+		/* free the old table */
+		FREE(htable->tuples);
 	}
-
-	/* free the old table */
-	FREE(htable->tuples);
 
 	/* store the new tuples table */
 	htable->tuples = tuples;
@@ -404,8 +414,8 @@ static int ht_grow(ht_t * const htable, uint_t new_prime_index)
 	/* store the new number of tuples */
 	htable->num_tuples = new_num_tuples;
 
-	/* increase the prime index */
-	htable->prime_index++;
+	/* store the new prime index */
+	htable->prime_index = new_prime_index;
 
 	/* success */
 	return 1;
@@ -424,6 +434,12 @@ static int ht_needs_to_grow(ht_t const * const htable,
 	uint_t load = 0;
 	CHECK_PTR_RET(htable, 0);
 	CHECK_RET((((int)new_index >= 0) && (new_index < num_primes)), 0);
+
+	/* there is no tuple table, then we always need to grow */
+	if ( htable->tuples == NULL )
+	{
+		return 1;
+	}
 
 	/* start at the existing index */
 	new_index = htable->prime_index;
@@ -492,6 +508,11 @@ int ht_set_resize_load_factor(ht_t * const htable, float load)
 int ht_compact(ht_t * const htable)
 {
 	CHECK_PTR_RET(htable, 0);
+
+	if ( htable->tuples == NULL )
+	{
+		return 1;
+	}
 	
 	/* call the grow function with our current size. this will
 	 * cause it to allocate a new table the same size and rehash
@@ -500,7 +521,7 @@ int ht_compact(ht_t * const htable)
 	 * the table is. */
 	if(!ht_grow(htable, htable->prime_index))
 	{
-		WARN("VX failed to compact");
+		WARN("failed to compact");
 		return 0;
 	}
 	
@@ -544,7 +565,7 @@ int ht_add_prehash( ht_t * const htable,
 		/* it does, so try to grow it to the new size */
 		if(!ht_grow(htable, new_index))
 		{
-			WARN("VX failed to grow hashtable!");
+			WARN("failed to grow hashtable!");
 			return 0;
 		}
 	}
@@ -565,7 +586,7 @@ int ht_add_prehash( ht_t * const htable,
 			if((htable->tuples[i].key != NULL) &&
 			   (*(htable->kefn))(key, htable->tuples[i].key))
 			{
-				/* the should be a value in the table because
+				/* there should be a value in the table because
 				 * the key was not null. */
 				ASSERT(htable->tuples[i].value != NULL);
 				
@@ -634,9 +655,6 @@ int ht_clear(ht_t * const htable)
 	 * for the htable struct itself */
 	ht_deinitialize(htable);
 	
-	/* zero out the htable struct */
-	memset(htable, 0, sizeof(ht_t));
-	
 	/* re-initialize the htable with the saved params */
 	ht_initialize(htable, initial_capacity, khfn, vdfn, kefn, kdfn);
 
@@ -658,6 +676,11 @@ static int ht_find_index
 	CHECK_PTR_RET(htable, 0);
 	CHECK_RET(hash != 0, 0);
 	CHECK_PTR_RET(index, 0);
+
+	if ( htable->tuples == NULL )
+	{
+		return 0;
+	}
 
 	/* get the table size */
 	table_size = hashtable_primes[htable->prime_index];
@@ -791,6 +814,7 @@ void * ht_remove_prehash( ht_t * const htable,
 ht_itr_t ht_itr_begin(ht_t const * const htable)
 {
 	CHECK_PTR_RET(htable, -1);
+	CHECK_RET( htable->tuples != NULL, -1 );
 
 	/* start at 0 and find the first real, non-filler tuple */
 	return ht_itr_next(htable, (ht_itr_t)0);
@@ -805,6 +829,7 @@ ht_itr_t ht_itr_end(ht_t const * const htable)
 ht_itr_t ht_itr_rbegin(ht_t const * const htable)
 {
 	CHECK_PTR_RET(htable, -1);
+	CHECK_RET( htable->tuples != NULL, -1 );
 
 	/* start at hashtable_primes[htable->prime_index] and search down to find
 	 * the first non-filler tuple */
@@ -815,6 +840,7 @@ ht_itr_t ht_itr_next(ht_t const * const htable, ht_itr_t const itr)
 {
 	int_t i = itr;
 	CHECK_PTR_RET(htable, -1);
+	CHECK_RET( htable->tuples != NULL, -1 );
 
 	if(i >= (int_t)hashtable_primes[htable->prime_index])
 		return ht_itr_end(htable);
@@ -835,6 +861,7 @@ ht_itr_t ht_itr_rnext(ht_t const * const htable, ht_itr_t const itr)
 {
 	int_t i = itr;
 	CHECK_PTR_RET(htable, -1);
+	CHECK_RET( htable->tuples != NULL, -1 );
 
 	if(i < (int_t)0)
 		return ht_itr_rend(htable);
@@ -856,6 +883,7 @@ void* ht_itr_get(ht_t const * const htable, ht_itr_t const itr, void** key)
 	CHECK_PTR_RET(htable, NULL);
 	CHECK_RET(itr != -1, NULL);
 	CHECK_RET(itr < (int_t)hashtable_primes[htable->prime_index], NULL);
+	CHECK_RET( htable->tuples != NULL, NULL );
 
 	if((htable->tuples[itr].hash == 0) ||
 	   (htable->tuples[itr].key == NULL) ||

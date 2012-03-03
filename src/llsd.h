@@ -63,7 +63,7 @@ typedef enum llsd_serializer_s
 #define UUID_LEN (16)
 struct llsd_uuid_s
 {
-	uint8_t bits[16];
+	uint8_t bits[UUID_LEN];
 };
 
 struct llsd_binary_s
@@ -86,6 +86,7 @@ struct llsd_uri_s
 	uint8_t *			uri;
 };
 
+#define DEFAULT_ARRAY_CAPACITY (8)
 struct llsd_array_s
 {
 	array_t		array;

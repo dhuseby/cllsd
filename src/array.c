@@ -24,15 +24,13 @@
 #include "macros.h"
 #include "array.h"
 
-/* default initial capacity */
-uint_t const initial_capacity = 16;
-
 /* node used in queue structure */
 struct array_node_s
 {
     struct array_node_s *	next;                   /* next link */
     struct array_node_s *	prev;                   /* prev link */
     void *					data;                   /* pointer to the data */
+	uint32_t				dummy;
 };
 
 /* index constants */
@@ -93,7 +91,9 @@ pthread_mutex_t * array_mutex(array_t * const array)
  * for the pfn parameter, then no action will be taken when the 
  * data structure is deleted.
  */
-void array_initialize( array_t * const array, delete_fn pfn )
+void array_initialize( array_t * const array, 
+					   uint_t initial_capacity,
+					   delete_fn pfn )
 {
     uint_t i = 0;
     CHECK_PTR(array);
@@ -107,31 +107,37 @@ void array_initialize( array_t * const array, delete_fn pfn )
     /* remember the buffer size */
     array->buffer_size = initial_capacity;
 
+	/* remember the initial capacity */
+	array->initial_capacity = initial_capacity;
+
     /* initialize the data list */
     array->data_head = -1;
 
     /* initialize the free list */
     array->free_head = 0;
 
-    /* allocate the initial node buffer */
-    array->node_buffer = (array_node_t*)CALLOC(initial_capacity, sizeof(array_node_t));
-    ASSERT(array->node_buffer != NULL);
+    /* allocate the initial node buffer only if there is an initial capacity */
+	if ( initial_capacity > 0 )
+	{
+		array->node_buffer = (array_node_t*)CALLOC(initial_capacity, sizeof(array_node_t));
+		ASSERT(array->node_buffer != NULL);
 
-    /* fixup the head of the free list */
-    array->node_buffer[0].prev = &array->node_buffer[initial_capacity - 1];
+		/* fixup the head of the free list */
+		array->node_buffer[0].prev = &array->node_buffer[initial_capacity - 1];
 
-    /* fixup the tail of the free list */
-    array->node_buffer[initial_capacity - 1].next = &array->node_buffer[0];
+		/* fixup the tail of the free list */
+		array->node_buffer[initial_capacity - 1].next = &array->node_buffer[0];
 
-    /* fixup the middle nodes */
-    for(i = 0; i < initial_capacity; i++)
-    {
-        if(array->node_buffer[i].next == NULL)
-            array->node_buffer[i].next = &array->node_buffer[i + 1];
+		/* fixup the middle nodes */
+		for(i = 0; i < initial_capacity; i++)
+		{
+			if(array->node_buffer[i].next == NULL)
+				array->node_buffer[i].next = &array->node_buffer[i + 1];
 
-        if(array->node_buffer[i].prev == NULL)
-            array->node_buffer[i].prev = &array->node_buffer[i - 1];
-    }
+			if(array->node_buffer[i].prev == NULL)
+				array->node_buffer[i].prev = &array->node_buffer[i - 1];
+		}
+	}
 
 #ifdef USE_THREADING
     /* initialize the mutex */
@@ -143,7 +149,7 @@ void array_initialize( array_t * const array, delete_fn pfn )
  * This function allocates a new array structure and
  * initializes it.
  */
-array_t * array_new( delete_fn pfn )
+array_t * array_new( uint_t initial_capacity, delete_fn pfn )
 {
     array_t * array = NULL;
 
@@ -151,7 +157,7 @@ array_t * array_new( delete_fn pfn )
     array = (array_t*)MALLOC(sizeof(array_t));
 
     /* initialize the array */
-    array_initialize( array, pfn );
+    array_initialize( array, initial_capacity, pfn );
 
     /* return the new array */
     return array;
@@ -253,7 +259,18 @@ static int array_grow(array_t * const array)
     old_size = array->buffer_size;
 
     /* get the new size */
-    new_size = (old_size << 1);
+	if ( old_size == 0 )
+	{
+		new_size = 16;
+	}
+	else if ( old_size >= 256 )
+	{
+		new_size = (old_size + 256);
+	}
+	else
+	{
+		new_size = (old_size << 1);
+	}
 
     /* allocate the new buffer */
     new_buffer = CALLOC(new_size, sizeof(array_node_t));
@@ -337,7 +354,7 @@ static array_node_t* array_get_free_node(array_t * const array)
     array_node_t* new_free_head = NULL;
     CHECK_PTR_RET(array, NULL);
 
-    if((array->num_nodes + 1) == array->buffer_size)
+    if((array->num_nodes + 1) >= array->buffer_size)
     {
         /* we need to grow the buffer */
         if(!array_grow(array))
@@ -504,6 +521,7 @@ void array_push(
     array_itr_t const i = ((itr == array_itr_end(array)) ? array->data_head : itr);
     CHECK_PTR(array);
     CHECK_PTR(data);
+	CHECK(array_size(array) > 0);
 	
     /* a node from the free list */
     node = array_get_free_node(array);
@@ -617,11 +635,13 @@ void* array_itr_get(
 /* clear the contents of the array */
 void array_clear(array_t * const array)
 {
+	uint_t initial_capacity = 0;
     delete_fn pfn = NULL;
     CHECK_PTR(array);
     
     /* store the existing params */
     pfn = array->pfn;
+	initial_capacity = array->initial_capacity;
     
     /* de-init the array and clean up all the memory except for
      * the array struct itself */
@@ -631,6 +651,6 @@ void array_clear(array_t * const array)
     memset(array, 0, sizeof(array_t));
 
     /* reinitialize the array with the saved params */
-    array_initialize( array, pfn );
+    array_initialize( array, initial_capacity, pfn );
 }
 

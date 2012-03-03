@@ -6,5 +6,6 @@ env.Program(target = 'test_all',
 				  'test_notation.c',
 				  'test_xml.c'],
 		LIBS   = ['llsd',
-				  'cunit'],
+				  'cunit',
+				  'm'],
 		LIBPATH = '../src/')

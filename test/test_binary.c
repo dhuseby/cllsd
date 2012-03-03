@@ -44,6 +44,9 @@ static int deinit_binary_suite( void )
 	return 0;
 }
 
+/* offset of first by after header */
+size_t const data_offset = 18;
+
 /* expected values */
 size_t expected_sizes[ LLSD_TYPE_COUNT ] = 
 {
@@ -52,10 +55,10 @@ size_t expected_sizes[ LLSD_TYPE_COUNT ] =
 	5,		/* LLSD_INTEGER */
 	9,		/* LLSD_REAL */
 	17,		/* LLSD_UUID */
-	13,		/* LLSD_STRING 's' + 'Hello World!' */
+	17,		/* LLSD_STRING 's' + 32-bit size + 'Hello World!' */
 	9,		/* LLSD_DATE */
-	19,		/* LLSD_URI 'l' + 'http://ixquick.com' */
-	15,		/* LLSD_BINARY 'b' + 32-bit size + '0123456789' */
+	27,		/* LLSD_URI 'l' + 32-bit size + 'http://ixquick.com' */
+	21,		/* LLSD_BINARY 'b' + 32-bit size + '01234567890123456' */
 	6,		/* LLSD_ARRAY '[' + 32-bit size + ']' */
 	6		/* LLSD_MAP '{' + 32-bit size + '}' */
 };
