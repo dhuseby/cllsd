@@ -19,7 +19,7 @@
 #ifdef DEBUG_ON
 #define DEBUG(fmt, ...) { fprintf(stderr, "%20s:%-5d -- " fmt, __FILE__, __LINE__, ##__VA_ARGS__); fflush(stdout); }
 #else
-#define DEBUG(fmt, ...)
+#define DEBUG(fmt, ...) {;}
 #endif
 
 #undef DEBUG_ON

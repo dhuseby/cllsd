@@ -190,7 +190,7 @@ ht_t* ht_new
 	ht_t* htable = NULL;
 
 	/* allocate a hashtable struct */
-	WARN("heap allocating hash table\n");
+	DEBUG("heap allocating hash table\n");
 	htable = (ht_t*)CALLOC(1, sizeof(ht_t));
 	CHECK_PTR_RET(htable, NULL);
 
@@ -325,7 +325,7 @@ static int ht_grow(ht_t * const htable, uint_t new_prime_index)
 	new_table_size = hashtable_primes[new_prime_index];
 
 	/* allocate a new tuples table */
-	WARN("growing hash table to: %d\n", new_table_size)
+	DEBUG("growing hash table to: %d\n", new_table_size)
 	tuples = (tuple_t *)CALLOC(new_table_size, sizeof(tuple_t));
 	CHECK_PTR_RET(tuples, 0);
 

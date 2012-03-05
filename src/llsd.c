@@ -195,7 +195,7 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			va_start( args, type_ );
 			llsd->value.string_.dyn = TRUE;
 			p = va_arg( args, uint8_t* );
-			llsd->value.string_.str = strdup( p );
+			llsd->value.string_.str = STRDUP( p );
 			llsd->value.string_.escaped = va_arg( args, int );
 			va_end( args );
 			break;
@@ -210,7 +210,7 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			va_start( args, type_ );
 			llsd->value.uri_.dyn = TRUE;
 			p = va_arg( args, uint8_t* );
-			llsd->value.uri_.uri = strdup( p );
+			llsd->value.uri_.uri = STRDUP( p );
 			va_end( args );
 			break;
 
@@ -445,7 +445,7 @@ llsd_int_t llsd_as_int( llsd_t * llsd )
 		case LLSD_DATE:
 			if ( (uint64_t)llsd->value.date_ >= UINT32_MAX )
 			{
-				WARN( "truncating 64-bit date value to 32-bit integer...loss of data!" );
+				DEBUG( "truncating 64-bit date value to 32-bit integer...loss of data!" );
 			}
 			return (llsd_int_t)llsd->value.date_;
 		case LLSD_STRING:
@@ -1031,7 +1031,7 @@ static llsd_t * llsd_parse_binary( FILE * fin )
 				fread( &p, sizeof(uint8_t), 1, fin );
 				if ( p != ']' )
 				{
-					WARN( "array didn't end with ']'\n" );
+					FAIL( "array didn't end with ']'\n" );
 				}
 				return llsd;
 			case '{':
@@ -1044,7 +1044,7 @@ static llsd_t * llsd_parse_binary( FILE * fin )
 					key = llsd_parse_binary( fin );
 					if ( llsd_get_type( key ) != LLSD_STRING )
 					{
-						WARN( "key is not an LLSD_STRING\n" );
+						FAIL( "key is not an LLSD_STRING\n" );
 					}
 
 					/* parse and append the key/value pair */
@@ -1053,7 +1053,7 @@ static llsd_t * llsd_parse_binary( FILE * fin )
 				fread( &p, sizeof(uint8_t), 1, fin );
 				if ( p != '}' )
 				{
-					WARN( "map didn't end with '}'\n" );
+					FAIL( "map didn't end with '}'\n" );
 				}
 				return llsd;
 		}

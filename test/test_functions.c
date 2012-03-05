@@ -22,6 +22,38 @@
 extern FILE* tmpf;
 extern llsd_serializer_t format;
 
+
+
+
+static llsd_t * get_random_array( uint32_t size )
+{
+	return NULL;
+}
+
+static llsd_t * get_random_map( uint32_t size )
+{
+	return NULL;
+}
+
+static llsd_t * get_random_llsd( uint32_t size )
+{
+	return NULL;
+}
+
+static llsd_t * get_random( uint32_t size, uint32_t seed )
+{
+	llsd_t * llsd;
+
+	/* set the seed */
+	srand( seed );
+
+	
+
+	return NULL;
+}
+
+
+
 uint8_t const bits[UUID_LEN] = { 1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6 };
 int8_t const * const str = T("Hello World!");
 int8_t const * const url = T("http://www.ixquick.com");

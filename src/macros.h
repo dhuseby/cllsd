@@ -33,13 +33,13 @@
 
 /* runtime check macros */
 #define CHECK(x) { if(!(x)) return; }
-#define CHECK_MSG(x, ...) { if(!(x)) { WARN(__VA_ARGS__); return; } }
+#define CHECK_MSG(x, ...) { if(!(x)) { DEBUG(__VA_ARGS__); return; } }
 #define CHECK_RET(x, y) { if(!(x)) return (y); }
-#define CHECK_RET_MSG(x, y, ...) { if(!(x)) { WARN(__VA_ARGS__); return (y); } }
+#define CHECK_RET_MSG(x, y, ...) { if(!(x)) { DEBUG(__VA_ARGS__); return (y); } }
 #define CHECK_PTR(x) { if(!(x)) return; }
-#define CHECK_PTR_MSG(x, ...) { if(!(x)) { WARN(__VA_ARGS__); return; } }
+#define CHECK_PTR_MSG(x, ...) { if(!(x)) { DEBUG(__VA_ARGS__); return; } }
 #define CHECK_PTR_RET(x, y) { if(!(x)) return (y); }
-#define CHECK_PTR_RET_MSG(x, y, ...) { if(!(x)) { WARN(__VA_ARGS__); return (y); } }
+#define CHECK_PTR_RET_MSG(x, y, ...) { if(!(x)) { DEBUG(__VA_ARGS__); return (y); } }
 
 /* abstractions of the memory allocator */
 #define MALLOC malloc
@@ -48,6 +48,7 @@
 #define FREE free
 #define MEMCPY memcpy
 #define MEMSET memset
+#define STRDUP strdup
 
 /* casting macro for string constants */
 #define T(x)    (int8_t*)(x)
