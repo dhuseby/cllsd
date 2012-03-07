@@ -1,0 +1,2 @@
+env = Environment(CC='gcc', CCFLAGS='-O0 -gstabs+ -Isrc')
+env.Library('alloc', ['test_allocator.c'])
