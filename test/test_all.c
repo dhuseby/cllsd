@@ -32,11 +32,16 @@
 #include "test_notation.h"
 #include "test_xml.h"
 
+#define POOL_SIZE ( 4 * 1024 * 1024 )
+
 int main()
 {
 	CU_pSuite binary_test_suite;
 	CU_pSuite notation_test_suite;
 	CU_pSuite xml_test_suite;
+
+	/* initialize debug allocator */
+	init_alloc( POOL_SIZE );
 
 	/* initialize the CUnit test registry */
 	if ( CUE_SUCCESS != CU_initialize_registry() )
@@ -53,6 +58,10 @@ int main()
 
 	/* clean up */
 	CU_cleanup_registry();
+
+	/* clean up debug allocator */
+	deinit_alloc();
+
 	return CU_get_error();
 }
 

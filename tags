@@ -5,8 +5,8 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 ASSERT	src/macros.h	29;"	d
-BUF_SIZE	test/test_functions.c	102;"	d	file:
-C	src/macros.h	55;"	d
+BUF_SIZE	test/test_functions.c	134;"	d	file:
+C	src/macros.h	56;"	d
 CALLOC	src/macros.h	46;"	d
 CHECK	src/macros.h	35;"	d
 CHECK_MSG	src/macros.h	36;"	d
@@ -52,10 +52,11 @@ MEMCPY	src/macros.h	49;"	d
 MEMSET	src/macros.h	50;"	d
 REALLOC	src/macros.h	47;"	d
 SIG_LEN	src/llsd.c	1078;"	d	file:
-T	src/macros.h	53;"	d
+STRDUP	src/macros.h	51;"	d
+T	src/macros.h	54;"	d
 TRUE	src/llsd.h	55;"	d
 TRUE	src/macros.h	26;"	d
-UT	src/macros.h	54;"	d
+UT	src/macros.h	55;"	d
 UUID_LEN	src/llsd.h	63;"	d
 WARN	src/macros.h	30;"	d
 _BSD_SOURCE	src/llsd.c	18;"	d	file:
@@ -151,6 +152,10 @@ format	test/test_notation.c	/^static llsd_serializer_t format;$/;"	v	file:
 format	test/test_xml.c	/^static llsd_serializer_t format;$/;"	v	file:
 free_head	src/array.h	/^    int_t         	free_head;              \/* head node of the free circular list *\/$/;"	m	struct:array_s
 get_llsd	test/test_functions.c	/^static llsd_t * get_llsd( llsd_type_t type_ )$/;"	f	file:
+get_random	test/test_functions.c	/^static llsd_t * get_random( uint32_t size, uint32_t seed )$/;"	f	file:
+get_random_array	test/test_functions.c	/^static llsd_t * get_random_array( uint32_t size )$/;"	f	file:
+get_random_llsd	test/test_functions.c	/^static llsd_t * get_random_llsd( uint32_t size )$/;"	f	file:
+get_random_map	test/test_functions.c	/^static llsd_t * get_random_map( uint32_t size )$/;"	f	file:
 hash	src/hashtable.c	/^	uint_t				hash;				\/* hash value of the key *\/$/;"	m	struct:tuple_s	file:
 hashtable_primes	src/hashtable.c	/^uint_t const hashtable_primes[] =$/;"	v
 hex_to_byte	src/llsd.c	/^static uint8_t hex_to_byte( uint8_t hi, uint8_t lo )$/;"	f	file:

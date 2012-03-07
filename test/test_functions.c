@@ -137,7 +137,7 @@ static void test_serialization( void )
 	llsd_t* llsd;
 	llsd_type_t type_;
 	size_t s = 0;
-	uint8_t * buf = CALLOC( BUF_SIZE, sizeof(uint8_t) );
+	uint8_t * buf = UT(CALLOC( BUF_SIZE, sizeof(uint8_t) ));
 	CU_ASSERT_PTR_NOT_NULL_FATAL( buf );
 
 	for ( type_ = LLSD_TYPE_FIRST; type_ < LLSD_TYPE_LAST; type_++ )

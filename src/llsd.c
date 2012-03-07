@@ -195,7 +195,7 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			va_start( args, type_ );
 			llsd->value.string_.dyn = TRUE;
 			p = va_arg( args, uint8_t* );
-			llsd->value.string_.str = STRDUP( p );
+			llsd->value.string_.str = UT(STRDUP( p ));
 			llsd->value.string_.escaped = va_arg( args, int );
 			va_end( args );
 			break;
@@ -210,7 +210,7 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			va_start( args, type_ );
 			llsd->value.uri_.dyn = TRUE;
 			p = va_arg( args, uint8_t* );
-			llsd->value.uri_.uri = STRDUP( p );
+			llsd->value.uri_.uri = UT(STRDUP( p ));
 			va_end( args );
 			break;
 
@@ -218,7 +218,7 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			va_start( args, type_ );
 			llsd->value.binary_.dyn = TRUE;
 			llsd->value.binary_.size = va_arg( args, int );
-			llsd->value.binary_.data = CALLOC( llsd->value.binary_.size, sizeof(uint8_t) );
+			llsd->value.binary_.data = UT(CALLOC( llsd->value.binary_.size, sizeof(uint8_t) ));
 			p = va_arg( args, uint8_t* );
 			memcpy( llsd->value.binary_.data, p, llsd->value.binary_.size );
 			va_end( args );
@@ -277,7 +277,7 @@ llsd_t * llsd_new( llsd_type_t type_, ... )
 	double a3;
 	
 	/* allocate the llsd object */
-	llsd = CALLOC(1, sizeof(llsd_t));
+	llsd = (llsd_t*)CALLOC(1, sizeof(llsd_t));
 	CHECK_PTR_RET_MSG( llsd, NULL, "failed to heap allocate llsd object\n" );
 
 	switch( type_ )
@@ -910,7 +910,7 @@ int llsd_itr_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key 
 
 static llsd_t * llsd_reserve_binary( uint32_t size )
 {
-	llsd_t * llsd = CALLOC( 1, sizeof(llsd_t) + size );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + size );
 	llsd->type_ = LLSD_BINARY;
 	llsd->value.binary_.dyn = FALSE;
 	llsd->value.binary_.size = size;
@@ -920,7 +920,7 @@ static llsd_t * llsd_reserve_binary( uint32_t size )
 
 static llsd_t * llsd_reserve_string( uint32_t size )
 {
-	llsd_t * llsd = CALLOC( 1, sizeof(llsd_t) + size + 1 );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + size + 1 );
 	llsd->type_ = LLSD_STRING;
 	llsd->value.string_.dyn = FALSE;
 	llsd->value.string_.escaped = FALSE;
@@ -930,7 +930,7 @@ static llsd_t * llsd_reserve_string( uint32_t size )
 
 static llsd_t * llsd_reserve_uri( uint32_t size )
 {
-	llsd_t * llsd = CALLOC( 1, sizeof(llsd_t) + size + 1 );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + size + 1 );
 	llsd->type_ = LLSD_URI;
 	llsd->value.uri_.dyn = FALSE;
 	llsd->value.uri_.uri = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
@@ -939,7 +939,7 @@ static llsd_t * llsd_reserve_uri( uint32_t size )
 
 static llsd_t * llsd_reserve_array( uint32_t size )
 {
-	llsd_t * llsd = CALLOC( 1, sizeof(llsd_t) );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) );
 	llsd->type_ = LLSD_ARRAY;
 	array_initialize( &(llsd->value.array_.array), size, &llsd_delete );
 	return llsd;
@@ -947,7 +947,7 @@ static llsd_t * llsd_reserve_array( uint32_t size )
 
 static llsd_t * llsd_reserve_map( uint32_t size )
 {
-	llsd_t * llsd = CALLOC( 1, sizeof(llsd_t) );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) );
 	llsd->type_ = LLSD_MAP;
 	ht_initialize( &(llsd->value.map_.ht), 
 				   size, 

@@ -5,7 +5,8 @@ env.Program(target = 'test_all',
 				  'test_binary.c',
 				  'test_notation.c',
 				  'test_xml.c'],
-		LIBS   = ['llsd',
+		LIBS   = ['alloc',
 				  'cunit',
+				  'llsd',
 				  'm'],
-		LIBPATH = '../src/')
+		LIBPATH = ['../src/', '../alloc/'])

@@ -17,6 +17,8 @@
 #ifndef __MACROS_H__
 #define __MACROS_H__
 
+#include <stdio.h>
+
 /* 
  * local definitions for porting purposes
  */
@@ -42,13 +44,13 @@
 #define CHECK_PTR_RET_MSG(x, y, ...) { if(!(x)) { DEBUG(__VA_ARGS__); return (y); } }
 
 /* abstractions of the memory allocator */
-#define MALLOC malloc
-#define CALLOC calloc
-#define REALLOC realloc
-#define FREE free
+#define MALLOC malloc_
+#define CALLOC calloc_
+#define REALLOC realloc_
+#define FREE free_
 #define MEMCPY memcpy
 #define MEMSET memset
-#define STRDUP strdup
+#define STRDUP strdup_
 
 /* casting macro for string constants */
 #define T(x)    (int8_t*)(x)

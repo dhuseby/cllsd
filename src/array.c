@@ -273,7 +273,7 @@ static int array_grow(array_t * const array)
 	}
 
     /* allocate the new buffer */
-    new_buffer = CALLOC(new_size, sizeof(array_node_t));
+    new_buffer = (array_node_t *)CALLOC(new_size, sizeof(array_node_t));
     CHECK_RET(new_buffer != NULL, 0);
 
     /* copy the existing nodes to the new new buffer if needed */
