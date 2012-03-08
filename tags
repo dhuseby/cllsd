@@ -4,29 +4,29 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-ASSERT	src/macros.h	29;"	d
+ASSERT	src/macros.h	31;"	d
 BUF_SIZE	test/test_functions.c	134;"	d	file:
-C	src/macros.h	56;"	d
-CALLOC	src/macros.h	46;"	d
-CHECK	src/macros.h	35;"	d
-CHECK_MSG	src/macros.h	36;"	d
-CHECK_PTR	src/macros.h	39;"	d
-CHECK_PTR_MSG	src/macros.h	40;"	d
-CHECK_PTR_RET	src/macros.h	41;"	d
-CHECK_PTR_RET_MSG	src/macros.h	42;"	d
-CHECK_RET	src/macros.h	37;"	d
-CHECK_RET_MSG	src/macros.h	38;"	d
+C	src/macros.h	58;"	d
+CALLOC	src/macros.h	48;"	d
+CHECK	src/macros.h	37;"	d
+CHECK_MSG	src/macros.h	38;"	d
+CHECK_PTR	src/macros.h	41;"	d
+CHECK_PTR_MSG	src/macros.h	42;"	d
+CHECK_PTR_RET	src/macros.h	43;"	d
+CHECK_PTR_RET_MSG	src/macros.h	44;"	d
+CHECK_RET	src/macros.h	39;"	d
+CHECK_RET_MSG	src/macros.h	40;"	d
 DEBUG	src/debug.h	17;"	d
 DEBUG	src/debug.h	20;"	d
 DEBUG	src/debug.h	22;"	d
 DEBUG_ON	src/debug.h	25;"	d
 DEFAULT_ARRAY_CAPACITY	src/llsd.h	89;"	d
 DEFAULT_MAP_CAPACITY	src/llsd.h	95;"	d
-FAIL	src/macros.h	32;"	d
+FAIL	src/macros.h	34;"	d
 FALSE	src/llsd.h	59;"	d
-FALSE	src/macros.h	25;"	d
+FALSE	src/macros.h	27;"	d
 FNV_PRIME	src/llsd.c	129;"	d	file:
-FREE	src/macros.h	48;"	d
+FREE	src/macros.h	50;"	d
 LLSD_ARRAY	src/llsd.h	/^	LLSD_ARRAY,$/;"	e	enum:llsd_type_e
 LLSD_BINARY	src/llsd.h	/^	LLSD_BINARY,$/;"	e	enum:llsd_type_e
 LLSD_BOOLEAN	src/llsd.h	/^	LLSD_BOOLEAN,$/;"	e	enum:llsd_type_e
@@ -46,23 +46,26 @@ LLSD_TYPE_LAST	src/llsd.h	/^	LLSD_TYPE_LAST,$/;"	e	enum:llsd_type_e
 LLSD_UNDEF	src/llsd.h	/^	LLSD_UNDEF,$/;"	e	enum:llsd_type_e
 LLSD_URI	src/llsd.h	/^	LLSD_URI,$/;"	e	enum:llsd_type_e
 LLSD_UUID	src/llsd.h	/^	LLSD_UUID,$/;"	e	enum:llsd_type_e
-LOG	src/macros.h	31;"	d
-MALLOC	src/macros.h	45;"	d
-MEMCPY	src/macros.h	49;"	d
-MEMSET	src/macros.h	50;"	d
-REALLOC	src/macros.h	47;"	d
+LOG	src/macros.h	33;"	d
+MALLOC	src/macros.h	47;"	d
+MEMCPY	src/macros.h	51;"	d
+MEMSET	src/macros.h	52;"	d
+MIN_BLOCK_SIZE	alloc/test_allocator.c	34;"	d	file:
+POOL_SIZE	test/test_all.c	35;"	d	file:
+REALLOC	src/macros.h	49;"	d
 SIG_LEN	src/llsd.c	1078;"	d	file:
-STRDUP	src/macros.h	51;"	d
-T	src/macros.h	54;"	d
+STRDUP	src/macros.h	53;"	d
+T	src/macros.h	56;"	d
 TRUE	src/llsd.h	55;"	d
-TRUE	src/macros.h	26;"	d
-UT	src/macros.h	55;"	d
+TRUE	src/macros.h	28;"	d
+UT	src/macros.h	57;"	d
 UUID_LEN	src/llsd.h	63;"	d
-WARN	src/macros.h	30;"	d
+WARN	src/macros.h	32;"	d
 _BSD_SOURCE	src/llsd.c	18;"	d	file:
 __ARRAY_H__	src/array.h	18;"	d
 __HASHTABLE_H__	src/hashtable.h	18;"	d
 __MACROS_H__	src/macros.h	18;"	d
+__TEST_ALLOCATOR_H__	alloc/test_allocator.h	18;"	d
 __TEST_BINARY__	test/test_binary.h	18;"	d
 __TEST_NOTATION__	test/test_notation.h	18;"	d
 __TEST_XML__	test/test_xml.h	18;"	d
@@ -118,7 +121,10 @@ bits	src/llsd.h	/^	uint8_t bits[UUID_LEN];$/;"	m	struct:llsd_uuid_s
 bits	test/test_functions.c	/^uint8_t const bits[UUID_LEN] = { 1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6 };$/;"	v
 bool_	src/llsd.h	/^		llsd_bool_t		bool_;$/;"	m	union:llsd_s::__anon1
 boolean_	test/test_binary.c	/^uint8_t const boolean_[]= { '1' };$/;"	v
+buffer	alloc/test_allocator.c	/^static void * buffer = NULL;$/;"	v	file:
 buffer_size	src/array.h	/^    uint_t        	buffer_size;            \/* number of slots in the node array *\/$/;"	m	struct:array_s
+calloc_	alloc/test_allocator.c	/^void * calloc_( size_t nmemb, size_t size )$/;"	f
+data	alloc/test_allocator.c	/^	uint8_t  data[0];$/;"	m	struct:tag_s	file:
 data	src/array.c	/^    void *					data;                   \/* pointer to the data *\/$/;"	m	struct:array_node_s	file:
 data	src/llsd.h	/^	uint8_t	*			data;$/;"	m	struct:llsd_binary_s
 data_head	src/array.h	/^    int_t         	data_head;              \/* head node of the data circular list *\/$/;"	m	struct:array_s
@@ -128,12 +134,14 @@ date_	test/test_binary.c	/^uint8_t const date_[] = { 'd', 0x3f, 0xf0, 0x00, 0x00
 default_key_eq	src/hashtable.c	/^static int default_key_eq(void const * const l, void const * const r)$/;"	f	file:
 default_key_hash	src/hashtable.c	/^static uint_t default_key_hash(void const * const key)$/;"	f	file:
 default_load_factor	src/hashtable.c	/^float const default_load_factor = 0.65f;$/;"	v
+deinit_alloc	alloc/test_allocator.c	/^void deinit_alloc( void )$/;"	f
 deinit_binary_suite	test/test_binary.c	/^static int deinit_binary_suite( void )$/;"	f	file:
 deinit_notation_suite	test/test_notation.c	/^static int deinit_notation_suite( void )$/;"	f	file:
 deinit_xml_suite	test/test_xml.c	/^static int deinit_xml_suite( void )$/;"	f	file:
 delete_fn	src/array.h	/^typedef void (*delete_fn)(void*);$/;"	t
 diff	src/main.c	/^struct timespec diff( struct timespec start, struct timespec end )$/;"	f
 dummy	src/array.c	/^	uint32_t				dummy;$/;"	m	struct:array_node_s	file:
+dump_blocks	alloc/test_allocator.c	/^void dump_blocks( void )$/;"	f
 dyn	src/llsd.h	/^	int					dyn;		\/* was the data memory dynamically allocated? *\/$/;"	m	struct:llsd_binary_s
 dyn	src/llsd.h	/^	int					dyn;		\/* was the str memory dynamically allocated? *\/$/;"	m	struct:llsd_string_s
 dyn	src/llsd.h	/^	int					dyn;		\/* was the uri memory dynamically allocated? *\/$/;"	m	struct:llsd_uri_s
@@ -150,8 +158,11 @@ fnv_key_hash	src/llsd.c	/^static uint32_t fnv_key_hash(void const * const key)$/
 format	test/test_binary.c	/^static llsd_serializer_t format;$/;"	v	file:
 format	test/test_notation.c	/^static llsd_serializer_t format;$/;"	v	file:
 format	test/test_xml.c	/^static llsd_serializer_t format;$/;"	v	file:
+free_	alloc/test_allocator.c	/^void free_( void * ptr )$/;"	f
 free_head	src/array.h	/^    int_t         	free_head;              \/* head node of the free circular list *\/$/;"	m	struct:array_s
+get_in_use	alloc/test_allocator.c	/^size_t get_in_use( void )$/;"	f
 get_llsd	test/test_functions.c	/^static llsd_t * get_llsd( llsd_type_t type_ )$/;"	f	file:
+get_mem	alloc/test_allocator.c	/^static void * get_mem( size_t size )$/;"	f	file:
 get_random	test/test_functions.c	/^static llsd_t * get_random( uint32_t size, uint32_t seed )$/;"	f	file:
 get_random_array	test/test_functions.c	/^static llsd_t * get_random_array( uint32_t size )$/;"	f	file:
 get_random_llsd	test/test_functions.c	/^static llsd_t * get_random_llsd( uint32_t size )$/;"	f	file:
@@ -194,6 +205,9 @@ ht_size	src/hashtable.c	/^uint_t ht_size(ht_t * const htable)$/;"	f
 ht_t	src/hashtable.h	/^} ht_t;$/;"	t	typeref:struct:ht_s
 ht_try_lock	src/hashtable.c	/^int ht_try_lock(ht_t * const htable)$/;"	f
 ht_unlock	src/hashtable.c	/^void ht_unlock(ht_t * const htable)$/;"	f
+in_use	alloc/test_allocator.c	/^	uint32_t in_use: 1;$/;"	m	struct:tag_s	file:
+in_use	alloc/test_allocator.c	/^static size_t in_use = 0;$/;"	v	file:
+init_alloc	alloc/test_allocator.c	/^void init_alloc( size_t psize )$/;"	f
 init_binary_suite	test/test_binary.c	/^static int init_binary_suite( void )$/;"	f	file:
 init_notation_suite	test/test_notation.c	/^static int init_notation_suite( void )$/;"	f	file:
 init_xml_suite	test/test_xml.c	/^static int init_xml_suite( void )$/;"	f	file:
@@ -282,6 +296,7 @@ lock	src/array.h	/^    pthread_mutex_t lock;                   \/* list lock *\/
 lock	src/hashtable.h	/^	pthread_mutex_t		lock;				\/* hashtable lock *\/$/;"	m	struct:ht_s
 main	src/main.c	/^int main(int argc, char** argv)$/;"	f
 main	test/test_all.c	/^int main()$/;"	f
+malloc_	alloc/test_allocator.c	/^void * malloc_( size_t size )$/;"	f
 map_	src/llsd.h	/^		llsd_map_t		map_;$/;"	m	union:llsd_s::__anon1
 map_	test/test_binary.c	/^uint8_t const map_[] = { '{', 0x00, 0x00, 0x00, 0x00, '}' };$/;"	v
 next	src/array.c	/^    struct array_node_s *	next;                   \/* next link *\/$/;"	m	struct:array_node_s	typeref:struct:array_node_s::array_node_s	file:
@@ -292,15 +307,23 @@ num_primes	src/hashtable.c	/^uint_t const num_primes = 30;$/;"	v
 num_tuples	src/hashtable.h	/^	uint_t				num_tuples;			\/* number of tuples in the table *\/$/;"	m	struct:ht_s
 one_data	src/llsd.c	/^uint8_t one_data[] = { '1' };$/;"	v
 pfn	src/array.h	/^    delete_fn       pfn;                    \/* destruction function for each node *\/$/;"	m	struct:array_s
+pool	alloc/test_allocator.c	/^static uint8_t * pool = NULL;$/;"	v	file:
+pool_size	alloc/test_allocator.c	/^static size_t pool_size = 0;$/;"	v	file:
 prev	src/array.c	/^    struct array_node_s *	prev;                   \/* prev link *\/$/;"	m	struct:array_node_s	typeref:struct:array_node_s::array_node_s	file:
 prime_index	src/hashtable.h	/^	uint_t				prime_index;		\/* the index of the table size *\/$/;"	m	struct:ht_s
+put_mem	alloc/test_allocator.c	/^static void put_mem( void * p )$/;"	f	file:
 real_	src/llsd.h	/^		llsd_real_t		real_;$/;"	m	union:llsd_s::__anon1
 real_	test/test_binary.c	/^uint8_t const real_[] = { 'r', 0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };$/;"	v
+realloc_	alloc/test_allocator.c	/^void * realloc_( void * ptr, size_t size )$/;"	f
+size	alloc/test_allocator.c	/^	uint32_t size: 31;$/;"	m	struct:tag_s	file:
 size	src/llsd.h	/^	int32_t				size;$/;"	m	struct:llsd_binary_s
 str	src/llsd.h	/^	uint8_t *			str;$/;"	m	struct:llsd_string_s
 str	test/test_functions.c	/^int8_t const * const str = T("Hello World!");$/;"	v
+strdup_	alloc/test_allocator.c	/^uint8_t * strdup_( uint8_t const * str )$/;"	f
 string_	src/llsd.h	/^		llsd_string_t	string_;$/;"	m	union:llsd_s::__anon1
 string_	test/test_binary.c	/^uint8_t const string_[] = { 's', 0x00, 0x00, 0x00, 0x0c, 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '!' };$/;"	v
+tag_s	alloc/test_allocator.c	/^typedef struct tag_s$/;"	s	file:
+tag_t	alloc/test_allocator.c	/^} tag_t;$/;"	t	typeref:struct:tag_s	file:
 test_newdel	test/test_functions.c	/^static void test_newdel( void )$/;"	f	file:
 test_serialization	test/test_functions.c	/^static void test_serialization( void )$/;"	f	file:
 tmpf	test/test_binary.c	/^static FILE* tmpf;$/;"	v	file:
@@ -317,6 +340,7 @@ uint_t	src/array.h	/^	typedef uint64_t uint_t;$/;"	t
 uint_t	src/hashtable.h	/^	typedef uint32_t uint_t;$/;"	t
 undef_	test/test_binary.c	/^uint8_t const undef_[] = { '!' };$/;"	v
 undefined	src/llsd.c	/^llsd_t const undefined =$/;"	v
+update_block	alloc/test_allocator.c	/^static int update_block( tag_t * block, size_t size, int in_use )$/;"	f	file:
 uri	src/llsd.h	/^	uint8_t *			uri;$/;"	m	struct:llsd_uri_s
 uri_	src/llsd.h	/^		llsd_uri_t		uri_;$/;"	m	union:llsd_s::__anon1
 uri_	test/test_binary.c	/^uint8_t const uri_[] = { 'l', 0x00, 0x00, 0x00, 0x16, 'h', 't', 't', 'p', ':', '\/', '\/', 'w', 'w', 'w', '.', 'i', 'x', 'q', 'u', 'i', 'c', 'k', '.', 'c', 'o', 'm' };$/;"	v

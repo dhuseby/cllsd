@@ -1,5 +1,4 @@
-env = Environment(CC='gcc', CCFLAGS='-O0 -gstabs+ -Isrc')
-#llsd = File('../llsd.a')
+env = Environment(CC='gcc', CCFLAGS='-O0 -gstabs+ -Isrc -Ialloc')
 env.Program(target = 'test_all', 
 		source = ['test_all.c',
 				  'test_binary.c',

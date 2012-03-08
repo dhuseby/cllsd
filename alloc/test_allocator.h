@@ -19,8 +19,8 @@
 
 void init_alloc( size_t pool_size );
 void deinit_alloc( void );
-size_t get_in_use( void );
-void dump_blocks( void );
+size_t get_heap_size( void );
+void dump_heap_blocks( void );
 
 void * calloc_( size_t nmemb, size_t size );
 void * malloc_( size_t size );

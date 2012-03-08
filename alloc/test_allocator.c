@@ -188,13 +188,7 @@ static void * get_mem( size_t size )
 	tag = (tag_t*)&(pool[0]);
 	while( (void*)tag < (void*)&(pool[pool_size - sizeof(tag_t)]) )
 	{
-		if ( tag->in_use )
-		{
-			tag = (tag_t*)((void*)tag + tag->size);
-			continue;
-		}
-
-		if ( tag->size > (size + (2* sizeof(tag_t))) )
+		if ( (!tag->in_use) && (tag->size > (size + (2* sizeof(tag_t))) ) )
 		{
 			if( update_block( tag, size, TRUE ) )
 			{
@@ -207,6 +201,9 @@ static void * get_mem( size_t size )
 				return NULL;
 			}
 		}
+	
+		/* move to the next tag */
+		tag = (tag_t*)((void*)tag + tag->size);
 	}
 }
 
@@ -284,13 +281,13 @@ void deinit_alloc( void )
 	pool = NULL;
 }
 
-size_t get_in_use( void )
+size_t get_heap_size( void )
 {
 	CHECK_PTR_RET( pool, 0 );
 	return in_use;
 }
 
-void dump_blocks( void )
+void dump_heap_blocks( void )
 {
 	tag_t * tag = NULL;
 	CHECK( pool );

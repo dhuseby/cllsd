@@ -27,6 +27,7 @@
 #include <debug.h>
 #include <macros.h>
 #include <llsd.h>
+#include <test_allocator.h>
 
 #include "test_binary.h"
 
