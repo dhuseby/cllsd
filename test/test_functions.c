@@ -28,7 +28,7 @@ static llsd_type_t get_random_llsd_type( void )
 	return (llsd_type_t)(rand() % LLSD_TYPE_COUNT);
 }
 
-static uint8_t* get_random_str( void )
+static llsd_t* get_random_str( void )
 {
 	static uint8_t str[1024];
 	int i;
@@ -40,11 +40,25 @@ static uint8_t* get_random_str( void )
 		str[i] = (32 + (rand() % 94));
 	}
 	str[len] = '\0';
-
-	return str;
+	return llsd_new( LLSD_STRING, str, FALSE );
 }
 
-static uint8_t* get_random_bin( void )
+static llsd_t* get_random_uri( void )
+{
+	static uint8_t uri[1024];
+	int i;
+	int len = (24 + (rand() % 1000));
+
+	for ( i = 0; i < len; i++ )
+	{
+		/* get a random, printable ascii character */
+		uri[i] = (32 + (rand() % 94));
+	}
+	uri[len] = '\0';
+	return llsd_new( LLSD_URI, uri );
+}
+
+static llsd_t* get_random_bin( void )
 {
 	static uint8_t bin[1024];
 	int i;
@@ -55,11 +69,10 @@ static uint8_t* get_random_bin( void )
 		/* get a random byte*/
 		bin[i] = (uint8_t)(rand() % 256);
 	}
-
-	return bin;
+	return llsd_new( LLSD_BINARY, len, bin );
 }
 
-static uint8_t* get_random_uuid( void )
+static llsd_t* get_random_uuid( void )
 {
 	static uint8_t bits[UUID_LEN];
 	int i;
@@ -69,8 +82,7 @@ static uint8_t* get_random_uuid( void )
 		/* get a random byte*/
 		bits[i] = (uint8_t)(rand() % 256);
 	}
-
-	return bits;
+	return llsd_new( LLSD_UUID, bits );
 }
 
 /* forward declaration */
@@ -109,11 +121,11 @@ static llsd_t * get_random_array( uint32_t size )
 				total++;
 				break;
 			case LLSD_UUID:
-				llsd_array_append( arr, llsd_new( type_, get_random_uuid() ) );
+				llsd_array_append( arr, get_random_uuid() );
 				total++;
 				break;
 			case LLSD_STRING:
-				llsd_array_append( arr, llsd_new( type_, get_random_str(), FALSE ) );
+				llsd_array_append( arr, get_random_str() );
 				total++;
 				break;
 			case LLSD_DATE:
@@ -121,11 +133,11 @@ static llsd_t * get_random_array( uint32_t size )
 				total++;
 				break;
 			case LLSD_URI:
-				llsd_array_append( arr, llsd_new( type_, get_random_str() ) );
+				llsd_array_append( arr, get_random_uri() );
 				total++;
 				break;
 			case LLSD_BINARY:
-				llsd_array_append( arr, llsd_new( type_, get_random_bin() ) );
+				llsd_array_append( arr, get_random_bin() );
 				total++;
 				break;
 			case LLSD_ARRAY:	
@@ -176,7 +188,7 @@ static llsd_t * get_random_map( uint32_t size )
 		type_ = get_random_llsd_type();
 
 		/* get a random key */
-		key = llsd_new( LLSD_STRING, get_random_str(), FALSE );
+		key = get_random_str();
 
 		switch( type_ )
 		{
@@ -197,11 +209,11 @@ static llsd_t * get_random_map( uint32_t size )
 				total++;
 				break;
 			case LLSD_UUID:
-				llsd_map_insert( map, key, llsd_new( type_, get_random_uuid() ) );
+				llsd_map_insert( map, key, get_random_uuid() );
 				total++;
 				break;
 			case LLSD_STRING:
-				llsd_map_insert( map, key, llsd_new( type_, get_random_str(), FALSE ) );
+				llsd_map_insert( map, key, get_random_str() );
 				total++;
 				break;
 			case LLSD_DATE:
@@ -209,11 +221,11 @@ static llsd_t * get_random_map( uint32_t size )
 				total++;
 				break;
 			case LLSD_URI:
-				llsd_map_insert( map, key, llsd_new( type_, get_random_str() ) );
+				llsd_map_insert( map, key, get_random_uri() );
 				total++;
 				break;
 			case LLSD_BINARY:
-				llsd_map_insert( map, key, llsd_new( type_, get_random_bin() ) );
+				llsd_map_insert( map, key, get_random_bin() );
 				total++;
 				break;
 			case LLSD_ARRAY:	
@@ -415,43 +427,39 @@ static void test_random_serialize( void )
 {
 	const uint32_t seed = 0xDEADBEEF;
 	const uint32_t size = 32;
-	llsd_t * llsd = NULL;
+	llsd_t * llsd_out = NULL;
+	llsd_t * llsd_in = NULL;
 
 	/* get the initial heap size */
 	size_t heap_size = get_heap_size();
 
 	/* generate a repeatable, random llsd object */
-	llsd = get_random_llsd( size, seed );
-	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd );
+	llsd_out = get_random_llsd( size, seed );
+	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_out );
 
 	tmpf = fopen( "test.llsd", "w+b" );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 	
-	llsd_format( llsd, format, tmpf );
+	llsd_format( llsd_out, format, tmpf );
 	fclose( tmpf );
 	tmpf = NULL;
-
-	llsd_delete( llsd );
-	llsd = NULL;
-
-	CU_ASSERT_EQUAL( heap_size, get_heap_size() );
-}
-
-static void test_random_deserialize( void )
-{
-	llsd_t * llsd = NULL;
-	size_t heap_size = get_heap_size();
 
 	tmpf = fopen( "test.llsd", "r+b" );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
-	llsd = llsd_parse( tmpf );
-	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd );
+	llsd_in = llsd_parse( tmpf );
+	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_in );
 
 	fclose( tmpf );
 	tmpf = NULL;
-	llsd_delete( llsd );
-	llsd = NULL;
+
+	/* make sure the two llsd structures are equivilent */
+	CU_ASSERT( llsd_equal( llsd_out, llsd_in ) );
+
+	llsd_delete( llsd_out );
+	llsd_out = NULL;
+	llsd_delete( llsd_in );
+	llsd_in = NULL;
 
 	CU_ASSERT_EQUAL( heap_size, get_heap_size() );
 }
@@ -461,7 +469,6 @@ static CU_pSuite add_tests( CU_pSuite pSuite )
 	CHECK_PTR_RET( CU_add_test( pSuite, "new/delete of all types", test_newdel), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of all types", test_serialization), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd", test_random_serialize), NULL );
-	CHECK_PTR_RET( CU_add_test( pSuite, "deserialization of random llsd", test_random_deserialize), NULL );
 	return pSuite;
 }
 

@@ -374,6 +374,75 @@ int llsd_get_size( llsd_t * llsd )
 	return ht_size( &llsd->value.map_.ht );
 }
 
+int llsd_equal( llsd_t * l, llsd_t * r )
+{
+	llsd_itr_t itrl;
+	llsd_t * kl;
+	llsd_t * vl;
+
+	llsd_itr_t itrr;
+	llsd_t * kr;
+	llsd_t * vr;
+
+	if ( llsd_get_type( l ) != llsd_get_type( r ) )
+		return FALSE;
+	
+	switch( llsd_get_type( l ) )
+	{
+		case LLSD_UNDEF:
+			return TRUE;
+		case LLSD_BOOLEAN:
+			return ( llsd_as_bool( l ) == llsd_as_bool( r ) );
+		case LLSD_INTEGER:
+			return ( llsd_as_int( l ) == llsd_as_int( r ) );
+		case LLSD_REAL:
+			return ( llsd_as_real( l ) == llsd_as_real( r ) );
+		case LLSD_UUID:
+			return ( memcmp( &(l->value.uuid_.bits[0]), &(r->value.uuid_.bits[0]), UUID_LEN ) == 0 );
+		case LLSD_STRING:
+			return ( strcmp( l->value.string_.str, r->value.string_.str ) == 0 );
+		case LLSD_DATE:
+			return ( llsd_as_date( l ) == llsd_as_real( r ) );
+		case LLSD_URI:
+			return ( strcmp( l->value.uri_.uri, r->value.uri_.uri ) == 0 );
+		case LLSD_BINARY:
+			return ( ( l->value.binary_.size == r->value.binary_.size ) &&
+					 ( memcmp( l->value.binary_.data, r->value.binary_.data, l->value.binary_.size ) == 0 ) );
+		case LLSD_ARRAY:	
+			if ( array_size( &(l->value.array_.array) ) != array_size( &(r->value.array_.array) ) )
+				return FALSE;
+
+			itrl = llsd_itr_begin( l );
+			itrr = llsd_itr_begin( r );
+			for ( ; itrl != llsd_itr_end( l ); itrl = llsd_itr_next( l, itrl ), itrr = llsd_itr_next( r, itrr) )
+			{
+				llsd_itr_get( l, itrl, &vl, &kl );
+				llsd_itr_get( r, itrr, &vr, &kr );
+				if ( !llsd_equal( vl, vr ) )
+					return FALSE;
+			}
+			return TRUE;
+
+		case LLSD_MAP:
+			if ( ht_size( &(l->value.map_.ht) ) != ht_size( &(r->value.map_.ht) ) )
+				return FALSE;
+
+			itrl = llsd_itr_begin( l );
+			itrr = llsd_itr_begin( r );
+			for ( ; itrl != llsd_itr_end( l ); itrl = llsd_itr_next( l, itrl ), itrr = llsd_itr_next( r, itrr) )
+			{
+				llsd_itr_get( l, itrl, &vl, &kl );
+				llsd_itr_get( r, itrr, &vr, &kr );
+				if ( !llsd_equal( vl, vr ) || !llsd_equal( kl, kr ) )
+					return FALSE;
+			}
+			return TRUE;
+	}
+
+	return FALSE;
+}
+
+
 llsd_bool_t llsd_as_bool( llsd_t * llsd )
 {
 	CHECK_PTR_RET_MSG( llsd, FALSE, "invalid llsd pointer\n" );

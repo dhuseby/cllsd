@@ -151,6 +151,9 @@ int8_t const * llsd_get_type_string( llsd_type_t type_ );
 int llsd_get_size( llsd_t * llsd );
 #define llsd_is_empty(x) (llsd_get_size(x) == 0)
 
+/* compare two llsd items */
+int llsd_equal( llsd_t * l, llsd_t * r );
+
 /* type conversions */
 llsd_bool_t llsd_as_bool( llsd_t * llsd );
 llsd_int_t llsd_as_int( llsd_t * llsd );
