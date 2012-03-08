@@ -433,6 +433,8 @@ static void test_random_serialize( void )
 	/* get the initial heap size */
 	size_t heap_size = get_heap_size();
 
+	WARN(" >>>>>>>>>>>>>>>>>>\n " );
+
 	/* generate a repeatable, random llsd object */
 	llsd_out = get_random_llsd( size, seed );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_out );
@@ -443,6 +445,8 @@ static void test_random_serialize( void )
 	llsd_format( llsd_out, format, tmpf );
 	fclose( tmpf );
 	tmpf = NULL;
+
+	WARN(" <<<<<<<<<<<<<<<<<<\n " );
 
 	tmpf = fopen( "test.llsd", "r+b" );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
