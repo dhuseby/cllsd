@@ -57,72 +57,91 @@ llsd_t const undefined =
 	.value.bool_ = FALSE
 };
 
+uint8_t const bits[] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
 llsd_uuid_t const zero_uuid = 
 { 
-	.bits = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 } 
+	.dyn_bits = FALSE,
+	.dyn_str = FALSE,
+	.bits = bits,
+	.str = NULL
 };
 
 llsd_string_t const false_string = 
 {
-	.dyn = FALSE,
-	.escaped = FALSE,
-	.str = "false"
+	.dyn_str = FALSE,
+	.dyn_esc = FALSE,
+	.key_esc = FALSE,
+	.str = "false",
+	.esc = NULL
 };
 llsd_string_t const true_string = 
 {
-	.dyn = FALSE,
-	.escaped = FALSE,
+	.dyn_str = FALSE,
+	.dyn_esc = FALSE,
+	.key_esc = FALSE,
 	.str = "true"
+	.esc = NULL
 };
 
-uint8_t zero_data [] = { '0' };
+uint8_t const zero_data [] = { '0' };
 llsd_binary_t const false_binary =
 {
-	.dyn = FALSE,
-	.size = 1,
-	.data = zero_data
+	.dyn_data = FALSE,
+	.dyn_enc = FALSE,
+	.size_data = 1,
+	.data = zero_data,
+	.size_end = 0,
+	.enc = NULL
 };
 uint8_t one_data[] = { '1' };
 llsd_binary_t const true_binary =
 {
-	.dyn = FALSE,
-	.size = 1,
-	.data = one_data
+	.dyn_data = FALSE,
+	.dyn_enc = FALSE,
+	.size_data = 1,
+	.data = one_data,
+	.size_enc = 0,
+	.enc = NULL
 };
 llsd_binary_t const empty_binary =
 {
-	.dyn = FALSE,
-	.size = 0,
-	.data = 0
+	.dyn_data = FALSE,
+	.dyn_enc = FALSE,
+	.size_data = 0,
+	.data = NULL,
+	.size_enc = 0,
+	.enc = NULL
 };
 llsd_uri_t const empty_uri = 
 {
-	.dyn = FALSE,
-	.uri = ""
+	.dyn_uri = FALSE,
+	.dyn_esc = FALSE,
+	.uri = "",
+	.esc = NULL
 };
 llsd_array_t const empty_array =
 {
 	.array = {
-		.pfn = 0,
+		.pfn = NULL,
 		.num_nodes = 0,
 		.buffer_size = 0,
 		.data_head = -1,
 		.free_head = -1,
-		.node_buffer = 0
+		.node_buffer = NULL
 	}
 };
 llsd_map_t const empty_map =
 {
 	.ht = {
-		.khfn = 0,
-		.kefn = 0,
-		.kdfn = 0,
-		.vdfn = 0,
+		.khfn = NULL,
+		.kefn = NULL,
+		.kdfn = NULL,
+		.vdfn = NULL,
 		.prime_index = 0,
 		.num_tuples = 0,
 		.initial_capacity = 0,
 		.load_factor = 0.0f,
-		.tuples = 0,
+		.tuples = NULL
 	}
 };
 
@@ -132,7 +151,7 @@ static uint32_t fnv_key_hash(void const * const key)
 	int i;
 	llsd_t * llsd = (llsd_t*)key;
     uint32_t hash = 0x811c9dc5;
-	uint8_t const * p = (uint8_t const *)llsd->value.string_.str;
+	uint8_t const * p = (llsd->value.string_.key_esc ? (uint8_t const *)llsd->value.string_.esc : (uint8_t const *)llsd->value.string_.str);
 	CHECK_RET_MSG( llsd->type_ == LLSD_STRING, 0, "map key hashing function received non-string\n" );
 	while ( (*p) != '\0' )
 	{
@@ -149,6 +168,9 @@ static int key_eq(void const * const l, void const * const r)
 	llsd_t * llsd_r = (llsd_t *)r;
 	CHECK_RET_MSG( llsd_l->type_ == LLSD_STRING, -1, "map key compare function received non-string as left side\n" );
 	CHECK_RET_MSG( llsd_r->type_ == LLSD_STRING, -1, "map key compare function received non-string as right side\n" );
+	
+	/* TODO: need to be sensitive to the key_esc bit and do string unescaping only
+	 * when necessary. */
 	return (strcmp( llsd_l->value.string_.str, llsd_r->value.string_.str ) == 0);
 }
 
@@ -157,6 +179,9 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 {
 	va_list args;
 	uint8_t * p;
+	int escaped;
+	int encoded;
+	int is_key;
 
 	CHECK_PTR( llsd );
 	
@@ -187,16 +212,28 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 
 		case LLSD_UUID:
 			va_start( args, type_ );
+			llsd->value.uuid_.dyn_bits = TRUE;
+			llsd->value.uuid_.bits = UT(CALLOC( UUID_LEN, sizeof(uint8_t) ));
 			memcpy( llsd->value.uuid_.bits, va_arg( args, uint8_t* ), UUID_LEN );
 			va_end( args );
 			break;
 
 		case LLSD_STRING:
 			va_start( args, type_ );
-			llsd->value.string_.dyn = TRUE;
 			p = va_arg( args, uint8_t* );
-			llsd->value.string_.str = UT(STRDUP( p ));
-			llsd->value.string_.escaped = va_arg( args, int );
+			escaped = va_args( args, int );
+			is_key = va_args( args, int );
+			if ( escaped )
+			{
+				llsd->value.string_.esc = UT(STRDUP( p ));
+				llsd->value.string_.dyn_esc = TRUE;
+				llsd->value.string_.key_esc = is_key;
+			}
+			else
+			{
+				llsd->value.string_.dyn_str = TRUE;
+				llsd->value.string_.str = UT(STRDUP( p ));
+			}
 			va_end( args );
 			break;
 
@@ -208,19 +245,40 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 
 		case LLSD_URI:
 			va_start( args, type_ );
-			llsd->value.uri_.dyn = TRUE;
 			p = va_arg( args, uint8_t* );
-			llsd->value.uri_.uri = UT(STRDUP( p ));
+			escaped = va_args( args, int );
+			if ( escaped )
+			{
+				llsd->value.uri_.esc = UT(STRDUP( p ));
+				llsd->value.uri_.dyn_esc = TRUE;
+			}
+			else
+			{
+				llsd->value.uri_.uri = UT(STRDUP( p ));
+				llsd->value.uri_.dyn_uri = TRUE;
+			}
 			va_end( args );
 			break;
 
 		case LLSD_BINARY:
 			va_start( args, type_ );
-			llsd->value.binary_.dyn = TRUE;
-			llsd->value.binary_.size = va_arg( args, int );
-			llsd->value.binary_.data = UT(CALLOC( llsd->value.binary_.size, sizeof(uint8_t) ));
+			size = va_arg( args, int );
+			encoded = va_arg( args, int );
 			p = va_arg( args, uint8_t* );
-			memcpy( llsd->value.binary_.data, p, llsd->value.binary_.size );
+			if ( encoded )
+			{
+				llsd->value.binary_.size_enc = size;
+				llsd->value.binary_.enc = UT(CALLOC( size, sizeof(uint8_t) ));
+				llsd->value.binary_.dyn_enc = TRUE;
+				memcpy( llsd->value.binary_.enc, p, size );
+			}
+			else
+			{
+				llsd->value.binary_.size_data = size;
+				llsd->value.binary_.data = UT(CALLOC( size, sizeof(uint8_t) ));
+				llsd->value.binary_.dyn_data = TRUE;
+				memcpy( llsd->value.binary_.data, p, size );
+			}
 			va_end( args );
 			break;
 		case LLSD_ARRAY:
@@ -247,16 +305,22 @@ static void llsd_deinitialize( llsd_t * llsd )
 		case LLSD_DATE:
 			return;
 		case LLSD_STRING:
-			if ( llsd->value.string_.dyn )
+			if ( llsd->value.string_.dyn_str )
 				FREE( llsd->value.string_.str );
+			if ( llsd->value.string_.dyn_esc )
+				FREE( llsd->value.string_.esc );
 			break;
 		case LLSD_URI:
-			if ( llsd->value.uri_.dyn )
+			if ( llsd->value.uri_.dyn_uri )
 				FREE( llsd->value.uri_.uri );
+			if ( llsd->value.uri_.dyn_esc )
+				FREE( llsd->value.uri_.esc );
 			break;
 		case LLSD_BINARY:
-			if ( llsd->value.binary_.dyn )
+			if ( llsd->value.binary_.dyn_data )
 				FREE( llsd->value.binary_.data );
+			if ( llsd->value.binary_.dyn_enc )
+				FREE( llsd->value.binary_.enc );
 			break;
 		case LLSD_ARRAY:
 			array_deinitialize( &llsd->value.array_.array );
@@ -1205,9 +1269,147 @@ static size_t llsd_format_xml( llsd_t * llsd, FILE * fout )
 	return 0;
 }
 
-static size_t llsd_format_notation( llsd_t * llsd, FILE * fout )
+#define INDENT(x, y) (( x ) ? fprintf( "%*s", y, " " ) : 0)
+
+
+static size_t llsd_format_notation( llsd_t * llsd, FILE * fout, int pretty )
 {
-	return 0;
+	static uint8_t buf[128];
+	int i;
+	uint8_t * str
+
+	size_t num = 0;
+	unsigned long start = ftell( fout );
+	uint32_t s;
+	uint8_t p;
+
+	llsd_itr_t itr;
+	llsd_t *k, *v;
+
+	switch ( llsd_get_type( llsd ) )
+	{
+		case LLSD_UNDEF:
+			num += INDENT( pretty, indent );
+			num += fprintf( fout, "!" );
+			WARN( "%*sUNDEF %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_BOOLEAN:
+			num += INDENT( pretty, indent );
+			num += fprintf( fout, "%c", ( llsd_as_bool( llsd ) == TRUE ) ? '1' : '0' );
+			WARN( "%*sBOOLEAN %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_INTEGER:
+			num += INDENT( pretty, indent );
+			num += fprintf( fout, "i%s", llsd_as_string( llsd ) );
+			WARN( "%*sINTEGER %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_REAL:
+			num += INDENT( pretty, indent );
+			num += fprintf( fout, "r%s", llsd_as_string( llsd ) );
+			WARN( "%*sREAL %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_UUID:
+			num += INDENT( pretty, indent );
+			num += fprintf( fout, "u%s", llsd_as_string( llsd ) );
+			WARN( "%*sUUID %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_STRING:
+			num += INDENT( pretty, indent );
+			llsd_escape_string( llsd );
+			num += fprintf( fout, "s\"%s\"", llsd_as_string( llsd ).esc );
+			WARN( "%*sSTRING %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_DATE:
+			num += INDENT( pretty, indent );
+			num += fprintf( fout, "d\"%s\"", llsd_as_string( llsd ).str );
+			WARN( "%*sDATE %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_URI:
+			num += INDENT( pretty, indent );
+			llsd_escape_uri( llsd );
+			num += fprintf( fout, "l\"%s\"", llsd_as_string( llsd ).esc );
+			WARN( "%*sURI %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_BINARY:
+			num += INDENT( pretty, indent );
+			llsd_encode_binary( llsd, LLSD_BASE64 );
+			num += fprintf( fout, "b64\"%s\"", llsd_as_binary( llsd ).enc );
+			WARN( "%*sBINARY %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_ARRAY:
+			s = array_size( &(llsd->value.array_.array) );
+			WARN( "%*s[[ (%d)\n", indent, " ", s );
+
+			num += INDENT( pretty, indent );
+			indent += 2;
+			num += fprintf( fout, "[%s", (((s > 1) && pretty) ? "\n" : "") );
+
+			itr = llsd_itr_begin( llsd );
+			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
+			{
+				if ( itr != llsd_itr_begin( llsd ) )
+				{
+					num += fprintf( fout, ",%s", (pretty ? "\n": "") );
+				}
+
+				llsd_itr_get( llsd, itr, &v, &k );
+				if ( k != NULL )
+				{
+					WARN( "received key from array itr_get\n" );
+				}
+				num += llsd_format_notation( v, fout );
+			}
+
+			indent -= 2;
+
+			if ( ( s > 1 ) && pretty )
+			{
+				num += fprintf( fout, "\n%*s]\n", indent, " " );
+			}
+			else
+			{
+				num += fprintf( fout, "]" );
+			}
+
+			WARN( "%*s]] ARRAY %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_MAP:
+			s = ht_size( &(llsd->value.map_.ht) );
+			WARN( "%*s{{ (%d)\n", indent, " ", s );
+
+			num += INDENT( pretty, indent );
+			indent += 2;
+			num += fprintf( fout, "{%s", (((s > 1) && pretty) ? "\n" : "") );
+
+			itr = llsd_itr_begin( llsd );
+			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
+			{
+				if ( itr != llsd_itr_begin(llsd) )
+				{
+					num += fprintf( fout, ",%s", (pretty ? "\n" : "") );
+				}
+
+				llsd_itr_get( llsd, itr, &v, &k );
+				num += llsd_format_notation( k, fout );
+				p = ':';
+				num += fwrite( &p, sizeof(uint8_t), 1, fout );
+				num += llsd_format_notation( v, fout );
+			}
+
+			indent -= 2;
+			if ( ( s > 1 ) && pretty )
+			{
+				num += fprintf( fout, "\n%*s}\n", indent, " " );
+			}
+			else
+			{
+				num += fprintf( fout, "}" );
+			}
+
+			WARN( "%*s}} MAP %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+	}
+	return num;
 }
 
 static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )

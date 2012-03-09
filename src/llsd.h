@@ -51,6 +51,12 @@ typedef enum llsd_serializer_s
 
 } llsd_serializer_t;
 
+typedef enum llsd_bin_enc_s
+{
+	LLSD_BASE16,
+	LLSD_BASE64
+} llsd_bin_enc_t;
+
 #ifndef TRUE
 #define TRUE (1)
 #endif
@@ -61,29 +67,44 @@ typedef enum llsd_serializer_s
 
 /* LLSD types */
 #define UUID_LEN (16)
+#define UUID_STR_LEN (36)
 struct llsd_uuid_s
 {
-	uint8_t bits[UUID_LEN];
+	int					dyn_bits: 1;
+	int					dyn_str:  1;
+	uint8_t *			bits;
+	uint8_t *			str;
 };
 
 struct llsd_binary_s
 {
-	int					dyn;		/* was the data memory dynamically allocated? */
-	int32_t				size;
+	int					dyn_data: 1;
+	int					dyn_enc: 1;
+	int32_t				size_data;
 	uint8_t	*			data;
+	int32_t				size_enc;
+	uint8_t *			enc;
 };
 
+/* NOTE: the key_esc flag signifies that the map hashing function
+ * should use the escaped version of the string when hashing. this
+ * allows us to avoid the copy/unescape process for string keys
+ * during loading. */
 struct llsd_string_s
 {
-	int					dyn;		/* was the str memory dynamically allocated? */
-	int					escaped;
+	int					dyn_str: 1;
+	int					dyn_esc: 1;
+	int					key_esc: 1;
 	uint8_t *			str;
+	uint8_t *			esc;
 };
 
 struct llsd_uri_s
 {
-	int					dyn;		/* was the uri memory dynamically allocated? */
+	int					dyn_uri: 1;
+	int					dyn_esc: 1;
 	uint8_t *			uri;
+	uint8_t *			esc;
 };
 
 #define DEFAULT_ARRAY_CAPACITY (8)
@@ -98,6 +119,8 @@ struct llsd_map_s
 	ht_t		ht;
 };
 
+#define DATE_STR_LEN (24)
+/* YYYY-MM-DDTHH:MM:SS.FFFZ */
 
 /* the llsd types */
 typedef int						llsd_bool_t;
@@ -165,6 +188,14 @@ llsd_uri_t llsd_as_uri( llsd_t * llsd );
 llsd_binary_t llsd_as_binary( llsd_t * llsd );
 llsd_array_t llsd_as_array( llsd_t * llsd );
 llsd_map_t llsd_as_map( llsd_t * llsd );
+
+/* string/binary conversions */
+int llsd_escape_string( llsd_t * llsd );
+int llsd_unescape_string( llsd_t * llsd );
+int llsd_esacpe_uri( llsd_t * llsd );
+int llsd_unescape_uri( llsd_t * llsd );
+int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding );
+int llsd_decode_binary( llsd_t * llsd );
 
 /* append to containers */
 void llsd_array_append( llsd_t * arr, llsd_t * data );
