@@ -32,7 +32,7 @@
 #include "test_notation.h"
 #include "test_xml.h"
 
-#define POOL_SIZE ( 4 * 1024 * 1024 )
+#define POOL_SIZE ( 32 * 1024 * 1024 )
 
 int main()
 {

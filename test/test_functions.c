@@ -426,7 +426,7 @@ static void test_serialization( void )
 static void test_random_serialize( void )
 {
 	const uint32_t seed = 0xDEADBEEF;
-	const uint32_t size = 32;
+	const uint32_t size = 4096;
 	llsd_t * llsd_out = NULL;
 	llsd_t * llsd_in = NULL;
 

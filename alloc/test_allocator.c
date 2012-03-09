@@ -293,7 +293,7 @@ void dump_heap_blocks( void )
 	CHECK( pool );
 
 	/* do a slow linear search for the first block with enough mem */
-	tag = (tag_t*)&(pool[sizeof(tag_t)]);
+	tag = (tag_t*)&(pool[0]);
 	while( (void*)tag < (void*)&(pool[pool_size - sizeof(tag_t)]) )
 	{
 		LOG( "%p -- size: %d, in_use: %s\n", (void*)tag, tag->size, (tag->in_use ? "TRUE" : "FALSE") );
