@@ -51,7 +51,7 @@ typedef struct ht_s
 	ht_delete_fn		vdfn;				/* value delete function */
 	uint_t				prime_index;		/* the index of the table size */
 	uint_t				num_tuples;			/* number of tuples in the table */
-	uint_t				initial_capacity;   /* the initial capacity value */
+	uint_t				initial_capacity;	/* the initial capacity value */
 	float				load_factor;		/* load level that triggers resize */
 	tuple_t*			tuples;				/* pointer to tuple table */
 #ifdef USE_THREADING
@@ -85,11 +85,11 @@ void ht_deinitialize(ht_t * const htable);
  * for the delete functions, then the key/values will not be deleted when 
  * hashtableDeinitialize or hashtableDelete are called. */
 ht_t* ht_new(
-    uint_t initial_capacity, 
-    key_hash_fn khfn,
-    ht_delete_fn vdfn, 
-    key_eq_fn kefn, 
-    ht_delete_fn kdfn);
+	uint_t initial_capacity, 
+	key_hash_fn khfn,
+	ht_delete_fn vdfn, 
+	key_eq_fn kefn, 
+	ht_delete_fn kdfn);
 
 /* deinitializes and frees a hashtable allocated with hashtableNew() */
 /* NOTE: this calls hashtableDeinitialize if there are values left in the
@@ -112,7 +112,7 @@ float ht_get_resize_load_factor(ht_t const * const htable);
 int ht_set_resize_load_factor(ht_t * const htable, float load);
 
 /* this function will prune all empty filler nodes left over from
- * previous hashtableRemove calls.  the empty filler nodes left over
+ * previous hashtableRemove calls.	the empty filler nodes left over
  * to keep the probing chains from breaking.  this function clears
  * them out by allocating a new table and rehashing the non-filler
  * nodes into it and freeing the old table.  this operation elliminates
@@ -126,9 +126,9 @@ int ht_compact(ht_t * const htable);
  * NOTE: the hashtable takes ownership of the key data if a key delete
  * function was given when the hashtable was created. */
 int ht_add(
-    ht_t * const htable, 
-    void * const key, 
-    void * const value);
+	ht_t * const htable, 
+	void * const key, 
+	void * const value);
 
 int ht_add_prehash(
 	ht_t * const htable,
@@ -159,15 +159,15 @@ ht_itr_t ht_itr_rbegin(ht_t const * const hatable);
 #define ht_itr_rend(x) ht_itr_end(x)
 
 ht_itr_t ht_itr_next(
-    ht_t const * const htable, 
-    ht_itr_t const itr);
+	ht_t const * const htable, 
+	ht_itr_t const itr);
 ht_itr_t ht_itr_rnext(
 	ht_t const * const htable,
 	ht_itr_t const itr);
 
 void* ht_itr_get(
-    ht_t const * const htable, 
-    ht_itr_t const itr,
+	ht_t const * const htable, 
+	ht_itr_t const itr,
 	void** const key);
 
 #endif

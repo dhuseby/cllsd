@@ -169,6 +169,7 @@ llsd_map_t llsd_as_map( llsd_t * llsd );
 /* append to containers */
 void llsd_array_append( llsd_t * arr, llsd_t * data );
 void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data );
+llsd_t * llsd_map_find( llsd_t * map, llsd_t * key );
 
 /* iterator interface */
 llsd_itr_t llsd_itr_begin( llsd_t * llsd );

@@ -432,8 +432,8 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 			for ( ; itrl != llsd_itr_end( l ); itrl = llsd_itr_next( l, itrl ), itrr = llsd_itr_next( r, itrr) )
 			{
 				llsd_itr_get( l, itrl, &vl, &kl );
-				llsd_itr_get( r, itrr, &vr, &kr );
-				if ( !llsd_equal( vl, vr ) || !llsd_equal( kl, kr ) )
+				vr = llsd_map_find( r, kl );
+				if ( !llsd_equal( vl, vr ) )
 					return FALSE;
 			}
 			return TRUE;
@@ -892,6 +892,15 @@ void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data )
 	ht_add( &(map->value.map_.ht), (void*)key, (void*)data );
 }
 
+llsd_t * llsd_map_find( llsd_t * map, llsd_t * key )
+{
+	CHECK_PTR_RET( map, NULL );
+	CHECK_PTR_RET( key, NULL );
+	CHECK_MSG( llsd_get_type(map) == LLSD_MAP, "trying to insert k-v-p into non map\n" );
+	CHECK_MSG( llsd_get_type(key) == LLSD_STRING, "trying to use non-string as key\n" );
+	return ht_find( &(map->value.map_.ht), (void*)key );
+}
+
 llsd_itr_t llsd_itr_begin( llsd_t * llsd )
 {
 	CHECK_PTR_RET( llsd, (llsd_itr_t)-1 );
@@ -1027,6 +1036,8 @@ static llsd_t * llsd_reserve_map( uint32_t size )
 	return llsd;
 }
 
+static int indent = 0;
+
 static llsd_t * llsd_parse_binary( FILE * fin )
 {
 	int i;
@@ -1054,33 +1065,33 @@ static llsd_t * llsd_parse_binary( FILE * fin )
 				WARN( "invalid type character %c at offset %lu\n", p, ftell( fin ) );
 				break;
 			case '!':
-				WARN( "UNDEF %lu - %lu\n", start, ftell( fin ) - 1 );
+				WARN( "%*sUNDEF %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd_new( LLSD_UNDEF );
 			case '1':
-				WARN( "BOOLEAN %lu - %lu\n", start, ftell( fin ) - 1 );
+				WARN( "%*sBOOLEAN %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd_new( LLSD_BOOLEAN, TRUE );
 			case '0':
-				WARN( "BOOLEAN %lu - %lu\n", start, ftell( fin ) - 1 );
+				WARN( "%*sBOOLEAN %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd_new( LLSD_BOOLEAN, FALSE );
 			case 'i':
 				fread( &t1, sizeof(uint32_t), 1, fin );
-				WARN( "INTEGER %lu - %lu\n", start, ftell( fin ) - 1 );
+				WARN( "%*sINTEGER %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd_new( LLSD_INTEGER, ntohl( t1 ) );
 			case 'r':
 				fread( &t2, sizeof(double), 1, fin );
 				t2.ull = be64toh( t2.ull );
-				WARN( "REAL %lu - %lu\n", start, ftell( fin ) - 1 );
+				WARN( "%*sREAL %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd_new( LLSD_REAL, t2.d );
 			case 'u':
 				fread( t3, sizeof(uint8_t), UUID_LEN, fin );
-				WARN( "UUID %lu - %lu\n", start, ftell( fin ) - 1 );
+				WARN( "%*sUUID %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd_new( LLSD_UUID, t3 );
 			case 'b':
 				fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
 				llsd = llsd_reserve_binary( t1 );
 				fread( llsd->value.binary_.data, sizeof(uint8_t), t1, fin );
-				WARN( "BINARY %lu - %lu\n", start, ftell( fin ) - 1 );
+				WARN( "%*sBINARY %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd;
 			case 's':
 				fread( &t1, sizeof(uint32_t), 1, fin );
@@ -1088,24 +1099,25 @@ static llsd_t * llsd_parse_binary( FILE * fin )
 				llsd = llsd_reserve_string( t1 ); /* allocates t1 + 1 bytes */
 				fread( llsd->value.string_.str, sizeof(uint8_t), t1, fin );
 				/* TODO: detect if it is escaped and set the escaped flag */
-				WARN( "STRING %lu - %lu\n", start, ftell( fin ) - 1 );
+				WARN( "%*sSTRING %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd;
 			case 'l':
 				fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
 				llsd = llsd_reserve_uri( t1 ); /* allocates t1 + 1 bytes */
 				fread( llsd->value.uri_.uri, sizeof(uint8_t), t1, fin );
-				WARN( "URI %lu - %lu\n", start, ftell( fin ) - 1 );
+				WARN( "%*sURI %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd;
 			case 'd':
 				fread( &t2, sizeof(double), 1, fin );
 				t2.ull = be64toh( t2.ull );
-				WARN( "DATE %lu - %lu\n", start, ftell( fin ) - 1 );
+				WARN( "%*sDATE %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd_new( LLSD_DATE, t2.d );
 			case '[':
 				fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
-				WARN( "[[ (%d)\n", t1 );
+				WARN( "%*s[[ (%d)\n", indent, " ", t1 );
+				indent += 4;
 				llsd = llsd_reserve_array( t1 );
 				for ( i = 0; i < t1; ++i )
 				{
@@ -1117,12 +1129,14 @@ static llsd_t * llsd_parse_binary( FILE * fin )
 				{
 					FAIL( "array didn't end with ']'\n" );
 				}
-				WARN( "]] ARRAY %lu - %lu\n", start, ftell( fin ) - 1 );
+				indent -= 4;
+				WARN( "%*s]] ARRAY %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd;
 			case '{':
 				fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
-				WARN( "{{ (%d)\n", t1 );
+				WARN( "%*s{{ (%d)\n", indent, " ", t1 );
+				indent += 4;
 				llsd = llsd_reserve_map( t1 );
 				for ( i = 0; i < t1; ++i )
 				{
@@ -1141,7 +1155,8 @@ static llsd_t * llsd_parse_binary( FILE * fin )
 				{
 					FAIL( "map didn't end with '}'\n" );
 				}
-				WARN( "}} MAP %lu - %lu\n", start, ftell( fin ) - 1 );
+				indent -= 4;
+				WARN( "%*s}} MAP %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd;
 		}
 	}
@@ -1216,19 +1231,19 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 		case LLSD_UNDEF:
 			p = '!';
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
-			WARN( "UNDEF %lu - %lu\n", start, ftell( fout ) - 1 );
+			WARN( "%*sUNDEF %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_BOOLEAN:
 			p = ( llsd_as_bool( llsd ) == TRUE ) ? '1' : '0';
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
-			WARN( "BOOLEAN %lu - %lu\n", start, ftell( fout ) - 1 );
+			WARN( "%*sBOOLEAN %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_INTEGER:
 			p = 'i';
 			t1 = htonl( llsd_as_int( llsd ) );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
-			WARN( "INTEGER %lu - %lu\n", start, ftell( fout ) - 1 );
+			WARN( "%*sINTEGER %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_REAL:
 			p = 'r';
@@ -1236,13 +1251,13 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			t2.ull = htobe64( t2.ull );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t2, sizeof(uint64_t), 1, fout ) * sizeof(uint64_t) );
-			WARN( "REAL %lu - %lu\n", start, ftell( fout ) - 1 );
+			WARN( "%*sREAL %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_UUID:
 			p = 'u';
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += fwrite( &(llsd->value.uuid_.bits[0]), sizeof(uint8_t), UUID_LEN, fout );
-			WARN( "UUID %lu - %lu\n", start, ftell( fout ) - 1 );
+			WARN( "%*sUUID %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_STRING:
 			p = 's';
@@ -1251,7 +1266,7 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
 			num += fwrite( llsd_as_string( llsd ).str, sizeof(uint8_t), s, fout );
-			WARN( "STRING %lu - %lu\n", start, ftell( fout ) - 1 );
+			WARN( "%*sSTRING %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_DATE:
 			p = 'd';
@@ -1259,7 +1274,7 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			t2.ull = htobe64( t2.ull );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t2, sizeof(uint64_t), 1, fout ) * sizeof(uint64_t) );
-			WARN( "DATE %lu - %lu\n", start, ftell( fout ) - 1 );
+			WARN( "%*sDATE %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_URI:
 			p = 'l';
@@ -1268,7 +1283,7 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
 			num += fwrite( llsd->value.uri_.uri, sizeof(uint8_t), s, fout );
-			WARN( "URI %lu - %lu\n", start, ftell( fout ) - 1 );
+			WARN( "%*sURI %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_BINARY:
 			p = 'b';
@@ -1277,12 +1292,13 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
 			num += fwrite( llsd->value.binary_.data, sizeof(uint8_t), s, fout );
-			WARN( "BINARY %lu - %lu\n", start, ftell( fout ) - 1 );
+			WARN( "%*sBINARY %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_ARRAY:
 			p = '[';
 			s = array_size( &(llsd->value.array_.array) );
-			WARN( "[[ (%d)\n", s );
+			WARN( "%*s[[ (%d)\n", indent, " ", s );
+			indent += 4;
 			t1 = htonl( s );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
@@ -1300,12 +1316,14 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 
 			p = ']';
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
-			WARN( "]] ARRAY %lu - %lu\n", start, ftell( fout ) - 1 );
+			indent -= 4;
+			WARN( "%*s]] ARRAY %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_MAP:
 			p = '{';
 			s = ht_size( &(llsd->value.map_.ht) );
-			WARN( "{{ (%d)\n", s );
+			WARN( "%*s{{ (%d)\n", indent, " ", s );
+			indent += 4;
 			t1 = htonl( s );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
@@ -1320,7 +1338,8 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 
 			p = '}';
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
-			WARN( "}} MAP %lu - %lu\n", start, ftell( fout ) - 1 );
+			indent -= 4;
+			WARN( "%*s}} MAP %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 	}
 	return num;

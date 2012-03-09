@@ -123,8 +123,8 @@ void ht_initialize
 	uint_t i = 0;
 	CHECK_PTR(htable);
 
-    /* zero out the memory */
-    memset(htable, 0, sizeof(ht_t));
+	/* zero out the memory */
+	memset(htable, 0, sizeof(ht_t));
 
 	/* set the default load factor */
 	htable->load_factor = default_load_factor;
@@ -817,7 +817,7 @@ ht_itr_t ht_itr_begin(ht_t const * const htable)
 	CHECK_RET( htable->tuples != NULL, -1 );
 
 	/* start at 0 and find the first real, non-filler tuple */
-	return ht_itr_next(htable, (ht_itr_t)0);
+	return ht_itr_next(htable, (ht_itr_t)-1);
 }
 
 ht_itr_t ht_itr_end(ht_t const * const htable)
@@ -842,11 +842,11 @@ ht_itr_t ht_itr_next(ht_t const * const htable, ht_itr_t const itr)
 	CHECK_PTR_RET(htable, -1);
 	CHECK_RET( htable->tuples != NULL, -1 );
 
-    /* if they aren't at the beginning or end, increment the itr so that it moves to the
-     * next item in the hashtable instead of matching the same one always.
-     */
-    if((i >= -1) && (i < (int_t)hashtable_primes[htable->prime_index]))
-        i++;
+	/* if they aren't at the beginning or end, increment the itr so that it moves to the
+	 * next item in the hashtable instead of matching the same one always.
+	 */
+	if((i >= -1) && (i < (int_t)hashtable_primes[htable->prime_index]))
+		i++;
 
 	if(i >= (int_t)hashtable_primes[htable->prime_index])
 		return ht_itr_end(htable);

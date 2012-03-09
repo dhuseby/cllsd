@@ -44,15 +44,15 @@ typedef struct array_node_s array_node_t;
 /* dynamic array struct */
 typedef struct array_s
 {
-    delete_fn       pfn;                    /* destruction function for each node */
-    uint_t        	num_nodes;              /* number of nodes in the list */
-    uint_t        	buffer_size;            /* number of slots in the node array */
+	delete_fn		pfn;					/* destruction function for each node */
+	uint_t			num_nodes;				/* number of nodes in the list */
+	uint_t			buffer_size;			/* number of slots in the node array */
 	uint_t			initial_capacity;		/* the initial capacity value */
-    int_t         	data_head;              /* head node of the data circular list */
-    int_t         	free_head;              /* head node of the free circular list */
-    array_node_t*   node_buffer;            /* buffer of nodes */
+	int_t			data_head;				/* head node of the data circular list */
+	int_t			free_head;				/* head node of the free circular list */
+	array_node_t*	node_buffer;			/* buffer of nodes */
 #ifdef USE_THREADING
-    pthread_mutex_t lock;                   /* list lock */
+	pthread_mutex_t lock;					/* list lock */
 #endif
 } array_t;
 
@@ -84,31 +84,31 @@ array_itr_t array_itr_tail(array_t const * const array);
 
 /* iterator manipulation functions */
 array_itr_t array_itr_next(
-    array_t const * const array, 
-    array_itr_t const itr);
+	array_t const * const array, 
+	array_itr_t const itr);
 array_itr_t array_itr_rnext(
 	array_t const * const array,
 	array_itr_t const itr );
 
 /* O(1) functions for adding items to the array */
 void array_push(
-    array_t * const array, 
-    void * const data, 
-    array_itr_t const itr);
+	array_t * const array, 
+	void * const data, 
+	array_itr_t const itr);
 #define array_push_head(array, data) array_push(array, data, array_itr_head(array));
 #define array_push_tail(array, data) array_push(array, data, array_itr_end(array));
 
 /* O(1) functions for removing items from the array */
 void* array_pop(
-    array_t * const array, 
-    array_itr_t const itr);
+	array_t * const array, 
+	array_itr_t const itr);
 #define array_pop_head(array) array_pop(array, array_itr_head(array))
 #define array_pop_tail(array) array_pop(array, array_itr_end(array))
 
 /* functions for getting a reference to an item in the array */
 void* array_itr_get(
-    array_t const * const array, 
-    array_itr_t const itr);
+	array_t const * const array, 
+	array_itr_t const itr);
 #define array_get_head(array) array_get(array, array_itr_head(array))
 #define array_get_tail(array) array_get(array, array_itr_tail(array))
 
