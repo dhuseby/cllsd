@@ -57,7 +57,7 @@ llsd_t const undefined =
 	.value.bool_ = FALSE
 };
 
-uint8_t const bits[] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+uint8_t bits[] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
 llsd_uuid_t const zero_uuid = 
 { 
 	.dyn_bits = FALSE,
@@ -79,18 +79,18 @@ llsd_string_t const true_string =
 	.dyn_str = FALSE,
 	.dyn_esc = FALSE,
 	.key_esc = FALSE,
-	.str = "true"
+	.str = "true",
 	.esc = NULL
 };
 
-uint8_t const zero_data [] = { '0' };
+uint8_t zero_data [] = { '0' };
 llsd_binary_t const false_binary =
 {
 	.dyn_data = FALSE,
 	.dyn_enc = FALSE,
 	.size_data = 1,
 	.data = zero_data,
-	.size_end = 0,
+	.size_enc = 0,
 	.enc = NULL
 };
 uint8_t one_data[] = { '1' };
@@ -179,9 +179,7 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 {
 	va_list args;
 	uint8_t * p;
-	int escaped;
-	int encoded;
-	int is_key;
+	int size, escaped, encoded, is_key;
 
 	CHECK_PTR( llsd );
 	
@@ -221,8 +219,8 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 		case LLSD_STRING:
 			va_start( args, type_ );
 			p = va_arg( args, uint8_t* );
-			escaped = va_args( args, int );
-			is_key = va_args( args, int );
+			escaped = va_arg( args, int );
+			is_key = va_arg( args, int );
 			if ( escaped )
 			{
 				llsd->value.string_.esc = UT(STRDUP( p ));
@@ -246,7 +244,7 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 		case LLSD_URI:
 			va_start( args, type_ );
 			p = va_arg( args, uint8_t* );
-			escaped = va_args( args, int );
+			escaped = va_arg( args, int );
 			if ( escaped )
 			{
 				llsd->value.uri_.esc = UT(STRDUP( p ));
@@ -440,6 +438,7 @@ int llsd_get_size( llsd_t * llsd )
 
 int llsd_equal( llsd_t * l, llsd_t * r )
 {
+	int eq;
 	llsd_itr_t itrl;
 	llsd_t * kl;
 	llsd_t * vl;
@@ -470,8 +469,10 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 		case LLSD_URI:
 			return ( strcmp( l->value.uri_.uri, r->value.uri_.uri ) == 0 );
 		case LLSD_BINARY:
-			return ( ( l->value.binary_.size == r->value.binary_.size ) &&
-					 ( memcmp( l->value.binary_.data, r->value.binary_.data, l->value.binary_.size ) == 0 ) );
+			return ( ( l->value.binary_.size_data == r->value.binary_.size_data ) &&
+				     ( l->value.binary_.size_enc == r->value.binary_.size_enc ) &&
+					 ( memcmp( l->value.binary_.data, r->value.binary_.data, l->value.binary_.size_data ) == 0 ) &&
+					 ( memcmp( l->value.binary_.enc, r->value.binary_.enc, l->value.binary_.size_enc) == 0 ) );
 		case LLSD_ARRAY:	
 			if ( array_size( &(l->value.array_.array) ) != array_size( &(r->value.array_.array) ) )
 				return FALSE;
@@ -539,7 +540,7 @@ llsd_bool_t llsd_as_bool( llsd_t * llsd )
 				return FALSE;
 			return TRUE;
 		case LLSD_BINARY:
-			if ( llsd->value.binary_.size == 0 )
+			if ( ( llsd->value.binary_.size_data == 0 ) && (llsd->value.binary_.size_enc == 0 ) )
 				return FALSE;
 			return TRUE;
 	}
@@ -584,7 +585,9 @@ llsd_int_t llsd_as_int( llsd_t * llsd )
 		case LLSD_STRING:
 			return (llsd_int_t)atoi( llsd->value.string_.str );
 		case LLSD_BINARY:
-			if ( llsd->value.binary_.size < sizeof(llsd_int_t) )
+			/* decode the binary if needed */
+			llsd_decode_binary( llsd );
+			if ( llsd->value.binary_.size_data < sizeof(llsd_int_t) )
 			{
 				return 0;
 			}
@@ -618,7 +621,9 @@ llsd_real_t llsd_as_real( llsd_t * llsd )
 		case LLSD_DATE:
 			return (llsd_real_t)llsd->value.date_;
 		case LLSD_BINARY:
-			if ( llsd->value.binary_.size < sizeof(llsd_real_t) )
+			/* decode the binary if needed */
+			llsd_decode_binary( llsd );
+			if ( llsd->value.binary_.size_data < sizeof(llsd_real_t) )
 			{
 				return 0.;
 			}
@@ -650,6 +655,7 @@ static uint8_t hex_to_byte( uint8_t hi, uint8_t lo )
 llsd_uuid_t llsd_as_uuid( llsd_t * llsd )
 {
 	static llsd_uuid_t tmp_uuid;
+	static uint8_t bits[UUID_LEN];
 	uint8_t * str;
 	int i;
 
@@ -668,12 +674,17 @@ llsd_uuid_t llsd_as_uuid( llsd_t * llsd )
 			break;
 
 		case LLSD_BINARY:
+			/* decode binary if needed */
+			llsd_decode_binary( llsd );
+
 			/* if len < 16, return null uuid, otherwise first 16 bytes converted to uuid */
-			if ( llsd->value.binary_.size < 16 )
+			if ( llsd->value.binary_.size_data < 16 )
 			{
 				return zero_uuid;
 			}
-			MEMCPY( &(tmp_uuid.bits[0]), llsd->value.binary_.data, UUID_LEN );
+			MEMCPY( bits, llsd->value.binary_.data, UUID_LEN );
+			MEMSET( &tmp_uuid, 0, sizeof(llsd_uuid_t) );
+			tmp_uuid.bits = bits;
 			return tmp_uuid;
 
 		case LLSD_STRING:
