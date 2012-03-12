@@ -28,7 +28,7 @@ FALSE	src/llsd.h	65;"	d
 FALSE	src/macros.h	27;"	d
 FNV_PRIME	src/llsd.c	148;"	d	file:
 FREE	src/macros.h	50;"	d
-INDENT	src/llsd.c	1272;"	d	file:
+INDENT	src/llsd.c	1283;"	d	file:
 LLSD_ARRAY	src/llsd.h	/^	LLSD_ARRAY,$/;"	e	enum:llsd_type_e
 LLSD_BASE16	src/llsd.h	/^	LLSD_BASE16,$/;"	e	enum:llsd_bin_enc_s
 LLSD_BASE64	src/llsd.h	/^	LLSD_BASE64$/;"	e	enum:llsd_bin_enc_s
@@ -57,7 +57,7 @@ MEMSET	src/macros.h	52;"	d
 MIN_BLOCK_SIZE	alloc/test_allocator.c	34;"	d	file:
 POOL_SIZE	test/test_all.c	35;"	d	file:
 REALLOC	src/macros.h	49;"	d
-SIG_LEN	src/llsd.c	1244;"	d	file:
+SIG_LEN	src/llsd.c	1255;"	d	file:
 STRDUP	src/macros.h	53;"	d
 T	src/macros.h	56;"	d
 TRUE	src/llsd.h	61;"	d
@@ -122,7 +122,7 @@ array_unlock	src/array.c	/^void array_unlock(array_t * const array)$/;"	f
 binary_	src/llsd.h	/^		llsd_binary_t	binary_;$/;"	m	union:llsd_s::__anon1
 binary_	test/test_binary.c	/^uint8_t const binary_[] = { 'b', 0x00, 0x00, 0x00, 0x10, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };$/;"	v
 binary_header	src/llsd.c	/^static uint8_t const * const binary_header = "<? LLSD\/Binary ?>\\n";$/;"	v	file:
-bits	src/llsd.c	/^uint8_t const bits[] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };$/;"	v
+bits	src/llsd.c	/^uint8_t bits[] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };$/;"	v
 bits	src/llsd.h	/^	uint8_t *			bits;$/;"	m	struct:llsd_uuid_s
 bits	test/test_functions.c	/^uint8_t const bits[UUID_LEN] = { 1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6 };$/;"	v
 bool_	src/llsd.h	/^		llsd_bool_t		bool_;$/;"	m	union:llsd_s::__anon1
@@ -378,5 +378,5 @@ value	src/llsd.h	/^	}					value;$/;"	m	struct:llsd_s	typeref:union:llsd_s::__ano
 vdfn	src/hashtable.h	/^	ht_delete_fn		vdfn;				\/* value delete function *\/$/;"	m	struct:ht_s
 xml_footer	src/llsd.c	/^static uint8_t const * const xml_footer = "<\/llsd>\\n";$/;"	v	file:
 xml_header	src/llsd.c	/^static uint8_t const * const xml_header = "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>\\n<llsd>\\n";$/;"	v	file:
-zero_data	src/llsd.c	/^uint8_t const zero_data [] = { '0' };$/;"	v
+zero_data	src/llsd.c	/^uint8_t zero_data [] = { '0' };$/;"	v
 zero_uuid	src/llsd.c	/^llsd_uuid_t const zero_uuid = $/;"	v

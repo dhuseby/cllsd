@@ -71,7 +71,9 @@ llsd_string_t const false_string =
 	.dyn_str = FALSE,
 	.dyn_esc = FALSE,
 	.key_esc = FALSE,
+	.str_len = 5,
 	.str = "false",
+	.esc_len = 0,
 	.esc = NULL
 };
 llsd_string_t const true_string = 
@@ -79,7 +81,9 @@ llsd_string_t const true_string =
 	.dyn_str = FALSE,
 	.dyn_esc = FALSE,
 	.key_esc = FALSE,
+	.str_len = 4,
 	.str = "true",
+	.esc_len = 0,
 	.esc = NULL
 };
 
@@ -88,9 +92,10 @@ llsd_binary_t const false_binary =
 {
 	.dyn_data = FALSE,
 	.dyn_enc = FALSE,
-	.size_data = 1,
+	.encoding = LLSD_NONE,
+	.data_size = 1,
 	.data = zero_data,
-	.size_enc = 0,
+	.enc_size = 0,
 	.enc = NULL
 };
 uint8_t one_data[] = { '1' };
@@ -98,25 +103,29 @@ llsd_binary_t const true_binary =
 {
 	.dyn_data = FALSE,
 	.dyn_enc = FALSE,
-	.size_data = 1,
+	.encoding = LLSD_NONE,
+	.data_size = 1,
 	.data = one_data,
-	.size_enc = 0,
+	.enc_size = 0,
 	.enc = NULL
 };
 llsd_binary_t const empty_binary =
 {
 	.dyn_data = FALSE,
 	.dyn_enc = FALSE,
-	.size_data = 0,
+	.encoding = LLSD_NONE,
+	.data_size = 0,
 	.data = NULL,
-	.size_enc = 0,
+	.enc_size = 0,
 	.enc = NULL
 };
 llsd_uri_t const empty_uri = 
 {
 	.dyn_uri = FALSE,
 	.dyn_esc = FALSE,
+	.uri_len = 0,
 	.uri = "",
+	.esc_len = 0,
 	.esc = NULL
 };
 llsd_array_t const empty_array =
@@ -145,14 +154,122 @@ llsd_map_t const empty_map =
 	}
 };
 
+/* this function does the minimum amount of work to the l and r llsd objects
+ * so that we can use standard ways of comparint the two.  so if the l object
+ * is in an escaped/encoded form and the r is not, the l one will be decoded
+ * or unescaped so that l and r can be compared. */
+static int llsd_equalize ( llsd_t * l, llsd_t * r )
+{
+	if ( llsd_get_type( l ) != llsd_get_type( r ) )
+		return FALSE;
+
+	switch( llsd_get_type( l ) )
+	{
+		case LLSD_UNDEF:
+		case LLSD_BOOLEAN:
+		case LLSD_INTEGER:
+		case LLSD_REAL:
+		case LLSD_ARRAY:	
+		case LLSD_MAP:
+			return TRUE;
+		case LLSD_UUID:
+			if ( ( ( l->value.uuid_.bits != NULL ) && ( r->value.uuid_.bits != NULL ) ) ||
+				 ( ( l->value.uuid_.str != NULL ) && ( r->value.uuid_.bits != NULL ) ) )
+				return TRUE;
+			if ( l->value.uuid_.bits == NULL )
+				llsd_destringify_uuid( l );
+			else
+				llsd_destringify_uuid( r );
+			return TRUE;
+		case LLSD_STRING:
+			if ( ( ( l->value.string_.str != NULL ) && ( r->value.string_.str != NULL ) ) ||
+				 ( ( l->value.string_.esc != NULL ) && ( r->value.string_.esc != NULL ) ) )
+				return TRUE;
+			if ( l->value.string_.str == NULL )
+				llsd_unescape_str( l );
+			else
+				llsd_unescape_str( r );
+			return TRUE;
+		case LLSD_DATE:
+			if ( ( ( l->value.date_.use_dval == TRUE ) && ( r->value.date_.use_dval == TRUE ) ) ||
+				 ( ( l->value.date_.str != NULL ) && ( r->value.date_.str != NULL ) ) )
+				return TRUE;
+			if ( l->value.date_.use_dval != TRUE )
+				llsd_destringify_date( l );
+			else
+				llsd_destringify_date( r );
+			return TRUE;
+		case LLSD_URI:
+			if ( ( ( l->value.uri_.uri != NULL ) && ( r->value.uri_.uri != NULL ) ) ||
+				 ( ( l->value.uri_.esc != NULL ) && ( r->value.uri_.esc != NULL ) ) )
+				return TRUE;
+			if ( l->value.uri_.uri == NULL )
+				llsd_unescape_uri( l );
+			else
+				llsd_unescape_uri( r );
+			return TRUE;
+		case LLSD_BINARY:
+			if ( ( ( l->value.binary_.data != NULL ) && ( r->value.binary_.data != NULL ) ) ||
+				 ( ( l->value.binary_.enc != NULL ) && ( l->value.binary_.enc != NULL ) ) )
+				return TRUE;
+			if ( l->value.binary_.data == NULL )
+				llsd_decode_binary( l );
+			else
+				llsd_decode_binary( r );
+			return TRUE;
+	}
+
+	return FALSE;
+
+}
+
+static int mem_len_cmp( uint8_t * l, uint32_t llen, uint8_t * r, uint32_t rlen )
+{
+	CHECK_PTR_RET( l, FALSE );
+	CHECK_PTR_RET( r, FALSE );
+	CHECK_RET( (llen == rlen), FALSE );
+
+	return ( MEMCMP( l, r, llen ) == 0 );
+}
+
+static int llsd_string_eq( llsd_t * l, llsd_t * r )
+{
+	CHECK_RET( (l->type_ == LLSD_STRING), FALSE );
+	CHECK_RET( (r->type_ == LLSD_STRING), FALSE );
+
+	/* do minimal work to allow use to compare str's */
+	llsd_equalize( l, r );
+
+	return ( mem_len_cmp( l->value.string_.str, l->value.string_.str_len,
+						  r->value.string_.str, r->value.string_.str_len ) ||
+			 mem_len_cmp( l->value.string_.esc, l->value.string_.esc_len,
+						  r->value.string_.esc, r->value.string_.esc_len ) );
+}
+
+static int llsd_uri_eq( llsd_t * l, llsd_t * r )
+{
+	CHECK_RET( (l->type_ == LLSD_URI), FALSE );
+	CHECK_RET( (r->type_ == LLSD_URI), FALSE );
+
+	/* do minimal work to allow use to compare str's */
+	llsd_equalize( l, r );
+
+	return ( mem_len_cmp( l->value.uri_.uri, l->value.uri_.uri_len,
+						  r->value.uri_.uri, r->value.uri_.uri_len ) ||
+			 mem_len_cmp( l->value.uri_.esc, l->value.uri_.esc_len,
+						  r->value.uri_.esc, r->value.uri_.esc_len ) );
+}
+
 #define FNV_PRIME (0x01000193)
 static uint32_t fnv_key_hash(void const * const key)
 {
 	int i;
 	llsd_t * llsd = (llsd_t*)key;
     uint32_t hash = 0x811c9dc5;
-	uint8_t const * p = (llsd->value.string_.key_esc ? (uint8_t const *)llsd->value.string_.esc : (uint8_t const *)llsd->value.string_.str);
-	CHECK_RET_MSG( llsd->type_ == LLSD_STRING, 0, "map key hashing function received non-string\n" );
+	uint8_t const * p = (llsd->value.string_.key_esc ? 
+						 (uint8_t const *)llsd->value.string_.esc : 
+						 (uint8_t const *)llsd->value.string_.str);
+	CHECK_RET_MSG( (llsd->type_ == LLSD_STRING), 0 );
 	while ( (*p) != '\0' )
 	{
 		hash *= FNV_PRIME;
@@ -166,12 +283,7 @@ static int key_eq(void const * const l, void const * const r)
 {
 	llsd_t * llsd_l = (llsd_t *)l;
 	llsd_t * llsd_r = (llsd_t *)r;
-	CHECK_RET_MSG( llsd_l->type_ == LLSD_STRING, -1, "map key compare function received non-string as left side\n" );
-	CHECK_RET_MSG( llsd_r->type_ == LLSD_STRING, -1, "map key compare function received non-string as right side\n" );
-	
-	/* TODO: need to be sensitive to the key_esc bit and do string unescaping only
-	 * when necessary. */
-	return (strcmp( llsd_l->value.string_.str, llsd_r->value.string_.str ) == 0);
+	return llsd_string_eq( llsd_l, llsd_r );
 }
 
 
@@ -212,48 +324,68 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			va_start( args, type_ );
 			llsd->value.uuid_.dyn_bits = TRUE;
 			llsd->value.uuid_.bits = UT(CALLOC( UUID_LEN, sizeof(uint8_t) ));
-			memcpy( llsd->value.uuid_.bits, va_arg( args, uint8_t* ), UUID_LEN );
+			MEMCPY( llsd->value.uuid_.bits, va_arg( args, uint8_t* ), UUID_LEN );
 			va_end( args );
 			break;
 
 		case LLSD_STRING:
 			va_start( args, type_ );
 			p = va_arg( args, uint8_t* );
+			size = va_arg( args, int );
 			escaped = va_arg( args, int );
 			is_key = va_arg( args, int );
+
 			if ( escaped )
 			{
-				llsd->value.string_.esc = UT(STRDUP( p ));
+				llsd->value.string_.esc_len = size;
+				llsd->value.string_.esc = UT(CALLOC( size, sizeof(uint8_t) ));
 				llsd->value.string_.dyn_esc = TRUE;
 				llsd->value.string_.key_esc = is_key;
+				MEMCPY( llsd->value.string_.esc, p, size );
 			}
 			else
 			{
+				llsd->value.string_.str_len = size;
+				llsd->value.string_.str = UT(CALLOC( size, sizeof(uint8_t) ));
 				llsd->value.string_.dyn_str = TRUE;
-				llsd->value.string_.str = UT(STRDUP( p ));
+				MEMCPY( llsd->value.string_.str, p, size );
 			}
 			va_end( args );
 			break;
 
 		case LLSD_DATE:
 			va_start( args, type_ );
-			llsd->value.date_ = va_arg( args, double );
+			llsd->value.date_.dval = va_arg( args, double );
+			size = va_arg( args, int );
+			if ( size > 0 )
+			{
+				p = va_arg( args, uint8_t* );
+				llsd->value.date_.str = UT(CALLOC( size, sizeof(uint8_t) ));
+				llsd->value.date_.dyn_str = TRUE;
+				MEMCPY( llsd->value.date_.str, p, size );
+			}
 			va_end( args );
 			break;
 
 		case LLSD_URI:
 			va_start( args, type_ );
 			p = va_arg( args, uint8_t* );
+			size = va_arg( args, int );
 			escaped = va_arg( args, int );
+
 			if ( escaped )
 			{
-				llsd->value.uri_.esc = UT(STRDUP( p ));
+				llsd->value.uri_.esc_len = size;
+				llsd->value.uri_.esc = UT(CALLOC( size, sizeof(uint8_t) ));
 				llsd->value.uri_.dyn_esc = TRUE;
+				MEMCPY( llsd->value.uri_.esc, p, size );
 			}
 			else
 			{
-				llsd->value.uri_.uri = UT(STRDUP( p ));
+				llsd->value.uri_.uri_len = size;
+				llsd->value.uri_.uri = UT(CALLOC( size, sizeof(uint8_t) ));
 				llsd->value.uri_.dyn_uri = TRUE;
+				MEMCPY( llsd->value.uri_.uri, p, size );
 			}
 			va_end( args );
 			break;
@@ -263,27 +395,37 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			size = va_arg( args, int );
 			encoded = va_arg( args, int );
 			p = va_arg( args, uint8_t* );
+
 			if ( encoded )
 			{
-				llsd->value.binary_.size_enc = size;
+				llsd->value.binary_.enc_size = size;
 				llsd->value.binary_.enc = UT(CALLOC( size, sizeof(uint8_t) ));
 				llsd->value.binary_.dyn_enc = TRUE;
-				memcpy( llsd->value.binary_.enc, p, size );
+				MEMCPY( llsd->value.binary_.enc, p, size );
 			}
 			else
 			{
-				llsd->value.binary_.size_data = size;
+				llsd->value.binary_.data_size = size;
 				llsd->value.binary_.data = UT(CALLOC( size, sizeof(uint8_t) ));
 				llsd->value.binary_.dyn_data = TRUE;
-				memcpy( llsd->value.binary_.data, p, size );
+				MEMCPY( llsd->value.binary_.data, p, size );
 			}
 			va_end( args );
 			break;
+
 		case LLSD_ARRAY:
-			array_initialize( &(llsd->value.array_.array), DEFAULT_ARRAY_CAPACITY, &llsd_delete );
+			array_initialize( &(llsd->value.array_.array), 
+							  DEFAULT_ARRAY_CAPACITY, 
+							  &llsd_delete );
 			break;
+
 		case LLSD_MAP:
-			ht_initialize( &(llsd->value.map_.ht), DEFAULT_MAP_CAPACITY, &fnv_key_hash, &llsd_delete, &key_eq, &llsd_delete );
+			ht_initialize( &(llsd->value.map_.ht), 
+						   DEFAULT_MAP_CAPACITY, 
+						   &fnv_key_hash, 
+						   &llsd_delete, 
+						   &key_eq, 
+						   &llsd_delete );
 			break;
 	}
 }
@@ -299,30 +441,43 @@ static void llsd_deinitialize( llsd_t * llsd )
 		case LLSD_BOOLEAN:
 		case LLSD_INTEGER:
 		case LLSD_REAL:
-		case LLSD_UUID:
-		case LLSD_DATE:
 			return;
+
+		case LLSD_UUID:
+			if ( llsd->value.uuid_.dyn_str )
+				FREE( llsd->value.uuid_.str );
+			break;
+
+		case LLSD_DATE:
+			if ( llsd->value.date_.dyn_str )
+				FREE( llsd->value.date_.str );
+			break;
+
 		case LLSD_STRING:
 			if ( llsd->value.string_.dyn_str )
 				FREE( llsd->value.string_.str );
 			if ( llsd->value.string_.dyn_esc )
 				FREE( llsd->value.string_.esc );
 			break;
+
 		case LLSD_URI:
 			if ( llsd->value.uri_.dyn_uri )
 				FREE( llsd->value.uri_.uri );
 			if ( llsd->value.uri_.dyn_esc )
 				FREE( llsd->value.uri_.esc );
 			break;
+
 		case LLSD_BINARY:
 			if ( llsd->value.binary_.dyn_data )
 				FREE( llsd->value.binary_.data );
 			if ( llsd->value.binary_.dyn_enc )
 				FREE( llsd->value.binary_.enc );
 			break;
+
 		case LLSD_ARRAY:
 			array_deinitialize( &llsd->value.array_.array );
 			break;
+
 		case LLSD_MAP:
 			ht_deinitialize( &llsd->value.map_.ht );
 			break;
@@ -334,7 +489,7 @@ llsd_t * llsd_new( llsd_type_t type_, ... )
 {
 	va_list args;
 	llsd_t * llsd;
-	int a1;
+	int a1, a4, a5;;
 	uint8_t * a2;
 	double a3;
 	
@@ -357,11 +512,22 @@ llsd_t * llsd_new( llsd_type_t type_, ... )
 			break;
 
 		case LLSD_REAL:
-		case LLSD_DATE:
 			va_start( args, type_ );
 			a3 = va_arg( args, double );
 			va_end( args );
 			llsd_initialize( llsd, type_, a3 );
+			break;
+
+		case LLSD_DATE:
+			va_start( args, type_ );
+			a3 = va_arg( args, double );	/* double date */
+			a1 = va_arg( args, int );		/* len of str date */
+			a2 = NULL;
+			if ( a1 > 0 )
+			{
+				a2 = va_arg( args, uint8_t* ); /* pointer to str */
+			}
+			llsd_initialize( llsd, type_, a3, a1, a2 );
 			break;
 
 		case LLSD_UUID:
@@ -373,17 +539,21 @@ llsd_t * llsd_new( llsd_type_t type_, ... )
 
 		case LLSD_STRING:
 			va_start( args, type_ );
-			a2 = va_arg( args, uint8_t* );
-			a1 = va_arg( args, int );
+			a2 = va_arg( args, uint8_t* );  /* pointer to str */
+			a1 = va_arg( args, int );		/* length */
+			a4 = va_arg( args, int );		/* escaped? */
+			a5 = va_arg( args, int );		/* is used as map key */
 			va_end( args );
-			llsd_initialize( llsd, type_, a2, a1 );
+			llsd_initialize( llsd, type_, a2, a1, a4, a5 );
 			break;
 
 		case LLSD_URI:
 			va_start( args, type_ );
-			a2 = va_arg( args, uint8_t* );
+			a2 = va_arg( args, uint8_t* );	/* poniter to str */
+			a1 = va_arg( args, int );		/* length */
+			a4 = va_arg( args, int );		/* escaped? */
 			va_end( args );
-			llsd_initialize( llsd, type_, a2 );
+			llsd_initialize( llsd, type_, a2, a1, a4 );
 			break;
 
 		case LLSD_BINARY:
@@ -436,6 +606,7 @@ int llsd_get_size( llsd_t * llsd )
 	return ht_size( &llsd->value.map_.ht );
 }
 
+
 int llsd_equal( llsd_t * l, llsd_t * r )
 {
 	int eq;
@@ -454,25 +625,47 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 	{
 		case LLSD_UNDEF:
 			return TRUE;
+
 		case LLSD_BOOLEAN:
 			return ( llsd_as_bool( l ) == llsd_as_bool( r ) );
+
 		case LLSD_INTEGER:
 			return ( llsd_as_int( l ) == llsd_as_int( r ) );
+
 		case LLSD_REAL:
 			return ( llsd_as_real( l ) == llsd_as_real( r ) );
+
 		case LLSD_UUID:
-			return ( memcmp( &(l->value.uuid_.bits[0]), &(r->value.uuid_.bits[0]), UUID_LEN ) == 0 );
+			llsd_equalize( l, r );
+			if ( ( l->value.uuid_.bits != NULL ) && ( r->value.uuid_.bits != NULL ) )
+				return ( MEMCMP( l->value.uuid_.bits, r->value.uuid_.bits, UUID_LEN ) == 0 );
+			if ( ( r->value.uuid_.str != NULL ) && ( r->value.uuid_.str != NULL ) )
+				return ( MEMCMP( l->value.uuid_.str, r->value.uuid_.str, UUID_STR_LEN ) == 0 );
+			return FALSE;
+
 		case LLSD_STRING:
-			return ( strcmp( l->value.string_.str, r->value.string_.str ) == 0 );
+			return llsd_string_eq( &(l->value.string_), &(r->value.string_) );
+
 		case LLSD_DATE:
-			return ( llsd_as_date( l ) == llsd_as_real( r ) );
+			llsd_equalize( l, r );
+			if ( ( l->value.date_.use_dval == TRUE) && ( r->value.date_.use_dval == TRUE ) )
+				return ( l->value.date_.dval == l->value.date_.dval );
+			if ( ( l->value.date_.str != NULL ) && ( r->value.date_.str != NULL ) )
+				return ( MEMCMP( l->value.date_.str, r->value.date_.str, DATE_STR_LEN ) == 0 );
+			return FALSE;
+
 		case LLSD_URI:
-			return ( strcmp( l->value.uri_.uri, r->value.uri_.uri ) == 0 );
+			return llsd_uri_eq( &(l->value.uri_), &(r->value.uri_) );
+
 		case LLSD_BINARY:
-			return ( ( l->value.binary_.size_data == r->value.binary_.size_data ) &&
-				     ( l->value.binary_.size_enc == r->value.binary_.size_enc ) &&
-					 ( memcmp( l->value.binary_.data, r->value.binary_.data, l->value.binary_.size_data ) == 0 ) &&
-					 ( memcmp( l->value.binary_.enc, r->value.binary_.enc, l->value.binary_.size_enc) == 0 ) );
+			if ( ( l->value.binary_.data != NULL ) && ( r->value.binary_.data != NULL ) )
+				return ( ( l->value.binary_.data_size == r->value.binary_.data_size ) &&
+						 ( MEMCMP( l->value.binary_.data, r->value.binary_.data, l->value.binary_.data_size ) == 0 ) );
+			if ( ( l->value.binary_.enc != NULL ) && ( l->value.binary_.data != NULL ) )
+				return ( ( l->value.binary_.enc_size == r->value.binary_.enc_size ) &&
+					     ( MEMCMP( l->value.binary_.enc, r->value.binary_.enc, l->value.binary_.enc_size) == 0 ) );
+			return FALSE;
+
 		case LLSD_ARRAY:	
 			if ( array_size( &(l->value.array_.array) ) != array_size( &(r->value.array_.array) ) )
 				return FALSE;
@@ -532,15 +725,17 @@ llsd_bool_t llsd_as_bool( llsd_t * llsd )
 				return TRUE;
 			return FALSE;
 		case LLSD_UUID:
-			if ( memcmp( llsd->value.uuid_.bits, zero_uuid.bits, UUID_LEN ) == 0 )
+			/* destringify uuid if needed */
+			llsd_destringify_uuid( llsd );
+			if ( MEMCMP( llsd->value.uuid_.bits, zero_uuid.bits, UUID_LEN ) == 0 )
 				return FALSE;
 			return TRUE;
 		case LLSD_STRING:
-			if ( strlen(llsd->value.string_.str) == 0 )
+			if ( ( llsd->value.string_.str_len == 0 ) && ( llsd->value.string_.enc_len == 0 ) )
 				return FALSE;
 			return TRUE;
 		case LLSD_BINARY:
-			if ( ( llsd->value.binary_.size_data == 0 ) && (llsd->value.binary_.size_enc == 0 ) )
+			if ( ( llsd->value.binary_.data_size == 0 ) && (llsd->value.binary_.enc_size == 0 ) )
 				return FALSE;
 			return TRUE;
 	}
@@ -549,7 +744,10 @@ llsd_bool_t llsd_as_bool( llsd_t * llsd )
 
 llsd_int_t llsd_as_int( llsd_t * llsd )
 {
+	static uint8_t * p = NULL;
+	static llsd_int_t tmp_int;
 	CHECK_PTR_RET_MSG( llsd, 0, "invalid llsd pointer\n" );
+
 	switch( llsd->type_ )
 	{
 		case LLSD_UUID:
@@ -577,17 +775,25 @@ llsd_int_t llsd_as_int( llsd_t * llsd )
 			}
 			return (llsd_int_t)lrint( llsd->value.real_ );
 		case LLSD_DATE:
-			if ( (uint64_t)llsd->value.date_ >= UINT32_MAX )
+			/* de-stringify date if needed */
+			llsd_destringify_date( llsd );
+			if ( (uint64_t)llsd->value.date_.dval >= UINT32_MAX )
 			{
 				DEBUG( "truncating 64-bit date value to 32-bit integer...loss of data!" );
 			}
-			return (llsd_int_t)llsd->value.date_;
+			return (llsd_int_t)llsd->value.date_.dval;
 		case LLSD_STRING:
-			return (llsd_int_t)atoi( llsd->value.string_.str );
+			/* unescape the string if needed */
+			llsd_unescape_string( llsd );
+			p = UT(CALLOC( llsd->value.string_.str_len + 1, sizeof(uint8_t) ));
+			MEMCPY( p, llsd->value.string_.str_len, llsd->value.string_.str );
+			tmp_int = (llsd_int_t)atoi( p );
+			FREE( p );
+			return tmp_int;
 		case LLSD_BINARY:
 			/* decode the binary if needed */
 			llsd_decode_binary( llsd );
-			if ( llsd->value.binary_.size_data < sizeof(llsd_int_t) )
+			if ( llsd->value.binary_.data_size < sizeof(llsd_int_t) )
 			{
 				return 0;
 			}
@@ -598,7 +804,10 @@ llsd_int_t llsd_as_int( llsd_t * llsd )
 
 llsd_real_t llsd_as_real( llsd_t * llsd )
 {
+	static uint8_t * p = NULL;
+	static llsd_real_t tmp_real;
 	CHECK_PTR_RET_MSG( llsd, FALSE, "invalid llsd pointer\n" );
+
 	switch( llsd->type_ )
 	{
 		case LLSD_UUID:
@@ -617,13 +826,21 @@ llsd_real_t llsd_as_real( llsd_t * llsd )
 		case LLSD_REAL:
 			return (llsd_real_t)llsd->value.real_;
 		case LLSD_STRING:
-			return (llsd_real_t)atof( llsd->value.string_.str );
+			/* unescape the string if needed */
+			llsd_unescape_string( llsd );
+			p = UT(CALLOC( llsd->value.string_.str_len + 1, sizeof(uint8_t) ));
+			MEMCPY( p, llsd->value.string_.str_len, llsd->value.string_.str );
+			tmp_real = (llsd_real_t)atof( p );
+			FREE( p );
+			return tmp_real;
 		case LLSD_DATE:
-			return (llsd_real_t)llsd->value.date_;
+			/* de-stringify date if needed */
+			llsd_destringify_date( llsd );
+			return (llsd_real_t)llsd->value.date_.dval;
 		case LLSD_BINARY:
 			/* decode the binary if needed */
 			llsd_decode_binary( llsd );
-			if ( llsd->value.binary_.size_data < sizeof(llsd_real_t) )
+			if ( llsd->value.binary_.data_size < sizeof(llsd_real_t) )
 			{
 				return 0.;
 			}
@@ -631,32 +848,10 @@ llsd_real_t llsd_as_real( llsd_t * llsd )
 	}
 }
 
-static uint8_t hex_to_byte( uint8_t hi, uint8_t lo )
-{
-	uint8_t v = 0;
-	if ( isdigit(hi) && isdigit(lo) )
-	{
-		return ( ((hi << 4) & (0xF0)) | (0x0F & lo) );
-	}
-	else if ( isdigit(hi) && isxdigit(lo) )
-	{
-		return ( ((hi << 4) & 0xF0) | (0x0F & (10 + (tolower(lo) - 'a'))) );
-	}
-	else if ( isxdigit(hi) && isdigit(lo) )
-	{
-		return ( (((10 + (tolower(hi) - 'a')) << 4) & 0xF0) | (0x0F & lo) );
-	}
-	else if ( isxdigit(hi) && isxdigit(lo) )
-	{
-		return ( (((10 + (tolower(hi) - 'a')) << 4) & 0xF0) | (0x0F & (10 + (tolower(lo) - 'a'))) );
-	}
-}
-
 llsd_uuid_t llsd_as_uuid( llsd_t * llsd )
 {
-	static llsd_uuid_t tmp_uuid;
+	static llsd_t tmp_llsd;
 	static uint8_t bits[UUID_LEN];
-	uint8_t * str;
 	int i;
 
 	CHECK_PTR_RET_MSG( llsd, zero_uuid, "invalid llsd pointer\n" );
@@ -678,76 +873,29 @@ llsd_uuid_t llsd_as_uuid( llsd_t * llsd )
 			llsd_decode_binary( llsd );
 
 			/* if len < 16, return null uuid, otherwise first 16 bytes converted to uuid */
-			if ( llsd->value.binary_.size_data < 16 )
+			if ( llsd->value.binary_.data_size < 16 )
 			{
 				return zero_uuid;
 			}
 			MEMCPY( bits, llsd->value.binary_.data, UUID_LEN );
-			MEMSET( &tmp_uuid, 0, sizeof(llsd_uuid_t) );
-			tmp_uuid.bits = bits;
-			return tmp_uuid;
+			return (llsd_uuid_t){ .dyn_bits = FALSE,
+								  .dyn_str = FALSE,
+								  .bits = bits,
+								  .str = NULL };
 
 		case LLSD_STRING:
-			str = llsd->value.string_.str;
-
-			/* a valid 8-4-4-4-12 is converted to a UUID, all other values return null UUID */
-			/* TODO: add string unescaping when checking for value UUID */
-			/* with escaping the UUID string could be longer */
-			if ( strnlen( str, 36 ) < 36 )
-			{
-				return zero_uuid;
-			}
-
-			/* TODO: add string unescaping when checking for value UUID */
-			/* check for 8-4-4-4-12 */
-			for ( i = 0; i < 36; i++ )
-			{
-				if ( ( (i >= 0) && (i < 8) ) &&		/* 8 */
-					 ( (i >= 9) && (i < 13) ) &&    /* 4 */
-					 ( (i >= 14) && (i < 18) ) &&   /* 4 */
-					 ( (i >= 19) && (i < 23) ) &&	/* 4 */
-					 ( (i >= 24) && (i < 36) ) )	/* 12 */
-				{
-					if ( !isxdigit( str[i] ) )
-					{
-						return zero_uuid;
-					}
-				}
-				else if ( str[i] != '-' )
-				{
-					return zero_uuid;
-				}
-			}
-
-			/* covert to UUID */
-
-			/* 8 */
-			tmp_uuid.bits[0] = hex_to_byte( str[0], str[1] );
-			tmp_uuid.bits[1] = hex_to_byte( str[2], str[3] );
-			tmp_uuid.bits[2] = hex_to_byte( str[4], str[5] );
-			tmp_uuid.bits[3] = hex_to_byte( str[6], str[7] );
-
-			/* 4 */
-			tmp_uuid.bits[4] = hex_to_byte( str[9], str[10] );
-			tmp_uuid.bits[5] = hex_to_byte( str[11], str[12] );
-
-			/* 4 */
-			tmp_uuid.bits[6] = hex_to_byte( str[14], str[15] );
-			tmp_uuid.bits[7] = hex_to_byte( str[16], str[17] );
-
-			/* 4 */
-			tmp_uuid.bits[8] = hex_to_byte( str[19], str[20] );
-			tmp_uuid.bits[9] = hex_to_byte( str[21], str[22] );
-
-			/* 12 */
-			tmp_uuid.bits[10] = hex_to_byte( str[24], str[25] );
-			tmp_uuid.bits[11] = hex_to_byte( str[26], str[27] );
-			tmp_uuid.bits[12] = hex_to_byte( str[28], str[29] );
-			tmp_uuid.bits[13] = hex_to_byte( str[30], str[31] );
-			tmp_uuid.bits[14] = hex_to_byte( str[32], str[33] );
-			tmp_uuid.bits[15] = hex_to_byte( str[34], str[35] );
-
-			return tmp_uuid;
+			/* unescape the string if needed */
+			llsd_unescape_string( llsd );
+			tmp_llsd.type_ = LLSD_UUID;
+			tmp_llsd.value.uuid_ = { .dyn_bits = FALSE,
+									 .dyn_str = FALSE,
+									 .len = llsd->value.string_.str_len,
+									 .str = llsd->value.string_.str,
+									 .bits = NULL };
+			llsd_destringify_uuid( &tmp_llsd );
+			tmp_llsd.value.uuid_.len = 0;
+			tmp_llsd.value.uuid_.str = NULL; /* remove our reference */
+			return (llsd_uuid_t)tmp_llsd.value.uuid_;
 
 		case LLSD_UUID:
 			return (llsd_uuid_t)llsd->value.uuid_;
@@ -783,10 +931,6 @@ llsd_string_t llsd_as_string( llsd_t * llsd )
 	static int8_t tmp[64];
 	int len;
 	uint8_t * p;
-	double int_time;
-	int32_t useconds;
-	time_t seconds;
-	struct tm parts;
 
 	CHECK_PTR_RET_MSG( llsd, false_string, "invalid llsd pointer\n" );
 	switch( llsd->type_ )
@@ -802,56 +946,74 @@ llsd_string_t llsd_as_string( llsd_t * llsd )
 			return true_string;
 		case LLSD_INTEGER:
 			len = snprintf( tmp, 64, "%d", llsd->value.int_ );
-			return (llsd_string_t){ .dyn = FALSE, .escaped = FALSE, .str = tmp };
+			return (llsd_string_t){ .dyn_str = FALSE, 
+									.dyn_esc = FALSE,
+									.key_esc = FALSE,
+									.str_len = strnlen( tmp, 64 ),
+									.str = tmp,
+									.esc_len = 0,
+									.esc = NULL };
 		case LLSD_REAL:
 			len = snprintf( tmp, 64, "%f", llsd->value.real_ );
-			return (llsd_string_t){ .dyn = FALSE, .escaped = FALSE, .str = tmp };
+			return (llsd_string_t){ .dyn_str = FALSE, 
+									.dyn_esc = FALSE,
+									.key_esc = FALSE,
+									.str_len = strnlen( tmp, 64 ),
+									.str = tmp,
+									.esc_len = 0,
+									.esc = NULL };
 		case LLSD_UUID:
-			p = &(llsd->value.uuid_.bits[0]);
-			len = snprintf( tmp, 64, "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15] );
-			return (llsd_string_t){ .dyn = FALSE, .escaped = FALSE, .str = tmp };
+			/* stringify the uuid if needed */
+			llsd_stringify_uuid( llsd );
+			return (llsd_string_t){ .dyn_str = FALSE,
+									.dyn_esc = FALSE,
+									.key_esc = FALSE,
+									.str_len = UUID_STR_LEN,
+									.str = llsd->value.uuid_.str,
+									.esc_len = 0,
+									.esc = NULL };
+
 		case LLSD_STRING:
 			return llsd->value.string_;
 		case LLSD_DATE:
-			int_time = floor( llsd->value.date_ );
-			seconds = (time_t)int_time;
-			useconds = (int32_t)( ( llsd->value.date_ - int_time) * 1000000.0 );
-			parts = *gmtime(&seconds);
-			if ( useconds != 0 )
-			{
-				len = snprintf( tmp, 64, "%04d-%02d-%02dT%02d:%02d:%02d.%03dZ",
-							   parts.tm_year + 1900,
-							   parts.tm_mon + 1,
-							   parts.tm_mday,
-							   parts.tm_hour,
-							   parts.tm_min,
-							   parts.tm_sec,
-							   (int32_t)(useconds / 1000.f + 0.5f) );
-			}
-			else
-			{
-				len = snprintf( tmp, 64, "%04d-%02d-%02dT%02d:%02d:%02d.000Z",
-							   parts.tm_year + 1900,
-							   parts.tm_mon + 1,
-							   parts.tm_mday,
-							   parts.tm_hour,
-							   parts.tm_min,
-							   parts.tm_sec );
-			}
-			return (llsd_string_t){ .dyn = FALSE, .escaped = FALSE, .str = tmp };
-
+			/* stringify the date if needed */
+			llsd_stringify_date( llsd );
+			return (llsd_string_t){ .dyn_str = FALSE,
+									.dyn_esc = FALSE,
+									.key_esc = FALSE,
+									.str_len = DATE_STR_LEN,
+									.str = llsd->value.date_.str,
+									.esc_len = 0,
+									.esc = NULL };
 		case LLSD_URI:
-			/* TODO: make sure it is escaped properly */
-			return (llsd_string_t){ .dyn = FALSE, .escaped = TRUE, .str = llsd->value.uri_.uri };
+			/* unescape the URI if needed */
+			llsd_unescape_uri( llsd );
+			return (llsd_string_t){ .dyn_str = FALSE, 
+									.dyn_esc = FALSE,
+									.key_esc = FALSE,
+									.str_len = llsd->value.uri_.uri_len,
+									.str = llsd->value.uri_.uri,
+									.esc_len = 0,
+									.esc = NULL };
 
 		case LLSD_BINARY:
+			/* decode binary if needed */
+			llsd_decode_binary( llsd );
 			/* TODO: check for valid UTF-8 */
-			return (llsd_string_t){ .dyn = FALSE, .escaped = FALSE, .str = llsd->value.binary_.data };
+			return (llsd_string_t){ .dyn_str = FALSE, 
+									.dyn_esc = FALSE,
+									.key_esc = FALSE,
+									.str_len = llsd->value.binary_.data_size,
+									.str = llsd->value.binary_.data,
+									.esc_len = 0,
+									.esc = NULL };
 	}
 }
 
 llsd_date_t llsd_as_date( llsd_t * llsd )
 {
+	static llsd_t tmp_llsd;
+
 	CHECK_PTR_RET_MSG( llsd, 0., "invalid llsd pointer\n" );
 	switch( llsd->type_ )
 	{
@@ -866,14 +1028,29 @@ llsd_date_t llsd_as_date( llsd_t * llsd )
 			break;
 
 		case LLSD_INTEGER:
-			return (llsd_date_t)llsd->value.int_;
+			return (llsd_date_t){ .use_dval = TRUE,
+								  .dyn_str = FALSE,
+								  .dval = (double)llsd->value.int_,
+								  .str = NULL };
 
 		case LLSD_REAL:
-			return (llsd_date_t)llsd->value.real_;
+			return (llsd_date_t){ .use_dval = TRUE,
+								  .dyn_str = FALSE,
+								  .dval = llsd->value.real_,
+								  .str = NULL };
 
 		case LLSD_STRING:
-			/* TODO: parse string format date into a real */
-			break;
+			/* unescape the string if needed */
+			llsd_unescape_string( llsd );
+
+			tmp_llsd.type_ = LLSD_DATE;
+			tmp_llsd.value.date_ = { .use_dval = FALSE,
+									 .dyn_str = FALSE,
+									 .dval = 0.0,
+									 .str = llsd->value.string_.str };
+			llsd_destringify_date( &tmp_llsd );
+			tmp_llsd.value.date_.str = NULL; /* remove reference to str */
+			return (llsd_date_t)llsd_tmp.value.date_;
 
 		case LLSD_DATE:
 			return llsd->value.date_;
@@ -897,14 +1074,29 @@ llsd_uri_t llsd_as_uri( llsd_t * llsd )
 			break;
 
 		case LLSD_STRING:
-			return (llsd_uri_t){ .dyn = FALSE, .uri = llsd->value.string_.str } ;
+			/* unescape the string if needed */
+			llsd_unescape_string( llsd );
+			return (llsd_uri_t){ .dyn_uri = FALSE, 
+								 .dyn_esc = FALSE,
+								 .uri_len = llsd->value.string_.str_len,
+								 .uri = llsd->value.string_.str,
+								 .esc_len = 0,
+								 .esc = NULL };
 
 		case LLSD_URI:
 			return llsd->value.uri_;
 
 		case LLSD_BINARY:
+			/* decode the binary if needed */
+			llsd_decode_binary( llsd );
+
 			/* TODO: check for valid UTF-8 */
-			return (llsd_uri_t){ .dyn = FALSE, .uri = llsd->value.binary_.data };
+			return (llsd_uri_t){ .dyn_uri = FALSE, 
+								 .dyn_esc = FALSE,
+								 .uri_len = llsd->value.binary_.data_size,
+								 .uri = llsd->value.binary_.data,
+								 .esc_len = 0,
+								 .esc = NULL };
 	}
 }
 
@@ -919,7 +1111,6 @@ llsd_binary_t llsd_as_binary( llsd_t * llsd )
 	{
 		case LLSD_UNDEF:
 		case LLSD_DATE:
-		case LLSD_URI:
 		case LLSD_ARRAY:
 		case LLSD_MAP:
 			FAIL( "illegal conversion of %s to binary\n", llsd_get_type_string( llsd->type_ ) );
@@ -932,22 +1123,335 @@ llsd_binary_t llsd_as_binary( llsd_t * llsd )
 
 		case LLSD_INTEGER:
 			tmpl = htonl( llsd->value.int_ );
-			return (llsd_binary_t){ .size = sizeof(llsd_int_t), .data = (uint8_t*)&tmpl };
+			return (llsd_binary_t){ .dyn_data = FALSE,
+									.dyn_enc = FALSE,
+									.encoding = LLSD_NONE,
+									.data_size = sizeof( llsd_int_t ),
+									.data = (uint8_t*)&tmpl,
+									.enc_size = 0,
+									.enc = NULL };
 
 		case LLSD_REAL:
 			tmpll = htobe64( *((uint64_t*)&(llsd->value.real_)) );
-			return (llsd_binary_t){ .size = sizeof(llsd_real_t), .data = (uint8_t*)&tmpll };
+			return (llsd_binary_t){ .dyn_data = FALSE,
+									.dyn_enc = FALSE,
+									.encoding = LLSD_NONE,
+									.data_size = sizeof( llsd_real_t ),
+									.data = (uint8_t*)&tmpll,
+									.enc_size = 0,
+									.enc = NULL };
 
 		case LLSD_UUID:
-			return (llsd_binary_t){ .size = UUID_LEN, .data = &(llsd->value.uuid_.bits[0]) };
+			/* de-stringify the uuid if needed */
+			llsd_destringify_uuid( llsd );
+			return (llsd_binary_t){ .dyn_data = FALSE,
+									.dyn_enc = FALSE,
+									.encoding = LLSD_NONE,
+									.data_size = UUID_LEN,
+									.data = llsd->value.uuid_.bits,
+									.enc_size = 0,
+									.enc = NULL };
 
 		case LLSD_STRING:
-			return (llsd_binary_t){ .size = strlen( llsd->value.string_.str ), .data = llsd->value.string_.str };
+			/* unescape string if needed */
+			llsd_unescape_string( llsd );
+			return (llsd_binary_t){ .dyn_data = FALSE,
+									.dyn_enc = FALSE,
+									.encoding = LLSD_NONE,
+									.data_size = llsd->value.string_.str_len,
+									.data = llsd->value.string_.str,
+									.enc_size = 0,
+									.enc = NULL };
+
+		case LLSD_URI:
+			/* unescape uri if needed */
+			llsd_unescape_uri( llsd );
+			return (llsd_binary_t){ .dyn_data = FALSE,
+									.dyn_enc = FALSE,
+									.encoding = LLSD_NONE,
+									.data_size = llsd->value.uri_.uri_len,
+									.data = llsd->value.uri_.uri,
+									.enc_size = 0,
+									.enc = NULL };
 
 		case LLSD_BINARY:
 			return llsd->value.binary_;
 	}
 }
+
+static uint8_t hex_to_byte( uint8_t hi, uint8_t lo )
+{
+	uint8_t v = 0;
+	if ( isdigit(hi) && isdigit(lo) )
+	{
+		return ( ((hi << 4) & (0xF0)) | (0x0F & lo) );
+	}
+	else if ( isdigit(hi) && isxdigit(lo) )
+	{
+		return ( ((hi << 4) & 0xF0) | (0x0F & (10 + (tolower(lo) - 'a'))) );
+	}
+	else if ( isxdigit(hi) && isdigit(lo) )
+	{
+		return ( (((10 + (tolower(hi) - 'a')) << 4) & 0xF0) | (0x0F & lo) );
+	}
+	else if ( isxdigit(hi) && isxdigit(lo) )
+	{
+		return ( (((10 + (tolower(hi) - 'a')) << 4) & 0xF0) | (0x0F & (10 + (tolower(lo) - 'a'))) );
+	}
+}
+
+
+int llsd_stringify_uuid( llsd_t * llsd )
+{
+	uint8_t * p;
+	CHECK_PTR_RET( llsd, FALSE );
+	CHECK_RET( (llsd->type_ == LLSD_UUID), FALSE );
+	CHECK_RET( (llsd->value.uuid_.len == 0), FALSE );
+	CHECK_RET( (llsd->value.uuid_.str == NULL), FALSE );
+	CHECK_PTR_RET( llsd->value.uuid_.bits, FALSE );
+
+	/* allocate the string */
+	llsd->value.uuid_.str = UT(CALLOC( UUID_STR_LEN, sizeof(uint8_t) ));
+	llsd->value.uuid_.dyn_str = TRUE;
+	llsd->value.uuid_.len = UUID_STR_LEN;
+
+	/* convert to string and cache it */
+	p = llsd->value.uuid_.bits;
+	snprintf( llsd->value.uuid_.str, UUID_STR_LEN, 
+			  "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", 
+			  p[0], p[1], p[2], p[3], 
+			  p[4], p[5], 
+			  p[6], p[7], 
+			  p[8], p[9], 
+			  p[10], p[11], p[12], p[13], p[14], p[15] );
+
+	return TRUE;
+}
+
+/* A valid 8-4-4-4-12 string UUID is converted to a binary UUID */
+int llsd_destringify_uuid( llsd_t * llsd )
+{
+	uint8_t * pin;
+	uint8_t * pout;
+	CHECK_PTR_RET( llsd, FALSE );
+	CHECK_RET( (llsd->type_ == LLSD_UUID), FALSE );
+	CHECK_RET( (llsd->value.uuid_.len == UUID_STR_LEN), FALSE );
+	CHECK_PTR_RET( llsd->value.uuid_.str, FALSE );
+	CHECK_RET( (llsd->value.uuid_.bits == NULL), FALSE );
+
+	/* check for 8-4-4-4-12 */
+	for ( i = 0; i < 36; i++ )
+	{
+		if ( ( (i >= 0) && (i < 8) ) &&		/* 8 */
+			 ( (i >= 9) && (i < 13) ) &&    /* 4 */
+			 ( (i >= 14) && (i < 18) ) &&   /* 4 */
+			 ( (i >= 19) && (i < 23) ) &&	/* 4 */
+			 ( (i >= 24) && (i < 36) ) )	/* 12 */
+		{
+			if ( !isxdigit( llsd->value.uuid_.str[i] ) )
+			{
+				return FALSE;
+			}
+		}
+		else if ( llsd->value.uuid_.str[i] != '-' )
+		{
+			return FALSE;
+		}
+	}
+
+	/* allocate the bits */
+	llsd->value.uuid_.bits = UT(CALLOC( UUID_LEN, sizeof(uint8_t) ));
+	llsd->value.uuid_.dyn_bits = TRUE;
+
+	/* covert to UUID */
+	pin = llsd->value.uuid_.str;
+	pout = llsd->value.uuid_.bits;
+
+	/* 8 */
+	pout[0] = hex_to_byte( pin[0], pin[1] );
+	pout[1] = hex_to_byte( pin[2], pin[3] );
+	pout[2] = hex_to_byte( pin[4], pin[5] );
+	pout[3] = hex_to_byte( pin[6], pin[7] );
+
+	/* 4 */
+	pout[4] = hex_to_byte( pin[9], pin[10] );
+	pout[5] = hex_to_byte( pin[11], pin[12] );
+
+	/* 4 */
+	pout[6] = hex_to_byte( pin[14], pin[15] );
+	pout[7] = hex_to_byte( pin[16], pin[17] );
+
+	/* 4 */
+	pout[8] = hex_to_byte( pin[19], pin[20] );
+	pout[9] = hex_to_byte( pin[21], pin[22] );
+
+	/* 12 */
+	pout[10] = hex_to_byte( pin[24], pin[25] );
+	pout[11] = hex_to_byte( pin[26], pin[27] );
+	pout[12] = hex_to_byte( pin[28], pin[29] );
+	pout[13] = hex_to_byte( pin[30], pin[31] );
+	pout[14] = hex_to_byte( pin[32], pin[33] );
+	pout[15] = hex_to_byte( pin[34], pin[35] );
+
+	return TRUE;
+}
+
+int llsd_stringify_date( llsd_t * llsd )
+{
+	double int_time;
+	int32_t useconds;
+	time_t seconds;
+	struct tm parts;
+
+	CHECK_PTR_RET( llsd, FALSE );
+	CHECK_RET( (llsd->type_ == LLSD_DATE), FALSE );
+	CHECK_RET( (llsd->value.date_.len == 0), FALSE );
+	CHECK_RET( (llsd->value.date_.str == NULL), FALSE );
+
+	/* allocate the string */
+	llsd->value.date_.str = CALLOC( DATE_STR_LEN, sizeof(uint8_t) );
+	llsd->value.date_.dyn_str = TRUE;
+	llsd->value.date_.len = DATE_STR_LEN;
+
+	int_time = floor( llsd->value.date_.dval );
+	seconds = (time_t)int_time;
+	useconds = (int32_t)( ( llsd->value.date_.dval - int_time) * 1000000.0 );
+	parts = *gmtime(&seconds);
+	snprintf( llsd->value.date_.str, DATE_STR_LEN, 
+			  "%04d-%02d-%02dT%02d:%02d:%02d.%03dZ",
+			  parts.tm_year + 1900,
+			  parts.tm_mon + 1,
+			  parts.tm_mday,
+			  parts.tm_hour,
+			  parts.tm_min,
+			  parts.tm_sec,
+			  ((useconds != 0) ? (int32_t)(useconds / 1000.f + 0.5f) : 0) );
+	return TRUE;
+}
+
+int llsd_destringify_date( llsd_t * llsd )
+{
+	return TRUE;
+}
+
+int llsd_escape_string( llsd_t * llsd )
+{
+	return TRUE;
+}
+
+int llsd_unescape_string( llsd_t * llsd )
+{
+	return TRUE;
+}
+
+int llsd_escape_uri( llsd_t * llsd )
+{
+	return TRUE;
+}
+
+int llsd_unescape_uri( llsd_t * llsd )
+{
+	return TRUE;
+}
+
+int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding )
+{
+	CHECK_PTR_RET( llsd, FALSE );
+	CHECK_RET( (llsd->type_ == LLSD_BINARY), FALSE );
+	CHECK_RET( (llsd->value.binary_.data_size != 0), FALSE );
+	CHECK_PTR_RET( llsd->value.binary_.data, FALSE );
+	CHECK_RET( (llsd->value.binary_.enc_size == 0), FALSE );
+	CHECK_RET( (llsd->value.binary_.enc == NULL), FALSE );
+	CHECK_RET( ((encoding >= LLSD_BIN_ENC_FIRST) && (encoding < LLSD_BIN_ENC_LAST)), FALSE );
+
+	switch ( encoding )
+	{
+		case LLSD_BASE16:
+			WARN( "base 16 encoding unimplemented\n" );
+			return FALSE;
+		case LLSD_BASE64:
+			/* allocate enc buffer */
+			llsd->value.binary_.enc_size = BASE64_LENGTH( lsd->value.binary_.data_size );
+			llsd->value.binary_.enc = UT(CALLOC( llsd->value.binary_.enc_size, sizeof(uint8_t) ));
+			llsd->value.binary_.dyn_enc = TRUE;
+			llsd->value.binary_.encoding = LLSD_BASE64;
+
+			/* encode the data */
+			base64_encode( llsd->value.binary_.data,
+						   llsd->value.binary_.data_size,
+						   llsd->value.binary_.enc,
+						   llsd->value.binary_.enc_size );
+			break;
+	}
+
+	return TRUE;
+}
+
+/* Base64: the exact amount is 3 * inlen / 4, minus 1 if the input ends
+ with "=" and minus another 1 if the input ends with "==".
+ Dividing before multiplying avoids the possibility of overflow.  */
+static uint32_t llsd_decoded_binary_len( llsd_t * llsd, llsd_bin_enc_t encoding )
+{
+	uint32_t len = 0;
+	uint32_t size = 0;
+	CHECK_PTR_RET( llsd, -1 );
+	CHECK_RET( (llsd->type_ == LLSD_BINARY), -1 );
+	CHECK_RET( (llsd->value.binary_.enc_size != 0), -1 );
+	CHECK_RET_PTR( llsd->value.binary_.enc, -1 );
+
+	size = llsd->value.binary_.data_size;
+
+	switch ( encoding )
+	{
+		case LLSD_BASE16:
+			break;
+		case LLSD_BASE64:
+			len = 3 * (size / 4) + 2;
+			if ( llsd->value.binary_.data[ size - 1 ] == '=' )
+				len--;
+			if ( llsd->value.binary_.data[ size - 2 ] == '=' )
+				len--;
+			return len;
+	}
+	return -1;
+}
+
+int llsd_decode_binary( llsd_t * llsd )
+{
+	uint32_t size;
+	CHECK_PTR_RET( llsd, FALSE );
+	CHECK_RET( (llsd->type_ == LLSD_BINARY), FALSE );
+	CHECK_RET( (llsd->value.binary_.data_size == 0), FALSE );
+	CHECK_PTR( (llsd->value.binary_.data == NULL), FALSE );
+	CHECK_RET( (llsd->value.binary_.enc_size != 0), FALSE );
+	CHECK_RET_PTR( llsd->value.binary_.enc, FALSE );
+	CHECK_RET( ((llsd->value.binary_.encoding >= LLSD_BIN_ENC_FIRST) && (llsd->value.binary_.encoding < LLSD_BIN_ENC_LAST)), FALSE );
+
+	switch ( llsd->value.binary_.encoding )
+	{
+		case LLSD_BASE16:
+			break;
+		case LLSD_BASE64:
+			/* figure out the size of the needed buffer */
+			size = llsd_decoded_binary_len( llsd );
+			CHECK_RET( (size > -1), FALSE );
+
+			/* allocate the data buffer */
+			llsd->value.binary_.data = UT(CALLOC( size, sizeof(uint8_t) ));
+			llsd->value.binary_.dyn_data = TRUE;
+
+			/* decode the base64 data */
+			base64_decode( llsd->value.binary_.enc,
+						   llsd->value.binary_.enc_size,
+						   llsd->value.binary_.data,
+						   &(llsd->value.binary_.data_size) );
+			CHECK_RET( (llsd->value.binary_.data_size == size), FALSE );
+			break;
+	}
+
+	return TRUE;
+}
+
 
 void llsd_array_append( llsd_t * arr, llsd_t * data )
 {
@@ -1066,26 +1570,25 @@ static llsd_t * llsd_reserve_binary( uint32_t size )
 	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + size );
 	llsd->type_ = LLSD_BINARY;
 	llsd->value.binary_.dyn = FALSE;
-	llsd->value.binary_.size = size;
+	llsd->value.binary_.data_size = size;
 	llsd->value.binary_.data = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
 	return llsd;
 }
 
 static llsd_t * llsd_reserve_string( uint32_t size )
 {
-	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + size + 1 );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + size );
 	llsd->type_ = LLSD_STRING;
-	llsd->value.string_.dyn = FALSE;
-	llsd->value.string_.escaped = FALSE;
+	llsd->value.string_.str_len = size;
 	llsd->value.string_.str = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
 	return llsd;
 }
 
 static llsd_t * llsd_reserve_uri( uint32_t size )
 {
-	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + size + 1 );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + size );
 	llsd->type_ = LLSD_URI;
-	llsd->value.uri_.dyn = FALSE;
+	llsd->value.uri_.uri_len = size;
 	llsd->value.uri_.uri = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
 	return llsd;
 }
@@ -1171,15 +1674,14 @@ static llsd_t * llsd_parse_binary( FILE * fin )
 			case 's':
 				fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
-				llsd = llsd_reserve_string( t1 ); /* allocates t1 + 1 bytes */
+				llsd = llsd_reserve_string( t1 );
 				fread( llsd->value.string_.str, sizeof(uint8_t), t1, fin );
-				/* TODO: detect if it is escaped and set the escaped flag */
 				WARN( "%*sSTRING %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd;
 			case 'l':
 				fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
-				llsd = llsd_reserve_uri( t1 ); /* allocates t1 + 1 bytes */
+				llsd = llsd_reserve_uri( t1 );
 				fread( llsd->value.uri_.uri, sizeof(uint8_t), t1, fin );
 				WARN( "%*sURI %lu - %lu\n", indent, " ", start, ftell( fin ) - 1 );
 				return llsd;
@@ -1260,11 +1762,11 @@ llsd_t * llsd_parse( FILE *fin )
 	CHECK_RET_MSG( fin, NULL, "invalid file pointer\n" );
 
 	fread( sig, sizeof(uint8_t), SIG_LEN, fin );
-	if ( memcmp( sig, binary_header, SIG_LEN ) == 0 )
+	if ( MEMCMP( sig, binary_header, SIG_LEN ) == 0 )
 	{
 		return llsd_parse_binary( fin );
 	}
-	else if ( memcmp( sig, notation_header, SIG_LEN ) == 0 )
+	else if ( MEMCMP( sig, notation_header, SIG_LEN ) == 0 )
 	{
 		return llsd_parse_notation( fin );
 	}
@@ -1468,13 +1970,17 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			break;
 		case LLSD_UUID:
 			p = 'u';
+			/* de-stringify the uuid if needed */
+			llsd_destringify_uuid( llsd );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += fwrite( &(llsd->value.uuid_.bits[0]), sizeof(uint8_t), UUID_LEN, fout );
 			WARN( "%*sUUID %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_STRING:
 			p = 's';
-			s = strlen( llsd->value.string_.str );
+			/* unescape the string if needed */
+			llsd_unescape_string( llsd );
+			s = llsd->value.string_.str_len;
 			t1 = htonl( s );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
@@ -1483,7 +1989,9 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			break;
 		case LLSD_DATE:
 			p = 'd';
-			t2.d = llsd_as_date( llsd );
+			/* de-stringify date if needed */
+			llsd_destringify_date( llsd );
+			t2.d = llsd->value.date_.dval;
 			t2.ull = htobe64( t2.ull );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t2, sizeof(uint64_t), 1, fout ) * sizeof(uint64_t) );
@@ -1491,7 +1999,9 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			break;
 		case LLSD_URI:
 			p = 'l';
-			s = strlen( llsd->value.uri_.uri );
+			/* unescape uri if needed */
+			llsd_unescape_uri( llsd );
+			s = llsd->value.uri_.uri_len;
 			t1 = htonl( s );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
@@ -1500,7 +2010,9 @@ static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			break;
 		case LLSD_BINARY:
 			p = 'b';
-			s = llsd->value.binary_.size;
+			/* decode binary if needed */
+			llsd_decode_binary( llsd );
+			s = llsd->value.binary_.data_size;
 			t1 = htonl( s );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );

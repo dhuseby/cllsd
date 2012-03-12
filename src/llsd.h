@@ -47,14 +47,24 @@ typedef enum llsd_serializer_s
 	LLSD_ENC_XML,
 	LLSD_ENC_NOTATION,
 	LLSD_ENC_JSON,
-	LLSD_ENC_BINARY
+	LLSD_ENC_BINARY,
+
+	LLSD_ENC_LAST,
+	LLSD_ENC_FIRST = LLSD_XML,
+	LLSD_ENC_COUNT = LLSD_ENC_LAST - LLSD_ENC_FIRST
 
 } llsd_serializer_t;
 
 typedef enum llsd_bin_enc_s
 {
+	LLSD_NONE,
 	LLSD_BASE16,
-	LLSD_BASE64
+	LLSD_BASE64,
+
+	LLSD_BIN_ENC_LAST,
+	LLSD_BIN_ENC_FIRST = LLSD_RAW,
+	LLSD_BIN_END_COUNT = LLSD_BIN_ENC_LAST - LLSD_BIN_ENC_FIRST
+
 } llsd_bin_enc_t;
 
 #ifndef TRUE
@@ -72,17 +82,19 @@ struct llsd_uuid_s
 {
 	int					dyn_bits: 1;
 	int					dyn_str:  1;
-	uint8_t *			bits;
+	uint32_t			len;
 	uint8_t *			str;
+	uint8_t *			bits;
 };
 
 struct llsd_binary_s
 {
 	int					dyn_data: 1;
 	int					dyn_enc: 1;
-	int32_t				size_data;
+	llsd_bin_enc_t		encoding;
+	uint32_t			data_size;
 	uint8_t	*			data;
-	int32_t				size_enc;
+	uint32_t			enc_size;
 	uint8_t *			enc;
 };
 
@@ -95,7 +107,9 @@ struct llsd_string_s
 	int					dyn_str: 1;
 	int					dyn_esc: 1;
 	int					key_esc: 1;
+	uint32_t			str_len;
 	uint8_t *			str;
+	uint32_t			esc_len;
 	uint8_t *			esc;
 };
 
@@ -103,8 +117,21 @@ struct llsd_uri_s
 {
 	int					dyn_uri: 1;
 	int					dyn_esc: 1;
+	uint32_t			uri_len;
 	uint8_t *			uri;
+	uint32_t			esc_len;
 	uint8_t *			esc;
+};
+
+#define DATE_STR_LEN (24)
+/* YYYY-MM-DDTHH:MM:SS.FFFZ */
+struct llsd_date_s
+{
+	int					use_dval: 1;
+	int					dyn_str: 1;
+	uint32_t			len;
+	double				dval;
+	uint8_t*			str;
 };
 
 #define DEFAULT_ARRAY_CAPACITY (8)
@@ -119,16 +146,13 @@ struct llsd_map_s
 	ht_t		ht;
 };
 
-#define DATE_STR_LEN (24)
-/* YYYY-MM-DDTHH:MM:SS.FFFZ */
-
 /* the llsd types */
 typedef int						llsd_bool_t;
 typedef int32_t					llsd_int_t;
 typedef double					llsd_real_t;
 typedef struct llsd_uuid_s		llsd_uuid_t;
 typedef struct llsd_string_s	llsd_string_t;
-typedef double					llsd_date_t;
+typedef struct llsd_date_s		llsd_date_t;
 typedef struct llsd_uri_s		llsd_uri_t;
 typedef struct llsd_binary_s	llsd_binary_t;
 typedef struct llsd_array_s		llsd_array_t;
@@ -190,6 +214,10 @@ llsd_array_t llsd_as_array( llsd_t * llsd );
 llsd_map_t llsd_as_map( llsd_t * llsd );
 
 /* string/binary conversions */
+int llsd_stringify_uuid( llsd_t * llsd );
+int llsd_destringify_uuid( llsd_t * llsd );
+int llsd_stringify_date( llsd_t * llsd );
+int llsd_destringify_date( llsd_t * llsd );
 int llsd_escape_string( llsd_t * llsd );
 int llsd_unescape_string( llsd_t * llsd );
 int llsd_esacpe_uri( llsd_t * llsd );

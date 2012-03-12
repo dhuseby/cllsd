@@ -49,6 +49,7 @@
 #define REALLOC realloc_
 #define FREE free_
 #define MEMCPY memcpy
+#define MEMCMP memcmp
 #define MEMSET memset
 #define STRDUP strdup_
 

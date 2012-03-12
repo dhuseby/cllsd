@@ -1,4 +1,5 @@
 env = Environment(CC='gcc', CCFLAGS='-O0 -gstabs+')
 env.Library('llsd', ['array.c',
 					 'hashtable.c',
-					 'llsd.c'])
+					 'llsd.c',
+					 'base64.c'])
