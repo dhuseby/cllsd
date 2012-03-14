@@ -16,32 +16,30 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
 
-/* Written by Simon Josefsson.  Partially adapted from GNU MailUtils
- * (mailbox/filter_trans.c, as of 2004-11-28).  Improved by review
+/* Written by Simon Josefsson.	Partially adapted from GNU MailUtils
+ * (mailbox/filter_trans.c, as of 2004-11-28).	Improved by review
  * from Paul Eggert, Bruno Haible, and Stepan Kasal.
  *
  * See also RFC 3548 <http://www.ietf.org/rfc/rfc3548.txt>.
  *
- * Be careful with error checking.  Here is how you would typically
+ * Be careful with error checking.	Here is how you would typically
  * use these functions:
  *
  * bool ok = base64_decode_alloc (in, inlen, &out, &outlen);
  * if (!ok)
- *   FAIL: input was not valid base64
+ *	 FAIL: input was not valid base64
  * if (out == NULL)
- *   FAIL: memory allocation error
+ *	 FAIL: memory allocation error
  * OK: data in OUT/OUTLEN
  *
  * size_t outlen = base64_encode_alloc (in, inlen, &out);
  * if (out == NULL && outlen == 0 && inlen != 0)
- *   FAIL: input too long
+ *	 FAIL: input too long
  * if (out == NULL)
- *   FAIL: memory allocation error
+ *	 FAIL: memory allocation error
  * OK: data in OUT/OUTLEN.
  *
  */
-
-/*#include <config.h>*/
 
 /* Get prototype. */
 #include "base64.h"
@@ -64,46 +62,46 @@ to_uchar (char ch)
    possible.  If OUTLEN is larger than BASE64_LENGTH(INLEN), also zero
    terminate the output buffer. */
 void
-base64_encode (const char *restrict in, size_t inlen,
-	       char *restrict out, size_t outlen)
+base64_encode (const char * in, size_t inlen,
+		   char * out, size_t outlen)
 {
   static const char b64str[64] =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
   while (inlen && outlen)
-    {
-      *out++ = b64str[(to_uchar (in[0]) >> 2) & 0x3f];
-      if (!--outlen)
+	{
+	  *out++ = b64str[(to_uchar (in[0]) >> 2) & 0x3f];
+	  if (!--outlen)
 	break;
-      *out++ = b64str[((to_uchar (in[0]) << 4)
-		       + (--inlen ? to_uchar (in[1]) >> 4 : 0))
-		      & 0x3f];
-      if (!--outlen)
+	  *out++ = b64str[((to_uchar (in[0]) << 4)
+			   + (--inlen ? to_uchar (in[1]) >> 4 : 0))
+			  & 0x3f];
+	  if (!--outlen)
 	break;
-      *out++ =
+	  *out++ =
 	(inlen
 	 ? b64str[((to_uchar (in[1]) << 2)
 		   + (--inlen ? to_uchar (in[2]) >> 6 : 0))
 		  & 0x3f]
 	 : '=');
-      if (!--outlen)
+	  if (!--outlen)
 	break;
-      *out++ = inlen ? b64str[to_uchar (in[2]) & 0x3f] : '=';
-      if (!--outlen)
+	  *out++ = inlen ? b64str[to_uchar (in[2]) & 0x3f] : '=';
+	  if (!--outlen)
 	break;
-      if (inlen)
+	  if (inlen)
 	inlen--;
-      if (inlen)
+	  if (inlen)
 	in += 3;
-    }
+	}
 
   if (outlen)
-    *out = '\0';
+	*out = '\0';
 }
 
 /* Allocate a buffer and store zero terminated base64 encoded data
    from array IN of size INLEN, returning BASE64_LENGTH(INLEN), i.e.,
-   the length of the encoded data, excluding the terminating zero.  On
+   the length of the encoded data, excluding the terminating zero.	On
    return, the OUT variable will hold a pointer to newly allocated
    memory that must be deallocated by the caller.  If output string
    length would overflow, 0 is returned and OUT is set to NULL.  If
@@ -128,14 +126,14 @@ base64_encode_alloc (const char *in, size_t inlen, char **out)
    * (inlen > 4).
    */
   if (inlen > outlen)
-    {
-      *out = NULL;
-      return 0;
-    }
+	{
+	  *out = NULL;
+	  return 0;
+	}
 
   *out = malloc (outlen);
   if (!*out)
-    return outlen;
+	return outlen;
 
   base64_encode (in, inlen, *out, outlen);
 
@@ -143,7 +141,7 @@ base64_encode_alloc (const char *in, size_t inlen, char **out)
 }
 
 /* With this approach this file works independent of the charset used
-   (think EBCDIC).  However, it does assume that the characters in the
+   (think EBCDIC).	However, it does assume that the characters in the
    Base64 alphabet (A-Za-z0-9+/) are encoded in 0..255.  POSIX
    1003.1-2001 require that char and unsigned char are 8-bit
    quantities, though, taking care of that problem.  But this may be a
@@ -306,120 +304,120 @@ isbase64 (char ch)
    otherwise.  If *OUTLEN is too small, as many bytes as possible will
    be written to OUT.  On return, *OUTLEN holds the length of decoded
    bytes in OUT.  Note that as soon as any non-alphabet characters are
-   encountered, decoding is stopped and false is returned.  This means
+   encountered, decoding is stopped and false is returned.	This means
    that, when applicable, you must remove any line terminators that is
    part of the data stream before calling this function.  */
 bool
-base64_decode (const char *restrict in, size_t inlen,
-	       char *restrict out, size_t *outlen)
+base64_decode (const char * in, size_t inlen,
+		   char * out, size_t *outlen)
 {
   size_t outleft = *outlen;
 
   while (inlen >= 2)
-    {
-      if (!isbase64 (in[0]) || !isbase64 (in[1]))
+	{
+	  if (!isbase64 (in[0]) || !isbase64 (in[1]))
 	break;
 
-      if (outleft)
+	  if (outleft)
 	{
 	  *out++ = ((b64[to_uchar (in[0])] << 2)
-		    | (b64[to_uchar (in[1])] >> 4));
+			| (b64[to_uchar (in[1])] >> 4));
 	  outleft--;
 	}
 
-      if (inlen == 2)
+	  if (inlen == 2)
 	break;
 
-      if (in[2] == '=')
+	  if (in[2] == '=')
 	{
 	  if (inlen != 4)
-	    break;
+		break;
 
 	  if (in[3] != '=')
-	    break;
+		break;
 
 	}
-      else
+	  else
 	{
 	  if (!isbase64 (in[2]))
-	    break;
+		break;
 
 	  if (outleft)
-	    {
-	      *out++ = (((b64[to_uchar (in[1])] << 4) & 0xf0)
-			| (b64[to_uchar (in[2])] >> 2));
-	      outleft--;
-	    }
-
-	  if (inlen == 3)
-	    break;
-
-	  if (in[3] == '=')
-	    {
-	      if (inlen != 4)
-		break;
-	    }
-	  else
-	    {
-	      if (!isbase64 (in[3]))
-		break;
-
-	      if (outleft)
 		{
-		  *out++ = (((b64[to_uchar (in[2])] << 6) & 0xc0)
-			    | b64[to_uchar (in[3])]);
+		  *out++ = (((b64[to_uchar (in[1])] << 4) & 0xf0)
+			| (b64[to_uchar (in[2])] >> 2));
 		  outleft--;
 		}
-	    }
+
+	  if (inlen == 3)
+		break;
+
+	  if (in[3] == '=')
+		{
+		  if (inlen != 4)
+		break;
+		}
+	  else
+		{
+		  if (!isbase64 (in[3]))
+		break;
+
+		  if (outleft)
+		{
+		  *out++ = (((b64[to_uchar (in[2])] << 6) & 0xc0)
+				| b64[to_uchar (in[3])]);
+		  outleft--;
+		}
+		}
 	}
 
-      in += 4;
-      inlen -= 4;
-    }
+	  in += 4;
+	  inlen -= 4;
+	}
 
   *outlen -= outleft;
 
   if (inlen != 0)
-    return false;
+	return false;
 
   return true;
 }
 
 /* Allocate an output buffer in *OUT, and decode the base64 encoded
-   data stored in IN of size INLEN to the *OUT buffer.  On return, the
+   data stored in IN of size INLEN to the *OUT buffer.	On return, the
    size of the decoded data is stored in *OUTLEN.  OUTLEN may be NULL,
    if the caller is not interested in the decoded length.  *OUT may be
    NULL to indicate an out of memory error, in which case *OUTLEN
    contains the size of the memory block needed.  The function returns
    true on successful decoding and memory allocation errors.  (Use the
    *OUT and *OUTLEN parameters to differentiate between successful
-   decoding and memory error.)  The function returns false if the
+   decoding and memory error.)	The function returns false if the
    input was invalid, in which case *OUT is NULL and *OUTLEN is
    undefined. */
 bool
 base64_decode_alloc (const char *in, size_t inlen, char **out,
-		     size_t *outlen)
+			 size_t *outlen)
 {
   /* This may allocate a few bytes too much, depending on input,
-     but it's not worth the extra CPU time to compute the exact amount.
-     The exact amount is 3 * inlen / 4, minus 1 if the input ends
-     with "=" and minus another 1 if the input ends with "==".
-     Dividing before multiplying avoids the possibility of overflow.  */
+	 but it's not worth the extra CPU time to compute the exact amount.
+	 The exact amount is 3 * inlen / 4, minus 1 if the input ends
+	 with "=" and minus another 1 if the input ends with "==".
+	 Dividing before multiplying avoids the possibility of overflow.  */
   size_t needlen = 3 * (inlen / 4) + 2;
 
   *out = malloc (needlen);
   if (!*out)
-    return true;
+	return true;
 
   if (!base64_decode (in, inlen, *out, &needlen))
-    {
-      free (*out);
-      *out = NULL;
-      return false;
-    }
+	{
+	  free (*out);
+	  *out = NULL;
+	  return false;
+	}
 
   if (outlen)
-    *outlen = needlen;
+	*outlen = needlen;
 
   return true;
 }

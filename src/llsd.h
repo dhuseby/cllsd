@@ -50,7 +50,7 @@ typedef enum llsd_serializer_s
 	LLSD_ENC_BINARY,
 
 	LLSD_ENC_LAST,
-	LLSD_ENC_FIRST = LLSD_XML,
+	LLSD_ENC_FIRST = LLSD_ENC_XML,
 	LLSD_ENC_COUNT = LLSD_ENC_LAST - LLSD_ENC_FIRST
 
 } llsd_serializer_t;
@@ -62,7 +62,7 @@ typedef enum llsd_bin_enc_s
 	LLSD_BASE64,
 
 	LLSD_BIN_ENC_LAST,
-	LLSD_BIN_ENC_FIRST = LLSD_RAW,
+	LLSD_BIN_ENC_FIRST = LLSD_NONE,
 	LLSD_BIN_END_COUNT = LLSD_BIN_ENC_LAST - LLSD_BIN_ENC_FIRST
 
 } llsd_bin_enc_t;
@@ -243,7 +243,7 @@ int llsd_itr_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key 
 
 /* serialize/deserialize interface */
 llsd_t * llsd_parse( FILE * fin );
-size_t llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout );
+size_t llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout, int pretty );
 
 #endif/*LLSD_H*/
 

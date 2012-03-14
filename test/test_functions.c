@@ -378,7 +378,7 @@ static void test_serialization( void )
 		CU_ASSERT( type_ == llsd_get_type( llsd ) );
 
 		/* serialize it to the file */
-		s = llsd_format( llsd, format, tmpf );
+		s = llsd_format( llsd, format, tmpf, FALSE );
 		fclose( tmpf );
 		tmpf = NULL;
 
@@ -442,7 +442,7 @@ static void test_random_serialize( void )
 	tmpf = fopen( "test.llsd", "w+b" );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 	
-	llsd_format( llsd_out, format, tmpf );
+	llsd_format( llsd_out, format, tmpf, FALSE );
 	fclose( tmpf );
 	tmpf = NULL;
 

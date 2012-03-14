@@ -29,17 +29,10 @@
    integer >= n/k, i.e., the ceiling of n/k.  */
 # define BASE64_LENGTH(inlen) ((((inlen) + 2) / 3) * 4)
 
-extern bool isbase64 (char ch);
-
-extern void base64_encode (const char *restrict in, size_t inlen,
-			   char *restrict out, size_t outlen);
-
-extern size_t base64_encode_alloc (const char *in, size_t inlen, char **out);
-
-extern bool base64_decode (const char *restrict in, size_t inlen,
-			   char *restrict out, size_t *outlen);
-
-extern bool base64_decode_alloc (const char *in, size_t inlen,
-				 char **out, size_t *outlen);
+bool isbase64 (char ch);
+void base64_encode (const char * in, size_t inlen, char * out, size_t outlen);
+size_t base64_encode_alloc (const char *in, size_t inlen, char **out);
+bool base64_decode (const char * in, size_t inlen, char * out, size_t *outlen);
+bool base64_decode_alloc (const char *in, size_t inlen, char **out, size_t *outlen);
 
 #endif /* BASE64_H */
