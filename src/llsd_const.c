@@ -14,23 +14,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef LLSD_H
-#define LLSD_H
-
-#include <stdlib.h>
+#ifndef _BSD_SOURCE
+#define _BSD_SOURCE
+#endif
 
 #include "llsd_const.h"
-#include "llsd_binary.h"
-#include "llsd_xml.h"
+#include "macros.h"
 
-typedef union
+int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT] =
 {
-	llsd_bin_t b;
-	llsd_xml_t x;
-} llsd_t;
-
-/* serialize/deserialize interface */
-llsd_t * llsd_parse( uint8_t * p, size_t len );
-
-#endif /*LLSD_H*/
+	T("UNDEF"),
+	T("TRUE"),
+	T("FALSE"),
+	T("INTEGER"),
+	T("REAL"),
+	T("UUID"),
+	T("STRING"),
+	T("DATE"),
+	T("URI"),
+	T("BINARY"),
+	T("ARRAY"),
+	T("MAP")
+};
 

@@ -14,23 +14,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef LLSD_H
-#define LLSD_H
+#ifndef LLSD_XML_H
+#define LLSD_XML_H
 
-#include <stdlib.h>
-
+#include <stdint.h>
 #include "llsd_const.h"
-#include "llsd_binary.h"
-#include "llsd_xml.h"
 
-typedef union
+typedef struct llsd_xml_s
 {
-	llsd_bin_t b;
-	llsd_xml_t x;
-} llsd_t;
+	llsd_type_t		t;
+} llsd_xml_t;
 
-/* serialize/deserialize interface */
-llsd_t * llsd_parse( uint8_t * p, size_t len );
+llsd_xml_t * llsd_parse_xml( uint8_t * p, size_t len );
 
-#endif /*LLSD_H*/
-
+#endif /* LLSD_XML_H */

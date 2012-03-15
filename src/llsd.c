@@ -33,22 +33,30 @@
 #include "macros.h"
 #include "hashtable.h"
 #include "array.h"
+#include "llsd_const.h"
+#include "llsd_binary.h"
+#include "llsd_xml.h"
 #include "llsd.h"
 #include "base64.h"
 
-int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT] =
+static uint8_t const * const binary_header = "<? LLSD/Binary ?>\n";
+static uint8_t const * const xml_header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<llsd>\n";
+static uint8_t const * const xml_footer = "</llsd>\n";
+
+#define SIG_LEN (18)
+llsd_t * llsd_parse( uint8_t * p, size_t len )
 {
-	T("UNDEF"),
-	T("TRUE"),
-	T("FALSE"),
-	T("INTEGER"),
-	T("REAL"),
-	T("UUID"),
-	T("STRING"),
-	T("DATE"),
-	T("URI"),
-	T("BINARY"),
-	T("ARRAY"),
-	T("MAP")
-};
+	CHECK_RET_MSG( p, NULL, "invalid buffer pointer\n" );
+	CHECK_RET_MSG( len >= SIG_LEN, NULL, "not enough valid LLSD bytes\n" );
+
+	if ( MEMCMP( p, binary_header, SIG_LEN ) == 0 )
+	{
+		return (llsd_t *)llsd_parse_binary( &(p[SIG_LEN]), (len - SIG_LEN) );
+	}
+	else
+	{
+		return (llsd_t *)llsd_parse_xml( p, len );
+	}
+}
+
 
