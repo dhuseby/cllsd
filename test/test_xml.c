@@ -43,8 +43,8 @@ static int deinit_xml_suite( void )
 	return 0;
 }
 
-/* include the test functions */
-/*#include "test_functions.c"*/
+/* include the test functions common to all serialization formats */
+/*#include "test_common.c" */
 
 CU_pSuite add_xml_test_suite()
 {

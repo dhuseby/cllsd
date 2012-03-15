@@ -209,8 +209,8 @@ static CU_pSuite add_binary_tests( CU_pSuite pSuite )
 }
 
 
-/* include the test functions */
-#include "test_functions.c"
+/* include the test functions common to all serialization formats */
+#include "test_common.c"
 
 CU_pSuite add_binary_test_suite()
 {
