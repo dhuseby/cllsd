@@ -46,7 +46,7 @@ static int deinit_xml_suite( void )
 /* include the test functions */
 /*#include "test_functions.c"*/
 
-CU_pSuite add_xml_tests()
+CU_pSuite add_xml_test_suite()
 {
 	CU_pSuite pSuite = NULL;
 

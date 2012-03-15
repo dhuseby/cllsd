@@ -29,7 +29,6 @@
 #include <llsd.h>
 
 #include "test_binary.h"
-#include "test_notation.h"
 #include "test_xml.h"
 
 #define POOL_SIZE ( 32 * 1024 * 1024 )
@@ -48,9 +47,8 @@ int main()
 		return CU_get_error();
 
 	/* add each suite of tests */
-	binary_test_suite = add_binary_tests();
-	notation_test_suite = add_notation_tests();
-	xml_test_suite = add_xml_tests();
+	binary_test_suite = add_binary_test_suite();
+	xml_test_suite = add_xml_test_suite();
 
 	/* run all tests using the CUnit Basic interface */
 	CU_basic_set_mode( CU_BRM_VERBOSE );

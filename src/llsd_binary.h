@@ -14,11 +14,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef __TEST_NOTATION__
-#define __TEST_NOTATION__
+#ifndef LLSD_BINARY_TYPES_H
+#define LLSD_BINARY_TYPES_H
 
-/* adds the suite of notation tests to the CUnit registry */
-CU_pSuite add_notation_tests();
+#include <stdint.h>
+#include "llsd.h"
 
-#endif//__TEST_NOTATION__
+extern const llsd_type_t llsd_binary_types[UINT8_MAX + 1];
+extern const uint8_t llsd_binary_bytes[LLSD_TYPE_COUNT];
+
+#define BYTE_TO_TYPE( c ) (llsd_binary_types[c])
+#define TYPE_TO_BYTE( t ) (((t >= LLSD_TYPE_FIRST) && (t < LLSD_TYPE_LAST)) ? llsd_binary_bytes[t] : 0 )
+
+#endif//LLSD_BINARY_TYPES_H
 

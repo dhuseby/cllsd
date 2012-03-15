@@ -18,7 +18,7 @@
 #define __TEST_BINARY__
 
 /* adds the suite of binary tests to the CUnit registry */
-CU_pSuite add_binary_tests();
+CU_pSuite add_binary_test_suite();
 
 #endif//__TEST_BINARY__
 

@@ -18,7 +18,7 @@
 #define __TEST_XML__
 
 /* adds the suite of xml tests to the CUnit registry */
-CU_pSuite add_xml_tests();
+CU_pSuite add_xml_test_suite();
 
 #endif//__TEST_XML__
 

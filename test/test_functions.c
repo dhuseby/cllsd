@@ -22,7 +22,7 @@
 extern FILE* tmpf;
 extern llsd_serializer_t format;
 
-
+#if 0
 static llsd_type_t get_random_llsd_type( void )
 {
 	return (llsd_type_t)(rand() % LLSD_TYPE_COUNT);
@@ -325,7 +325,11 @@ static llsd_t * get_llsd( llsd_type_t type_ )
 
 	return llsd;
 }
+#endif
 
+
+
+#if 0
 static void test_newdel( void )
 {
 	int i;
@@ -467,12 +471,15 @@ static void test_random_serialize( void )
 
 	CU_ASSERT_EQUAL( heap_size, get_heap_size() );
 }
+#endif
 
 static CU_pSuite add_tests( CU_pSuite pSuite )
 {
+#if 0
 	CHECK_PTR_RET( CU_add_test( pSuite, "new/delete of all types", test_newdel), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of all types", test_serialization), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd", test_random_serialize), NULL );
+#endif
 	return pSuite;
 }
 
