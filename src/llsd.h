@@ -85,6 +85,18 @@ typedef enum llsd_bin_enc_s
 #define DEFAULT_ARRAY_CAPACITY (8)
 #define DEFAULT_MAP_CAPACITY (5)
 
+struct llsd_int_s
+{
+	int32_t				v;
+	uint32_t			be;
+};
+
+struct llsd_real_s
+{
+	double				v;
+	uint64_t			be;
+}
+
 struct llsd_uuid_s
 {
 	int					dyn_bits: 1;
@@ -137,23 +149,26 @@ struct llsd_date_s
 	int					dyn_str: 1;
 	uint32_t			len;
 	double				dval;
+	uint64_t			be;
 	uint8_t*			str;
 };
 
 struct llsd_array_s
 {
 	array_t		array;
+	uint32_t	be;
 };
 
 struct llsd_map_s
 {
 	ht_t		ht;
+	uint32_t	be;
 };
 
 /* the llsd types */
 typedef int						llsd_bool_t;
-typedef int32_t					llsd_int_t;
-typedef double					llsd_real_t;
+typedef struct llsd_int_s		llsd_int_t;
+typedef struct llsd_real_s		llsd_real_t;
 typedef struct llsd_uuid_s		llsd_uuid_t;
 typedef struct llsd_string_s	llsd_string_t;
 typedef struct llsd_date_s		llsd_date_t;
@@ -178,7 +193,7 @@ typedef struct llsd_s
 		llsd_array_t	array_;
 		llsd_map_t		map_;
 
-	}					value;
+	};
 
 } llsd_t;
 

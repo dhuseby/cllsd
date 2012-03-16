@@ -22,7 +22,7 @@
 llsd_t const undefined =
 {
 	.type_ = LLSD_UNDEF,
-	.value.bool_ = FALSE
+	.bool_ = FALSE
 };
 
 static uint8_t bits[] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };

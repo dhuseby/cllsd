@@ -24,6 +24,7 @@
 
 llsd_t * llsd_parse_binary( FILE * fin );
 size_t llsd_format_binary( llsd_t * llsd, FILE * fout );
+size_t llsd_format_binary_zero_copy( llsd_t * llsd, struct iovec ** v, size_t len );
 
 #endif /* LLSD_BINARY_H */
 

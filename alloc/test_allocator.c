@@ -324,12 +324,38 @@ void * malloc_( size_t size )
 
 void free_( void * ptr )
 {
-	return put_mem( ptr );
+	put_mem( ptr );
 }
 
 void * realloc_( void * ptr, size_t size )
 {
-	/* TODO */
+	void * p = NULL;
+	tag_t * tag = NULL;
+	size_t old_size = 0;
+
+	if ( ptr == NULL )
+	{
+		return get_mem( size );
+	}
+	else
+	{
+		/* get the tag pointer */
+		tag = (tag_t*)(ptr - sizeof(tag_t));
+
+		/* get a new block of memory */
+		p = get_mem( size );
+		CHECK_PTR_RET( p, NULL );
+
+		/* copy old memory to new memory */
+		old_size = (tag->size (2 * sizeof(tag_t)));
+		memcpy( p, ptr, ((old_size > size) ? size : old_size)  );
+
+		/* release the old block */
+		put_mem( ptr );
+
+		/* return the new memory */
+		return p;
+	}
 }
 
 uint8_t * strdup_( uint8_t const * str )
