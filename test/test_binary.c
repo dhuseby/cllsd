@@ -27,6 +27,8 @@
 #include <debug.h>
 #include <macros.h>
 #include <llsd.h>
+#include <llsd_const.h>
+#include <llsd_util.h>
 #include <llsd_binary.h>
 #include <test_allocator.h>
 
@@ -46,7 +48,6 @@ static int deinit_binary_suite( void )
 	return 0;
 }
 
-#if 0
 /* offset of first by after header */
 size_t const data_offset = 18;
 
@@ -92,119 +93,10 @@ uint8_t const * const expected_data[ LLSD_TYPE_COUNT ] =
 	array_,
 	map_,
 };
-#endif
 
-static void test_binary_byte_to_type( void )
-{
-	int c;
-
-	for( c = 0; c <= UINT8_MAX; c++ )
-	{
-		switch ( c )
-		{
-			case '!':
-				CU_ASSERT_EQUAL( LLSD_UNDEF, BYTE_TO_TYPE( (uint8_t)c ) );
-				break;
-			case '0':
-				CU_ASSERT_EQUAL( LLSD_BOOLEAN_FALSE, BYTE_TO_TYPE( (uint8_t)c ) );
-				break;
-			case '1':
-				CU_ASSERT_EQUAL( LLSD_BOOLEAN_TRUE, BYTE_TO_TYPE( (uint8_t)c ) );
-				break;
-			case 'i':
-				CU_ASSERT_EQUAL( LLSD_INTEGER, BYTE_TO_TYPE( (uint8_t)c ) );
-				break;
-			case 'r':
-				CU_ASSERT_EQUAL( LLSD_REAL, BYTE_TO_TYPE( (uint8_t)c ) );
-				break;
-			case 'u':
-				CU_ASSERT_EQUAL( LLSD_UUID, BYTE_TO_TYPE( (uint8_t)c ) );
-				break;
-			case 'b':
-				CU_ASSERT_EQUAL( LLSD_BINARY, BYTE_TO_TYPE( (uint8_t)c ) );
-				break;
-			case 's':
-				CU_ASSERT_EQUAL( LLSD_STRING, BYTE_TO_TYPE( (uint8_t)c ) );
-				break;
-			case 'l':
-				CU_ASSERT_EQUAL( LLSD_URI, BYTE_TO_TYPE( (uint8_t)c ) );
-				break;
-			case 'd':
-				CU_ASSERT_EQUAL( LLSD_DATE, BYTE_TO_TYPE( (uint8_t)c ) );
-				break;
-			case '[':
-				CU_ASSERT_EQUAL( LLSD_ARRAY, BYTE_TO_TYPE( (uint8_t)c ) );
-				break;
-			case '{':
-				CU_ASSERT_EQUAL( LLSD_MAP, BYTE_TO_TYPE( (uint8_t)c ) );
-				break;
-			default:
-				CU_ASSERT_EQUAL( LLSD_TYPE_INVALID, BYTE_TO_TYPE( (uint8_t)c ) );
-				break;
-		}
-	}
-}
-
-static void test_type_to_binary_byte( void )
-{
-	llsd_type_t t;
-
-	for( t = LLSD_TYPE_FIRST; t < LLSD_TYPE_LAST; t++ )
-	{
-		switch ( t )
-		{
-			case LLSD_UNDEF:
-				CU_ASSERT_EQUAL( '!', TYPE_TO_BYTE( t ) );
-				break;
-			case LLSD_BOOLEAN_FALSE:
-				CU_ASSERT_EQUAL( '0', TYPE_TO_BYTE( t ) );
-				break;
-			case LLSD_BOOLEAN_TRUE:
-				CU_ASSERT_EQUAL( '1', TYPE_TO_BYTE( t ) );
-				break;
-			case LLSD_INTEGER:
-				CU_ASSERT_EQUAL( 'i', TYPE_TO_BYTE( t ) );
-				break;
-			case LLSD_REAL:
-				CU_ASSERT_EQUAL( 'r', TYPE_TO_BYTE( t ) );
-				break;
-			case LLSD_UUID:
-				CU_ASSERT_EQUAL( 'u', TYPE_TO_BYTE( t ) );
-				break;
-			case LLSD_BINARY:
-				CU_ASSERT_EQUAL( 'b', TYPE_TO_BYTE( t ) );
-				break;
-			case LLSD_STRING:
-				CU_ASSERT_EQUAL( 's', TYPE_TO_BYTE( t ) );
-				break;
-			case LLSD_URI:
-				CU_ASSERT_EQUAL( 'l', TYPE_TO_BYTE( t ) );
-				break;
-			case LLSD_DATE:
-				CU_ASSERT_EQUAL( 'd', TYPE_TO_BYTE( t ) );
-				break;
-			case LLSD_ARRAY:
-				CU_ASSERT_EQUAL( '[', TYPE_TO_BYTE( t ) );
-				break;
-			case LLSD_MAP:
-				CU_ASSERT_EQUAL( '{', TYPE_TO_BYTE( t ) );
-				break;
-			default:
-				CU_FAIL("invalid LLSD type");
-				break;
-		}
-	}
-}
 
 static CU_pSuite add_binary_tests( CU_pSuite pSuite )
 {
-	CHECK_PTR_RET( CU_add_test( pSuite, "test binary byte to type", test_binary_byte_to_type ), NULL );
-	CHECK_PTR_RET( CU_add_test( pSuite, "test type to binary byte", test_type_to_binary_byte ), NULL );
-#if 0
-	CHECK_PTR_RET( CU_add_test( pSuite, "new/delete of all types", test_newdel), NULL );
-	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of all types", test_serialization), NULL );
-	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd", test_random_serialize), NULL );
-#endif
 	return pSuite;
 }
 

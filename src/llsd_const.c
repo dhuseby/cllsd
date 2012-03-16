@@ -14,28 +14,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef _BSD_SOURCE
-#define _BSD_SOURCE
-#endif
-
-#include "llsd_const.h"
 #include "macros.h"
-
-int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT] =
-{
-	T("UNDEF"),
-	T("TRUE"),
-	T("FALSE"),
-	T("INTEGER"),
-	T("REAL"),
-	T("UUID"),
-	T("STRING"),
-	T("DATE"),
-	T("URI"),
-	T("BINARY"),
-	T("ARRAY"),
-	T("MAP")
-};
+#include "llsd.h"
+#include "llsd_const.h"
 
 /* constants */
 llsd_t const undefined =

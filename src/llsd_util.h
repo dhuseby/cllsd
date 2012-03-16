@@ -14,13 +14,52 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef LLSD_H
-#define LLSD_H
+#ifndef LLSD_UTIL_H
+#define LLSD_UTIL_H
 
 #include <stdint.h>
 #include <stdlib.h>
 
 #include "llsd.h"
+
+/* new/delete llsd objects */
+llsd_t * llsd_new( llsd_type_t type_, ... );
+void llsd_delete( void * p );
+
+/* utility macros */
+#define llsd_new_empty_array() llsd_new( LLSD_ARRAY )
+#define llsd_new_empty_map() llsd_new( LLSD_MAP )
+#define llsd_new_string( s, len, esc, key ) llsd_new( LLSD_STRING, s, len, esc, key )
+#define llsd_new_uri( s, len, esc ) llsd_new( LLSD_URI, s, len, esc )
+#define llsd_new_binary( p, len, enc, encoding ) llsd_new( LLSD_BINARY, p, len, enc, encoding )
+#define llsd_new_date( d, s, len ) llsd_new( LLSD_DATE, d, s, len )
+
+/* get the type of the particular object */
+llsd_type_t llsd_get_type( llsd_t * llsd );
+int8_t const * llsd_get_type_string( llsd_type_t type_ );
+
+/* get the size of the cotainer types */
+int llsd_get_size( llsd_t * llsd );
+#define llsd_is_empty(x) (llsd_get_size(x) == 0)
+
+/* append to containers */
+void llsd_array_append( llsd_t * arr, llsd_t * data );
+void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data );
+llsd_t * llsd_map_find( llsd_t * map, llsd_t * key );
+
+/* iterator type */
+typedef int32_t llsd_itr_t;
+
+/* iterator interface */
+llsd_itr_t llsd_itr_begin( llsd_t * llsd );
+llsd_itr_t llsd_itr_end( llsd_t * llsd );
+llsd_itr_t llsd_itr_rbegin( llsd_t * llsd );
+#define llsd_itr_rend(x) llsd_itr_end(x)
+llsd_itr_t llsd_itr_next( llsd_t * llsd, llsd_itr_t itr );
+llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr );
+
+/* get the next value in the array/map */
+int llsd_itr_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key );
 
 /* compare two llsd items */
 int llsd_equal( llsd_t * l, llsd_t * r );
@@ -37,9 +76,26 @@ llsd_binary_t llsd_as_binary( llsd_t * llsd );
 llsd_array_t llsd_as_array( llsd_t * llsd );
 llsd_map_t llsd_as_map( llsd_t * llsd );
 
+/* xml/binary conversions */
+int llsd_stringify_uuid( llsd_t * llsd );
+int llsd_destringify_uuid( llsd_t * llsd );
+int llsd_stringify_date( llsd_t * llsd );
+int llsd_destringify_date( llsd_t * llsd );
+int llsd_escape_string( llsd_t * llsd );
+int llsd_unescape_string( llsd_t * llsd );
+int llsd_esacpe_uri( llsd_t * llsd );
+int llsd_unescape_uri( llsd_t * llsd );
+int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding );
+int llsd_decode_binary( llsd_t * llsd );
+
+/* helper functions for map */
+#define FNV_PRIME (0x01000193)
+uint32_t fnv_key_hash(void const * const key);
+int key_eq(void const * const l, void const * const r);
+
 /* serialize/deserialize interface */
 llsd_t * llsd_parse( FILE * fin );
 size_t llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout, int pretty );
 
-#endif/*LLSD_H*/
+#endif/*LLSD_UTIL_H*/
 

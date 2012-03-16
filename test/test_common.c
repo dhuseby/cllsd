@@ -22,7 +22,6 @@
 extern FILE* tmpf;
 extern llsd_serializer_t format;
 
-#if 0
 static llsd_type_t get_random_llsd_type( void )
 {
 	return (llsd_type_t)(rand() % LLSD_TYPE_COUNT);
@@ -40,7 +39,7 @@ static llsd_t* get_random_str( void )
 		str[i] = (32 + (rand() % 94));
 	}
 	str[len] = '\0';
-	return llsd_new( LLSD_STRING, str, FALSE );
+	return llsd_new_string( str, len, FALSE, FALSE );
 }
 
 static llsd_t* get_random_uri( void )
@@ -55,7 +54,7 @@ static llsd_t* get_random_uri( void )
 		uri[i] = (32 + (rand() % 94));
 	}
 	uri[len] = '\0';
-	return llsd_new( LLSD_URI, uri );
+	return llsd_new_uri( uri, len, FALSE );
 }
 
 static llsd_t* get_random_bin( void )
@@ -69,7 +68,7 @@ static llsd_t* get_random_bin( void )
 		/* get a random byte*/
 		bin[i] = (uint8_t)(rand() % 256);
 	}
-	return llsd_new( LLSD_BINARY, len, bin );
+	return llsd_new_binary( bin, len, FALSE, LLSD_NONE );
 }
 
 static llsd_t* get_random_uuid( void )
@@ -83,6 +82,16 @@ static llsd_t* get_random_uuid( void )
 		bits[i] = (uint8_t)(rand() % 256);
 	}
 	return llsd_new( LLSD_UUID, bits );
+}
+
+static llsd_t* get_random_date( void )
+{
+	llsd_t * llsd = llsd_new_date( (1.0 * rand()), NULL, 0 );
+	if ( !llsd->value.date_.use_dval )
+	{
+		WARN("created date with FALSE use_dval\n");
+	}
+	return llsd;
 }
 
 /* forward declaration */
@@ -129,7 +138,7 @@ static llsd_t * get_random_array( uint32_t size )
 				total++;
 				break;
 			case LLSD_DATE:
-				llsd_array_append( arr, llsd_new( type_, (1.0 * rand()) ) );
+				llsd_array_append( arr, get_random_date() );
 				total++;
 				break;
 			case LLSD_URI:
@@ -217,7 +226,7 @@ static llsd_t * get_random_map( uint32_t size )
 				total++;
 				break;
 			case LLSD_DATE:
-				llsd_map_insert( map, key, llsd_new( type_, 1.0 * rand() ) );
+				llsd_map_insert( map, key, get_random_date() );
 				total++;
 				break;
 			case LLSD_URI:
@@ -293,8 +302,15 @@ static llsd_t * get_llsd( llsd_type_t type_ )
 			break;
 
 		case LLSD_REAL:
-		case LLSD_DATE:
 			llsd = llsd_new( type_, 1.0 );
+			break;
+
+		case LLSD_DATE:
+			llsd = llsd_new_date( 1.0, NULL, 0 );
+			if ( !llsd->value.date_.use_dval )
+			{
+				WARN("created date with FALSE use_dval\n");
+			}
 			break;
 
 		case LLSD_UUID:
@@ -302,15 +318,15 @@ static llsd_t * get_llsd( llsd_type_t type_ )
 			break;
 
 		case LLSD_STRING:
-			llsd = llsd_new( type_, str, strlen( str ) );
+			llsd = llsd_new_string( str, strlen( str ), FALSE, FALSE );
 			break;
 
 		case LLSD_URI:
-			llsd = llsd_new( type_, url );
+			llsd = llsd_new_uri( url, strlen( url ), FALSE );
 			break;
 
 		case LLSD_BINARY:
-			llsd = llsd_new( type_, UUID_LEN, bits );
+			llsd = llsd_new_binary( bits, UUID_LEN, FALSE, LLSD_NONE );
 			break;
 
 		case LLSD_UNDEF:
@@ -325,11 +341,7 @@ static llsd_t * get_llsd( llsd_type_t type_ )
 
 	return llsd;
 }
-#endif
 
-
-
-#if 0
 static void test_newdel( void )
 {
 	int i;
@@ -471,15 +483,12 @@ static void test_random_serialize( void )
 
 	CU_ASSERT_EQUAL( heap_size, get_heap_size() );
 }
-#endif
 
 static CU_pSuite add_tests( CU_pSuite pSuite )
 {
-#if 0
 	CHECK_PTR_RET( CU_add_test( pSuite, "new/delete of all types", test_newdel), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of all types", test_serialization), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd", test_random_serialize), NULL );
-#endif
 	return pSuite;
 }
 

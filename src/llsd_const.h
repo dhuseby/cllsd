@@ -18,68 +18,19 @@
 #define LLSD_CONST_H
 
 #include <stdint.h>
+#include "llsd.h"
 
-typedef enum llsd_type_e
-{
-	LLSD_UNDEF,
-	LLSD_BOOLEAN_TRUE,
-	LLSD_BOOLEAN_FALSE,
-	LLSD_INTEGER,
-	LLSD_REAL,
-	LLSD_UUID,
-	LLSD_STRING,
-	LLSD_DATE,
-	LLSD_URI,
-	LLSD_BINARY,
-	LLSD_ARRAY,
-	LLSD_MAP,
-
-	LLSD_TYPE_LAST,
-	LLSD_TYPE_FIRST = LLSD_UNDEF,
-	LLSD_TYPE_COUNT = LLSD_TYPE_LAST - LLSD_TYPE_FIRST,
-	LLSD_TYPE_INVALID
-
-} llsd_type_t;
-
-typedef enum llsd_serializer_s
-{
-	LLSD_ENC_XML,
-	LLSD_ENC_BINARY,
-
-	LLSD_ENC_LAST,
-	LLSD_ENC_FIRST = LLSD_ENC_XML,
-	LLSD_ENC_COUNT = LLSD_ENC_LAST - LLSD_ENC_FIRST
-
-} llsd_serializer_t;
-
-typedef enum llsd_bin_enc_s
-{
-	LLSD_NONE,
-	LLSD_BASE16,
-	LLSD_BASE64,
-
-	LLSD_BIN_ENC_LAST,
-	LLSD_BIN_ENC_FIRST = LLSD_NONE,
-	LLSD_BIN_END_COUNT = LLSD_BIN_ENC_LAST - LLSD_BIN_ENC_FIRST
-
-} llsd_bin_enc_t;
-
-#ifndef TRUE
-#define TRUE (1)
-#endif
-
-#ifndef FALSE
-#define FALSE (0)
-#endif
-
-/* LLSD types */
-#define UUID_LEN (16)
-#define UUID_STR_LEN (36)
-
-extern int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT];
-
-#define TYPE_TO_STRING( t ) (((t >= LLSD_TYPE_FIRST) && (t < LLSD_TYPE_LAST)) ? \
-							 llsd_type_strings[t] : T("INVALID") )
+extern llsd_t const undefined;
+extern llsd_uuid_t const zero_uuid;
+extern llsd_string_t const false_string;
+extern llsd_string_t const true_string;
+extern llsd_binary_t const false_binary;
+extern llsd_binary_t const true_binary;
+extern llsd_binary_t const empty_binary;
+extern llsd_uri_t const empty_uri;
+extern llsd_date_t const empty_date;
+extern llsd_array_t const empty_array;
+extern llsd_map_t const empty_map;
 
 #endif /* LLSD_CONST_H */
 

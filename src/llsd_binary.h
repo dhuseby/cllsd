@@ -22,13 +22,7 @@
 
 #include "llsd.h"
 
-extern const llsd_type_t llsd_binary_types[UINT8_MAX + 1];
-extern const uint8_t llsd_binary_bytes[LLSD_TYPE_COUNT];
-
-#define BYTE_TO_TYPE( c ) (llsd_binary_types[c])
-#define TYPE_TO_BYTE( t ) (((t >= LLSD_TYPE_FIRST) && (t < LLSD_TYPE_LAST)) ? \
-						   llsd_binary_bytes[t] : 0 )
-
+llsd_t * llsd_parse_binary( FILE * fin );
 size_t llsd_format_binary( llsd_t * llsd, FILE * fout );
 
 #endif /* LLSD_BINARY_H */

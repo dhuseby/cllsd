@@ -21,20 +21,8 @@
 #include <stdlib.h>
 
 #include "llsd.h"
-#include "llsd_const.h"
 
-/* string/binary conversions */
-int llsd_stringify_uuid( llsd_t * llsd );
-int llsd_destringify_uuid( llsd_t * llsd );
-int llsd_stringify_date( llsd_t * llsd );
-int llsd_destringify_date( llsd_t * llsd );
-int llsd_escape_string( llsd_t * llsd );
-int llsd_unescape_string( llsd_t * llsd );
-int llsd_esacpe_uri( llsd_t * llsd );
-int llsd_unescape_uri( llsd_t * llsd );
-int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding );
-int llsd_decode_binary( llsd_t * llsd );
-
+llsd_t * llsd_parse_xml( FILE * fin );
 size_t llsd_format_xml( llsd_t * llsd, FILE * fout );
 
 #endif /* LLSD_XML_H */

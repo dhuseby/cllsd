@@ -8,7 +8,7 @@ ASSERT	src/macros.h	31;"	d
 B64	src/base64.c	152;"	d	file:
 BASE64_H	src/base64.h	20;"	d
 BASE64_LENGTH	src/base64.h	30;"	d
-BYTE_TO_TYPE	src/llsd_binary.h	95;"	d
+BYTE_TO_TYPE	src/llsd_binary.h	28;"	d
 C	src/macros.h	59;"	d
 CALLOC	src/macros.h	48;"	d
 CHECK	src/macros.h	37;"	d
@@ -19,71 +19,50 @@ CHECK_PTR_RET	src/macros.h	43;"	d
 CHECK_PTR_RET_MSG	src/macros.h	44;"	d
 CHECK_RET	src/macros.h	39;"	d
 CHECK_RET_MSG	src/macros.h	40;"	d
-DATE_STR_LEN	src/llsd_util.h	126;"	d
+DATE_STR_LEN	src/llsd.h	71;"	d
 DEBUG	src/debug.h	17;"	d
 DEBUG	src/debug.h	20;"	d
 DEBUG	src/debug.h	22;"	d
 DEBUG_ON	src/debug.h	25;"	d
-DEFAULT_ARRAY_CAPACITY	src/llsd_util.h	137;"	d
-DEFAULT_MAP_CAPACITY	src/llsd_util.h	143;"	d
+DEFAULT_ARRAY_CAPACITY	src/llsd.h	82;"	d
+DEFAULT_MAP_CAPACITY	src/llsd.h	88;"	d
 FAIL	src/macros.h	34;"	d
-FALSE	src/llsd_util.h	75;"	d
+FALSE	src/llsd_const.h	72;"	d
 FALSE	src/macros.h	27;"	d
-FNV_PRIME	src/llsd_util.c	812;"	d	file:
+FNV_PRIME	src/llsd.c	42;"	d	file:
 FREE	src/macros.h	50;"	d
-INDENT	src/llsd_util.c	2487;"	d	file:
+INDENT	src/llsd_binary.c	32;"	d	file:
 LLSD_ARRAY	src/llsd_const.h	/^	LLSD_ARRAY,$/;"	e	enum:llsd_type_e
-LLSD_ARRAY	src/llsd_util.h	/^	LLSD_ARRAY,$/;"	e	enum:llsd_type_e
-LLSD_BASE16	src/llsd_util.h	/^	LLSD_BASE16,$/;"	e	enum:llsd_bin_enc_s
-LLSD_BASE64	src/llsd_util.h	/^	LLSD_BASE64,$/;"	e	enum:llsd_bin_enc_s
+LLSD_BASE16	src/llsd_const.h	/^	LLSD_BASE16,$/;"	e	enum:llsd_bin_enc_s
+LLSD_BASE64	src/llsd_const.h	/^	LLSD_BASE64,$/;"	e	enum:llsd_bin_enc_s
 LLSD_BINARY	src/llsd_const.h	/^	LLSD_BINARY,$/;"	e	enum:llsd_type_e
-LLSD_BINARY	src/llsd_util.h	/^	LLSD_BINARY,$/;"	e	enum:llsd_type_e
 LLSD_BINARY_H	src/llsd_binary.h	18;"	d
-LLSD_BIN_ENC_FIRST	src/llsd_util.h	/^	LLSD_BIN_ENC_FIRST = LLSD_NONE,$/;"	e	enum:llsd_bin_enc_s
-LLSD_BIN_ENC_LAST	src/llsd_util.h	/^	LLSD_BIN_ENC_LAST,$/;"	e	enum:llsd_bin_enc_s
-LLSD_BIN_END_COUNT	src/llsd_util.h	/^	LLSD_BIN_END_COUNT = LLSD_BIN_ENC_LAST - LLSD_BIN_ENC_FIRST$/;"	e	enum:llsd_bin_enc_s
-LLSD_BOOLEAN	src/llsd_util.h	/^	LLSD_BOOLEAN,$/;"	e	enum:llsd_type_e
+LLSD_BIN_ENC_FIRST	src/llsd_const.h	/^	LLSD_BIN_ENC_FIRST = LLSD_NONE,$/;"	e	enum:llsd_bin_enc_s
+LLSD_BIN_ENC_LAST	src/llsd_const.h	/^	LLSD_BIN_ENC_LAST,$/;"	e	enum:llsd_bin_enc_s
+LLSD_BIN_END_COUNT	src/llsd_const.h	/^	LLSD_BIN_END_COUNT = LLSD_BIN_ENC_LAST - LLSD_BIN_ENC_FIRST$/;"	e	enum:llsd_bin_enc_s
 LLSD_BOOLEAN_FALSE	src/llsd_const.h	/^	LLSD_BOOLEAN_FALSE,$/;"	e	enum:llsd_type_e
 LLSD_BOOLEAN_TRUE	src/llsd_const.h	/^	LLSD_BOOLEAN_TRUE,$/;"	e	enum:llsd_type_e
 LLSD_CONST_H	src/llsd_const.h	18;"	d
 LLSD_DATE	src/llsd_const.h	/^	LLSD_DATE,$/;"	e	enum:llsd_type_e
-LLSD_DATE	src/llsd_util.h	/^	LLSD_DATE,$/;"	e	enum:llsd_type_e
 LLSD_ENC_BINARY	src/llsd_const.h	/^	LLSD_ENC_BINARY,$/;"	e	enum:llsd_serializer_s
-LLSD_ENC_BINARY	src/llsd_util.h	/^	LLSD_ENC_BINARY,$/;"	e	enum:llsd_serializer_s
 LLSD_ENC_COUNT	src/llsd_const.h	/^	LLSD_ENC_COUNT = LLSD_ENC_LAST - LLSD_ENC_FIRST$/;"	e	enum:llsd_serializer_s
-LLSD_ENC_COUNT	src/llsd_util.h	/^	LLSD_ENC_COUNT = LLSD_ENC_LAST - LLSD_ENC_FIRST$/;"	e	enum:llsd_serializer_s
 LLSD_ENC_FIRST	src/llsd_const.h	/^	LLSD_ENC_FIRST = LLSD_ENC_XML,$/;"	e	enum:llsd_serializer_s
-LLSD_ENC_FIRST	src/llsd_util.h	/^	LLSD_ENC_FIRST = LLSD_ENC_XML,$/;"	e	enum:llsd_serializer_s
-LLSD_ENC_JSON	src/llsd_util.h	/^	LLSD_ENC_JSON,$/;"	e	enum:llsd_serializer_s
 LLSD_ENC_LAST	src/llsd_const.h	/^	LLSD_ENC_LAST,$/;"	e	enum:llsd_serializer_s
-LLSD_ENC_LAST	src/llsd_util.h	/^	LLSD_ENC_LAST,$/;"	e	enum:llsd_serializer_s
-LLSD_ENC_NOTATION	src/llsd_util.h	/^	LLSD_ENC_NOTATION,$/;"	e	enum:llsd_serializer_s
 LLSD_ENC_XML	src/llsd_const.h	/^	LLSD_ENC_XML,$/;"	e	enum:llsd_serializer_s
-LLSD_ENC_XML	src/llsd_util.h	/^	LLSD_ENC_XML,$/;"	e	enum:llsd_serializer_s
 LLSD_H	src/llsd.h	18;"	d
 LLSD_H	src/llsd_util.h	18;"	d
 LLSD_INTEGER	src/llsd_const.h	/^	LLSD_INTEGER,$/;"	e	enum:llsd_type_e
-LLSD_INTEGER	src/llsd_util.h	/^	LLSD_INTEGER,$/;"	e	enum:llsd_type_e
 LLSD_MAP	src/llsd_const.h	/^	LLSD_MAP,$/;"	e	enum:llsd_type_e
-LLSD_MAP	src/llsd_util.h	/^	LLSD_MAP,$/;"	e	enum:llsd_type_e
-LLSD_NONE	src/llsd_util.h	/^	LLSD_NONE,$/;"	e	enum:llsd_bin_enc_s
+LLSD_NONE	src/llsd_const.h	/^	LLSD_NONE,$/;"	e	enum:llsd_bin_enc_s
 LLSD_REAL	src/llsd_const.h	/^	LLSD_REAL,$/;"	e	enum:llsd_type_e
-LLSD_REAL	src/llsd_util.h	/^	LLSD_REAL,$/;"	e	enum:llsd_type_e
 LLSD_STRING	src/llsd_const.h	/^	LLSD_STRING,$/;"	e	enum:llsd_type_e
-LLSD_STRING	src/llsd_util.h	/^	LLSD_STRING,$/;"	e	enum:llsd_type_e
 LLSD_TYPE_COUNT	src/llsd_const.h	/^	LLSD_TYPE_COUNT = LLSD_TYPE_LAST - LLSD_TYPE_FIRST,$/;"	e	enum:llsd_type_e
-LLSD_TYPE_COUNT	src/llsd_util.h	/^	LLSD_TYPE_COUNT = LLSD_TYPE_LAST - LLSD_TYPE_FIRST$/;"	e	enum:llsd_type_e
 LLSD_TYPE_FIRST	src/llsd_const.h	/^	LLSD_TYPE_FIRST = LLSD_UNDEF,$/;"	e	enum:llsd_type_e
-LLSD_TYPE_FIRST	src/llsd_util.h	/^	LLSD_TYPE_FIRST = LLSD_UNDEF,$/;"	e	enum:llsd_type_e
 LLSD_TYPE_INVALID	src/llsd_const.h	/^	LLSD_TYPE_INVALID$/;"	e	enum:llsd_type_e
 LLSD_TYPE_LAST	src/llsd_const.h	/^	LLSD_TYPE_LAST,$/;"	e	enum:llsd_type_e
-LLSD_TYPE_LAST	src/llsd_util.h	/^	LLSD_TYPE_LAST,$/;"	e	enum:llsd_type_e
 LLSD_UNDEF	src/llsd_const.h	/^	LLSD_UNDEF,$/;"	e	enum:llsd_type_e
-LLSD_UNDEF	src/llsd_util.h	/^	LLSD_UNDEF,$/;"	e	enum:llsd_type_e
 LLSD_URI	src/llsd_const.h	/^	LLSD_URI,$/;"	e	enum:llsd_type_e
-LLSD_URI	src/llsd_util.h	/^	LLSD_URI,$/;"	e	enum:llsd_type_e
 LLSD_UUID	src/llsd_const.h	/^	LLSD_UUID,$/;"	e	enum:llsd_type_e
-LLSD_UUID	src/llsd_util.h	/^	LLSD_UUID,$/;"	e	enum:llsd_type_e
 LLSD_XML_H	src/llsd_xml.h	18;"	d
 LOG	src/macros.h	33;"	d
 MALLOC	src/macros.h	47;"	d
@@ -93,18 +72,17 @@ MEMSET	src/macros.h	53;"	d
 MIN_BLOCK_SIZE	alloc/test_allocator.c	34;"	d	file:
 POOL_SIZE	test/test_all.c	34;"	d	file:
 REALLOC	src/macros.h	49;"	d
-SIG_LEN	src/llsd.c	46;"	d	file:
+SIG_LEN	src/llsd_util.c	825;"	d	file:
 STRDUP	src/macros.h	54;"	d
 T	src/macros.h	57;"	d
-TRUE	src/llsd_util.h	71;"	d
+TRUE	src/llsd_const.h	68;"	d
 TRUE	src/macros.h	28;"	d
-TYPE_TO_BYTE	src/llsd_binary.h	96;"	d
-TYPE_TO_STRING	src/llsd_const.h	57;"	d
-URL_ENCODED_CHAR	src/llsd_util.c	2086;"	d	file:
+TYPE_TO_BYTE	src/llsd_binary.h	29;"	d
+TYPE_TO_STRING	src/llsd_const.h	81;"	d
+URL_ENCODED_CHAR	src/llsd_xml.c	374;"	d	file:
 UT	src/macros.h	58;"	d
-UUID_LEN	src/llsd_binary.h	64;"	d
-UUID_LEN	src/llsd_util.h	79;"	d
-UUID_STR_LEN	src/llsd_util.h	80;"	d
+UUID_LEN	src/llsd_const.h	76;"	d
+UUID_STR_LEN	src/llsd_const.h	77;"	d
 WARN	src/macros.h	32;"	d
 _BSD_SOURCE	src/llsd.c	18;"	d	file:
 _BSD_SOURCE	src/llsd_binary.c	18;"	d	file:
@@ -118,13 +96,12 @@ __TEST_BINARY__	test/test_binary.h	18;"	d
 __TEST_XML__	test/test_xml.h	18;"	d
 __UINT__	src/array.h	21;"	d
 __UINT__	src/hashtable.h	21;"	d
-a	src/llsd_binary.h	/^		llsd_bin_array_t	a;$/;"	m	union:llsd_bin_s::__anon3
 add_binary_test_suite	test/test_binary.c	/^CU_pSuite add_binary_test_suite()$/;"	f
 add_binary_tests	test/test_binary.c	/^static CU_pSuite add_binary_tests( CU_pSuite pSuite )$/;"	f	file:
 add_tests	test/test_common.c	/^static CU_pSuite add_tests( CU_pSuite pSuite )$/;"	f	file:
 add_xml_test_suite	test/test_xml.c	/^CU_pSuite add_xml_test_suite()$/;"	f
-array	src/llsd_util.h	/^	array_t		array;$/;"	m	struct:llsd_array_s
-array_	src/llsd_util.h	/^		llsd_array_t	array_;$/;"	m	union:llsd_s::__anon1
+array	src/llsd.h	/^	array_t		array;$/;"	m	struct:llsd_array_s
+array_	src/llsd.h	/^		llsd_array_t	array_;$/;"	m	union:llsd_s::__anon1
 array_clear	src/array.c	/^void array_clear(array_t * const array)$/;"	f
 array_deinitialize	src/array.c	/^void array_deinitialize(array_t * const array)$/;"	f
 array_delete	src/array.c	/^void array_delete(array_t * const array)$/;"	f
@@ -161,28 +138,25 @@ array_size	src/array.c	/^int_t array_size(array_t const * const array)$/;"	f
 array_t	src/array.h	/^} array_t;$/;"	t	typeref:struct:array_s
 array_try_lock	src/array.c	/^int array_try_lock(array_t * const array)$/;"	f
 array_unlock	src/array.c	/^void array_unlock(array_t * const array)$/;"	f
-b	src/llsd.h	/^	llsd_bin_t b;$/;"	m	union:__anon2
-b	src/llsd_binary.h	/^		llsd_bin_bytes_t	b;$/;"	m	union:llsd_bin_s::__anon3
 b64	src/base64.c	/^static const signed char b64[0x100] = {$/;"	v	file:
 base64_decode	src/base64.c	/^base64_decode (const char * in, size_t inlen,$/;"	f
 base64_decode_alloc	src/base64.c	/^base64_decode_alloc (const char *in, size_t inlen, char **out,$/;"	f
 base64_encode	src/base64.c	/^base64_encode (const char * in, size_t inlen,$/;"	f
 base64_encode_alloc	src/base64.c	/^base64_encode_alloc (const char *in, size_t inlen, char **out)$/;"	f
-binary_	src/llsd_util.h	/^		llsd_binary_t	binary_;$/;"	m	union:llsd_s::__anon1
-binary_header	src/llsd.c	/^static uint8_t const * const binary_header = "<? LLSD\/Binary ?>\\n";$/;"	v	file:
-bits	src/llsd_util.c	/^static uint8_t bits[] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };$/;"	v	file:
-bits	src/llsd_util.h	/^	uint8_t *			bits;$/;"	m	struct:llsd_uuid_s
-bool_	src/llsd_util.h	/^		llsd_bool_t		bool_;$/;"	m	union:llsd_s::__anon1
+binary_	src/llsd.h	/^		llsd_binary_t	binary_;$/;"	m	union:llsd_s::__anon1
+binary_header	src/llsd_util.c	/^static uint8_t const * const binary_header = "<? LLSD\/Binary ?>\\n";$/;"	v	file:
+bits	src/llsd.h	/^	uint8_t *			bits;$/;"	m	struct:llsd_uuid_s
+bits	src/llsd_const.c	/^static uint8_t bits[] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };$/;"	v	file:
+bool_	src/llsd.h	/^		llsd_bool_t		bool_;$/;"	m	union:llsd_s::__anon1
 buffer	alloc/test_allocator.c	/^static void * buffer = NULL;$/;"	v	file:
 buffer_size	src/array.h	/^	uint_t			buffer_size;			\/* number of slots in the node array *\/$/;"	m	struct:array_s
 calloc_	alloc/test_allocator.c	/^void * calloc_( size_t nmemb, size_t size )$/;"	f
-d	src/llsd_binary.h	/^		llsd_bin_double_t	d;$/;"	m	union:llsd_bin_s::__anon3
 data	alloc/test_allocator.c	/^	uint8_t  data[0];$/;"	m	struct:tag_s	file:
 data	src/array.c	/^	void *					data;					\/* pointer to the data *\/$/;"	m	struct:array_node_s	file:
-data	src/llsd_util.h	/^	uint8_t	*			data;$/;"	m	struct:llsd_binary_s
+data	src/llsd.h	/^	uint8_t	*			data;$/;"	m	struct:llsd_binary_s
 data_head	src/array.h	/^	int_t			data_head;				\/* head node of the data circular list *\/$/;"	m	struct:array_s
-data_size	src/llsd_util.h	/^	uint32_t			data_size;$/;"	m	struct:llsd_binary_s
-date_	src/llsd_util.h	/^		llsd_date_t		date_;$/;"	m	union:llsd_s::__anon1
+data_size	src/llsd.h	/^	uint32_t			data_size;$/;"	m	struct:llsd_binary_s
+date_	src/llsd.h	/^		llsd_date_t		date_;$/;"	m	union:llsd_s::__anon1
 default_key_eq	src/hashtable.c	/^static int default_key_eq(void const * const l, void const * const r)$/;"	f	file:
 default_key_hash	src/hashtable.c	/^static uint_t default_key_hash(void const * const key)$/;"	f	file:
 default_load_factor	src/hashtable.c	/^float const default_load_factor = 0.65f;$/;"	v
@@ -193,31 +167,31 @@ delete_fn	src/array.h	/^typedef void (*delete_fn)(void*);$/;"	t
 diff	src/main.c	/^struct timespec diff( struct timespec start, struct timespec end )$/;"	f
 dummy	src/array.c	/^	uint32_t				dummy;$/;"	m	struct:array_node_s	file:
 dump_heap_blocks	alloc/test_allocator.c	/^void dump_heap_blocks( void )$/;"	f
-dval	src/llsd_util.h	/^	double				dval;$/;"	m	struct:llsd_date_s
-dyn_bits	src/llsd_util.h	/^	int					dyn_bits: 1;$/;"	m	struct:llsd_uuid_s
-dyn_data	src/llsd_util.h	/^	int					dyn_data: 1;$/;"	m	struct:llsd_binary_s
-dyn_enc	src/llsd_util.h	/^	int					dyn_enc: 1;$/;"	m	struct:llsd_binary_s
-dyn_esc	src/llsd_util.h	/^	int					dyn_esc: 1;$/;"	m	struct:llsd_string_s
-dyn_esc	src/llsd_util.h	/^	int					dyn_esc: 1;$/;"	m	struct:llsd_uri_s
-dyn_str	src/llsd_util.h	/^	int					dyn_str:  1;$/;"	m	struct:llsd_uuid_s
-dyn_str	src/llsd_util.h	/^	int					dyn_str: 1;$/;"	m	struct:llsd_date_s
-dyn_str	src/llsd_util.h	/^	int					dyn_str: 1;$/;"	m	struct:llsd_string_s
-dyn_uri	src/llsd_util.h	/^	int					dyn_uri: 1;$/;"	m	struct:llsd_uri_s
-empty_array	src/llsd_util.c	/^llsd_array_t const empty_array =$/;"	v
-empty_binary	src/llsd_util.c	/^llsd_binary_t const empty_binary =$/;"	v
-empty_date	src/llsd_util.c	/^llsd_date_t const empty_date =$/;"	v
-empty_map	src/llsd_util.c	/^llsd_map_t const empty_map =$/;"	v
-empty_uri	src/llsd_util.c	/^llsd_uri_t const empty_uri = $/;"	v
-enc	src/llsd_util.h	/^	uint8_t *			enc;$/;"	m	struct:llsd_binary_s
-enc_size	src/llsd_util.h	/^	uint32_t			enc_size;$/;"	m	struct:llsd_binary_s
-encoding	src/llsd_util.h	/^	llsd_bin_enc_t		encoding;$/;"	m	struct:llsd_binary_s
-esc	src/llsd_util.h	/^	uint8_t *			esc;$/;"	m	struct:llsd_string_s
-esc	src/llsd_util.h	/^	uint8_t *			esc;$/;"	m	struct:llsd_uri_s
-esc_len	src/llsd_util.h	/^	uint32_t			esc_len;$/;"	m	struct:llsd_string_s
-esc_len	src/llsd_util.h	/^	uint32_t			esc_len;$/;"	m	struct:llsd_uri_s
-false_binary	src/llsd_util.c	/^llsd_binary_t const false_binary =$/;"	v
-false_string	src/llsd_util.c	/^llsd_string_t const false_string = $/;"	v
-fnv_key_hash	src/llsd_util.c	/^static uint32_t fnv_key_hash(void const * const key)$/;"	f	file:
+dval	src/llsd.h	/^	double				dval;$/;"	m	struct:llsd_date_s
+dyn_bits	src/llsd.h	/^	int					dyn_bits: 1;$/;"	m	struct:llsd_uuid_s
+dyn_data	src/llsd.h	/^	int					dyn_data: 1;$/;"	m	struct:llsd_binary_s
+dyn_enc	src/llsd.h	/^	int					dyn_enc: 1;$/;"	m	struct:llsd_binary_s
+dyn_esc	src/llsd.h	/^	int					dyn_esc: 1;$/;"	m	struct:llsd_string_s
+dyn_esc	src/llsd.h	/^	int					dyn_esc: 1;$/;"	m	struct:llsd_uri_s
+dyn_str	src/llsd.h	/^	int					dyn_str:  1;$/;"	m	struct:llsd_uuid_s
+dyn_str	src/llsd.h	/^	int					dyn_str: 1;$/;"	m	struct:llsd_date_s
+dyn_str	src/llsd.h	/^	int					dyn_str: 1;$/;"	m	struct:llsd_string_s
+dyn_uri	src/llsd.h	/^	int					dyn_uri: 1;$/;"	m	struct:llsd_uri_s
+empty_array	src/llsd_const.c	/^llsd_array_t const empty_array =$/;"	v
+empty_binary	src/llsd_const.c	/^llsd_binary_t const empty_binary =$/;"	v
+empty_date	src/llsd_const.c	/^llsd_date_t const empty_date =$/;"	v
+empty_map	src/llsd_const.c	/^llsd_map_t const empty_map =$/;"	v
+empty_uri	src/llsd_const.c	/^llsd_uri_t const empty_uri = $/;"	v
+enc	src/llsd.h	/^	uint8_t *			enc;$/;"	m	struct:llsd_binary_s
+enc_size	src/llsd.h	/^	uint32_t			enc_size;$/;"	m	struct:llsd_binary_s
+encoding	src/llsd.h	/^	llsd_bin_enc_t		encoding;$/;"	m	struct:llsd_binary_s
+esc	src/llsd.h	/^	uint8_t *			esc;$/;"	m	struct:llsd_string_s
+esc	src/llsd.h	/^	uint8_t *			esc;$/;"	m	struct:llsd_uri_s
+esc_len	src/llsd.h	/^	uint32_t			esc_len;$/;"	m	struct:llsd_string_s
+esc_len	src/llsd.h	/^	uint32_t			esc_len;$/;"	m	struct:llsd_uri_s
+false_binary	src/llsd_const.c	/^llsd_binary_t const false_binary =$/;"	v
+false_string	src/llsd_const.c	/^llsd_string_t const false_string = $/;"	v
+fnv_key_hash	src/llsd.c	/^static uint32_t fnv_key_hash(void const * const key)$/;"	f	file:
 format	test/test_binary.c	/^static llsd_serializer_t format;$/;"	v	file:
 format	test/test_xml.c	/^static llsd_serializer_t format;$/;"	v	file:
 free_	alloc/test_allocator.c	/^void free_( void * ptr )$/;"	f
@@ -226,8 +200,7 @@ get_heap_size	alloc/test_allocator.c	/^size_t get_heap_size( void )$/;"	f
 get_mem	alloc/test_allocator.c	/^static void * get_mem( size_t size )$/;"	f	file:
 hash	src/hashtable.c	/^	uint_t				hash;				\/* hash value of the key *\/$/;"	m	struct:tuple_s	file:
 hashtable_primes	src/hashtable.c	/^uint_t const hashtable_primes[] =$/;"	v
-hex_to_byte	src/llsd_util.c	/^static uint8_t hex_to_byte( uint8_t hi, uint8_t lo )$/;"	f	file:
-ht	src/llsd_util.h	/^	ht_t		ht;$/;"	m	struct:llsd_map_s
+ht	src/llsd.h	/^	ht_t		ht;$/;"	m	struct:llsd_map_s
 ht_add	src/hashtable.c	/^int ht_add( ht_t * const htable, $/;"	f
 ht_add_prehash	src/hashtable.c	/^int ht_add_prehash( ht_t * const htable, $/;"	f
 ht_clear	src/hashtable.c	/^int ht_clear(ht_t * const htable)$/;"	f
@@ -262,17 +235,15 @@ ht_size	src/hashtable.c	/^uint_t ht_size(ht_t * const htable)$/;"	f
 ht_t	src/hashtable.h	/^} ht_t;$/;"	t	typeref:struct:ht_s
 ht_try_lock	src/hashtable.c	/^int ht_try_lock(ht_t * const htable)$/;"	f
 ht_unlock	src/hashtable.c	/^void ht_unlock(ht_t * const htable)$/;"	f
-i	src/llsd_binary.h	/^		llsd_bin_int_t		i;$/;"	m	union:llsd_bin_s::__anon3
 in_use	alloc/test_allocator.c	/^	uint32_t in_use: 1;$/;"	m	struct:tag_s	file:
 in_use	alloc/test_allocator.c	/^static size_t in_use = 0;$/;"	v	file:
-indent	src/llsd_binary.c	/^static int indent = 0;$/;"	v	file:
 indent	src/llsd_util.c	/^static int indent = 0;$/;"	v	file:
 init_alloc	alloc/test_allocator.c	/^void init_alloc( size_t psize )$/;"	f
 init_binary_suite	test/test_binary.c	/^static int init_binary_suite( void )$/;"	f	file:
 init_xml_suite	test/test_xml.c	/^static int init_xml_suite( void )$/;"	f	file:
 initial_capacity	src/array.h	/^	uint_t			initial_capacity;		\/* the initial capacity value *\/$/;"	m	struct:array_s
 initial_capacity	src/hashtable.h	/^	uint_t				initial_capacity;	\/* the initial capacity value *\/$/;"	m	struct:ht_s
-int_	src/llsd_util.h	/^		llsd_int_t		int_;$/;"	m	union:llsd_s::__anon1
+int_	src/llsd.h	/^		llsd_int_t		int_;$/;"	m	union:llsd_s::__anon1
 int_t	src/array.h	/^	typedef int32_t int_t;$/;"	t
 int_t	src/array.h	/^	typedef int64_t int_t;$/;"	t
 int_t	src/hashtable.h	/^	typedef int32_t int_t;$/;"	t
@@ -280,16 +251,16 @@ isbase64	src/base64.c	/^isbase64 (char ch)$/;"	f
 kdfn	src/hashtable.h	/^	ht_delete_fn		kdfn;				\/* key delete function *\/$/;"	m	struct:ht_s
 kefn	src/hashtable.h	/^	key_eq_fn			kefn;				\/* key compare function *\/$/;"	m	struct:ht_s
 key	src/hashtable.c	/^	void *				key;				\/* pointer to the key *\/$/;"	m	struct:tuple_s	file:
-key_eq	src/llsd_util.c	/^static int key_eq(void const * const l, void const * const r)$/;"	f	file:
+key_eq	src/llsd.c	/^static int key_eq(void const * const l, void const * const r)$/;"	f	file:
 key_eq_fn	src/hashtable.h	/^typedef int (*key_eq_fn)(void const * const l, void const * const r);$/;"	t
-key_esc	src/llsd_util.h	/^	int					key_esc: 1;$/;"	m	struct:llsd_string_s
+key_esc	src/llsd.h	/^	int					key_esc: 1;$/;"	m	struct:llsd_string_s
 key_hash_fn	src/hashtable.h	/^typedef uint_t (*key_hash_fn)(void const * const key);$/;"	t
 khfn	src/hashtable.h	/^	key_hash_fn			khfn;				\/* key hash function *\/$/;"	m	struct:ht_s
-len	src/llsd_util.h	/^	uint32_t			len;$/;"	m	struct:llsd_date_s
-len	src/llsd_util.h	/^	uint32_t			len;$/;"	m	struct:llsd_uuid_s
-llsd_array_append	src/llsd_util.c	/^void llsd_array_append( llsd_t * arr, llsd_t * data )$/;"	f
-llsd_array_s	src/llsd_util.h	/^struct llsd_array_s$/;"	s
-llsd_array_t	src/llsd_util.h	/^typedef struct llsd_array_s		llsd_array_t;$/;"	t	typeref:struct:llsd_array_s
+len	src/llsd.h	/^	uint32_t			len;$/;"	m	struct:llsd_date_s
+len	src/llsd.h	/^	uint32_t			len;$/;"	m	struct:llsd_uuid_s
+llsd_array_append	src/llsd.c	/^void llsd_array_append( llsd_t * arr, llsd_t * data )$/;"	f
+llsd_array_s	src/llsd.h	/^struct llsd_array_s$/;"	s
+llsd_array_t	src/llsd.h	/^typedef struct llsd_array_s		llsd_array_t;$/;"	t	typeref:struct:llsd_array_s
 llsd_as_array	src/llsd_util.c	/^llsd_array_t llsd_as_array( llsd_t * llsd )$/;"	f
 llsd_as_binary	src/llsd_util.c	/^llsd_binary_t llsd_as_binary( llsd_t * llsd )$/;"	f
 llsd_as_bool	src/llsd_util.c	/^llsd_bool_t llsd_as_bool( llsd_t * llsd )$/;"	f
@@ -300,194 +271,141 @@ llsd_as_real	src/llsd_util.c	/^llsd_real_t llsd_as_real( llsd_t * llsd )$/;"	f
 llsd_as_string	src/llsd_util.c	/^llsd_string_t llsd_as_string( llsd_t * llsd )$/;"	f
 llsd_as_uri	src/llsd_util.c	/^llsd_uri_t llsd_as_uri( llsd_t * llsd )$/;"	f
 llsd_as_uuid	src/llsd_util.c	/^llsd_uuid_t llsd_as_uuid( llsd_t * llsd )$/;"	f
-llsd_bin_array_s	src/llsd_binary.h	/^struct llsd_bin_array_s$/;"	s
-llsd_bin_array_t	src/llsd_binary.h	/^typedef struct llsd_bin_array_s llsd_bin_array_t;$/;"	t	typeref:struct:llsd_bin_array_s
-llsd_bin_binary_t	src/llsd_binary.h	/^typedef llsd_bin_bytes_t		llsd_bin_binary_t;$/;"	t
-llsd_bin_bool_t	src/llsd_binary.h	/^typedef llsd_bin_type_t			llsd_bin_bool_t;$/;"	t
-llsd_bin_bytes_s	src/llsd_binary.h	/^typedef struct llsd_bin_bytes_s$/;"	s
-llsd_bin_bytes_t	src/llsd_binary.h	/^} llsd_bin_bytes_t;$/;"	t	typeref:struct:llsd_bin_bytes_s
-llsd_bin_date_t	src/llsd_binary.h	/^typedef llsd_bin_double_t		llsd_bin_date_t;$/;"	t
-llsd_bin_double_s	src/llsd_binary.h	/^typedef struct llsd_bin_double_s$/;"	s
-llsd_bin_double_t	src/llsd_binary.h	/^} llsd_bin_double_t;$/;"	t	typeref:struct:llsd_bin_double_s
-llsd_bin_enc_s	src/llsd_util.h	/^typedef enum llsd_bin_enc_s$/;"	g
-llsd_bin_enc_t	src/llsd_util.h	/^} llsd_bin_enc_t;$/;"	t	typeref:enum:llsd_bin_enc_s
-llsd_bin_int_s	src/llsd_binary.h	/^typedef struct llsd_bin_int_s$/;"	s
-llsd_bin_int_t	src/llsd_binary.h	/^} llsd_bin_int_t;$/;"	t	typeref:struct:llsd_bin_int_s
-llsd_bin_integer_t	src/llsd_binary.h	/^typedef llsd_bin_int_t			llsd_bin_integer_t;$/;"	t
-llsd_bin_map_s	src/llsd_binary.h	/^struct llsd_bin_map_s$/;"	s
-llsd_bin_map_t	src/llsd_binary.h	/^typedef struct llsd_bin_map_s	llsd_bin_map_t;$/;"	t	typeref:struct:llsd_bin_map_s
-llsd_bin_real_t	src/llsd_binary.h	/^typedef llsd_bin_double_t		llsd_bin_real_t;$/;"	t
-llsd_bin_s	src/llsd_binary.h	/^typedef struct llsd_bin_s$/;"	s
-llsd_bin_string_t	src/llsd_binary.h	/^typedef llsd_bin_bytes_t		llsd_bin_string_t;$/;"	t
-llsd_bin_t	src/llsd_binary.h	/^} llsd_bin_t;$/;"	t	typeref:struct:llsd_bin_s
-llsd_bin_type_s	src/llsd_binary.h	/^typedef struct llsd_bin_type_s$/;"	s
-llsd_bin_type_t	src/llsd_binary.h	/^} llsd_bin_type_t;$/;"	t	typeref:struct:llsd_bin_type_s
-llsd_bin_undef_t	src/llsd_binary.h	/^typedef llsd_bin_type_t			llsd_bin_undef_t;$/;"	t
-llsd_bin_uri_t	src/llsd_binary.h	/^typedef llsd_bin_bytes_t		llsd_bin_uri_t;$/;"	t
-llsd_bin_uuid_t	src/llsd_binary.h	/^typedef llsd_bin_bytes_t		llsd_bin_uuid_t;$/;"	t
+llsd_bin_enc_s	src/llsd_const.h	/^typedef enum llsd_bin_enc_s$/;"	g
+llsd_bin_enc_t	src/llsd_const.h	/^} llsd_bin_enc_t;$/;"	t	typeref:enum:llsd_bin_enc_s
 llsd_binary_bytes	src/llsd_binary.c	/^const uint8_t llsd_binary_bytes[LLSD_TYPE_COUNT] =$/;"	v
-llsd_binary_s	src/llsd_util.h	/^struct llsd_binary_s$/;"	s
-llsd_binary_t	src/llsd_util.h	/^typedef struct llsd_binary_s	llsd_binary_t;$/;"	t	typeref:struct:llsd_binary_s
+llsd_binary_s	src/llsd.h	/^struct llsd_binary_s$/;"	s
+llsd_binary_t	src/llsd.h	/^typedef struct llsd_binary_s	llsd_binary_t;$/;"	t	typeref:struct:llsd_binary_s
 llsd_binary_types	src/llsd_binary.c	/^const llsd_type_t llsd_binary_types[UINT8_MAX + 1] =$/;"	v
-llsd_bool_t	src/llsd_util.h	/^typedef int						llsd_bool_t;$/;"	t
-llsd_date_s	src/llsd_util.h	/^struct llsd_date_s$/;"	s
-llsd_date_t	src/llsd_util.h	/^typedef struct llsd_date_s		llsd_date_t;$/;"	t	typeref:struct:llsd_date_s
-llsd_decode_binary	src/llsd_util.c	/^int llsd_decode_binary( llsd_t * llsd )$/;"	f
-llsd_decoded_binary_len	src/llsd_util.c	/^static uint32_t llsd_decoded_binary_len( llsd_t * llsd )$/;"	f	file:
-llsd_deinitialize	src/llsd_util.c	/^static void llsd_deinitialize( llsd_t * llsd )$/;"	f	file:
-llsd_delete	src/llsd_util.c	/^void llsd_delete( void * p )$/;"	f
-llsd_destringify_date	src/llsd_util.c	/^int llsd_destringify_date( llsd_t * llsd )$/;"	f
-llsd_destringify_uuid	src/llsd_util.c	/^int llsd_destringify_uuid( llsd_t * llsd )$/;"	f
-llsd_encode_binary	src/llsd_util.c	/^int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding )$/;"	f
+llsd_bool_t	src/llsd.h	/^typedef int						llsd_bool_t;$/;"	t
+llsd_date_s	src/llsd.h	/^struct llsd_date_s$/;"	s
+llsd_date_t	src/llsd.h	/^typedef struct llsd_date_s		llsd_date_t;$/;"	t	typeref:struct:llsd_date_s
+llsd_decode_binary	src/llsd_xml.c	/^int llsd_decode_binary( llsd_t * llsd )$/;"	f
+llsd_decoded_binary_len	src/llsd_xml.c	/^static uint32_t llsd_decoded_binary_len( llsd_t * llsd )$/;"	f	file:
+llsd_deinitialize	src/llsd.c	/^static void llsd_deinitialize( llsd_t * llsd )$/;"	f	file:
+llsd_delete	src/llsd.c	/^void llsd_delete( void * p )$/;"	f
+llsd_destringify_date	src/llsd_xml.c	/^int llsd_destringify_date( llsd_t * llsd )$/;"	f
+llsd_destringify_uuid	src/llsd_xml.c	/^int llsd_destringify_uuid( llsd_t * llsd )$/;"	f
+llsd_encode_binary	src/llsd_xml.c	/^int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding )$/;"	f
 llsd_equal	src/llsd_util.c	/^int llsd_equal( llsd_t * l, llsd_t * r )$/;"	f
 llsd_equalize	src/llsd_util.c	/^static int llsd_equalize ( llsd_t * l, llsd_t * r )$/;"	f	file:
-llsd_escape_string	src/llsd_util.c	/^int llsd_escape_string( llsd_t * llsd )$/;"	f
-llsd_escape_uri	src/llsd_util.c	/^int llsd_escape_uri( llsd_t * llsd )$/;"	f
-llsd_escaped_string_len	src/llsd_util.c	/^static uint32_t llsd_escaped_string_len( llsd_t * llsd )$/;"	f	file:
-llsd_escaped_uri_len	src/llsd_util.c	/^static uint32_t llsd_escaped_uri_len( llsd_t * llsd )$/;"	f	file:
+llsd_escape_string	src/llsd_xml.c	/^int llsd_escape_string( llsd_t * llsd )$/;"	f
+llsd_escape_uri	src/llsd_xml.c	/^int llsd_escape_uri( llsd_t * llsd )$/;"	f
+llsd_escaped_string_len	src/llsd_xml.c	/^static uint32_t llsd_escaped_string_len( llsd_t * llsd )$/;"	f	file:
+llsd_escaped_uri_len	src/llsd_xml.c	/^static uint32_t llsd_escaped_uri_len( llsd_t * llsd )$/;"	f	file:
 llsd_format	src/llsd_util.c	/^size_t llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout, int pretty )$/;"	f
-llsd_format_binary	src/llsd_util.c	/^static size_t llsd_format_binary( llsd_t * llsd, FILE * fout )$/;"	f	file:
-llsd_format_notation	src/llsd_util.c	/^static size_t llsd_format_notation( llsd_t * llsd, FILE * fout, int pretty )$/;"	f	file:
-llsd_format_xml	src/llsd_util.c	/^static size_t llsd_format_xml( llsd_t * llsd, FILE * fout )$/;"	f	file:
-llsd_get_size	src/llsd_util.c	/^int llsd_get_size( llsd_t * llsd )$/;"	f
-llsd_get_type	src/llsd_util.c	/^llsd_type_t llsd_get_type( llsd_t * llsd )$/;"	f
-llsd_get_type_string	src/llsd_util.c	/^int8_t const * llsd_get_type_string( llsd_type_t type_ )$/;"	f
-llsd_initialize	src/llsd_util.c	/^static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )$/;"	f	file:
-llsd_int_t	src/llsd_util.h	/^typedef int32_t					llsd_int_t;$/;"	t
-llsd_is_empty	src/llsd_util.h	199;"	d
-llsd_itr_begin	src/llsd_util.c	/^llsd_itr_t llsd_itr_begin( llsd_t * llsd )$/;"	f
-llsd_itr_end	src/llsd_util.c	/^llsd_itr_t llsd_itr_end( llsd_t * llsd )$/;"	f
-llsd_itr_get	src/llsd_util.c	/^int llsd_itr_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key )$/;"	f
-llsd_itr_next	src/llsd_util.c	/^llsd_itr_t llsd_itr_next( llsd_t * llsd, llsd_itr_t itr )$/;"	f
-llsd_itr_rbegin	src/llsd_util.c	/^llsd_itr_t llsd_itr_rbegin( llsd_t * llsd )$/;"	f
-llsd_itr_rend	src/llsd_util.h	237;"	d
-llsd_itr_rnext	src/llsd_util.c	/^llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr )$/;"	f
-llsd_itr_t	src/llsd_util.h	/^typedef int32_t llsd_itr_t;$/;"	t
-llsd_map_find	src/llsd_util.c	/^llsd_t * llsd_map_find( llsd_t * map, llsd_t * key )$/;"	f
-llsd_map_insert	src/llsd_util.c	/^void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data )$/;"	f
-llsd_map_s	src/llsd_util.h	/^struct llsd_map_s$/;"	s
-llsd_map_t	src/llsd_util.h	/^typedef struct llsd_map_s		llsd_map_t;$/;"	t	typeref:struct:llsd_map_s
-llsd_new	src/llsd_util.c	/^llsd_t * llsd_new( llsd_type_t type_, ... )$/;"	f
-llsd_new_empty_array	src/llsd_util.h	190;"	d
-llsd_new_empty_map	src/llsd_util.h	191;"	d
-llsd_parse	src/llsd.c	/^llsd_t * llsd_parse( uint8_t * p, size_t len )$/;"	f
-llsd_parse_binary	src/llsd_binary.c	/^llsd_bin_t * llsd_parse_binary( uint8_t * buf, size_t len )$/;"	f
-llsd_parse_binary_in_place	src/llsd_binary.c	/^size_t llsd_parse_binary_in_place( llsd_bin_t * lb, uint8_t * buf, size_t len )$/;"	f
+llsd_format_binary	src/llsd_binary.c	/^size_t llsd_format_binary( llsd_t * llsd, FILE * fout )$/;"	f
+llsd_format_xml	src/llsd_xml.c	/^size_t llsd_format_xml( llsd_t * llsd, FILE * fout )$/;"	f
+llsd_get_size	src/llsd.c	/^int llsd_get_size( llsd_t * llsd )$/;"	f
+llsd_get_type	src/llsd.c	/^llsd_type_t llsd_get_type( llsd_t * llsd )$/;"	f
+llsd_get_type_string	src/llsd.c	/^int8_t const * llsd_get_type_string( llsd_type_t type_ )$/;"	f
+llsd_initialize	src/llsd.c	/^static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )$/;"	f	file:
+llsd_int_t	src/llsd.h	/^typedef int32_t					llsd_int_t;$/;"	t
+llsd_is_empty	src/llsd.h	140;"	d
+llsd_itr_begin	src/llsd.c	/^llsd_itr_t llsd_itr_begin( llsd_t * llsd )$/;"	f
+llsd_itr_end	src/llsd.c	/^llsd_itr_t llsd_itr_end( llsd_t * llsd )$/;"	f
+llsd_itr_get	src/llsd.c	/^int llsd_itr_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key )$/;"	f
+llsd_itr_next	src/llsd.c	/^llsd_itr_t llsd_itr_next( llsd_t * llsd, llsd_itr_t itr )$/;"	f
+llsd_itr_rbegin	src/llsd.c	/^llsd_itr_t llsd_itr_rbegin( llsd_t * llsd )$/;"	f
+llsd_itr_rend	src/llsd.h	154;"	d
+llsd_itr_rnext	src/llsd.c	/^llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr )$/;"	f
+llsd_itr_t	src/llsd.h	/^typedef int32_t llsd_itr_t;$/;"	t
+llsd_map_find	src/llsd.c	/^llsd_t * llsd_map_find( llsd_t * map, llsd_t * key )$/;"	f
+llsd_map_insert	src/llsd.c	/^void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data )$/;"	f
+llsd_map_s	src/llsd.h	/^struct llsd_map_s$/;"	s
+llsd_map_t	src/llsd.h	/^typedef struct llsd_map_s		llsd_map_t;$/;"	t	typeref:struct:llsd_map_s
+llsd_new	src/llsd.c	/^llsd_t * llsd_new( llsd_type_t type_, ... )$/;"	f
+llsd_new_empty_array	src/llsd.h	131;"	d
+llsd_new_empty_map	src/llsd.h	132;"	d
+llsd_parse	src/llsd_util.c	/^llsd_t * llsd_parse( uint8_t * p, size_t len )$/;"	f
 llsd_parse_notation	src/llsd_util.c	/^static llsd_t * llsd_parse_notation( FILE * fin )$/;"	f	file:
 llsd_parse_xml	src/llsd_util.c	/^static llsd_t * llsd_parse_xml( FILE * fin )$/;"	f	file:
-llsd_parse_xml	src/llsd_xml.c	/^llsd_xml_t * llsd_parse_xml( uint8_t * p, size_t len )$/;"	f
-llsd_real_t	src/llsd_util.h	/^typedef double					llsd_real_t;$/;"	t
+llsd_real_t	src/llsd.h	/^typedef double					llsd_real_t;$/;"	t
 llsd_reserve_array	src/llsd_util.c	/^static llsd_t * llsd_reserve_array( uint32_t size )$/;"	f	file:
 llsd_reserve_binary	src/llsd_util.c	/^static llsd_t * llsd_reserve_binary( uint32_t size, int encoded )$/;"	f	file:
 llsd_reserve_date	src/llsd_util.c	/^static llsd_t * llsd_reserve_date( uint32_t size, int stringified )$/;"	f	file:
 llsd_reserve_map	src/llsd_util.c	/^static llsd_t * llsd_reserve_map( uint32_t size )$/;"	f	file:
 llsd_reserve_string	src/llsd_util.c	/^static llsd_t * llsd_reserve_string( uint32_t size, int escaped )$/;"	f	file:
 llsd_reserve_uri	src/llsd_util.c	/^static llsd_t * llsd_reserve_uri( uint32_t size, int escaped )$/;"	f	file:
-llsd_s	src/llsd_util.h	/^typedef struct llsd_s$/;"	s
+llsd_s	src/llsd.h	/^typedef struct llsd_s$/;"	s
 llsd_serializer_s	src/llsd_const.h	/^typedef enum llsd_serializer_s$/;"	g
-llsd_serializer_s	src/llsd_util.h	/^typedef enum llsd_serializer_s$/;"	g
 llsd_serializer_t	src/llsd_const.h	/^} llsd_serializer_t;$/;"	t	typeref:enum:llsd_serializer_s
-llsd_serializer_t	src/llsd_util.h	/^} llsd_serializer_t;$/;"	t	typeref:enum:llsd_serializer_s
 llsd_string_eq	src/llsd_util.c	/^static int llsd_string_eq( llsd_t * l, llsd_t * r )$/;"	f	file:
-llsd_string_s	src/llsd_util.h	/^struct llsd_string_s$/;"	s
-llsd_string_t	src/llsd_util.h	/^typedef struct llsd_string_s	llsd_string_t;$/;"	t	typeref:struct:llsd_string_s
-llsd_stringify_date	src/llsd_util.c	/^int llsd_stringify_date( llsd_t * llsd )$/;"	f
-llsd_stringify_uuid	src/llsd_util.c	/^int llsd_stringify_uuid( llsd_t * llsd )$/;"	f
-llsd_t	src/llsd.h	/^} llsd_t;$/;"	t	typeref:union:__anon2
-llsd_t	src/llsd_util.h	/^} llsd_t;$/;"	t	typeref:struct:llsd_s
+llsd_string_s	src/llsd.h	/^struct llsd_string_s$/;"	s
+llsd_string_t	src/llsd.h	/^typedef struct llsd_string_s	llsd_string_t;$/;"	t	typeref:struct:llsd_string_s
+llsd_stringify_date	src/llsd_xml.c	/^int llsd_stringify_date( llsd_t * llsd )$/;"	f
+llsd_stringify_uuid	src/llsd_xml.c	/^int llsd_stringify_uuid( llsd_t * llsd )$/;"	f
+llsd_t	src/llsd.h	/^} llsd_t;$/;"	t	typeref:struct:llsd_s
 llsd_type_e	src/llsd_const.h	/^typedef enum llsd_type_e$/;"	g
-llsd_type_e	src/llsd_util.h	/^typedef enum llsd_type_e$/;"	g
 llsd_type_strings	src/llsd_const.c	/^int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT] =$/;"	v
-llsd_type_strings	src/llsd_util.c	/^int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT] =$/;"	v
 llsd_type_t	src/llsd_const.h	/^} llsd_type_t;$/;"	t	typeref:enum:llsd_type_e
-llsd_type_t	src/llsd_util.h	/^} llsd_type_t;$/;"	t	typeref:enum:llsd_type_e
-llsd_unescape_string	src/llsd_util.c	/^int llsd_unescape_string( llsd_t * llsd )$/;"	f
-llsd_unescape_uri	src/llsd_util.c	/^int llsd_unescape_uri( llsd_t * llsd )$/;"	f
-llsd_unescaped_string_len	src/llsd_util.c	/^static uint32_t llsd_unescaped_string_len( llsd_t * llsd )$/;"	f	file:
+llsd_unescape_string	src/llsd_xml.c	/^int llsd_unescape_string( llsd_t * llsd )$/;"	f
+llsd_unescape_uri	src/llsd_xml.c	/^int llsd_unescape_uri( llsd_t * llsd )$/;"	f
+llsd_unescaped_string_len	src/llsd_xml.c	/^static uint32_t llsd_unescaped_string_len( llsd_t * llsd )$/;"	f	file:
 llsd_uri_eq	src/llsd_util.c	/^static int llsd_uri_eq( llsd_t * l, llsd_t * r )$/;"	f	file:
-llsd_uri_s	src/llsd_util.h	/^struct llsd_uri_s$/;"	s
-llsd_uri_t	src/llsd_util.h	/^typedef struct llsd_uri_s		llsd_uri_t;$/;"	t	typeref:struct:llsd_uri_s
-llsd_uuid_s	src/llsd_util.h	/^struct llsd_uuid_s$/;"	s
-llsd_uuid_t	src/llsd_util.h	/^typedef struct llsd_uuid_s		llsd_uuid_t;$/;"	t	typeref:struct:llsd_uuid_s
-llsd_xml_s	src/llsd_xml.h	/^typedef struct llsd_xml_s$/;"	s
-llsd_xml_t	src/llsd_xml.h	/^} llsd_xml_t;$/;"	t	typeref:struct:llsd_xml_s
+llsd_uri_s	src/llsd.h	/^struct llsd_uri_s$/;"	s
+llsd_uri_t	src/llsd.h	/^typedef struct llsd_uri_s		llsd_uri_t;$/;"	t	typeref:struct:llsd_uri_s
+llsd_uuid_s	src/llsd.h	/^struct llsd_uuid_s$/;"	s
+llsd_uuid_t	src/llsd.h	/^typedef struct llsd_uuid_s		llsd_uuid_t;$/;"	t	typeref:struct:llsd_uuid_s
 load_factor	src/hashtable.h	/^	float				load_factor;		\/* load level that triggers resize *\/$/;"	m	struct:ht_s
 lock	src/array.h	/^	pthread_mutex_t lock;					\/* list lock *\/$/;"	m	struct:array_s
 lock	src/hashtable.h	/^	pthread_mutex_t		lock;				\/* hashtable lock *\/$/;"	m	struct:ht_s
-m	src/llsd_binary.h	/^		llsd_bin_map_t		m;$/;"	m	union:llsd_bin_s::__anon3
 main	src/main.c	/^int main(int argc, char** argv)$/;"	f
 main	test/test_all.c	/^int main()$/;"	f
 malloc_	alloc/test_allocator.c	/^void * malloc_( size_t size )$/;"	f
-map_	src/llsd_util.h	/^		llsd_map_t		map_;$/;"	m	union:llsd_s::__anon1
+map_	src/llsd.h	/^		llsd_map_t		map_;$/;"	m	union:llsd_s::__anon1
 mem_len_cmp	src/llsd_util.c	/^static int mem_len_cmp( uint8_t * l, uint32_t llen, uint8_t * r, uint32_t rlen )$/;"	f	file:
 next	src/array.c	/^	struct array_node_s *	next;					\/* next link *\/$/;"	m	struct:array_node_s	typeref:struct:array_node_s::array_node_s	file:
 node_buffer	src/array.h	/^	array_node_t*	node_buffer;			\/* buffer of nodes *\/$/;"	m	struct:array_s
-notation_esc_chars	src/llsd_util.c	/^static const char* notation_esc_chars[256] =$/;"	v	file:
-notation_esc_len	src/llsd_util.c	/^static const uint8_t notation_esc_len[256] =$/;"	v	file:
 num_nodes	src/array.h	/^	uint_t			num_nodes;				\/* number of nodes in the list *\/$/;"	m	struct:array_s
 num_primes	src/hashtable.c	/^uint_t const num_primes = 30;$/;"	v
 num_tuples	src/hashtable.h	/^	uint_t				num_tuples;			\/* number of tuples in the table *\/$/;"	m	struct:ht_s
-one_data	src/llsd_util.c	/^static uint8_t one_data[] = { '1' };$/;"	v	file:
+one_data	src/llsd_const.c	/^static uint8_t one_data[] = { '1' };$/;"	v	file:
 pfn	src/array.h	/^	delete_fn		pfn;					\/* destruction function for each node *\/$/;"	m	struct:array_s
 pool	alloc/test_allocator.c	/^static uint8_t * pool = NULL;$/;"	v	file:
 pool_size	alloc/test_allocator.c	/^static size_t pool_size = 0;$/;"	v	file:
 prev	src/array.c	/^	struct array_node_s *	prev;					\/* prev link *\/$/;"	m	struct:array_node_s	typeref:struct:array_node_s::array_node_s	file:
 prime_index	src/hashtable.h	/^	uint_t				prime_index;		\/* the index of the table size *\/$/;"	m	struct:ht_s
 put_mem	alloc/test_allocator.c	/^static void put_mem( void * p )$/;"	f	file:
-real_	src/llsd_util.h	/^		llsd_real_t		real_;$/;"	m	union:llsd_s::__anon1
+real_	src/llsd.h	/^		llsd_real_t		real_;$/;"	m	union:llsd_s::__anon1
 realloc_	alloc/test_allocator.c	/^void * realloc_( void * ptr, size_t size )$/;"	f
 size	alloc/test_allocator.c	/^	uint32_t size: 31;$/;"	m	struct:tag_s	file:
-str	src/llsd_util.h	/^	uint8_t *			str;$/;"	m	struct:llsd_string_s
-str	src/llsd_util.h	/^	uint8_t *			str;$/;"	m	struct:llsd_uuid_s
-str	src/llsd_util.h	/^	uint8_t*			str;$/;"	m	struct:llsd_date_s
-str_len	src/llsd_util.h	/^	uint32_t			str_len;$/;"	m	struct:llsd_string_s
+str	src/llsd.h	/^	uint8_t *			str;$/;"	m	struct:llsd_string_s
+str	src/llsd.h	/^	uint8_t *			str;$/;"	m	struct:llsd_uuid_s
+str	src/llsd.h	/^	uint8_t*			str;$/;"	m	struct:llsd_date_s
+str_len	src/llsd.h	/^	uint32_t			str_len;$/;"	m	struct:llsd_string_s
 strdup_	alloc/test_allocator.c	/^uint8_t * strdup_( uint8_t const * str )$/;"	f
-string_	src/llsd_util.h	/^		llsd_string_t	string_;$/;"	m	union:llsd_s::__anon1
-t	src/llsd_binary.h	/^	llsd_bin_type_t			t;$/;"	m	struct:llsd_bin_s
-t	src/llsd_binary.h	/^	uint8_t *		t;$/;"	m	struct:llsd_bin_type_s
-t	src/llsd_xml.h	/^	llsd_type_t		t;$/;"	m	struct:llsd_xml_s
+string_	src/llsd.h	/^		llsd_string_t	string_;$/;"	m	union:llsd_s::__anon1
 tag_s	alloc/test_allocator.c	/^typedef struct tag_s$/;"	s	file:
 tag_t	alloc/test_allocator.c	/^} tag_t;$/;"	t	typeref:struct:tag_s	file:
 test_binary_byte_to_type	test/test_binary.c	/^static void test_binary_byte_to_type( void )$/;"	f	file:
 test_type_to_binary_byte	test/test_binary.c	/^static void test_type_to_binary_byte( void )$/;"	f	file:
-tlen	src/llsd_binary.h	/^	size_t			tlen;$/;"	m	struct:llsd_bin_type_s
 tmpf	test/test_binary.c	/^static FILE* tmpf;$/;"	v	file:
 to_uchar	src/base64.c	/^to_uchar (char ch)$/;"	f	file:
-true_binary	src/llsd_util.c	/^llsd_binary_t const true_binary =$/;"	v
-true_string	src/llsd_util.c	/^llsd_string_t const true_string = $/;"	v
+true_binary	src/llsd_const.c	/^llsd_binary_t const true_binary =$/;"	v
+true_string	src/llsd_const.c	/^llsd_string_t const true_string = $/;"	v
 ts_in_ms	src/main.c	/^uint32_t ts_in_ms( struct timespec t )$/;"	f
 tuple_s	src/hashtable.c	/^typedef struct tuple_s$/;"	s	file:
 tuple_t	src/hashtable.c	/^} tuple_t;$/;"	t	typeref:struct:tuple_s	file:
 tuple_t	src/hashtable.h	/^typedef struct tuple_s tuple_t;$/;"	t	typeref:struct:tuple_s
 tuples	src/hashtable.h	/^	tuple_t*			tuples;				\/* pointer to tuple table *\/$/;"	m	struct:ht_s
-type_	src/llsd_util.h	/^	llsd_type_t			type_;$/;"	m	struct:llsd_s
+type_	src/llsd.h	/^	llsd_type_t			type_;$/;"	m	struct:llsd_s
 uchar_in_range	src/base64.c	287;"	d	file:
 uchar_in_range	src/base64.c	289;"	d	file:
 uint_t	src/array.h	/^	typedef uint32_t uint_t;$/;"	t
 uint_t	src/array.h	/^	typedef uint64_t uint_t;$/;"	t
 uint_t	src/hashtable.h	/^	typedef uint32_t uint_t;$/;"	t
-undefined	src/llsd_util.c	/^llsd_t const undefined =$/;"	v
+undefined	src/llsd_const.c	/^llsd_t const undefined =$/;"	v
 update_block	alloc/test_allocator.c	/^static int update_block( tag_t * block, size_t size, int in_use )$/;"	f	file:
-uri	src/llsd_util.h	/^	uint8_t *			uri;$/;"	m	struct:llsd_uri_s
-uri_	src/llsd_util.h	/^		llsd_uri_t		uri_;$/;"	m	union:llsd_s::__anon1
-uri_len	src/llsd_util.h	/^	uint32_t			uri_len;$/;"	m	struct:llsd_uri_s
-use_dval	src/llsd_util.h	/^	int					use_dval: 1;$/;"	m	struct:llsd_date_s
-uuid_	src/llsd_util.h	/^		llsd_uuid_t		uuid_;$/;"	m	union:llsd_s::__anon1
-v	src/llsd_binary.h	/^	array_t *		v;$/;"	m	struct:llsd_bin_array_s
-v	src/llsd_binary.h	/^	double *		v;$/;"	m	struct:llsd_bin_double_s
-v	src/llsd_binary.h	/^	ht_t *			v;$/;"	m	struct:llsd_bin_map_s
-v	src/llsd_binary.h	/^	uint32_t *		v;$/;"	m	struct:llsd_bin_int_s
-v	src/llsd_binary.h	/^	uint8_t *		v;$/;"	m	struct:llsd_bin_bytes_s
+uri	src/llsd.h	/^	uint8_t *			uri;$/;"	m	struct:llsd_uri_s
+uri_	src/llsd.h	/^		llsd_uri_t		uri_;$/;"	m	union:llsd_s::__anon1
+uri_len	src/llsd.h	/^	uint32_t			uri_len;$/;"	m	struct:llsd_uri_s
+use_dval	src/llsd.h	/^	int					use_dval: 1;$/;"	m	struct:llsd_date_s
+uuid_	src/llsd.h	/^		llsd_uuid_t		uuid_;$/;"	m	union:llsd_s::__anon1
 value	src/hashtable.c	/^	void *				value;				\/* pointer to the value *\/$/;"	m	struct:tuple_s	file:
-value	src/llsd_util.h	/^	}					value;$/;"	m	struct:llsd_s	typeref:union:llsd_s::__anon1
+value	src/llsd.h	/^	}					value;$/;"	m	struct:llsd_s	typeref:union:llsd_s::__anon1
 vdfn	src/hashtable.h	/^	ht_delete_fn		vdfn;				\/* value delete function *\/$/;"	m	struct:ht_s
-vlen	src/llsd_binary.h	/^	size_t			vlen;$/;"	m	struct:llsd_bin_array_s
-vlen	src/llsd_binary.h	/^	size_t			vlen;$/;"	m	struct:llsd_bin_bytes_s
-vlen	src/llsd_binary.h	/^	size_t			vlen;$/;"	m	struct:llsd_bin_double_s
-vlen	src/llsd_binary.h	/^	size_t			vlen;$/;"	m	struct:llsd_bin_int_s
-vlen	src/llsd_binary.h	/^	size_t			vlen;$/;"	m	struct:llsd_bin_map_s
-x	src/llsd.h	/^	llsd_xml_t x;$/;"	m	union:__anon2
-xml_footer	src/llsd.c	/^static uint8_t const * const xml_footer = "<\/llsd>\\n";$/;"	v	file:
-xml_header	src/llsd.c	/^static uint8_t const * const xml_header = "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>\\n<llsd>\\n";$/;"	v	file:
-zero_data	src/llsd_util.c	/^static uint8_t zero_data [] = { '0' };$/;"	v	file:
-zero_uuid	src/llsd_util.c	/^llsd_uuid_t const zero_uuid = $/;"	v
+xml_footer	src/llsd_util.c	/^static uint8_t const * const xml_footer = "<\/llsd>\\n";$/;"	v	file:
+xml_header	src/llsd_util.c	/^static uint8_t const * const xml_header = "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>\\n<llsd>\\n";$/;"	v	file:
+zero_data	src/llsd_const.c	/^static uint8_t zero_data [] = { '0' };$/;"	v	file:
+zero_uuid	src/llsd_const.c	/^llsd_uuid_t const zero_uuid = $/;"	v

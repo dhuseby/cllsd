@@ -17,11 +17,73 @@
 #ifndef LLSD_H
 #define LLSD_H
 
-#include <stdlib.h>
+#include "macros.h"
+#include "array.h"
+#include "hashtable.h"
 
-#include "llsd_const.h"
-#include "llsd_binary.h"
-#include "llsd_xml.h"
+typedef enum llsd_type_e
+{
+	LLSD_UNDEF,
+	LLSD_BOOLEAN,
+	LLSD_INTEGER,
+	LLSD_REAL,
+	LLSD_UUID,
+	LLSD_STRING,
+	LLSD_DATE,
+	LLSD_URI,
+	LLSD_BINARY,
+	LLSD_ARRAY,
+	LLSD_MAP,
+
+	LLSD_TYPE_LAST,
+	LLSD_TYPE_FIRST = LLSD_UNDEF,
+	LLSD_TYPE_COUNT = LLSD_TYPE_LAST - LLSD_TYPE_FIRST,
+	LLSD_TYPE_INVALID
+
+} llsd_type_t;
+
+extern int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT];
+
+#define TYPE_TO_STRING( t ) (((t >= LLSD_TYPE_FIRST) && (t < LLSD_TYPE_LAST)) ? \
+							 llsd_type_strings[t] : T("INVALID") )
+
+typedef enum llsd_serializer_s
+{
+	LLSD_ENC_XML,
+	LLSD_ENC_BINARY,
+
+	LLSD_ENC_LAST,
+	LLSD_ENC_FIRST = LLSD_ENC_XML,
+	LLSD_ENC_COUNT = LLSD_ENC_LAST - LLSD_ENC_FIRST
+
+} llsd_serializer_t;
+
+typedef enum llsd_bin_enc_s
+{
+	LLSD_NONE,
+	LLSD_BASE16,
+	LLSD_BASE64,
+
+	LLSD_BIN_ENC_LAST,
+	LLSD_BIN_ENC_FIRST = LLSD_NONE,
+	LLSD_BIN_END_COUNT = LLSD_BIN_ENC_LAST - LLSD_BIN_ENC_FIRST
+
+} llsd_bin_enc_t;
+
+#ifndef TRUE
+#define TRUE (1)
+#endif
+
+#ifndef FALSE
+#define FALSE (0)
+#endif
+
+/* LLSD magic values */
+#define UUID_LEN (16)
+#define UUID_STR_LEN (36)
+#define DATE_STR_LEN (24)
+#define DEFAULT_ARRAY_CAPACITY (8)
+#define DEFAULT_MAP_CAPACITY (5)
 
 struct llsd_uuid_s
 {
@@ -68,7 +130,6 @@ struct llsd_uri_s
 	uint8_t *			esc;
 };
 
-#define DATE_STR_LEN (24)
 /* YYYY-MM-DDTHH:MM:SS.FFFZ */
 struct llsd_date_s
 {
@@ -79,13 +140,11 @@ struct llsd_date_s
 	uint8_t*			str;
 };
 
-#define DEFAULT_ARRAY_CAPACITY (8)
 struct llsd_array_s
 {
 	array_t		array;
 };
 
-#define DEFAULT_MAP_CAPACITY (5)
 struct llsd_map_s
 {
 	ht_t		ht;
@@ -122,41 +181,6 @@ typedef struct llsd_s
 	}					value;
 
 } llsd_t;
-
-/* new/delete llsd objects */
-llsd_t * llsd_new( llsd_type_t type_, ... );
-void llsd_delete( void * p );
-
-/* utility macros */
-#define llsd_new_empty_array() llsd_new( LLSD_ARRAY )
-#define llsd_new_empty_map() llsd_new( LLSD_MAP )
-
-/* get the type of the particular object */
-llsd_type_t llsd_get_type( llsd_t * llsd );
-int8_t const * llsd_get_type_string( llsd_type_t type_ );
-
-/* get the size of the cotainer types */
-int llsd_get_size( llsd_t * llsd );
-#define llsd_is_empty(x) (llsd_get_size(x) == 0)
-
-/* append to containers */
-void llsd_array_append( llsd_t * arr, llsd_t * data );
-void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data );
-llsd_t * llsd_map_find( llsd_t * map, llsd_t * key );
-
-/* iterator type */
-typedef int32_t llsd_itr_t;
-
-/* iterator interface */
-llsd_itr_t llsd_itr_begin( llsd_t * llsd );
-llsd_itr_t llsd_itr_end( llsd_t * llsd );
-llsd_itr_t llsd_itr_rbegin( llsd_t * llsd );
-#define llsd_itr_rend(x) llsd_itr_end(x)
-llsd_itr_t llsd_itr_next( llsd_t * llsd, llsd_itr_t itr );
-llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr );
-
-/* get the next value in the array/map */
-int llsd_itr_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key );
 
 #endif /*LLSD_H*/
 

@@ -17,6 +17,8 @@
 #ifndef __ARRAY_H__
 #define __ARRAY_H__
 
+#include <stdint.h>
+
 #ifndef __UINT__
 #define __UINT__
 #ifdef __amd64__
