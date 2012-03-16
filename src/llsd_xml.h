@@ -20,11 +20,16 @@
 #include <stdint.h>
 #include "llsd_const.h"
 
-typedef struct llsd_xml_s
-{
-	llsd_type_t		t;
-} llsd_xml_t;
-
-llsd_xml_t * llsd_parse_xml( uint8_t * p, size_t len );
+/* string/binary conversions */
+int llsd_stringify_uuid( llsd_t * llsd );
+int llsd_destringify_uuid( llsd_t * llsd );
+int llsd_stringify_date( llsd_t * llsd );
+int llsd_destringify_date( llsd_t * llsd );
+int llsd_escape_string( llsd_t * llsd );
+int llsd_unescape_string( llsd_t * llsd );
+int llsd_esacpe_uri( llsd_t * llsd );
+int llsd_unescape_uri( llsd_t * llsd );
+int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding );
+int llsd_decode_binary( llsd_t * llsd );
 
 #endif /* LLSD_XML_H */

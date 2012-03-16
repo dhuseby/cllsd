@@ -52,6 +52,30 @@ typedef enum llsd_serializer_s
 
 } llsd_serializer_t;
 
+typedef enum llsd_bin_enc_s
+{
+	LLSD_NONE,
+	LLSD_BASE16,
+	LLSD_BASE64,
+
+	LLSD_BIN_ENC_LAST,
+	LLSD_BIN_ENC_FIRST = LLSD_NONE,
+	LLSD_BIN_END_COUNT = LLSD_BIN_ENC_LAST - LLSD_BIN_ENC_FIRST
+
+} llsd_bin_enc_t;
+
+#ifndef TRUE
+#define TRUE (1)
+#endif
+
+#ifndef FALSE
+#define FALSE (0)
+#endif
+
+/* LLSD types */
+#define UUID_LEN (16)
+#define UUID_STR_LEN (36)
+
 extern int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT];
 
 #define TYPE_TO_STRING( t ) (((t >= LLSD_TYPE_FIRST) && (t < LLSD_TYPE_LAST)) ? \
