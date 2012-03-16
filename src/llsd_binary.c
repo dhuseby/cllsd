@@ -29,210 +29,151 @@
 #include "array.h"
 #include "hashtable.h"
 
-static int indent = 0;
+#define INDENT(f, x, y) (( x ) ? fprintf( f, "%*s", y, " " ) : 0)
 
-size_t llsd_parse_binary_in_place( llsd_bin_t * lb, uint8_t * buf, size_t len )
+size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 {
-	uint32_t *pi;
-	uint64_t *ui;
-	llsd_bin_t * p = NULL;
-	size_t s = 0;
-	int i;
+	size_t num = 0;
+	unsigned long start = ftell( fout );
+	uint32_t s;
+	uint8_t p;
+	uint32_t t1;
+	union {
+		uint64_t	ull;
+		double		d;
+	} t2;
+	uint16_t t3[UUID_LEN];
 
-	CHECK_PTR_RET( lb, 0 );
-	CHECK_PTR_RET( buf, 0 );
+	llsd_itr_t itr;
+	llsd_t *k, *v;
 
-	switch ( buf[0] )
+	switch ( llsd_get_type( llsd ) )
 	{
-		default:
-			WARN( "invalid type character %c\n", buf[0] );
+		case LLSD_UNDEF:
+			p = '!';
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			WARN( "%*sUNDEF %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
-		case '!':
-		case '1':
-		case '0':
-			WARN( "%*s%s\n", indent, " ", TYPE_TO_STRING( BYTE_TO_TYPE( buf[0] ) ) );
-			(*lb) = 
-			(llsd_bin_t) {
-				.t = 
-				(llsd_bin_type_t) { 
-					.t = buf, 
-					.tlen = sizeof(uint8_t) 
-				},
-				.i = 
-				(llsd_bin_int_t) {
-					.v = NULL,
-					.vlen = 0
-				}
-			};
-			return 1;
-		case 'i':
-			WARN( "%*sINTEGER\n", indent, " " );
-			pi = (uint32_t*)&(buf[1]);
-			(*pi) = ntohl( (*pi) );
-			(*lb) =
-			(llsd_bin_t) {
-				.t = 
-				(llsd_bin_type_t) { 
-					.t = buf,
-					.tlen = sizeof(uint8_t)
-				},
-				.i =
-				(llsd_bin_int_t) {
-					.v = pi,
-					.vlen = sizeof(uint32_t)
-				}
-			};
-			return 5;
-		case 'r':
-		case 'd':
-			WARN( "%*s%s\n", indent, " ", TYPE_TO_STRING( BYTE_TO_TYPE( buf[0] ) ) );
-			ui = (uint64_t*)&(buf[1]);
-			(*ui) = be64toh( (*ui) );
-			(*lb) =
-			(llsd_bin_t) {
-				.t = 
-				(llsd_bin_type_t) { 
-					.t = buf,
-					.tlen = sizeof(uint8_t)
-				},
-				.d =
-				(llsd_bin_double_t) {
-					.v = (double*)ui,
-					.vlen = sizeof(double)
-				}
-			};
-			return 9;
-		case 'u':
-			WARN( "%*sUUID\n", indent, " " );
-			(*lb) =
-			(llsd_bin_t) {
-				.t = 
-				(llsd_bin_type_t) { 
-					.t = buf,
-					.tlen = sizeof(uint8_t)
-				},
-				.b =
-				(llsd_bin_bytes_t) {
-					.v = &(buf[1]),
-					.vlen = sizeof(uint32_t)
-				}
-			};
-			return 17;
-		case 'b':
-		case 's':
-		case 'l':
-			WARN( "%*s%s\n", indent, " ", TYPE_TO_STRING( BYTE_TO_TYPE( buf[0] ) ) );
-			pi = (uint32_t*)&(buf[1]);
-			(*pi) = ntohl( (*pi) );
-			(*lb) =
-			(llsd_bin_t) {
-				.t = 
-				(llsd_bin_type_t) { 
-					.t = buf,
-					.tlen = sizeof(uint8_t)
-				},
-				.b =
-				(llsd_bin_bytes_t) {
-					.v = &(buf[5]),
-					.vlen = (*pi)
-				}
-			};
-			return (5 + (*pi));
-		case '[':
-			pi = (uint32_t*)&(buf[1]);
-			(*pi) = ntohl( (*pi) );
-			WARN( "%*s%s (%d)\n", indent, " ", TYPE_TO_STRING( BYTE_TO_TYPE( buf[0] ) ), (*pi) );
-	
-			/* allocate a buffer for the llsd_bin_t structs for the array children */
-			p = (llsd_bin_t*)CALLOC( (*pi), sizeof(llsd_bin_t) );
-			CHECK_PTR_RET_MSG( p, 0, "failed to allocate buffer for array children\n" );
-			
-			(*lb) =
-			(llsd_bin_t) {
-				.t = 
-				(llsd_bin_type_t) { 
-					.t = buf,
-					.tlen = sizeof(uint8_t)
-				},
-				.a =
-				(llsd_bin_array_t) {
-					.v = NULL,
-					.vlen = ((*pi) * sizeof(llsd_bin_t))
-				}
-			};
+		case LLSD_BOOLEAN:
+			p = ( llsd_as_bool( llsd ) == TRUE ) ? '1' : '0';
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			WARN( "%*sBOOLEAN %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_INTEGER:
+			p = 'i';
+			t1 = htonl( llsd_as_int( llsd ) );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
+			WARN( "%*sINTEGER %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_REAL:
+			p = 'r';
+			t2.d = llsd_as_real( llsd );
+			t2.ull = htobe64( t2.ull );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t2, sizeof(uint64_t), 1, fout ) * sizeof(uint64_t) );
+			WARN( "%*sREAL %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_UUID:
+			p = 'u';
+			/* de-stringify the uuid if needed */
+			llsd_destringify_uuid( llsd );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += fwrite( &(llsd->value.uuid_.bits[0]), sizeof(uint8_t), UUID_LEN, fout );
+			WARN( "%*sUUID %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_STRING:
+			p = 's';
+			/* unescape the string if needed */
+			llsd_unescape_string( llsd );
+			s = llsd->value.string_.str_len;
+			t1 = htonl( s );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
+			num += fwrite( llsd_as_string( llsd ).str, sizeof(uint8_t), s, fout );
+			WARN( "%*sSTRING %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_DATE:
+			p = 'd';
+			/* de-stringify date if needed */
+			llsd_destringify_date( llsd );
+			t2.d = llsd->value.date_.dval;
+			t2.ull = htobe64( t2.ull );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t2, sizeof(uint64_t), 1, fout ) * sizeof(uint64_t) );
+			WARN( "%*sDATE %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_URI:
+			p = 'l';
+			/* unescape uri if needed */
+			llsd_unescape_uri( llsd );
+			s = llsd->value.uri_.uri_len;
+			t1 = htonl( s );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
+			num += fwrite( llsd->value.uri_.uri, sizeof(uint8_t), s, fout );
+			WARN( "%*sURI %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_BINARY:
+			p = 'b';
+			/* decode binary if needed */
+			llsd_decode_binary( llsd );
+			s = llsd->value.binary_.data_size;
+			t1 = htonl( s );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
+			num += fwrite( llsd->value.binary_.data, sizeof(uint8_t), s, fout );
+			WARN( "%*sBINARY %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_ARRAY:
+			p = '[';
+			s = array_size( &(llsd->value.array_.array) );
+			WARN( "%*s[[ (%d)\n", indent, " ", s );
+			indent += 4;
+			t1 = htonl( s );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
 
-			s = 5;
-			for ( i = 0; i < (*pi); i++ )
+			itr = llsd_itr_begin( llsd );
+			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
 			{
-				/* parse each child */
-				s += llsd_parse_binary_in_place( &(p[i]), &(buf[s]), (len - s) );
+				llsd_itr_get( llsd, itr, &v, &k );
+				if ( k != NULL )
+				{
+					WARN( "received key from array itr_get\n" );
+				}
+				num += llsd_format_binary( v, fout );
 			}
 
-			/* TODO: initialize array so that it takes ownership of the llsd_bin_t
-			 * buffer pointed at by p */
+			p = ']';
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			indent -= 4;
+			WARN( "%*s]] ARRAY %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
+		case LLSD_MAP:
+			p = '{';
+			s = ht_size( &(llsd->value.map_.ht) );
+			WARN( "%*s{{ (%d)\n", indent, " ", s );
+			indent += 4;
+			t1 = htonl( s );
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
 
-			CHECK_RET_MSG( buf[s] == ']', 0, "missing trailing ']' for array\n" );
-
-			return s + 1; /* account for the closing ']' character */
-		case '{':
-			pi = (uint32_t*)&(buf[1]);
-			(*pi) = ntohl( (*pi) );
-			WARN( "%*s%s (%d)\n", indent, " ", TYPE_TO_STRING( BYTE_TO_TYPE( buf[0] ) ), (*pi) );
-	
-			/* allocate a buffer for the llsd_bin_t structs for the array children */
-			p = (llsd_bin_t*)CALLOC( ((*pi) * 2), sizeof(llsd_bin_t) );
-			CHECK_PTR_RET_MSG( p, 0, "failed to allocate buffer for map children\n" );
-
-			(*lb) =
-			(llsd_bin_t) {
-				.t = 
-				(llsd_bin_type_t) { 
-					.t = buf,
-					.tlen = sizeof(uint8_t)
-				},
-				.m =
-				(llsd_bin_map_t) {
-					.v = NULL,
-					.vlen = (((*pi) * 2) * sizeof(llsd_bin_t))
-				}
-			};
-
-			s = 5;
-			for ( i = 0; i < ((*pi) * 2); i++ )
+			itr = llsd_itr_begin( llsd );
+			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
 			{
-				/* parse each child */
-				s += llsd_parse_binary_in_place( &(p[i]), &(buf[s]), (len - s) );
+				llsd_itr_get( llsd, itr, &v, &k );
+				num += llsd_format_binary( k, fout );
+				num += llsd_format_binary( v, fout );
 			}
 
-			/* TODO: initialize map so that it takes ownership of the llsd_bin_t
-			 * buffer pointed at by p */
-
-			CHECK_RET_MSG( buf[s] == '}', 0, "missing trailing '}' for array\n" );
-
-			return s + 1; /* account for the closing '}' character */
+			p = '}';
+			num += fwrite( &p, sizeof(uint8_t), 1, fout );
+			indent -= 4;
+			WARN( "%*s}} MAP %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			break;
 	}
-}
-
-
-llsd_bin_t * llsd_parse_binary( uint8_t * buf, size_t len )
-{
-	llsd_bin_t * root = NULL;
-	size_t s = 0;
-
-	CHECK_PTR_RET( buf, NULL );
-	CHECK_RET( len > 0, NULL );
-
-	/* allocate room for one llsd_bin_t */
-	root = (llsd_bin_t*)CALLOC( 1, sizeof(llsd_bin_t) );
-
-	s = llsd_parse_binary_in_place( root, buf, len );
-
-	if ( s != len )
-	{
-		WARN("failed to parse the full buffer\n");
-	}
-
-	return root;
+	return num;
 }
 
 

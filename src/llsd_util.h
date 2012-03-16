@@ -18,10 +18,9 @@
 #define LLSD_H
 
 #include <stdint.h>
+#include <stdlib.h>
 
-#include "array.h"
-#include "hashtable.h"
-
+#include "llsd.h"
 
 /* compare two llsd items */
 int llsd_equal( llsd_t * l, llsd_t * r );

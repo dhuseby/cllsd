@@ -18,6 +18,9 @@
 #define LLSD_XML_H
 
 #include <stdint.h>
+#include <stdlib.h>
+
+#include "llsd.h"
 #include "llsd_const.h"
 
 /* string/binary conversions */
@@ -31,5 +34,7 @@ int llsd_esacpe_uri( llsd_t * llsd );
 int llsd_unescape_uri( llsd_t * llsd );
 int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding );
 int llsd_decode_binary( llsd_t * llsd );
+
+size_t llsd_format_xml( llsd_t * llsd, FILE * fout );
 
 #endif /* LLSD_XML_H */

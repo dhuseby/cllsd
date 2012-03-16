@@ -555,3 +555,9 @@ int llsd_decode_binary( llsd_t * llsd )
 }
 
 
+size_t llsd_format_xml( llsd_t * llsd, FILE * fout )
+{
+	return 0;
+}
+
+
