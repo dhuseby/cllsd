@@ -1829,6 +1829,7 @@ llsd_t * llsd_parse( FILE *fin )
 size_t llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout, int pretty )
 {
 	size_t s = 0;
+	unsigned long start = ftell( fout );
 
 	CHECK_PTR( llsd );
 	CHECK_PTR( fout );
@@ -1836,9 +1837,15 @@ size_t llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout, int prett
 	switch ( fmt )
 	{
 		case LLSD_ENC_XML:
-			s += fwrite( xml_header, sizeof(uint8_t), 46, fout );
-			s += llsd_format_xml( llsd, fout );
-			s += fwrite( xml_footer, sizeof(uint8_t), 8, fout );
+			s += fwrite( xml_signature, sizeof(uint8_t), XML_SIG_LEN + (pretty ? 1 : 0), fout );
+			DEBUG( "XML SIG %lu - %lu\n", start, ftell( fout ) - 1 );
+			start = ftell( fout );
+			s += fwrite( xml_header, sizeof(uint8_t), XML_HEADER_LEN + (pretty ? 1 : 0), fout );
+			DEBUG( "START LLSD %lu - %lu\n", start, ftell( fout ) - 1 );
+			s += llsd_format_xml( llsd, fout, pretty );
+			start = ftell( fout );
+			s += fwrite( xml_footer, sizeof(uint8_t), XML_FOOTER_LEN + (pretty ? 1 : 0), fout );
+			DEBUG( "END LLSD %lu - %lu\n", start, ftell( fout ) - 1 );
 			return s;
 		case LLSD_ENC_BINARY:
 			s += fwrite( binary_header, sizeof(uint8_t), 18, fout );

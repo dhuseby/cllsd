@@ -24,7 +24,7 @@
 #include "llsd.h"
 
 llsd_t * llsd_parse_xml( FILE * fin );
-size_t llsd_format_xml( llsd_t * llsd, FILE * fout );
+size_t llsd_format_xml( llsd_t * llsd, FILE * fout, int pretty );
 size_t llsd_get_xml_zero_copy_size( llsd_t * llsd, int pretty );
 size_t llsd_format_xml_zero_copy( llsd_t * llsd, struct iovec * v, int pretty );
 
