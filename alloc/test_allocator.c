@@ -347,7 +347,7 @@ void * realloc_( void * ptr, size_t size )
 		CHECK_PTR_RET( p, NULL );
 
 		/* copy old memory to new memory */
-		old_size = (tag->size (2 * sizeof(tag_t)));
+		old_size = (tag->size + (2 * sizeof(tag_t)));
 		memcpy( p, ptr, ((old_size > size) ? size : old_size)  );
 
 		/* release the old block */

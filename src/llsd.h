@@ -95,7 +95,7 @@ struct llsd_real_s
 {
 	double				v;
 	uint64_t			be;
-}
+};
 
 struct llsd_uuid_s
 {
@@ -115,6 +115,7 @@ struct llsd_binary_s
 	uint8_t	*			data;
 	uint32_t			enc_size;
 	uint8_t *			enc;
+	uint32_t			be;
 };
 
 /* NOTE: the key_esc flag signifies that the map hashing function
@@ -130,6 +131,7 @@ struct llsd_string_s
 	uint8_t *			str;
 	uint32_t			esc_len;
 	uint8_t *			esc;
+	uint32_t			be;
 };
 
 struct llsd_uri_s
@@ -140,6 +142,7 @@ struct llsd_uri_s
 	uint8_t *			uri;
 	uint32_t			esc_len;
 	uint8_t *			esc;
+	uint32_t			be;
 };
 
 /* YYYY-MM-DDTHH:MM:SS.FFFZ */

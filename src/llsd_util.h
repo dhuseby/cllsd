@@ -99,8 +99,7 @@ llsd_t * llsd_parse( FILE * fin );
 size_t llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout, int pretty );
 
 /* zero copy serialization interface */
-size_t llsd_grow_iovec( struct iovec ** v, size_t newsize );
-size_t llsd_format_zero_copy( llsd_t * llsd, llsd_serializer_t fmt, struct iovec ** v );
+size_t llsd_format_zero_copy( llsd_t * llsd, llsd_serializer_t fmt, struct iovec ** v, int pretty );
 
 #endif/*LLSD_UTIL_H*/
 

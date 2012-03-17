@@ -21,6 +21,10 @@
 #include "llsd.h"
 
 extern llsd_t const undefined;
+extern llsd_int_t const zero_int;
+extern llsd_int_t const one_int;
+extern llsd_real_t const zero_real;
+extern llsd_real_t const one_real;
 extern llsd_uuid_t const zero_uuid;
 extern llsd_string_t const false_string;
 extern llsd_string_t const true_string;

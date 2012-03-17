@@ -19,12 +19,14 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <sys/uio.h>
 
 #include "llsd.h"
 
 llsd_t * llsd_parse_binary( FILE * fin );
 size_t llsd_format_binary( llsd_t * llsd, FILE * fout );
-size_t llsd_format_binary_zero_copy( llsd_t * llsd, struct iovec ** v, size_t len );
+size_t llsd_get_binary_zero_copy_size( llsd_t * llsd );
+size_t llsd_format_binary_zero_copy( llsd_t * llsd, struct iovec * v );
 
 #endif /* LLSD_BINARY_H */
 

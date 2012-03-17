@@ -646,11 +646,11 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 			return TRUE;
 
 		case LLSD_INTEGER:
-			CHECK_RET_MSG( llsd_as_int( l ) == llsd_as_int( r ), FALSE, "integer mismatch\n" );
+			CHECK_RET_MSG( l->int_.v == r->int_.v, FALSE, "integer mismatch\n" );
 			return TRUE;
 
 		case LLSD_REAL:
-			CHECK_RET_MSG( llsd_as_real( l ) == llsd_as_real( r ), FALSE, "real mismatch\n" );
+			CHECK_RET_MSG( l->real_.v == r->real_.v, FALSE, "real mismatch\n" );
 			return TRUE;
 
 		case LLSD_UUID:
@@ -795,7 +795,7 @@ llsd_int_t llsd_as_int( llsd_t * llsd )
 {
 	static uint8_t * p = NULL;
 	static llsd_int_t tmp_int;
-	CHECK_PTR_RET_MSG( llsd, 0, "invalid llsd pointer\n" );
+	CHECK_PTR_RET_MSG( llsd, zero_int, "invalid llsd pointer\n" );
 
 	switch( llsd->type_ )
 	{
@@ -806,11 +806,11 @@ llsd_int_t llsd_as_int( llsd_t * llsd )
 			FAIL( "illegal conversion of %s to integer\n", llsd_get_type_string( llsd->type_ ) );
 			break;
 		case LLSD_UNDEF:
-			return 0;
+			return zero_int;
 		case LLSD_BOOLEAN:
 			if ( llsd->bool_ == FALSE )
-				return 0;
-			return 1;
+				return zero_int;
+			return one_int;
 		case LLSD_INTEGER:
 			return llsd->int_;
 		case LLSD_REAL:
@@ -831,13 +831,14 @@ llsd_int_t llsd_as_int( llsd_t * llsd )
 			{
 				DEBUG( "truncating 64-bit date value to 32-bit integer...loss of data!" );
 			}
-			return (llsd_int_t)llsd->date_.dval;
+			return (llsd_int_t){ .v = (int32_t)llsd->date_.dval,
+								 .be = 0 };
 		case LLSD_STRING:
 			/* unescape the string if needed */
 			llsd_unescape_string( llsd );
 			p = UT(CALLOC( llsd->string_.str_len + 1, sizeof(uint8_t) ));
 			MEMCPY( p, llsd->string_.str, llsd->string_.str_len );
-			tmp_int = (llsd_int_t)atoi( p );
+			tmp_int = (llsd_int_t){ .v = atoi( p ), .be = 0 };
 			FREE( p );
 			return tmp_int;
 		case LLSD_BINARY:
@@ -845,18 +846,19 @@ llsd_int_t llsd_as_int( llsd_t * llsd )
 			llsd_decode_binary( llsd );
 			if ( llsd->binary_.data_size < sizeof(llsd_int_t) )
 			{
-				return 0;
+				return zero_int;
 			}
-			return ntohl( *((uint32_t*)llsd->binary_.data) );
+			return (llsd_int_t){ .v = ntohl( *((uint32_t*)llsd->binary_.data) ),
+								 .be = 0 };
 	}
-	return 0;
+	return zero_int;
 }
 
 llsd_real_t llsd_as_real( llsd_t * llsd )
 {
 	static uint8_t * p = NULL;
 	static llsd_real_t tmp_real;
-	CHECK_PTR_RET_MSG( llsd, FALSE, "invalid llsd pointer\n" );
+	CHECK_PTR_RET_MSG( llsd, zero_real, "invalid llsd pointer\n" );
 
 	switch( llsd->type_ )
 	{
@@ -869,8 +871,8 @@ llsd_real_t llsd_as_real( llsd_t * llsd )
 		case LLSD_UNDEF:
 		case LLSD_BOOLEAN:
 			if ( llsd->bool_ == FALSE )
-				return 0.;
-			return 1.;
+				return zero_real;
+			return one_real;
 		case LLSD_INTEGER:
 			return (llsd_real_t) { .v = (double)llsd->int_.v,
 								   .be = 0 };
@@ -881,22 +883,24 @@ llsd_real_t llsd_as_real( llsd_t * llsd )
 			llsd_unescape_string( llsd );
 			p = UT(CALLOC( llsd->string_.str_len + 1, sizeof(uint8_t) ));
 			MEMCPY( p, llsd->string_.str, llsd->string_.str_len );
-			tmp_real = (llsd_real_t)atof( p );
+			tmp_real = (llsd_real_t){ .v = atof( p ), .be = 0 };
 			FREE( p );
 			return tmp_real;
 		case LLSD_DATE:
 			/* de-stringify date if needed */
 			llsd_destringify_date( llsd );
-			return (llsd_real_t)llsd->date_.dval;
+			return (llsd_real_t){ .v = llsd->date_.dval, .be = 0 };
 		case LLSD_BINARY:
 			/* decode the binary if needed */
 			llsd_decode_binary( llsd );
 			if ( llsd->binary_.data_size < sizeof(llsd_real_t) )
 			{
-				return 0.;
+				return zero_real;
 			}
-			return (llsd_real_t)be64toh( *((uint64_t*)llsd->binary_.data) );
+			return (llsd_real_t){ .v = be64toh( *((uint64_t*)llsd->binary_.data) ),
+								  .be = 0 };
 	}
+	return zero_real;
 }
 
 llsd_uuid_t llsd_as_uuid( llsd_t * llsd )
@@ -1005,7 +1009,7 @@ llsd_string_t llsd_as_string( llsd_t * llsd )
 									.esc_len = 0,
 									.esc = NULL };
 		case LLSD_REAL:
-			len = snprintf( tmp, 64, "%f", llsd->real_ );
+			len = snprintf( tmp, 64, "%f", llsd->real_.v );
 			return (llsd_string_t){ .dyn_str = FALSE, 
 									.dyn_esc = FALSE,
 									.key_esc = FALSE,
@@ -1796,8 +1800,13 @@ int llsd_decode_binary( llsd_t * llsd )
 
 
 static uint8_t const * const binary_header = "<? LLSD/Binary ?>\n";
-static uint8_t const * const xml_header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<llsd>\n";
+static uint8_t const * const xml_signature = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+static uint8_t const * const xml_header = "<llsd>\n";
 static uint8_t const * const xml_footer = "</llsd>\n";
+
+#define XML_SIG_LEN (38)
+#define XML_HEADER_LEN (6)
+#define XML_FOOTER_LEN (7)
 
 #define SIG_LEN (18)
 llsd_t * llsd_parse( FILE *fin )
@@ -1839,36 +1848,64 @@ size_t llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout, int prett
 	return 0;
 }
 
-size_t llsd_grow_iovec( struct iovec ** v, size_t newsize )
-{
-	(*v) == (struct iovec*)REALLOC( (*v), (newsize * sizeof(struct iovec)) );
-	return newsize;
-}
-
-size_t llsd_format_zero_copy( llsd_t * llsd, llsd_serializer_t fmt, struct iovec ** v )
+static size_t llsd_get_zero_copy_size( llsd_t * llsd, llsd_serializer_t fmt, int pretty )
 {
 	size_t s = 0;
 
-	CHECK_PTR( llsd );
-	CHECK_PTR( fout );
+	CHECK_PTR_RET( llsd, 0 );
 
 	switch ( fmt )
 	{
 		case LLSD_ENC_XML:
-			s += fwrite( xml_header, sizeof(uint8_t), 46, fout );
-			s += llsd_format_xml( llsd, fout );
-			s += fwrite( xml_footer, sizeof(uint8_t), 8, fout );
+			s += 3; /* XML signature, header and footer */
+			s += llsd_get_xml_zero_copy_size( llsd, pretty );
+			return s;
+		case LLSD_ENC_BINARY:
+			s += 1; /* binary header */
+			s += llsd_get_binary_zero_copy_size( llsd );
+			return s;
+	}
+	return 0;
+}
+
+size_t llsd_format_zero_copy( llsd_t * llsd, llsd_serializer_t fmt, struct iovec ** v, int pretty )
+{
+	size_t s = 0;
+
+	CHECK_PTR_RET( llsd, 0 );
+	CHECK_PTR_RET( v, 0 );
+
+	/* get the total number of iovec structs needed */
+	s = llsd_get_zero_copy_size( llsd, fmt, pretty );
+
+	/* allocate a buffer for the iovec structs */
+	(*v) = (struct iovec*)CALLOC( s, sizeof(struct iovec) );
+
+	switch ( fmt )
+	{
+		case LLSD_ENC_XML:
+			(*v)[0].iov_base = (void*)xml_signature;
+			(*v)[0].iov_len = XML_SIG_LEN + (pretty ? 1 : 0);
+			(*v)[1].iov_base = (void*)xml_header;
+			(*v)[1].iov_len = XML_HEADER_LEN + (pretty ? 1 : 0);
+
+			/* add in the iovec structs for the llsd */
+			s = 2;
+			s += llsd_format_xml_zero_copy( llsd, &((*v)[s]), pretty );
+
+			(*v)[s].iov_base = (void*)xml_footer;
+			(*v)[s].iov_len = XML_FOOTER_LEN + (pretty ? 1 : 0);
+			s++;
 			return s;
 		case LLSD_ENC_BINARY:
 			/* add in the header */
-			s = llsd_grow_iovec( v, 1 );
-			(*v)[0].iov_base = binary_header;
-			(*v)[1].iov_len = SIG_LEN;
+			(*v)[0].iov_base = (void*)binary_header;
+			(*v)[0].iov_len = SIG_LEN;
 
 			/* add in the iovec structs for the llsd */
-			s = llsd_format_binary_zero_copy( llsd, v, s );
+			s = 1;
+			s += llsd_format_binary_zero_copy( llsd, &((*v)[s]) );
 
-			/* return the number of iovec structs in the list */
 			return s;
 	}
 	return 0;

@@ -123,7 +123,7 @@ llsd_t * llsd_parse_binary( FILE * fin )
 				return llsd_new( LLSD_BOOLEAN, FALSE );
 
 			case 'i':
-				llsd = llsd_new( LLSD_UUID, 0 );
+				llsd = llsd_new( LLSD_INTEGER, 0 );
 				fread( &(llsd->int_.be), sizeof(uint32_t), 1, fin );
 				llsd->int_.v = ntohl( llsd->int_.be );
 				return llsd;
@@ -131,7 +131,8 @@ llsd_t * llsd_parse_binary( FILE * fin )
 			case 'r':
 				llsd = llsd_new( LLSD_REAL, 0.0 );
 				fread( &(llsd->real_.be), sizeof(uint64_t), 1, fin );
-				llsd->real_.v = be64toh( llsd->real_.be );
+				t2.ull = be64toh( llsd->real_.be );
+				llsd->real_.v = t2.d;
 				return llsd;
 
 			case 'u':
@@ -232,26 +233,27 @@ size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 		case LLSD_UNDEF:
 			p = '!';
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
-			WARN( "%*sUNDEF %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			DEBUG( "%*sUNDEF %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_BOOLEAN:
 			p = ( llsd_as_bool( llsd ) == TRUE ) ? '1' : '0';
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
-			WARN( "%*sBOOLEAN %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			DEBUG( "%*sBOOLEAN %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_INTEGER:
 			p = 'i';
-			llsd_as_int( llsd ).be = htonl( llsd_as_int( llsd ).v );
+			llsd->int_.be = htonl( llsd->int_.v );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
-			num += ( fwrite( &(llsd_as_int(llsd).be), sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
-			WARN( "%*sINTEGER %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			num += ( fwrite( &(llsd->int_.be), sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
+			DEBUG( "%*sINTEGER %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_REAL:
 			p = 'r';
-			llsd_as_real( llsd ).be = htobe64( (uint64_t)llsd_as_real( llsd ).v );
+			t2.d = llsd->real_.v;
+			llsd->real_.be = htobe64( t2.ull );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
-			num += ( fwrite( &(llsd_as_real( llsd ).be), sizeof(uint64_t), 1, fout ) * sizeof(uint64_t) );
-			WARN( "%*sREAL %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			num += ( fwrite( &(llsd->real_.be), sizeof(uint64_t), 1, fout ) * sizeof(uint64_t) );
+			DEBUG( "%*sREAL %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_UUID:
 			p = 'u';
@@ -259,7 +261,7 @@ size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			llsd_destringify_uuid( llsd );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += fwrite( &(llsd->uuid_.bits[0]), sizeof(uint8_t), UUID_LEN, fout );
-			WARN( "%*sUUID %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			DEBUG( "%*sUUID %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_STRING:
 			p = 's';
@@ -269,8 +271,8 @@ size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			t1 = htonl( s );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
-			num += fwrite( llsd_as_string( llsd ).str, sizeof(uint8_t), s, fout );
-			WARN( "%*sSTRING %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			num += fwrite( llsd->string_.str, sizeof(uint8_t), s, fout );
+			DEBUG( "%*sSTRING %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_DATE:
 			p = 'd';
@@ -288,7 +290,7 @@ size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			t2.ull = htobe64( t2.ull );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t2, sizeof(uint64_t), 1, fout ) * sizeof(uint64_t) );
-			WARN( "%*sDATE %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			DEBUG( "%*sDATE %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_URI:
 			p = 'l';
@@ -299,7 +301,7 @@ size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
 			num += fwrite( llsd->uri_.uri, sizeof(uint8_t), s, fout );
-			WARN( "%*sURI %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			DEBUG( "%*sURI %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_BINARY:
 			p = 'b';
@@ -310,12 +312,12 @@ size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
 			num += fwrite( llsd->binary_.data, sizeof(uint8_t), s, fout );
-			WARN( "%*sBINARY %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			DEBUG( "%*sBINARY %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_ARRAY:
 			p = '[';
 			s = array_size( &(llsd->array_.array) );
-			WARN( "%*s[[ (%d)\n", indent, " ", s );
+			DEBUG( "%*s[[ (%d)\n", indent, " ", s );
 			indent += 4;
 			t1 = htonl( s );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
@@ -335,12 +337,12 @@ size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			p = ']';
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			indent -= 4;
-			WARN( "%*s]] ARRAY %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			DEBUG( "%*s]] ARRAY %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 		case LLSD_MAP:
 			p = '{';
 			s = ht_size( &(llsd->map_.ht) );
-			WARN( "%*s{{ (%d)\n", indent, " ", s );
+			DEBUG( "%*s{{ (%d)\n", indent, " ", s );
 			indent += 4;
 			t1 = htonl( s );
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
@@ -357,10 +359,59 @@ size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 			p = '}';
 			num += fwrite( &p, sizeof(uint8_t), 1, fout );
 			indent -= 4;
-			WARN( "%*s}} MAP %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
+			DEBUG( "%*s}} MAP %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
 			break;
 	}
 	return num;
+}
+
+size_t llsd_get_binary_zero_copy_size( llsd_t * llsd )
+{
+	size_t s = 0;
+	llsd_itr_t itr;
+	llsd_t *k, *v;
+
+	CHECK_PTR_RET( llsd, 0 );
+
+	switch ( llsd_get_type( llsd ) )
+	{
+		case LLSD_UNDEF:
+		case LLSD_BOOLEAN:
+			return 1;
+		case LLSD_INTEGER:
+		case LLSD_REAL:
+		case LLSD_UUID:
+		case LLSD_DATE:
+			return 2;
+		case LLSD_STRING:
+		case LLSD_URI:
+		case LLSD_BINARY:
+			return 3;
+		case LLSD_ARRAY:
+			s = 3; /* [, size, ] */
+			itr = llsd_itr_begin( llsd );
+			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
+			{
+				llsd_itr_get( llsd, itr, &v, &k );
+				if ( k != NULL )
+				{
+					WARN( "received key from array itr_get\n" );
+				}
+				s += llsd_get_binary_zero_copy_size( v );
+			}
+			return s;
+		case LLSD_MAP:
+			s = 3; /* {, size, } */
+			itr = llsd_itr_begin( llsd );
+			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
+			{
+				llsd_itr_get( llsd, itr, &v, &k );
+				s += llsd_get_binary_zero_copy_size( k );
+				s += llsd_get_binary_zero_copy_size( v );
+			}
+			return s;
+	}
+	return 0;
 }
 
 
@@ -379,140 +430,126 @@ static uint8_t const * const lbarrayc	= "]";
 static uint8_t const * const lbmap		= "{";
 static uint8_t const * const lbmapc		= "}";
 
-
-size_t llsd_format_binary_zero_copy( llsd_t * llsd, struct iovec ** v, size_t len )
+size_t llsd_format_binary_zero_copy( llsd_t * llsd, struct iovec * v )
 {
-	size_t num = 0;
-	unsigned long start = ftell( fout );
-	uint32_t s;
-	uint8_t p;
-	uint32_t t1;
+	size_t s = 0;
 	union {
 		uint64_t	ull;
 		double		d;
 	} t2;
-	uint16_t t3[UUID_LEN];
-
 	llsd_itr_t itr;
-	llsd_t *k, *v;
+	llsd_t *key, *val;
 
 	switch ( llsd_get_type( llsd ) )
 	{
 		case LLSD_UNDEF:
-			num = llsd_grow_iovec( v, len + 1 );
-			(*v)[len].iov_base = lbundef;
-			(*v)[len].iov_len = sizeof(uint8_t);
-			return num;
+			v[0].iov_base = (void*)lbundef;
+			v[0].iov_len = sizeof(uint8_t);
+			return 1;
 		case LLSD_BOOLEAN:
-			num = llsd_grow_iovec( v, len + 1 );
-			(*v)[len].iov_base = ( llsd_as_bool( llsd ) ? lbtrue : lbfalse );
-			(*v)[len].iov_len = sizeof(uint8_t);
-			return num;
+			v[0].iov_base = (void*)( llsd_as_bool( llsd ) ? lbtrue : lbfalse );
+			v[0].iov_len = sizeof(uint8_t);
+			return 1;
 		case LLSD_INTEGER:
-			num = llsd_grow_iovec( v, len + 2 );
-			(*v)[len].iov_base = lbinteger;
-			(*v)[len].iov_len = sizeof(uint8_t);
+			v[0].iov_base = (void*)lbinteger;
+			v[0].iov_len = sizeof(uint8_t);
 			llsd->int_.be = htonl( llsd->int_.v );
-			(*v)[len+1].iov_base = &(llsd->int_.be);
-			(*v)[len+1].iov_len = sizeof(uint32_t);
-			return num;
+			v[1].iov_base = &(llsd->int_.be);
+			v[1].iov_len = sizeof(uint32_t);
+			return 2;
 		case LLSD_REAL:
-			num = llsd_grow_iovec( v, len + 2 );
-			(*v)[len].iov_base = lbreal;
-			(*v)[len].iov_len = sizeof(uint8_t);
-			llsd->real_.be = htobe64( (uint64_t)llsd->real_.v );
-			(*v)[len+1].iov_base = &(llsd->real_.be);
-			(*v)[len+1].iov_len = sizeof(uint64_t);
-			return num;
+			v[0].iov_base = (void*)lbreal;
+			v[0].iov_len = sizeof(uint8_t);
+			t2.d = llsd->real_.v;
+			llsd->real_.be = htobe64( t2.ull );
+			v[1].iov_base = &(llsd->real_.be);
+			v[1].iov_len = sizeof(uint64_t);
+			return 2;
 		case LLSD_UUID:
-			num = llsd_grow_iovec( v, len + 2 );
-			(*v)[len].iov_base = lbuuid;
-			(*v)[len].iov_len = sizeof(uint8_t);
+			v[0].iov_base = (void*)lbuuid;
+			v[0].iov_len = sizeof(uint8_t);
 			llsd_destringify_uuid( llsd );
-			(*v)[len+1].iov_base = llsd->uuid_.bits;
-			(*v)[len+1].iov_len = UUID_LEN;
-			return num;
+			v[1].iov_base = llsd->uuid_.bits;
+			v[1].iov_len = UUID_LEN;
+			return 2;
 		case LLSD_STRING:
-			num = llsd_grow_iovec( v, len + 2 );
-			(*v)[len].iov_base = lbstring;
-			(*v)[len].iov_len = sizeof(uint8_t);
+			v[0].iov_base = (void*)lbstring;
+			v[0].iov_len = sizeof(uint8_t);
 			llsd_unescape_string( llsd );
-			(*v)[len+1].iov_base = llsd->string_.str;
-			(*v)[len+1].iov_len = llsd->string_.str_len;
-			return num;
+			llsd->string_.be = htonl( llsd->string_.str_len );
+			v[1].iov_base = &(llsd->string_.be);
+			v[1].iov_len = sizeof(uint32_t);
+			v[2].iov_base = llsd->string_.str;
+			v[2].iov_len = llsd->string_.str_len;
+			return 3;
 		case LLSD_DATE:
-			num = llsd_grow_iovec( v, len + 2 );
-			(*v)[len].iov_base = lbdate;
-			(*v)[len].iov_len = sizeof(uint8_t);
+			v[0].iov_base = (void*)lbdate;
+			v[0].iov_len = sizeof(uint8_t);
 			llsd_destringify_date( llsd );
-			llsd->date_..be = htobe64( (uint64_t)llsd->date_.dval );
-			(*v)[len+1].iov_base = llsd->date_.dval;
-			(*v)[len+1].iov_len = sizeof(uint64_t);
-			return num;
+			llsd->date_.be = htobe64( (uint64_t)llsd->date_.dval );
+			v[1].iov_base = &(llsd->date_.dval);
+			v[1].iov_len = sizeof(uint64_t);
+			return 2;
 		case LLSD_URI:
-			num = llsd_grow_iovec( v, len + 2 );
-			(*v)[len].iov_base = lburi;
-			(*v)[len].iov_len = sizeof(uint8_t);
-			(*v)[len+1].iov_base = llsd->uri_.uri;
-			(*v)[len+1].iov_len = llsd->uri_.uri_len;
-			return num;
+			v[0].iov_base = (void*)lburi;
+			v[0].iov_len = sizeof(uint8_t);
+			llsd->uri_.be = htonl( llsd->uri_.uri_len );
+			v[1].iov_base = &(llsd->uri_.be);
+			v[1].iov_len = sizeof(uint32_t);
+			v[2].iov_base = llsd->uri_.uri;
+			v[2].iov_len = llsd->uri_.uri_len;
+			return 3;
 		case LLSD_BINARY:
-			num = llsd_grow_iovec( v, len + 2 );
-			(*v)[len].iov_base = lbbinary;
-			(*v)[len].iov_len = sizeof(uint8_t);
+			v[0].iov_base = (void*)lbbinary;
+			v[0].iov_len = sizeof(uint8_t);
 			llsd_decode_binary( llsd );
-			(*v)[len+1].iov_base = llsd->binary_.date;
-			(*v)[len+1].iov_len = llsd->binary_.data_size;
-			return num;
+			llsd->binary_.be = htonl( llsd->binary_.data_size );
+			v[1].iov_base = &(llsd->binary_.be);
+			v[1].iov_len = sizeof(uint32_t);
+			v[2].iov_base = llsd->binary_.data;
+			v[2].iov_len = llsd->binary_.data_size;
+			return 3;
 		case LLSD_ARRAY:
-			num = llsd_grow_iovec( v, len + 2 );
-			(*v)[len].iov_base = lbarray;
-			(*v)[len].iov_len = sizeof(uint8_t);
-			llsd->array_.be = htonl( array_size( &(llsd->array_.array) );
-			(*v)[len+1].iov_base = &(llsd->array_.be);
-			(*v)[len+1].iov_len = sizeof(uint32_t);
-
+			v[0].iov_base = (void*)lbarray;
+			v[0].iov_len = sizeof(uint8_t);
+			llsd->array_.be = htonl( array_size( &(llsd->array_.array) ) );
+			v[1].iov_base = &(llsd->array_.be);
+			v[1].iov_len = sizeof(uint32_t);
+			s = 2;
 			itr = llsd_itr_begin( llsd );
 			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
 			{
-				llsd_itr_get( llsd, itr, &v, &k );
-				if ( k != NULL )
+				llsd_itr_get( llsd, itr, &val, &key );
+				if ( key != NULL )
 				{
 					WARN( "received key from array itr_get\n" );
 				}
-				num += llsd_format_binary( v, fout );
+				s += llsd_format_binary_zero_copy( val, &(v[s]) );
 			}
-
-			p = ']';
-			num += fwrite( &p, sizeof(uint8_t), 1, fout );
-			indent -= 4;
-			WARN( "%*s]] ARRAY %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
-			break;
+			v[s].iov_base = (void*)lbarrayc;
+			v[s].iov_len = sizeof(uint8_t);
+			s++;
+			return s;
 		case LLSD_MAP:
-			p = '{';
-			s = ht_size( &(llsd->map_.ht) );
-			WARN( "%*s{{ (%d)\n", indent, " ", s );
-			indent += 4;
-			t1 = htonl( s );
-			num += fwrite( &p, sizeof(uint8_t), 1, fout );
-			num += ( fwrite( &t1, sizeof(uint32_t), 1, fout ) * sizeof(uint32_t) );
-
+			v[0].iov_base = (void*)lbmap;
+			v[0].iov_len = sizeof(uint8_t);
+			llsd->map_.be = htonl( ht_size( &(llsd->map_.ht) ));
+			v[1].iov_base = &(llsd->map_.be);
+			v[1].iov_len = sizeof(uint32_t);
+			s = 2;
 			itr = llsd_itr_begin( llsd );
 			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
 			{
-				llsd_itr_get( llsd, itr, &v, &k );
-				num += llsd_format_binary( k, fout );
-				num += llsd_format_binary( v, fout );
+				llsd_itr_get( llsd, itr, &val, &key );
+				s += llsd_format_binary_zero_copy( key, &(v[s]) );
+				s += llsd_format_binary_zero_copy( val, &(v[s]) );
 			}
-
-			p = '}';
-			num += fwrite( &p, sizeof(uint8_t), 1, fout );
-			indent -= 4;
-			WARN( "%*s}} MAP %lu - %lu\n", indent, " ", start, ftell( fout ) - 1 );
-			break;
+			v[s].iov_base = (void*)lbmapc;
+			v[s].iov_len = sizeof(uint8_t);
+			s++;
+			return s;
 	}
-	return num;
-
+	return 0;
 }
 
 

@@ -25,6 +25,30 @@ llsd_t const undefined =
 	.bool_ = FALSE
 };
 
+llsd_int_t const zero_int =
+{
+	.v = 0,
+	.be = 0
+};
+
+llsd_int_t const one_int =
+{
+	.v = 1,
+	.be = 0
+};
+
+llsd_real_t const zero_real =
+{
+	.v = 0.0,
+	.be = 0
+};
+
+llsd_real_t const one_real =
+{
+	.v = 1.0,
+	.be = 0
+};
+
 static uint8_t bits[] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
 llsd_uuid_t const zero_uuid = 
 { 

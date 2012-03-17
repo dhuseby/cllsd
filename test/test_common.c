@@ -87,7 +87,7 @@ static llsd_t* get_random_uuid( void )
 static llsd_t* get_random_date( void )
 {
 	llsd_t * llsd = llsd_new_date( (1.0 * rand()), NULL, 0 );
-	if ( !llsd->value.date_.use_dval )
+	if ( !llsd->date_.use_dval )
 	{
 		WARN("created date with FALSE use_dval\n");
 	}
@@ -307,7 +307,7 @@ static llsd_t * get_llsd( llsd_type_t type_ )
 
 		case LLSD_DATE:
 			llsd = llsd_new_date( 1.0, NULL, 0 );
-			if ( !llsd->value.date_.use_dval )
+			if ( !llsd->date_.use_dval )
 			{
 				WARN("created date with FALSE use_dval\n");
 			}
@@ -412,7 +412,11 @@ static void test_serialization( void )
 		}
 
 		/* check that the expected data was written */
-		CU_ASSERT( 0 == memcmp( &(buf[data_offset]), expected_data[ type_ ], (s - data_offset) ) );
+		if ( 0 != memcmp( &(buf[data_offset]), expected_data[ type_ ], (s - data_offset) ) )
+		{
+			WARN("type: %s failed memcmp\n", llsd_get_type_string( type_ ) );
+			CU_FAIL("memcmp");
+		}
 
 		heap_size = get_heap_size();
 
@@ -449,8 +453,6 @@ static void test_random_serialize( void )
 	/* get the initial heap size */
 	size_t heap_size = get_heap_size();
 
-	WARN(" >>>>>>>>>>>>>>>>>>\n " );
-
 	/* generate a repeatable, random llsd object */
 	llsd_out = get_random_llsd( size, seed );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_out );
@@ -462,9 +464,54 @@ static void test_random_serialize( void )
 	fclose( tmpf );
 	tmpf = NULL;
 
-	WARN(" <<<<<<<<<<<<<<<<<<\n " );
-
 	tmpf = fopen( "test.llsd", "r+b" );
+	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
+
+	llsd_in = llsd_parse( tmpf );
+	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_in );
+
+	fclose( tmpf );
+	tmpf = NULL;
+
+	/* make sure the two llsd structures are equivilent */
+	CU_ASSERT( llsd_equal( llsd_out, llsd_in ) );
+
+	llsd_delete( llsd_out );
+	llsd_out = NULL;
+	llsd_delete( llsd_in );
+	llsd_in = NULL;
+
+	CU_ASSERT_EQUAL( heap_size, get_heap_size() );
+}
+
+static void test_random_serialize_zero_copy( void )
+{
+	const uint32_t seed = 0xDEADBEEF;
+	const uint32_t size = 4096;
+	size_t s = 0;
+	struct iovec * iov;
+	llsd_t * llsd_out = NULL;
+	llsd_t * llsd_in = NULL;
+
+	/* get the initial heap size */
+	size_t heap_size = get_heap_size();
+
+	/* generate a repeatable, random llsd object */
+	llsd_out = get_random_llsd( size, seed );
+	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_out );
+
+	tmpf = fopen( "testzc.llsd", "w+b" );
+	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
+
+	/* get the zero copy list of iovec structs */
+	s = llsd_format_zero_copy( llsd_out, format, &iov, TRUE );
+
+	/* use gather write to write to file */
+	writev( fileno( tmpf ), iov, s );
+	fclose( tmpf );
+	tmpf = NULL;
+
+	tmpf = fopen( "testzc.llsd", "r+b" );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
 	llsd_in = llsd_parse( tmpf );
@@ -489,6 +536,7 @@ static CU_pSuite add_tests( CU_pSuite pSuite )
 	CHECK_PTR_RET( CU_add_test( pSuite, "new/delete of all types", test_newdel), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of all types", test_serialization), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd", test_random_serialize), NULL );
+	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd zero copy", test_random_serialize_zero_copy), NULL );
 	return pSuite;
 }
 
