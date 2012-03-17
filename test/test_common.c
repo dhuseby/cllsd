@@ -464,6 +464,13 @@ static void test_random_serialize( void )
 	fclose( tmpf );
 	tmpf = NULL;
 
+	tmpf = fopen( "test.xllsd", "w+b" );
+	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
+	
+	llsd_format( llsd_out, LLSD_ENC_XML, tmpf, TRUE );
+	fclose( tmpf );
+	tmpf = NULL;
+
 	tmpf = fopen( "test.llsd", "r+b" );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 

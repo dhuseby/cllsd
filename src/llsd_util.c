@@ -1042,24 +1042,24 @@ llsd_string_t llsd_as_string( llsd_t * llsd )
 									.esc = NULL };
 		case LLSD_URI:
 			/* unescape the URI if needed */
-			llsd_unescape_uri( llsd );
+			llsd_escape_uri( llsd );
 			return (llsd_string_t){ .dyn_str = FALSE, 
 									.dyn_esc = FALSE,
 									.key_esc = FALSE,
-									.str_len = llsd->uri_.uri_len,
-									.str = llsd->uri_.uri,
+									.str_len = llsd->uri_.esc_len,
+									.str = llsd->uri_.esc,
 									.esc_len = 0,
 									.esc = NULL };
 
 		case LLSD_BINARY:
-			/* decode binary if needed */
-			llsd_decode_binary( llsd );
+			/* encode binary if needed */
+			llsd_encode_binary( llsd, LLSD_BASE64 );
 			/* TODO: check for valid UTF-8 */
 			return (llsd_string_t){ .dyn_str = FALSE, 
 									.dyn_esc = FALSE,
 									.key_esc = FALSE,
-									.str_len = llsd->binary_.data_size,
-									.str = llsd->binary_.data,
+									.str_len = llsd->binary_.enc_size,
+									.str = llsd->binary_.enc,
 									.esc_len = 0,
 									.esc = NULL };
 	}
