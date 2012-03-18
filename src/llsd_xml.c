@@ -188,7 +188,7 @@ size_t llsd_format_xml( llsd_t * llsd, FILE * fout, int pretty )
 				num += fwrite( lxkey, sizeof(uint8_t), XML_KEY_LEN, fout );
 				num += fwrite( s.str, sizeof(uint8_t), s.str_len, fout );
 				num += fwrite( lxkeyc, sizeof(uint8_t), XML_KEYC_LEN + (pretty ? 1 : 0), fout );
-				num += llsd_format_binary( v, fout, pretty );
+				num += llsd_format_xml( v, fout, pretty );
 			}
 			if ( pretty )
 				num += fwrite( lxtabs, sizeof(uint8_t), indent, fout );

@@ -1054,7 +1054,6 @@ llsd_string_t llsd_as_string( llsd_t * llsd )
 		case LLSD_BINARY:
 			/* encode binary if needed */
 			llsd_encode_binary( llsd, LLSD_BASE64 );
-			/* TODO: check for valid UTF-8 */
 			return (llsd_string_t){ .dyn_str = FALSE, 
 									.dyn_esc = FALSE,
 									.key_esc = FALSE,
