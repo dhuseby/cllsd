@@ -37,9 +37,14 @@ static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len 
 {
 }
 
+#define XML_BUF_SIZE (4096)
 llsd_t * llsd_parse_xml( FILE * fin )
 {
 	XML_Parser p;
+	int done;
+	size_t len = 0;
+	llsd_t * llsd = NULL;
+	static uint8_t buf[XML_BUF_SIZE];
 	CHECK_PTR_RET( fin, NULL );
 
 	/* create the parser */
@@ -49,6 +54,21 @@ llsd_t * llsd_parse_xml( FILE * fin )
 	/* set the tag start/end handlers */
 	XML_SetElementHandler( p, llsd_xml_start_tag, llsd_xml_end_tag );
 
+	/* set the user data */
+	XML_SetUserData( p, (void*)(&llsd) );
+
+	/* read the file and parse it */
+	do
+	{
+		len = fread( buf, sizeof(uint8_t), XML_BUF_SIZE, fin );
+		done = (len < XML_BUF_SIZE);
+
+		if ( XML_Parse( p, buf, len, done ) == XML_STATUS_ERROR )
+		{
+			DEBUG( "%s at line %" XML_FMT_INT_MOD "u\n", XML_ErrorString(XML_GetErrorCode(p)), XML_GetCurrentLineNumber(p) );
+		}
+
+	} while ( !done );
 
 	/* free the parser */
 	XML_ParserFree( p );
