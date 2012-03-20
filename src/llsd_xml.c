@@ -26,8 +26,28 @@
 #include "llsd_util.h"
 #include "llsd_xml.h"
 
+static llsd_bin_enc_t llsd_bin_enc_from_attr( char const * attr )
+{
+	llsd_bin_enc_t enc = LLSD_BASE64;
+	CHECK_PTR_RET( attr, LLSD_BASE64 );
+	CHECK_RET( attr[0] == 'b', LLSD_BASE64 );
+
+	/* base64, base16, base85 */
+	switch( attr[4] )
+	{
+		case '6':
+			return LLSD_BASE64;
+		case '1':
+			return LLSD_BASE16;
+		case '8':
+			return LLSD_BASE85;
+	}
+	return LLSD_BASE64;
+}
+
 static llsd_type_t llsd_type_from_tag( char const * tag )
 {
+	CHECK_PTR_RET( tag, LLSD_TYPE_INVALID );
 	switch( tag[0] )
 	{
 		case 'a':
@@ -81,12 +101,12 @@ typedef struct context_s
 static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const ** attr )
 {
 	context_t * ctx = (context_t*)data;
-	llsd_t * cur_container = array_get_tail( &(ctx->containers) );
+	llsd_t * cur_container = (llsd_t*)array_get_tail( ctx->containers );
 	llsd_t * key = NULL;
-	llsd_t * value = NULL;
+	llsd_t * llsd = NULL;
 	llsd_t * container = NULL;
-	llsd_encoding_type_t enc;
-	llst_type_t t;
+	llsd_bin_enc_t enc = LLSD_BASE64;
+	llsd_type_t t;
 	int size = 0;
 
 	/* get the type */
@@ -99,6 +119,7 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 	switch( t )
 	{
 		case LLSD_LLSD:
+		case LLSD_KEY:
 		case LLSD_UNDEF:
 		case LLSD_BOOLEAN:
 		case LLSD_INTEGER:
@@ -109,16 +130,20 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 		case LLSD_URI:
 			return;
 		case LLSD_BINARY:
-			/* try to get the size attribute if there is one */
-			if ( strncmp( attr[0], "encoding" ) == 0 )
+			/* try to get the encoding attribute if there is one */
+			if ( strncmp( attr[0], "encoding", 9 ) == 0 )
 			{
-				enc = llsd_encoding_from_attr( attr[1] );
+				enc = llsd_bin_enc_from_attr( attr[1] );
 			}
-			array_push_tail( &(ctx->params), (void*)enc );
+			llsd = llsd_new( LLSD_TYPE_INVALID );
+			llsd->type_ = LLSD_BINARY;
+			llsd->binary_.encoding = enc;
+			/* put it on the params stack */
+			array_push_tail( ctx->params, (void*)llsd );
 			return;
 		case LLSD_ARRAY:
 			/* try to get the size attribute if there is one */
-			if ( strncmp( attr[0], "size" ) == 0 )
+			if ( strncmp( attr[0], "size", 5 ) == 0 )
 			{
 				size = atoi( attr[1] );
 			}
@@ -128,7 +153,7 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 			break;
 		case LLSD_MAP:
 			/* try to get the size attribute if there is one */
-			if ( strncmp( attr[0], "size" ) == 0 )
+			if ( strncmp( attr[0], "size", 5 ) == 0 )
 			{
 				size = atoi( attr[1] );
 			}
@@ -147,10 +172,10 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 		}
 		else if ( llsd_is_map( cur_container ) )
 		{
-			CHECK_MSG( array_size( &(ctx->params) ) > 0, "no key on params stack\n" );
+			CHECK_MSG( array_size( ctx->params ) > 0, "no key on params stack\n" );
 
 			/* get the key */
-			key = (llsd_t*)array_pop_tail( &(ctx->params) );
+			key = (llsd_t*)array_pop_tail( ctx->params );
 
 			/* add the new map to the current one */
 			llsd_map_insert( cur_container, key, container );
@@ -162,21 +187,21 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 	}
 
 	/* push it onto the container stack */
-	array_push_tail( &(ctx->containers), (void*)container );
+	array_push_tail( ctx->containers, (void*)container );
 }
 
 static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 {
 	context_t * ctx = (context_t*)data;
-	llsd_t * container = array_get_tail( &(ctx->containers) );
+	llsd_t * container = (llsd_t*)array_get_tail( ctx->containers );
 	llsd_t * key = NULL;
 	llsd_t * llsd = NULL;
 	const char * value = ctx->buf;
 	int32_t v1 = 0;
 	double v2 = 0;
 	int len = 0;
-	llsd_encoding_type_t enc;
-	llst_type_t t;
+	llsd_bin_enc_t enc;
+	llsd_type_t t;
 
 	/* get the type */
 	t = llsd_type_from_tag( el );
@@ -186,6 +211,15 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 
 	switch( t )
 	{
+		case LLSD_KEY:
+			llsd = llsd_new( LLSD_TYPE_INVALID );
+			llsd->type_ = LLSD_STRING;
+			/* take ownership of the key str */
+			llsd->uuid_.str = (uint8_t*)value;
+			llsd->uuid_.dyn_str = TRUE;
+			ctx->buf = NULL;
+			array_push_tail( ctx->params, (void*)llsd );
+			return;
 		case LLSD_UNDEF:
 			llsd = llsd_new( LLSD_UNDEF );
 			break;
@@ -210,18 +244,18 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			llsd = llsd_new_real( v2 );
 			break;
 		case LLSD_UUID:
-			llsd = llsd_new( LLSD_INVALID );
+			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_UUID;
 			/* take ownership of the UUID str */
-			llsd->uuid_.str = value;
-			llsd->dyn_str = TRUE;
+			llsd->uuid_.str = (uint8_t*)value;
+			llsd->uuid_.dyn_str = TRUE;
 			ctx->buf = NULL;
 			break;
 		case LLSD_DATE:
-			llsd = llsd_new( LLSD_INVALID );
+			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_DATE;
 			/* take ownership of the date str */
-			llsd->date_.str = value;
+			llsd->date_.str = (uint8_t*)value;
 			llsd->date_.dyn_str = TRUE;
 			ctx->buf = NULL;
 			llsd->date_.use_dval = FALSE;
@@ -229,37 +263,34 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			llsd->date_.len = strlen( llsd->date_.str ) + 1;
 			break;
 		case LLSD_STRING:
-			llsd = llsd_new( LLSD_INVALID );
+			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_STRING;
 			/* take ownership of the string str */
-			llsd->string_.str = value;
+			llsd->string_.str = (uint8_t*)value;
 			llsd->string_.str_len = strlen( value ) + 1;
 			llsd->string_.dyn_str = TRUE;
 			break;
 		case LLSD_URI:
-			llsd = llsd_new( LLSD_INVALID );
+			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_URI;
 			/* take ownership of the uri str */
-			llsd->uri_.uri = value;
+			llsd->uri_.uri = (uint8_t*)value;
 			llsd->uri_.uri_len = strlen( value ) + 1;
 			llsd->uri_.dyn_uri = TRUE;
 			break;
 		case LLSD_BINARY:
-			llsd = llsd_new( LLSD_INVALID );
-			llsd->type_ = LLSD_BINARY;
-			/* get the encoding */
-			enc = (llsd_encoding_type_t)array_pop_tail( &(ctx->params) );
+			llsd = (llsd_t*)array_pop_tail( ctx->params );
 			/* take ownership of the encoded binary str */
-			llsd->binary_.enc = value;
-			llsd->binary_.enc_len = strlen( value ) + 1;
+			llsd->binary_.enc = (uint8_t*)value;
+			llsd->binary_.enc_size = strlen( value ) + 1;
 			llsd->binary_.dyn_enc = TRUE;
-			llsd->binary_.encoding = LLSD_BASE64;
 			break;
 		case LLSD_ARRAY:
 		case LLSD_MAP:
 			/* done filling the container so remove it from the containers stack */
-			array_pop_tail( &(ctx->containers) );
-			break;
+			array_pop_tail( ctx->containers );
+			CHECK_MSG( ctx->buf == NULL, "context buffer has data when it shouldn't\n" );
+			return;
 	}
 
 	/* add the completed llsd object to the current container */
@@ -271,14 +302,14 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 		}
 		else
 		{
-			key = (llsd_t*)array_pop_tail( &(ctx->params) );
+			key = (llsd_t*)array_pop_tail( ctx->params );
 			llsd_map_insert( container, key, llsd );
 		}
 	}
 	else
 	{
 		/* standalone llsd object, no outer container */
-		array_push_tail( &(ctx->containers), (void*)llsd );
+		array_push_tail( ctx->containers, (void*)llsd );
 	}
 
 	/* clean up the buffer if needed */
@@ -293,7 +324,7 @@ static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len 
 {
 	context_t * ctx = (context_t*)data;
 	CHECK_PTR( s );
-	CHECK_RET( len > 0 );
+	CHECK( len > 0 );
 
 	/* copy the node data into the context buffer */
 	if ( ctx->buf != NULL )
@@ -317,6 +348,7 @@ llsd_t * llsd_parse_xml( FILE * fin )
 	int done;
 	size_t len = 0;
 	static uint8_t buf[XML_BUF_SIZE];
+	llsd_t * llsd = NULL;
 	context_t ctx;
 	CHECK_PTR_RET( fin, NULL );
 
@@ -343,10 +375,28 @@ llsd_t * llsd_parse_xml( FILE * fin )
 
 		if ( XML_Parse( p, buf, len, done ) == XML_STATUS_ERROR )
 		{
-			DEBUG( "%s at line %" XML_FMT_INT_MOD "u\n", XML_ErrorString(XML_GetErrorCode(p)), XML_GetCurrentLineNumber(p) );
+			DEBUG( "%s at line %" XML_FMT_INT_MOD "u\n", 
+					XML_ErrorString(XML_GetErrorCode(p)), 
+					XML_GetCurrentLineNumber(p) );
 		}
 
 	} while ( !done );
+
+	if ( array_size( ctx.containers ) != 1 )
+	{
+		DEBUG( "too many llsd objects left after parsing XML\n" );
+	}
+
+	/* get the resulting LLSD object */
+	llsd = array_pop_tail( ctx.containers );
+
+	/* free up the memeory */
+	if ( ctx.buf != NULL )
+	{
+		FREE( ctx.buf );
+	}
+	array_delete( ctx.containers );
+	array_delete( ctx.params );
 
 	/* free the parser */
 	XML_ParserFree( p );

@@ -111,8 +111,8 @@ void* array_pop(
 void* array_itr_get(
 	array_t const * const array, 
 	array_itr_t const itr);
-#define array_get_head(array) array_get(array, array_itr_head(array))
-#define array_get_tail(array) array_get(array, array_itr_tail(array))
+#define array_get_head(array) array_itr_get(array, array_itr_head(array))
+#define array_get_tail(array) array_itr_get(array, array_itr_tail(array))
 
 /* clear the entire array */
 void array_clear(array_t * const array);
