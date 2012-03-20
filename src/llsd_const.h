@@ -28,6 +28,7 @@ extern llsd_real_t const one_real;
 extern llsd_uuid_t const zero_uuid;
 extern llsd_string_t const false_string;
 extern llsd_string_t const true_string;
+extern llsd_string_t const empty_string;
 extern llsd_binary_t const false_binary;
 extern llsd_binary_t const true_binary;
 extern llsd_binary_t const empty_binary;

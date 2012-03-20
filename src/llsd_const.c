@@ -78,6 +78,16 @@ llsd_string_t const true_string =
 	.esc_len = 0,
 	.esc = NULL
 };
+llsd_string_t const empty_string = 
+{
+	.dyn_str = FALSE,
+	.dyn_esc = FALSE,
+	.key_esc = FALSE,
+	.str_len = 0,
+	.str = NULL,
+	.esc_len = 0,
+	.esc = NULL
+};
 
 static uint8_t zero_data [] = { '0' };
 llsd_binary_t const false_binary =

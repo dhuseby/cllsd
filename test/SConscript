@@ -1,10 +1,10 @@
-env = Environment(CC='gcc', CCFLAGS='-O0 -gstabs+ -Isrc -Ialloc')
+env = Environment(CC='gcc', CCFLAGS='-O0 -gstabs+ -Isrc')
 env.Program(target = 'test_all', 
 		source = ['test_all.c',
 				  'test_binary.c',
 				  'test_xml.c'],
-		LIBS   = ['alloc',
-				  'cunit',
+		LIBS   = ['cunit',
 				  'llsd',
-				  'm'],
+				  'm',
+				  'expat'],
 		LIBPATH = ['../src/', '../alloc/'])

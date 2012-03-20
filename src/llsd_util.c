@@ -993,8 +993,7 @@ llsd_string_t llsd_as_string( llsd_t * llsd )
 		case LLSD_UNDEF:
 		case LLSD_ARRAY:
 		case LLSD_MAP:
-			FAIL( "illegal conversion of %s to string\n", llsd_get_type_string( llsd->type_ ) );
-			break;
+			return empty_string;
 		case LLSD_BOOLEAN:
 			if ( llsd->bool_ == FALSE )
 				return false_string;
@@ -1042,12 +1041,12 @@ llsd_string_t llsd_as_string( llsd_t * llsd )
 									.esc = NULL };
 		case LLSD_URI:
 			/* unescape the URI if needed */
-			llsd_escape_uri( llsd );
+			/*llsd_escape_uri( llsd );*/
 			return (llsd_string_t){ .dyn_str = FALSE, 
 									.dyn_esc = FALSE,
 									.key_esc = FALSE,
-									.str_len = llsd->uri_.esc_len,
-									.str = llsd->uri_.esc,
+									.str_len = llsd->uri_.uri_len,
+									.str = llsd->uri_.uri,
 									.esc_len = 0,
 									.esc = NULL };
 
@@ -1266,13 +1265,13 @@ int llsd_stringify_uuid( llsd_t * llsd )
 	CHECK_PTR_RET( llsd->uuid_.bits, FALSE );
 
 	/* allocate the string */
-	llsd->uuid_.str = UT(CALLOC( UUID_STR_LEN, sizeof(uint8_t) ));
+	llsd->uuid_.str = UT(CALLOC( UUID_STR_LEN + 1, sizeof(uint8_t) ));
 	llsd->uuid_.dyn_str = TRUE;
-	llsd->uuid_.len = UUID_STR_LEN;
+	llsd->uuid_.len = UUID_STR_LEN + 1;
 
 	/* convert to string and cache it */
 	p = llsd->uuid_.bits;
-	snprintf( llsd->uuid_.str, UUID_STR_LEN, 
+	snprintf( llsd->uuid_.str, UUID_STR_LEN + 1, 
 			  "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", 
 			  p[0], p[1], p[2], p[3], 
 			  p[4], p[5], 
@@ -1366,15 +1365,15 @@ int llsd_stringify_date( llsd_t * llsd )
 	CHECK_RET( (llsd->date_.str == NULL), FALSE );
 
 	/* allocate the string */
-	llsd->date_.str = UT(CALLOC( DATE_STR_LEN, sizeof(uint8_t) ));
+	llsd->date_.str = UT(CALLOC( DATE_STR_LEN + 1, sizeof(uint8_t) ));
 	llsd->date_.dyn_str = TRUE;
-	llsd->date_.len = DATE_STR_LEN;
+	llsd->date_.len = DATE_STR_LEN + 1;
 
 	int_time = floor( llsd->date_.dval );
 	seconds = (time_t)int_time;
 	useconds = (int32_t)( ( llsd->date_.dval - int_time) * 1000000.0 );
 	parts = *gmtime(&seconds);
-	snprintf( llsd->date_.str, DATE_STR_LEN, 
+	snprintf( llsd->date_.str, DATE_STR_LEN + 1, 
 			  "%04d-%02d-%02dT%02d:%02d:%02d.%03dZ",
 			  parts.tm_year + 1900,
 			  parts.tm_mon + 1,
@@ -1653,7 +1652,9 @@ static uint32_t llsd_escaped_uri_len( llsd_t * llsd )
 		{
 			len++;
 		}
+		p++;
 	}
+	return len;
 }
 
 int llsd_escape_uri( llsd_t * llsd )
@@ -1810,9 +1811,11 @@ static uint8_t const * const xml_footer = "</llsd>\n";
 #define SIG_LEN (18)
 llsd_t * llsd_parse( FILE *fin )
 {
+	size_t ret;
 	uint8_t sig[SIG_LEN];
 	CHECK_RET_MSG( fin, NULL, "invalid file pointer\n" );
-	fread( sig, sizeof(uint8_t), SIG_LEN, fin );
+	ret = fread( sig, sizeof(uint8_t), SIG_LEN, fin );
+	CHECK_MSG( ret == SIG_LEN, "failed to read signature from LLSD file\n" );
 	if ( memcmp( sig, binary_header, SIG_LEN ) == 0 )
 	{
 		return llsd_parse_binary( fin );

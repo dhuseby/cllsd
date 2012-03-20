@@ -92,6 +92,7 @@ static llsd_t * llsd_reserve_map( uint32_t size )
 
 llsd_t * llsd_parse_binary( FILE * fin )
 {
+	size_t ret;
 	int i;
 	uint8_t p;
 	uint32_t t1;
@@ -108,7 +109,8 @@ llsd_t * llsd_parse_binary( FILE * fin )
 	while( !feof( fin ) )
 	{
 		/* read the type marker */
-		fread( &p, sizeof(uint8_t), 1, fin );
+		ret = fread( &p, sizeof(uint8_t), 1, fin );
+		CHECK_RET_MSG( ret == 1, NULL, "failed to read type byte from binary LLSD\n" );
 
 		switch( p )
 		{
@@ -124,49 +126,49 @@ llsd_t * llsd_parse_binary( FILE * fin )
 
 			case 'i':
 				llsd = llsd_new( LLSD_INTEGER, 0 );
-				fread( &(llsd->int_.be), sizeof(uint32_t), 1, fin );
+				ret = fread( &(llsd->int_.be), sizeof(uint32_t), 1, fin );
 				llsd->int_.v = ntohl( llsd->int_.be );
 				return llsd;
 
 			case 'r':
 				llsd = llsd_new( LLSD_REAL, 0.0 );
-				fread( &(llsd->real_.be), sizeof(uint64_t), 1, fin );
+				ret = fread( &(llsd->real_.be), sizeof(uint64_t), 1, fin );
 				t2.ull = be64toh( llsd->real_.be );
 				llsd->real_.v = t2.d;
 				return llsd;
 
 			case 'u':
-				fread( t3, sizeof(uint8_t), UUID_LEN, fin );
+				ret = fread( t3, sizeof(uint8_t), UUID_LEN, fin );
 				return llsd_new( LLSD_UUID, t3 );
 
 			case 'b':
-				fread( &t1, sizeof(uint32_t), 1, fin );
+				ret = fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
 				llsd = llsd_reserve_binary( t1 );
-				fread( llsd->binary_.data, sizeof(uint8_t), t1, fin );
+				ret = fread( llsd->binary_.data, sizeof(uint8_t), t1, fin );
 				return llsd;
 
 			case 's':
-				fread( &t1, sizeof(uint32_t), 1, fin );
+				ret = fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
 				llsd = llsd_reserve_string( t1 ); /* allocates t1 bytes */
-				fread( llsd->string_.str, sizeof(uint8_t), t1, fin );
+				ret = fread( llsd->string_.str, sizeof(uint8_t), t1, fin );
 				return llsd;
 
 			case 'l':
-				fread( &t1, sizeof(uint32_t), 1, fin );
+				ret = fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
 				llsd = llsd_reserve_uri( t1 ); /* allocates t1 bytes */
-				fread( llsd->uri_.uri, sizeof(uint8_t), t1, fin );
+				ret = fread( llsd->uri_.uri, sizeof(uint8_t), t1, fin );
 				return llsd;
 
 			case 'd':
-				fread( &t2, sizeof(double), 1, fin );
+				ret = fread( &t2, sizeof(double), 1, fin );
 				t2.ull = be64toh( t2.ull );
 				return llsd_new_date( t2.d, NULL, 0 );
 
 			case '[':
-				fread( &t1, sizeof(uint32_t), 1, fin );
+				ret = fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
 				llsd = llsd_reserve_array( t1 );
 				for ( i = 0; i < t1; ++i )
@@ -175,7 +177,7 @@ llsd_t * llsd_parse_binary( FILE * fin )
 					llsd_array_append( llsd, llsd_parse_binary( fin ) );
 				}
 
-				fread( &p, sizeof(uint8_t), 1, fin );
+				ret = fread( &p, sizeof(uint8_t), 1, fin );
 				if ( p != ']' )
 				{
 					FAIL( "array didn't end with ']'\n" );
@@ -183,7 +185,7 @@ llsd_t * llsd_parse_binary( FILE * fin )
 
 				return llsd;
 			case '{':
-				fread( &t1, sizeof(uint32_t), 1, fin );
+				ret = fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
 				llsd = llsd_reserve_map( t1 );
 				for ( i = 0; i < t1; ++i )
@@ -199,7 +201,7 @@ llsd_t * llsd_parse_binary( FILE * fin )
 					llsd_map_insert( llsd, key, llsd_parse_binary( fin ) );
 				}
 
-				fread( &p, sizeof(uint8_t), 1, fin );
+				ret = fread( &p, sizeof(uint8_t), 1, fin );
 				if ( p != '}' )
 				{
 					FAIL( "map didn't end with '}'\n" );

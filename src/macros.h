@@ -47,14 +47,14 @@
 #define CHECK_PTR_RET_MSG(x, y, ...) { if(!(x)) { DEBUG(__VA_ARGS__); return (y); } }
 
 /* abstractions of the memory allocator */
-#define MALLOC malloc_
-#define CALLOC calloc_
-#define REALLOC realloc_
-#define FREE free_
+#define MALLOC malloc
+#define CALLOC calloc
+#define REALLOC realloc
+#define FREE free
 #define MEMCPY memcpy
 #define MEMCMP memcmp
 #define MEMSET memset
-#define STRDUP strdup_
+#define STRDUP strdup
 
 /* casting macro for string constants */
 #define T(x)    (int8_t*)(x)
