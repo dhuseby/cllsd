@@ -375,9 +375,7 @@ llsd_t * llsd_parse_xml( FILE * fin )
 
 		if ( XML_Parse( p, buf, len, done ) == XML_STATUS_ERROR )
 		{
-			DEBUG( "%s at line %" XML_FMT_INT_MOD "u\n", 
-					XML_ErrorString(XML_GetErrorCode(p)), 
-					XML_GetCurrentLineNumber(p) );
+			DEBUG( "%s\n", XML_ErrorString(XML_GetErrorCode(p)) );
 		}
 
 	} while ( !done );
@@ -582,7 +580,7 @@ size_t llsd_format_xml( llsd_t * llsd, FILE * fout, int pretty )
 		case LLSD_MAP:
 			num += indent_xml( pretty, fout );
 			num += llsd_write_xml_start_tag( t, fout, pretty, llsd_get_size( llsd ) );
-			DEBUG( "%*s%s (%d)\n", indent * 4, " ", llsd_get_type_string( llsd ), llsd_get_size( llsd ) );
+			DEBUG( "%*s%s (%d)\n", indent * 4, " ", llsd_get_type_string( t ), llsd_get_size( llsd ) );
 			indent++;
 			itr = llsd_itr_begin( llsd );
 			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
@@ -601,7 +599,7 @@ size_t llsd_format_xml( llsd_t * llsd, FILE * fout, int pretty )
 			indent--;
 			num += indent_xml( pretty, fout );
 			num += llsd_write_xml_end_tag( t, fout, pretty );
-			DEBUG( "%*s%s %lu - %lu\n", indent * 4, " ", llsd_get_type_string( llsd ), start, ftell( fout ) - 1 );
+			DEBUG( "%*s%s %lu - %lu\n", indent * 4, " ", llsd_get_type_string( t ), start, ftell( fout ) - 1 );
 			break;
 	}
 	return num;
