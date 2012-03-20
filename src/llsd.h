@@ -38,7 +38,10 @@ typedef enum llsd_type_e
 	LLSD_TYPE_LAST,
 	LLSD_TYPE_FIRST = LLSD_UNDEF,
 	LLSD_TYPE_COUNT = LLSD_TYPE_LAST - LLSD_TYPE_FIRST,
-	LLSD_TYPE_INVALID
+	LLSD_TYPE_INVALID,
+
+	LLSD_KEY, /* type of LLSD key tag in XML */
+	LLSD_LLSD /* type of LLSD tag in XML */
 
 } llsd_type_t;
 

@@ -382,14 +382,28 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			break;
 
 		case LLSD_ARRAY:
+			va_start( args, type_ );
+			size = va_arg( args, int );
+			va_end( args );
+
+			/* if no size specified, make it the default value */
+			size = ((size > 0) ? size : DEFAULT_ARRAY_CAPACITY);
+
 			array_initialize( &(llsd->array_.array), 
-							  DEFAULT_ARRAY_CAPACITY, 
+							  size,
 							  &llsd_delete );
 			break;
 
 		case LLSD_MAP:
+			va_start( args, type_ );
+			size = va_arg( args, int );
+			va_end( args );
+
+			/* if no size specified, make it the default value */
+			size = ((size > 0) ? size : DEFAULT_MAP_CAPACITY);
+
 			ht_initialize( &(llsd->map_.ht), 
-						   DEFAULT_MAP_CAPACITY, 
+						   size,
 						   &fnv_key_hash, 
 						   &llsd_delete, 
 						   &key_eq, 
@@ -478,7 +492,10 @@ llsd_t * llsd_new( llsd_type_t type_, ... )
 
 		case LLSD_ARRAY:
 		case LLSD_MAP:
-			llsd_initialize( llsd, type_ );
+			va_start( args, type_ );
+			a1 = va_arg( args, int );
+			va_end( args );
+			llsd_initialize( llsd, type_, a1 );
 			break;
 	}
 
