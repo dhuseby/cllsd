@@ -35,6 +35,7 @@ void llsd_delete( void * p );
 #define llsd_new_boolean( val ) llsd_new ( LLSD_BOOLEAN, val )
 #define llsd_new_integer( val ) llsd_new ( LLSD_INTEGER, val )
 #define llsd_new_real( val ) llsd_new ( LLSD_REAL, val )
+#define llsd_new_uuid( bits ) llsd_new ( LLSD_UUID, bits )
 #define llsd_new_string( s, len, esc, key ) llsd_new( LLSD_STRING, s, len, esc, key )
 #define llsd_new_uri( s, len, esc ) llsd_new( LLSD_URI, s, len, esc )
 #define llsd_new_binary( p, len, enc, encoding ) llsd_new( LLSD_BINARY, p, len, enc, encoding )

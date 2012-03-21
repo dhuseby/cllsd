@@ -90,6 +90,28 @@ static llsd_type_t llsd_type_from_tag( char const * tag )
 	return LLSD_TYPE_INVALID;
 }
 
+static void print_stack( array_t * arr )
+{
+	array_itr_t f;
+	array_itr_t r;
+
+	f = array_itr_begin( arr );
+	DEBUG("F:");
+	for ( ; f != array_itr_end( arr ); f = array_itr_next( arr, f ) )
+	{
+		LOG(" %s", llsd_get_type_string( llsd_get_type( (llsd_t*)array_itr_get(arr, f) ) ) );
+	}
+	LOG("\n");
+
+	r = array_itr_rbegin( arr );
+	DEBUG("R:");
+	for ( ; r != array_itr_rend( arr ); r = array_itr_rnext( arr, r ) )
+	{
+		LOG(" %s", llsd_get_type_string( llsd_get_type( (llsd_t*)array_itr_get(arr, r) ) ) );
+	}
+	LOG("\n");
+}
+
 typedef struct context_s
 {
 	array_t * containers;
@@ -97,6 +119,7 @@ typedef struct context_s
 	char * buf;
 	size_t len;
 	int indent;
+	llsd_t * result;
 } context_t;
 
 static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const ** attr )
@@ -195,7 +218,12 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 			{
 				FAIL( "invalid key type\n" );
 			}
+			size = llsd_get_size( cur_container );
 			llsd_map_insert( cur_container, key, container );
+			if ( (size + 1) != llsd_get_size( cur_container ) )
+			{
+				FAIL( "failed to insert new container into current container\n" );
+			}
 		}
 		else
 		{
@@ -221,6 +249,7 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 	int32_t v1 = 0;
 	double v2 = 0;
 	int len = 0;
+	int size = 0;
 	llsd_bin_enc_t enc;
 	llsd_type_t t;
 
@@ -237,6 +266,7 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			llsd->type_ = LLSD_STRING;
 			/* take ownership of the key str */
 			llsd->string_.str = (uint8_t*)value;
+			llsd->string_.str_len = ctx->len;
 			llsd->string_.dyn_str = TRUE;
 			ctx->buf = NULL;
 			array_push_tail( ctx->params, (void*)llsd );
@@ -251,17 +281,17 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			DEBUG( "%*sUNDEF\n", ctx->indent * 4, " " );
 			break;
 		case LLSD_BOOLEAN:
-			if ( (value == NULL) ||
-				 (memcmp( value, "false", len ) == 0) ||
-				 (memcmp( value, "0", len ) == 0) )
-			{
-				llsd = llsd_new_boolean( FALSE );
-				DEBUG( "%*sBOOLEAN (FALSE)\n", ctx->indent * 4, " " );
-			}
-			else
+			if ( (value != NULL) &&
+				 ( (memcmp( value, "true", len ) == 0) ||
+				   (memcmp( value, "1", len ) == 0) ) )
 			{
 				llsd = llsd_new_boolean( TRUE );
 				DEBUG( "%*sBOOLEAN (TRUE)\n", ctx->indent * 4, " " );
+			}
+			else
+			{
+				llsd = llsd_new_boolean( FALSE );
+				DEBUG( "%*sBOOLEAN (FALSE)\n", ctx->indent * 4, " " );
 			}
 			break;
 		case LLSD_INTEGER:
@@ -328,14 +358,20 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 		case LLSD_ARRAY:
 		case LLSD_MAP:
 			ctx->indent--;
-			DEBUG( "%*s%s\n", ctx->indent * 4, " ", llsd_get_type_string( t ) );
 			/* done filling the container so remove it from the containers stack */
 			if ( llsd_get_type( (llsd_t*)array_get_tail( ctx->containers ) ) != t )
 			{
 				FAIL("not correct container on top of containers stack\n");
 			}
-			array_pop_tail( ctx->containers );
+			llsd = (llsd_t*)array_pop_tail( ctx->containers );
+			DEBUG( "%*s%s (%d)\n", ctx->indent * 4, " ", llsd_get_type_string( t ), llsd_get_size(llsd) );
 			CHECK_MSG( ctx->buf == NULL, "context buffer has data when it shouldn't\n" );
+
+			if ( array_size( ctx->containers ) == 0 )
+			{
+				DEBUG("ending outermost container\n");
+				ctx->result = llsd;
+			}
 			return;
 	}
 
@@ -353,17 +389,24 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 				FAIL("a key is not on top of the stack\n" );
 			}
 			key = (llsd_t*)array_pop_tail( ctx->params );
+			if ( llsd_get_type( key ) != LLSD_STRING )
+			{
+				FAIL("trying to use non-string key\n");
+			}
+
+			size = llsd_get_size( container );
 			llsd_map_insert( container, key, llsd );
+			if ( (size + 1) != llsd_get_size( container ) )
+			{
+				FAIL( "failed to insert new llsd into current container\n" );
+			}
 		}
 	}
 	else
 	{
 		/* standalone llsd object, no outer container */
-		array_push_tail( ctx->containers, (void*)llsd );
-		if ( llsd != (llsd_t*)array_get_tail(ctx->containers) )
-		{
-			FAIL("pushing container to array failed\n");
-		}
+		DEBUG("standalone object, no outer container\n");
+		ctx->result = llsd;
 	}
 
 	/* clean up the buffer if needed */
@@ -402,12 +445,11 @@ llsd_t * llsd_parse_xml( FILE * fin )
 	int done;
 	size_t len = 0;
 	static uint8_t buf[XML_BUF_SIZE];
-	llsd_t * llsd = NULL;
 	context_t ctx;
 	CHECK_PTR_RET( fin, NULL );
 
 	/* create the parser */
-	p = XML_ParserCreate("UTF-8");
+	p = XML_ParserCreate( NULL );
 	CHECK_PTR_RET_MSG( p, NULL, "failed to create expat parser\n" );
 
 	/* set the tag handlers */
@@ -420,6 +462,7 @@ llsd_t * llsd_parse_xml( FILE * fin )
 	ctx.buf = NULL;
 	ctx.len = 0;
 	ctx.indent = 0;
+	ctx.result = NULL;
 	XML_SetUserData( p, (void*)(&ctx) );
 
 	/* read the file and parse it */
@@ -435,13 +478,10 @@ llsd_t * llsd_parse_xml( FILE * fin )
 
 	} while ( !done );
 
-	if ( array_size( ctx.containers ) != 1 )
+	if ( ctx.result == NULL )
 	{
-		DEBUG( "too many llsd objects left after parsing XML\n" );
+		DEBUG( "no result was given\n" );
 	}
-
-	/* get the resulting LLSD object */
-	llsd = array_pop_tail( ctx.containers );
 
 	/* free up the memeory */
 	if ( ctx.buf != NULL )
@@ -454,7 +494,7 @@ llsd_t * llsd_parse_xml( FILE * fin )
 	/* free the parser */
 	XML_ParserFree( p );
 
-	return NULL;
+	return ctx.result;
 }
 
 #define XML_UNDEF_LEN (9)
@@ -654,7 +694,7 @@ size_t llsd_format_xml( llsd_t * llsd, FILE * fout, int pretty )
 			indent--;
 			num += indent_xml( pretty, fout );
 			num += llsd_write_xml_end_tag( t, fout, pretty );
-			DEBUG( "%*s%s %lu - %lu\n", indent * 4, " ", llsd_get_type_string( t ), start, ftell( fout ) - 1 );
+			DEBUG( "%*s%s (%d) %lu - %lu\n", indent * 4, " ", llsd_get_type_string( t ), llsd_get_size( llsd ), start, ftell( fout ) - 1 );
 			break;
 	}
 	return num;

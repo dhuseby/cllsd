@@ -569,9 +569,9 @@ void * array_pop(
 	array_itr_t const itr)
 {
 	void * ret = NULL;
-	array_node_t * next = NULL;
+	array_node_t * new_head = NULL;
 	array_node_t * node = NULL;
-	array_itr_t const i = ((itr == array_itr_end(array)) ? array->data_head : itr);
+	array_itr_t const i = ((itr == array_itr_end(array)) ? array_itr_tail(array) : itr);
 	CHECK_PTR_RET(array, NULL);
 	CHECK_RET(array_size(array) > 0, NULL);
 	
@@ -583,7 +583,7 @@ void * array_pop(
 	
 	/* remember the next node */
 	if(i == (array_itr_t)array->data_head)
-		next = node->next;
+		new_head = node->next;
 
 	/* unhook it from the list */
 	node->prev->next = node->next;
@@ -612,7 +612,8 @@ void * array_pop(
 	else
 	{
 		/* calculate the new data head index */
-		array->data_head = (int_t)((uint_t)next - (uint_t)array->node_buffer) / sizeof(array_node_t);
+		if (new_head != NULL)
+			array->data_head = (int_t)((uint_t)new_head - (uint_t)array->node_buffer) / sizeof(array_node_t);
 	}
 	
 	return ret;

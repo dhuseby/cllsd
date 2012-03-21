@@ -112,6 +112,7 @@ static int mem_len_cmp( uint8_t * l, uint32_t llen, uint8_t * r, uint32_t rlen )
 	return ( MEMCMP( l, r, llen ) == 0 );
 }
 
+static indent = 0;
 static int llsd_string_eq( llsd_t * l, llsd_t * r )
 {
 	CHECK_RET( (l->type_ == LLSD_STRING), FALSE );
@@ -123,10 +124,12 @@ static int llsd_string_eq( llsd_t * l, llsd_t * r )
 	if ( (l->string_.str != NULL) && (r->string_.str != NULL) )
 	{
 		CHECK_RET_MSG( mem_len_cmp( l->string_.str, l->string_.str_len, r->string_.str, r->string_.str_len ), FALSE, "string mismatch\n" );
+		DEBUG( "%*sSTRING (%*s)\n", indent * 4, " ", l->string_.str_len, l->string_.str );
 	}
 	if ( (l->string_.esc != NULL) && (r->string_.esc != NULL) )
 	{
 		CHECK_RET_MSG( mem_len_cmp( l->string_.esc, l->string_.esc_len, r->string_.esc, r->string_.esc_len ), FALSE, "escaped string mismatch\n" );
+		DEBUG( "%*sSTRING (%*s)\n", indent * 4, " ", l->string_.esc_len, l->string_.esc );
 	}
 
 	/* null strings are equal */
@@ -144,10 +147,12 @@ static int llsd_uri_eq( llsd_t * l, llsd_t * r )
 	if ( (l->uri_.uri != NULL) && (r->uri_.uri != NULL) )
 	{
 		CHECK_RET_MSG( mem_len_cmp( l->uri_.uri, l->uri_.uri_len, r->uri_.uri, r->uri_.uri_len ), FALSE, "uri mismatch\n" );
+		DEBUG( "%*sURI (%*s)\n", indent * 4, " ", l->uri_.uri_len, l->uri_.uri );
 	}
 	if ( (l->uri_.esc != NULL) && (r->uri_.esc != NULL) )
 	{
 		CHECK_RET_MSG( mem_len_cmp( l->uri_.esc, l->uri_.esc_len, r->uri_.esc, r->uri_.esc_len ), FALSE, "escaped uri mistmatch\n" );
+		DEBUG( "%*sSTRING (%*s)\n", indent * 4, " ", l->uri_.esc_len, l->uri_.esc );
 	}
 
 	/* null uri's are equal */
@@ -633,6 +638,7 @@ int llsd_itr_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key 
 	return TRUE;
 }
 
+
 int llsd_equal( llsd_t * l, llsd_t * r )
 {
 	int eq;
@@ -653,18 +659,23 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 	switch( llsd_get_type( l ) )
 	{
 		case LLSD_UNDEF:
+			CHECK_RET_MSG( llsd_get_type( r ) == LLSD_UNDEF, FALSE, "undef mismatch\n" );
+			DEBUG( "%*sUNDEF\n", indent * 4, " " );
 			return TRUE;
 
 		case LLSD_BOOLEAN:
 			CHECK_RET_MSG( llsd_as_bool( l ) == llsd_as_bool( r ), FALSE, "boolean mismatch\n" );
+			DEBUG( "%*sBOOLEAN\n", indent * 4, " " );
 			return TRUE;
 
 		case LLSD_INTEGER:
 			CHECK_RET_MSG( l->int_.v == r->int_.v, FALSE, "integer mismatch\n" );
+			DEBUG( "%*sINTEGER (%d)\n", indent * 4, " ", l->int_.v );
 			return TRUE;
 
 		case LLSD_REAL:
 			CHECK_RET_MSG( l->real_.v == r->real_.v, FALSE, "real mismatch\n" );
+			DEBUG( "%*sREAL (%f)\n", indent * 4, " ", l->real_.v );
 			return TRUE;
 
 		case LLSD_UUID:
@@ -672,11 +683,13 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 			if ( ( l->uuid_.bits != NULL ) && ( r->uuid_.bits != NULL ) )
 			{
 				CHECK_RET_MSG( MEMCMP( l->uuid_.bits, r->uuid_.bits, UUID_LEN ) == 0, FALSE, "uuid bits mismatch\n" );
+				DEBUG( "%*sUUID BITS\n", indent * 4, " " );
 				return TRUE;
 			}
 			if ( ( r->uuid_.str != NULL ) && ( r->uuid_.str != NULL ) )
 			{
 				CHECK_RET_MSG( MEMCMP( l->uuid_.str, r->uuid_.str, UUID_STR_LEN ) == 0, FALSE, "uuid string mismatch\n" );
+				DEBUG( "%*sUUID STR (%*s)\n", indent * 4, " ", UUID_STR_LEN, l->uuid_.str );
 				return TRUE;
 			}
 			DEBUG( "falling out of UUID\n" );
@@ -690,11 +703,13 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 			if ( ( l->date_.use_dval != FALSE) && ( r->date_.use_dval != FALSE ) )
 			{
 				CHECK_RET_MSG( l->date_.dval == l->date_.dval, FALSE, "date dval mismatch\n" );
+				DEBUG( "%*sDATE (%f)\n", indent * 4, " ", l->date_.dval );
 				return TRUE;
 			}
 			if ( ( l->date_.str != NULL ) && ( r->date_.str != NULL ) )
 			{
 				CHECK_RET_MSG( MEMCMP( l->date_.str, r->date_.str, DATE_STR_LEN ) == 0, FALSE, "date string mismatch\n" );
+				DEBUG( "%*sDATE STR (%*s)\n", indent * 4, " ", DATE_STR_LEN, l->date_.str );
 				return TRUE;
 			}
 			DEBUG( "falling out of DATE\n" );
@@ -709,6 +724,7 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 				eq = ( ( l->binary_.data_size == r->binary_.data_size ) &&
 						 ( MEMCMP( l->binary_.data, r->binary_.data, l->binary_.data_size ) == 0 ) );
 				CHECK_RET_MSG( eq, FALSE, "binary data mismatch\n" );
+				DEBUG( "%*sBINARY (%d)\n", indent * 4, " ", l->binary_.data_size );
 				return TRUE;
 			}
 			if ( ( l->binary_.enc != NULL ) && ( l->binary_.data != NULL ) )
@@ -716,6 +732,7 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 				eq = ( ( l->binary_.enc_size == r->binary_.enc_size ) &&
 						 ( MEMCMP( l->binary_.enc, r->binary_.enc, l->binary_.enc_size) == 0 ) );
 				CHECK_RET_MSG( eq, FALSE, "encoded binary mismatch\n" );
+				DEBUG( "%*sBINARY STR (%*s)\n", indent * 4, " ", l->binary_.enc_size, l->binary_.enc );
 				return TRUE;
 			}
 			DEBUG( "falling out of BINARY\n" );
@@ -723,6 +740,8 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 
 		case LLSD_ARRAY:	
 			CHECK_RET_MSG( array_size( &(l->array_.array) ) == array_size( &(r->array_.array) ), FALSE, "array size mismatch\n" )
+			DEBUG( "%*s[[ (%d)\n", indent * 4, " ", llsd_get_size( l ) );
+			indent++;
 
 			itrl = llsd_itr_begin( l );
 			itrr = llsd_itr_begin( r );
@@ -736,24 +755,41 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 					return FALSE;
 				}
 			}
+			indent--;
+			DEBUG( "%*s]] (%d)\n", indent * 4, " ", llsd_get_size( l ) );
 			return TRUE;
 
 		case LLSD_MAP:
 			CHECK_RET_MSG( ht_size( &(l->map_.ht) ) == ht_size( &(r->map_.ht) ), FALSE, "map size mismatch\n" )
-
+			DEBUG( "%*s{{ (%d)\n", indent * 4, " ", llsd_get_size( l ) );
+			indent++;
 			itrl = llsd_itr_begin( l );
-			itrr = llsd_itr_begin( r );
-			for ( ; itrl != llsd_itr_end( l ); itrl = llsd_itr_next( l, itrl ), itrr = llsd_itr_next( r, itrr) )
+			for ( ; itrl != llsd_itr_end( l ); itrl = llsd_itr_next( l, itrl ) )
 			{
+				/* get the k/v pair from the left map */
 				llsd_itr_get( l, itrl, &vl, &kl );
+				DEBUG("%*sKEY (%*s)\n", indent * 4, " ", kl->string_.str_len, kl->string_.str);
+
+				/* look up the value associated with the same key in the right map */
 				vr = llsd_map_find( r, kl );
+
+				if ( vr == FALSE )
+				{
+					WARN( "no matching k/v pair in map\n" );
+					return FALSE;
+				}
+
 				if ( !llsd_equal( vl, vr ) )
 				{
-					llsd_equal( vl, vr );
-					WARN("map member mismatch\n");
+					DEBUG("%*sLEFT (%*s)\n", indent * 4, " ", llsd_as_string(vl).str_len, llsd_as_string(vl).str );
+					DEBUG("%*sRIGHT (%*s)\n", indent * 4, " ", llsd_as_string(vr).str_len, llsd_as_string(vr).str );
+
+					WARN( "map member mismatch\n" );
 					return FALSE;
 				}
 			}
+			indent--;
+			DEBUG( "%*s}} (%d)\n", indent * 4, " ", llsd_get_size( l ) );
 			return TRUE;
 	}
 
