@@ -89,6 +89,7 @@ static llsd_t * llsd_reserve_map( uint32_t size )
 }
 
 #define INDENT(f, x, y) (( x ) ? fprintf( f, "%*s", y, " " ) : 0)
+static int indent = 0;
 
 llsd_t * llsd_parse_binary( FILE * fin )
 {
@@ -116,18 +117,22 @@ llsd_t * llsd_parse_binary( FILE * fin )
 		{
 
 			case '!':
+				DEBUG( "%*sUNDEF\n", indent, " " );
 				return llsd_new( LLSD_UNDEF );
 
 			case '1':
+				DEBUG( "%*sBOOLEAN (TRUE)\n", indent, " " );
 				return llsd_new( LLSD_BOOLEAN, TRUE );
 
 			case '0':
+				DEBUG( "%*sBOOLEAN (FALSE)\n", indent, " " );
 				return llsd_new( LLSD_BOOLEAN, FALSE );
 
 			case 'i':
 				llsd = llsd_new( LLSD_INTEGER, 0 );
 				ret = fread( &(llsd->int_.be), sizeof(uint32_t), 1, fin );
 				llsd->int_.v = ntohl( llsd->int_.be );
+				DEBUG( "%*sINTEGER (%d)\n", indent, " ", llsd->int_.v );
 				return llsd;
 
 			case 'r':
@@ -135,10 +140,12 @@ llsd_t * llsd_parse_binary( FILE * fin )
 				ret = fread( &(llsd->real_.be), sizeof(uint64_t), 1, fin );
 				t2.ull = be64toh( llsd->real_.be );
 				llsd->real_.v = t2.d;
+				DEBUG( "%*sREAL (%f)\n", indent, " ", llsd->real_.v );
 				return llsd;
 
 			case 'u':
 				ret = fread( t3, sizeof(uint8_t), UUID_LEN, fin );
+				DEBUG( "%*sUUID (%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x)\n", indent, " ", t3[0], t3[1], t3[2], t3[3], t3[4], t3[5], t3[6], t3[7], t3[8], t3[9], t3[10], t3[11], t3[12], t3[13], t3[14], t3[15] );
 				return llsd_new( LLSD_UUID, t3 );
 
 			case 'b':
@@ -146,6 +153,7 @@ llsd_t * llsd_parse_binary( FILE * fin )
 				t1 = ntohl( t1 );
 				llsd = llsd_reserve_binary( t1 );
 				ret = fread( llsd->binary_.data, sizeof(uint8_t), t1, fin );
+				DEBUG( "%*sBINARY (%d)\n", indent, " ", llsd->binary_.data_size );
 				return llsd;
 
 			case 's':
@@ -153,6 +161,7 @@ llsd_t * llsd_parse_binary( FILE * fin )
 				t1 = ntohl( t1 );
 				llsd = llsd_reserve_string( t1 ); /* allocates t1 bytes */
 				ret = fread( llsd->string_.str, sizeof(uint8_t), t1, fin );
+				DEBUG( "%*sSTRING (%d)\n", indent, " ", llsd->string_.str_len );
 				return llsd;
 
 			case 'l':
@@ -160,17 +169,21 @@ llsd_t * llsd_parse_binary( FILE * fin )
 				t1 = ntohl( t1 );
 				llsd = llsd_reserve_uri( t1 ); /* allocates t1 bytes */
 				ret = fread( llsd->uri_.uri, sizeof(uint8_t), t1, fin );
+				DEBUG( "%*sURI (%d)\n", indent, " ", llsd->uri_.uri_len );
 				return llsd;
 
 			case 'd':
 				ret = fread( &t2, sizeof(double), 1, fin );
 				t2.ull = be64toh( t2.ull );
+				DEBUG( "%*sDATE (%f)\n", indent, " ", t2.d );
 				return llsd_new_date( t2.d, NULL, 0 );
 
 			case '[':
 				ret = fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
 				llsd = llsd_reserve_array( t1 );
+				DEBUG( "%*s[[ (%d)\n", indent, " ", t1 );
+				indent += 4;
 				for ( i = 0; i < t1; ++i )
 				{
 					/* parse and append the array member */
@@ -182,12 +195,16 @@ llsd_t * llsd_parse_binary( FILE * fin )
 				{
 					FAIL( "array didn't end with ']'\n" );
 				}
+				indent -= 4;
+				DEBUG( "%*s]] ARRAY\n", indent, " " );
 
 				return llsd;
 			case '{':
 				ret = fread( &t1, sizeof(uint32_t), 1, fin );
 				t1 = ntohl( t1 );
 				llsd = llsd_reserve_map( t1 );
+				DEBUG( "%*s{{ (%d)\n", indent, " ", t1 );
+				indent += 4;
 				for ( i = 0; i < t1; ++i )
 				{
 					/* parse the key */
@@ -206,13 +223,14 @@ llsd_t * llsd_parse_binary( FILE * fin )
 				{
 					FAIL( "map didn't end with '}'\n" );
 				}
+				indent -= 4;
+				DEBUG( "%*s}} MAP\n", indent, " " );
 
 				return llsd;
 		}
 	}
 }
 
-static int indent = 0;
 
 size_t llsd_format_binary( llsd_t * llsd, FILE * fout )
 {

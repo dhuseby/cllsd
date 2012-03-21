@@ -386,9 +386,6 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			size = va_arg( args, int );
 			va_end( args );
 
-			/* if no size specified, make it the default value */
-			size = ((size > 0) ? size : DEFAULT_ARRAY_CAPACITY);
-
 			array_initialize( &(llsd->array_.array), 
 							  size,
 							  &llsd_delete );
@@ -398,9 +395,6 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			va_start( args, type_ );
 			size = va_arg( args, int );
 			va_end( args );
-
-			/* if no size specified, make it the default value */
-			size = ((size > 0) ? size : DEFAULT_MAP_CAPACITY);
 
 			ht_initialize( &(llsd->map_.ht), 
 						   size,
@@ -539,7 +533,10 @@ void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data )
 	CHECK_PTR( key );
 	CHECK_PTR( data );
 	CHECK_MSG( llsd_get_type(map) == LLSD_MAP, "trying to insert k-v-p into non map\n" );
-	CHECK_MSG( llsd_get_type(key) == LLSD_STRING, "trying to use non-string as key\n" );
+	if ( llsd_get_type( key ) != LLSD_STRING )
+	{
+		FAIL( "trying to use non-string as key\n" );
+	}
 	ht_add( &(map->map_.ht), (void*)key, (void*)data );
 }
 

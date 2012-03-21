@@ -106,7 +106,7 @@ static llsd_t * get_random_array( uint32_t size )
 	llsd_type_t type_;
 
 	/* create the array */
-	llsd_t * arr = llsd_new( LLSD_ARRAY );
+	llsd_t * arr = llsd_new_empty_array();
 
 	/* now populate it with random data */
 	while( total < size )
@@ -190,7 +190,7 @@ static llsd_t * get_random_map( uint32_t size )
 	llsd_t * key;
 
 	/* create the array */
-	map = llsd_new( LLSD_MAP );
+	map = llsd_new_empty_map();
 
 	/* now populate it with random data */
 	while( total < size )
@@ -298,6 +298,10 @@ static llsd_t * get_llsd( llsd_type_t type_ )
 	/* construct the llsd */
 	switch( type_ )
 	{
+		case LLSD_UNDEF:
+			llsd = llsd_new( type_ );
+			break;
+
 		case LLSD_BOOLEAN:
 		case LLSD_INTEGER:
 			llsd = llsd_new( type_, 1 );
@@ -331,10 +335,12 @@ static llsd_t * get_llsd( llsd_type_t type_ )
 			llsd = llsd_new_binary( testbits, UUID_LEN, FALSE, LLSD_NONE );
 			break;
 
-		case LLSD_UNDEF:
 		case LLSD_ARRAY:
+			llsd = llsd_new_empty_array();
+			break;
+
 		case LLSD_MAP:
-			llsd = llsd_new( type_ );
+			llsd = llsd_new_empty_map();
 			break;
 	}
 
@@ -405,14 +411,6 @@ static void test_serialization( void )
 		llsd = NULL;
 
 		/*CU_ASSERT_EQUAL( heap_size, get_heap_size() );*/
-#if 0
-		if ( format == LLSD_ENC_XML )
-		{
-			WARN("\n(%d) '%s'", strlen(expected_data[type_]), expected_data[type_]);
-			/*WARN("\n(%d) '%s'", strlen(buf), buf);*/
-			continue;
-		}
-#endif
 
 		/* check that the correct number of bytes were written */
 		if ( expected_sizes[type_] != (s - data_offset) )
@@ -464,27 +462,21 @@ static void test_random_serialize( void )
 	/*size_t heap_size = get_heap_size();*/
 
 	/* generate a repeatable, random llsd object */
-	DEBUG( "get_random_llsd()...");
 	llsd_out = get_random_llsd( size, seed );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_out );
-	DEBUG( "done\n");
 
 	tmpf = fopen( "test.llsd", "w+b" );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
-	DEBUG( "llsd_format(BIN)..." );
 	llsd_format( llsd_out, format, tmpf, FALSE );
 	fclose( tmpf );
 	tmpf = NULL;
-	DEBUG( "done\n" );
 
 	tmpf = fopen( "test.llsd", "r+b" );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
-	DEBUG( "llsd_parse()..." );
 	llsd_in = llsd_parse( tmpf );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_in );
-	DEBUG( "done\n" );
 
 	fclose( tmpf );
 	tmpf = NULL;

@@ -582,7 +582,7 @@ void * array_pop(
 	CHECK_RET(node->data != NULL, NULL);
 	
 	/* remember the next node */
-	if(itr == (array_itr_t)array->data_head)
+	if(i == (array_itr_t)array->data_head)
 		next = node->next;
 
 	/* unhook it from the list */
