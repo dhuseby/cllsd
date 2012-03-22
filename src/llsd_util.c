@@ -124,12 +124,10 @@ static int llsd_string_eq( llsd_t * l, llsd_t * r )
 	if ( (l->string_.str != NULL) && (r->string_.str != NULL) )
 	{
 		CHECK_RET_MSG( mem_len_cmp( l->string_.str, l->string_.str_len, r->string_.str, r->string_.str_len ), FALSE, "string mismatch\n" );
-		DEBUG( "%*sSTRING (%*s)\n", indent * 4, " ", l->string_.str_len, l->string_.str );
 	}
 	if ( (l->string_.esc != NULL) && (r->string_.esc != NULL) )
 	{
 		CHECK_RET_MSG( mem_len_cmp( l->string_.esc, l->string_.esc_len, r->string_.esc, r->string_.esc_len ), FALSE, "escaped string mismatch\n" );
-		DEBUG( "%*sSTRING (%*s)\n", indent * 4, " ", l->string_.esc_len, l->string_.esc );
 	}
 
 	/* null strings are equal */
@@ -147,12 +145,10 @@ static int llsd_uri_eq( llsd_t * l, llsd_t * r )
 	if ( (l->uri_.uri != NULL) && (r->uri_.uri != NULL) )
 	{
 		CHECK_RET_MSG( mem_len_cmp( l->uri_.uri, l->uri_.uri_len, r->uri_.uri, r->uri_.uri_len ), FALSE, "uri mismatch\n" );
-		DEBUG( "%*sURI (%*s)\n", indent * 4, " ", l->uri_.uri_len, l->uri_.uri );
 	}
 	if ( (l->uri_.esc != NULL) && (r->uri_.esc != NULL) )
 	{
 		CHECK_RET_MSG( mem_len_cmp( l->uri_.esc, l->uri_.esc_len, r->uri_.esc, r->uri_.esc_len ), FALSE, "escaped uri mistmatch\n" );
-		DEBUG( "%*sSTRING (%*s)\n", indent * 4, " ", l->uri_.esc_len, l->uri_.esc );
 	}
 
 	/* null uri's are equal */
@@ -368,20 +364,33 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			encoded = va_arg( args, int );
 			encoding = va_arg( args, int );
 
-			if ( encoded )
+			if ( size == 0 )
 			{
-				llsd->binary_.enc_size = size;
-				llsd->binary_.enc = UT(CALLOC( size, sizeof(uint8_t) ));
-				llsd->binary_.dyn_enc = TRUE;
-				llsd->binary_.encoding = encoding;
-				MEMCPY( llsd->binary_.enc, p, size );
+				llsd->binary_.enc_size = 0;
+				llsd->binary_.enc = NULL;
+				llsd->binary_.dyn_enc = FALSE;
+				llsd->binary_.data_size = 0;
+				llsd->binary_.data = NULL;
+				llsd->binary_.dyn_data = FALSE;
+				llsd->binary_.encoding = LLSD_NONE;
 			}
 			else
 			{
-				llsd->binary_.data_size = size;
-				llsd->binary_.data = UT(CALLOC( size, sizeof(uint8_t) ));
-				llsd->binary_.dyn_data = TRUE;
-				MEMCPY( llsd->binary_.data, p, size );
+				if ( encoded )
+				{
+					llsd->binary_.enc_size = size;
+					llsd->binary_.enc = UT(CALLOC( size, sizeof(uint8_t) ));
+					llsd->binary_.dyn_enc = TRUE;
+					llsd->binary_.encoding = encoding;
+					MEMCPY( llsd->binary_.enc, p, size );
+				}
+				else
+				{
+					llsd->binary_.data_size = size;
+					llsd->binary_.data = UT(CALLOC( size, sizeof(uint8_t) ));
+					llsd->binary_.dyn_data = TRUE;
+					MEMCPY( llsd->binary_.data, p, size );
+				}
 			}
 			va_end( args );
 			break;
@@ -509,8 +518,14 @@ llsd_type_t llsd_get_type( llsd_t * llsd )
 
 int8_t const * llsd_get_type_string( llsd_type_t type_ )
 {
-	CHECK_RET( ((type_ >= LLSD_TYPE_FIRST) && (type_ <= LLSD_TYPE_LAST)), NULL );
+	CHECK_RET( ((type_ >= LLSD_TYPE_FIRST) && (type_ < LLSD_TYPE_LAST)), NULL );
 	return llsd_type_strings[ type_ ];
+}
+
+int8_t const * llsd_get_bin_enc_type_string( llsd_bin_enc_t enc )
+{
+	CHECK_RET( ((enc >= LLSD_BIN_ENC_FIRST) && (enc < LLSD_BIN_ENC_LAST)), NULL );
+	return llsd_bin_enc_type_strings[ enc ];
 }
 
 int llsd_get_size( llsd_t * llsd )
@@ -664,7 +679,12 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 			return TRUE;
 
 		case LLSD_BOOLEAN:
-			CHECK_RET_MSG( llsd_as_bool( l ) == llsd_as_bool( r ), FALSE, "boolean mismatch\n" );
+			if ( llsd_as_bool( l ) != llsd_as_bool( r ) )
+			{
+				DEBUG("boolean mismatch\n");
+				return FALSE;
+			}
+			/*CHECK_RET_MSG( llsd_as_bool( l ) == llsd_as_bool( r ), FALSE, "boolean mismatch\n" );*/
 			DEBUG( "%*sBOOLEAN\n", indent * 4, " " );
 			return TRUE;
 
@@ -696,7 +716,19 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 			return FALSE;
 
 		case LLSD_STRING:
-			return llsd_string_eq( l, r );
+			if ( llsd_string_eq( l, r ) )
+			{
+				if ( (l->string_.str != NULL) && (r->string_.str != NULL) )
+				{
+					DEBUG( "%*sSTRING (%*s)\n", indent * 4, " ", l->string_.str_len, l->string_.str );
+				}
+				if ( (l->string_.esc != NULL) && (r->string_.esc != NULL) )
+				{
+					DEBUG( "%*sSTRING (%*s)\n", indent * 4, " ", l->string_.esc_len, l->string_.esc );
+				}
+				return TRUE;
+			}
+			return FALSE;
 
 		case LLSD_DATE:
 			llsd_equalize( l, r );
@@ -716,7 +748,19 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 			return FALSE;
 
 		case LLSD_URI:
-			return llsd_uri_eq( l, r );
+			if ( llsd_uri_eq( l, r ) )
+			{
+				if ( (l->uri_.uri != NULL) && (r->uri_.uri != NULL) )
+				{
+					DEBUG( "%*sURI (%*s)\n", indent * 4, " ", l->uri_.uri_len, l->uri_.uri );
+				}
+				if ( (l->uri_.esc != NULL) && (r->uri_.esc != NULL) )
+				{
+					DEBUG( "%*sSTRING (%*s)\n", indent * 4, " ", l->uri_.esc_len, l->uri_.esc );
+				}
+				return TRUE;
+			}
+			return FALSE;
 
 		case LLSD_BINARY:
 			if ( ( l->binary_.data != NULL ) && ( r->binary_.data != NULL ) )
@@ -735,6 +779,16 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 				DEBUG( "%*sBINARY STR (%*s)\n", indent * 4, " ", l->binary_.enc_size, l->binary_.enc );
 				return TRUE;
 			}
+			if ( (l->binary_.data == NULL) && (r->binary_.data == NULL) &&
+				 (l->binary_.enc == NULL) && (r->binary_.data == NULL) &&
+				 (l->binary_.data_size == 0) && (r->binary_.data_size == 0) &&
+				 (l->binary_.enc_size == 0) && (r->binary_.enc_size == 0) &&
+				 (l->binary_.encoding == r->binary_.encoding) )
+			{
+				DEBUG( "%*sBINARY STR (%*s)\n", indent * 4, " ", l->binary_.enc_size, l->binary_.enc );
+				return TRUE;
+			}
+
 			DEBUG( "falling out of BINARY\n" );
 			return FALSE;
 

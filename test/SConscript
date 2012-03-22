@@ -1,4 +1,4 @@
-env = Environment(CC='gcc', CCFLAGS='-DDEBUG_ON -O0 -gstabs+ -Isrc')
+env = Environment(CC='gcc', CCFLAGS='-O0 -gstabs+ -Isrc')
 env.Program(target = 'test_all', 
 		source = ['test_all.c',
 				  'test_binary.c',

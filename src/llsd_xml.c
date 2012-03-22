@@ -155,7 +155,7 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 			return;
 		case LLSD_BINARY:
 			/* try to get the encoding attribute if there is one */
-			if ( strncmp( attr[0], "encoding", 9 ) == 0 )
+			if ( (attr[0] != NULL) && (strncmp( attr[0], "encoding", 9 ) == 0) )
 			{
 				enc = llsd_bin_enc_from_attr( attr[1] );
 			}
@@ -245,10 +245,8 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 	llsd_t * container = (llsd_t*)array_get_tail( ctx->containers );
 	llsd_t * key = NULL;
 	llsd_t * llsd = NULL;
-	const char * value = ctx->buf;
 	int32_t v1 = 0;
 	double v2 = 0;
-	int len = 0;
 	int size = 0;
 	llsd_bin_enc_t enc;
 	llsd_type_t t;
@@ -262,18 +260,20 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 	switch( t )
 	{
 		case LLSD_KEY:
+			ASSERT( ctx->buf != NULL );
 			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_STRING;
 			/* take ownership of the key str */
-			llsd->string_.str = (uint8_t*)value;
+			llsd->string_.str = (uint8_t*)ctx->buf;
 			llsd->string_.str_len = ctx->len;
 			llsd->string_.dyn_str = TRUE;
-			ctx->buf = NULL;
 			array_push_tail( ctx->params, (void*)llsd );
 			if ( llsd != (llsd_t*)array_get_tail( ctx->params ) )
 			{
 				FAIL("pushing key to array failed\n");
 			}
+			ctx->buf = NULL;
+			ctx->len = 0;
 			DEBUG( "%*sKEY (%s)\n", ctx->indent * 4, " ", llsd->string_.str );
 			return;
 		case LLSD_UNDEF:
@@ -281,66 +281,92 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			DEBUG( "%*sUNDEF\n", ctx->indent * 4, " " );
 			break;
 		case LLSD_BOOLEAN:
-			if ( (value != NULL) &&
-				 ( (memcmp( value, "true", len ) == 0) ||
-				   (memcmp( value, "1", len ) == 0) ) )
-			{
-				llsd = llsd_new_boolean( TRUE );
-				DEBUG( "%*sBOOLEAN (TRUE)\n", ctx->indent * 4, " " );
-			}
-			else
+			/* check for <boolean /> */
+			if ( (ctx->buf == NULL) && (ctx->len == 0) )
 			{
 				llsd = llsd_new_boolean( FALSE );
 				DEBUG( "%*sBOOLEAN (FALSE)\n", ctx->indent * 4, " " );
 			}
+			else
+			{
+				if ( ( (ctx->len == 4) &&
+					   ( tolower( ctx->buf[0] ) == 't' ) &&
+					   ( tolower( ctx->buf[1] ) == 'r' ) &&
+					   ( tolower( ctx->buf[2] ) == 'u' ) &&
+					   ( tolower( ctx->buf[3] ) == 'e' ) ) ||
+					 ( (ctx->len == 1) &&
+					   ( ctx->buf[0] == '1' ) ) )
+				{
+					llsd = llsd_new_boolean( TRUE );
+					DEBUG( "%*sBOOLEAN (TRUE)\n", ctx->indent * 4, " " );
+				}
+				else
+				{
+					llsd = llsd_new_boolean( FALSE );
+					DEBUG( "%*sBOOLEAN (FALSE)\n", ctx->indent * 4, " " );
+				}
+			}
 			break;
 		case LLSD_INTEGER:
-			v1 = atoi( value );
+			ASSERT( ctx->buf != NULL );
+			v1 = atoi( ctx->buf );
 			llsd = llsd_new_integer( v1 );
 			DEBUG( "%*sINTEGER (%d)\n", ctx->indent * 4, " ", llsd->int_.v );
 			break;
 		case LLSD_REAL:
-			v2 = strtod( value, NULL );
+			ASSERT( ctx->buf != NULL );
+			v2 = strtod( ctx->buf, NULL );
 			llsd = llsd_new_real( v2 );
 			DEBUG( "%*sREAL (%f)\n", ctx->indent * 4, " ", llsd->real_.v );
 			break;
 		case LLSD_UUID:
+			ASSERT( ctx->buf != NULL );
+			ASSERT( ctx->len == UUID_STR_LEN );
 			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_UUID;
 			/* take ownership of the UUID str */
-			llsd->uuid_.str = (uint8_t*)value;
+			llsd->uuid_.str = (uint8_t*)ctx->buf;
 			llsd->uuid_.dyn_str = TRUE;
 			ctx->buf = NULL;
+			ctx->len = 0;
 			DEBUG( "%*sUUID (%s)\n", ctx->indent * 4, " ", llsd->uuid_.str );
 			break;
 		case LLSD_DATE:
+			ASSERT( ctx->buf != NULL );
 			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_DATE;
 			/* take ownership of the date str */
-			llsd->date_.str = (uint8_t*)value;
+			llsd->date_.str = (uint8_t*)ctx->buf;
 			llsd->date_.dyn_str = TRUE;
-			ctx->buf = NULL;
 			llsd->date_.use_dval = FALSE;
 			llsd->date_.dval = 0.0;
 			llsd->date_.len = ctx->len;
+			ctx->buf = NULL;
+			ctx->len = 0;
 			DEBUG( "%*sDATE (%*s)\n", ctx->indent * 4, " ", llsd->date_.len, llsd->date_.str );
 			break;
 		case LLSD_STRING:
+			ASSERT( ctx->buf != NULL );
 			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_STRING;
 			/* take ownership of the string str */
-			llsd->string_.str = (uint8_t*)value;
+			llsd->string_.str = (uint8_t*)ctx->buf;
 			llsd->string_.str_len = ctx->len;
 			llsd->string_.dyn_str = TRUE;
+			ctx->buf = NULL;
+			ctx->len = 0;
 			DEBUG( "%*sSTRING (%*s)\n", ctx->indent * 4, " ", llsd->string_.str_len, llsd->string_.str );
 			break;
 		case LLSD_URI:
+			ASSERT( ctx->buf != NULL );
 			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_URI;
 			/* take ownership of the uri str */
-			llsd->uri_.uri = (uint8_t*)value;
+			llsd->uri_.uri = (uint8_t*)ctx->buf;
 			llsd->uri_.uri_len = ctx->len;
 			llsd->uri_.dyn_uri = TRUE;
+			ctx->buf = NULL;
+			ctx->len = 0;
 			DEBUG( "%*sURI (%*s)\n", ctx->indent * 4, " ", llsd->uri_.uri_len, llsd->uri_.uri );
 			break;
 		case LLSD_BINARY:
@@ -349,10 +375,25 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 				FAIL("binary not on top of stack\n");
 			}
 			llsd = (llsd_t*)array_pop_tail( ctx->params );
-			/* take ownership of the encoded binary str */
-			llsd->binary_.enc = (uint8_t*)value;
-			llsd->binary_.enc_size = ctx->len;
-			llsd->binary_.dyn_enc = TRUE;
+			if ( ctx->buf != NULL )
+			{
+				/* take ownership of the encoded binary str */
+				llsd->binary_.enc = (uint8_t*)ctx->buf;
+				llsd->binary_.enc_size = ctx->len;
+				llsd->binary_.dyn_enc = TRUE;
+				ctx->buf = NULL;
+				ctx->len = 0;
+			}
+			else
+			{
+				llsd->binary_.enc_size = 0;
+				llsd->binary_.enc = NULL;
+				llsd->binary_.dyn_enc = FALSE;
+				llsd->binary_.data_size = 0;
+				llsd->binary_.data = NULL;
+				llsd->binary_.dyn_data = FALSE;
+				llsd->binary_.encoding = LLSD_NONE;
+			}
 			DEBUG( "%*sBINARY (%d)\n", ctx->indent * 4, " ", llsd->binary_.enc_size );
 			break;
 		case LLSD_ARRAY:
@@ -427,12 +468,14 @@ static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len 
 	if ( ctx->buf != NULL )
 	{
 		ctx->buf = REALLOC( ctx->buf, ctx->len + len );
+		ASSERT( ctx->buf != NULL );
 		MEMCPY( &(ctx->buf[ctx->len]), s, len );
 		ctx->len += len;
 	}
 	else
 	{
 		ctx->buf = CALLOC( len, sizeof(uint8_t) );
+		ASSERT( ctx->buf );
 		MEMCPY( ctx->buf, s, len );
 		ctx->len = len;
 	}
@@ -507,13 +550,13 @@ llsd_t * llsd_parse_xml( FILE * fin )
 #define XML_REALC_LEN (7)
 #define XML_UUID_LEN (6)
 #define XML_UUIDC_LEN (7)
-#define XML_STRING_LEN (14)
+#define XML_STRING_LEN (8)
 #define XML_STRINGC_LEN (9)
 #define XML_DATE_LEN (6)
 #define XML_DATEC_LEN (7)
-#define XML_URI_LEN (11)
+#define XML_URI_LEN (5)
 #define XML_URIC_LEN (6)
-#define XML_BINARY_LEN (14)
+#define XML_BINARY_LEN (18)
 #define XML_BINARYC_LEN (9)
 #define XML_ARRAY_LEN (13)
 #define XML_ARRAYC_LEN (8)
@@ -532,10 +575,10 @@ static uint8_t const * const lxstart[LLSD_TYPE_COUNT] =
 	"<integer>",
 	"<real>",
 	"<uuid>",
-	"<string size=\"",
+	"<string>",
 	"<date>",
-	"<uri size=\"",
-	"<binary size=\"",
+	"<uri>",
+	"<binary encoding=\"",
 	"<array size=\"",
 	"<map size=\""
 };
@@ -607,15 +650,11 @@ static size_t llsd_write_xml_start_tag( llsd_type_t t, FILE * fout, int pretty, 
 		case LLSD_REAL:
 		case LLSD_UUID:
 		case LLSD_DATE:
-			return fwrite( lxstart[t], sizeof(uint8_t), lxstartlen[t], fout );
 		case LLSD_STRING:
 		case LLSD_URI:
 		case LLSD_BINARY:
-			sz = snprintf(buf, 32, "%d", size);
-			num += fwrite( lxstart[t], sizeof(uint8_t), lxstartlen[t], fout );
-			num += fwrite( buf, sizeof(uint8_t), sz, fout );
-			num += fwrite( lxstartc, sizeof(uint8_t), XML_SIZEC_LEN, fout );
-			return num;
+			return fwrite( lxstart[t], sizeof(uint8_t), lxstartlen[t], fout );
+			return fwrite( lxstart[t], sizeof(uint8_t), lxstartlen[t], fout );
 		case LLSD_ARRAY:
 		case LLSD_MAP:
 			sz = snprintf(buf, 32, "%d", size);
@@ -637,6 +676,7 @@ static size_t llsd_write_xml_end_tag( llsd_type_t t, FILE * fout, int pretty )
 size_t llsd_format_xml( llsd_t * llsd, FILE * fout, int pretty )
 {
 	size_t num = 0;
+	uint8_t const * p = NULL;
 	unsigned long start = ftell( fout );
 
 	llsd_itr_t itr;
@@ -662,10 +702,21 @@ size_t llsd_format_xml( llsd_t * llsd, FILE * fout, int pretty )
 	
 		case LLSD_STRING:
 		case LLSD_URI:
+			s = llsd_as_string( llsd );
+			num += indent_xml( pretty, fout );
+			num += llsd_write_xml_start_tag( t, fout, pretty, s.str_len );
+			num += fwrite( s.str, sizeof(uint8_t), s.str_len, fout );
+			num += llsd_write_xml_end_tag( t, fout, pretty );
+			DEBUG( "%*s%s %lu - %lu\n", indent * 4, " ", llsd_get_type_string( t ), start, ftell( fout ) - 1 );
+			return num;
+
 		case LLSD_BINARY:
 			s = llsd_as_string( llsd );
 			num += indent_xml( pretty, fout );
 			num += llsd_write_xml_start_tag( t, fout, pretty, s.str_len );
+			p = llsd_get_bin_enc_type_string( llsd->binary_.encoding );
+			num += fwrite( p, sizeof(uint8_t), strlen(p), fout );
+			num += fwrite( lxstartc, sizeof(uint8_t), XML_SIZEC_LEN, fout );
 			num += fwrite( s.str, sizeof(uint8_t), s.str_len, fout );
 			num += llsd_write_xml_end_tag( t, fout, pretty );
 			DEBUG( "%*s%s %lu - %lu\n", indent * 4, " ", llsd_get_type_string( t ), start, ftell( fout ) - 1 );

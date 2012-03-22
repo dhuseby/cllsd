@@ -1,4 +1,4 @@
-env = Environment(CC='gcc', CCFLAGS='-DDEBUG_ON -O0 -gstabs+')
+env = Environment(CC='gcc', CCFLAGS='-O0 -gstabs+')
 env.Library('llsd', ['array.c',
 					 'hashtable.c',
 					 'base64.c',

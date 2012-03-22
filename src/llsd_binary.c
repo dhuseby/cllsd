@@ -37,8 +37,11 @@ static llsd_t * llsd_reserve_binary( uint32_t size )
 {
 	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + size );
 	llsd->type_ = LLSD_BINARY;
-	llsd->binary_.data_size = size;
-	llsd->binary_.data = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
+	if ( size > 0 )
+	{
+		llsd->binary_.data_size = size;
+		llsd->binary_.data = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
+	}
 	return llsd;
 }
 

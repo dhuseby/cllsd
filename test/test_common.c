@@ -65,6 +65,11 @@ static llsd_t* get_random_bin( void )
 	int i;
 	int len = (rand() % 1024);
 
+	if ( len == 0 )
+	{
+		return llsd_new_binary( NULL, 0, FALSE, LLSD_NONE );	
+	}
+
 	for ( i = 0; i < len; i++ )
 	{
 		/* get a random byte*/
@@ -543,7 +548,7 @@ static void test_random_serialize_zero_copy( void )
 static CU_pSuite add_tests( CU_pSuite pSuite )
 {
 	CHECK_PTR_RET( CU_add_test( pSuite, "new/delete of all types", test_newdel), NULL );
-	/*CHECK_PTR_RET( CU_add_test( pSuite, "serialization of all types", test_serialization), NULL );*/
+	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of all types", test_serialization), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd", test_random_serialize), NULL );
 	if ( format != LLSD_ENC_XML )
 		CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd zero copy", test_random_serialize_zero_copy), NULL );

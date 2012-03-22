@@ -44,6 +44,7 @@ void llsd_delete( void * p );
 /* get the type of the particular object */
 llsd_type_t llsd_get_type( llsd_t * llsd );
 int8_t const * llsd_get_type_string( llsd_type_t type_ );
+int8_t const * llsd_get_bin_enc_type_string( llsd_bin_enc_t enc );
 #define llsd_is_array(x) (llsd_get_type(x) == LLSD_ARRAY)
 #define llsd_is_map(x) (llsd_get_type(x) == LLSD_MAP)
 

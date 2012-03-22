@@ -70,9 +70,11 @@ typedef enum llsd_bin_enc_s
 
 	LLSD_BIN_ENC_LAST,
 	LLSD_BIN_ENC_FIRST = LLSD_NONE,
-	LLSD_BIN_END_COUNT = LLSD_BIN_ENC_LAST - LLSD_BIN_ENC_FIRST
+	LLSD_BIN_ENC_COUNT = LLSD_BIN_ENC_LAST - LLSD_BIN_ENC_FIRST
 
 } llsd_bin_enc_t;
+
+extern int8_t const * const llsd_bin_enc_type_strings[LLSD_BIN_ENC_COUNT];
 
 #ifndef TRUE
 #define TRUE (1)
