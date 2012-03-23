@@ -454,6 +454,8 @@ static void test_serialization( void )
 
 		/*CU_ASSERT_EQUAL( heap_size, get_heap_size() );*/
 	}
+
+	FREE(buf);
 }
 
 static void test_random_serialize( void )

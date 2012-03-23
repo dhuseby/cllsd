@@ -199,6 +199,8 @@ static void llsd_deinitialize( llsd_t * llsd )
 		case LLSD_UUID:
 			if ( llsd->uuid_.dyn_str )
 				FREE( llsd->uuid_.str );
+			if ( llsd->uuid_.dyn_bits )
+				FREE( llsd->uuid_.bits );
 			break;
 
 		case LLSD_DATE:
@@ -283,9 +285,21 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 
 		case LLSD_UUID:
 			va_start( args, type_ );
-			llsd->uuid_.dyn_bits = TRUE;
-			llsd->uuid_.bits = UT(CALLOC( UUID_LEN, sizeof(uint8_t) ));
-			MEMCPY( llsd->uuid_.bits, va_arg( args, uint8_t* ), UUID_LEN );
+			p = va_arg( args, uint8_t* );
+			
+			if ( p != NULL )
+			{
+				llsd->uuid_.dyn_bits = TRUE;
+				llsd->uuid_.bits = UT(CALLOC( UUID_LEN, sizeof(uint8_t) ));
+				MEMCPY( llsd->uuid_.bits, p, UUID_LEN );
+			}
+			else
+			{
+				llsd->uuid_.dyn_bits = FALSE;
+				llsd->uuid_.bits = NULL;
+				llsd->uuid_.dyn_str = FALSE;
+				llsd->uuid_.str = NULL;
+			}
 			va_end( args );
 			break;
 
@@ -296,20 +310,32 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			escaped = va_arg( args, int );
 			is_key = va_arg( args, int );
 
-			if ( escaped )
+			if ( size == 0 )
 			{
-				llsd->string_.esc_len = size;
-				llsd->string_.esc = UT(CALLOC( size, sizeof(uint8_t) ));
-				llsd->string_.dyn_esc = TRUE;
-				llsd->string_.key_esc = is_key;
-				MEMCPY( llsd->string_.esc, p, size );
+				llsd->string_.str_len = 0;
+				llsd->string_.str = NULL;
+				llsd->string_.dyn_str = FALSE;
+				llsd->string_.esc_len = 0;
+				llsd->string_.esc = NULL;
+				llsd->string_.dyn_esc = FALSE;
 			}
 			else
 			{
-				llsd->string_.str_len = size;
-				llsd->string_.str = UT(CALLOC( size, sizeof(uint8_t) ));
-				llsd->string_.dyn_str = TRUE;
-				MEMCPY( llsd->string_.str, p, size );
+				if ( escaped )
+				{
+					llsd->string_.esc_len = size;
+					llsd->string_.esc = UT(CALLOC( size, sizeof(uint8_t) ));
+					llsd->string_.dyn_esc = TRUE;
+					llsd->string_.key_esc = is_key;
+					MEMCPY( llsd->string_.esc, p, size );
+				}
+				else
+				{
+					llsd->string_.str_len = size;
+					llsd->string_.str = UT(CALLOC( size, sizeof(uint8_t) ));
+					llsd->string_.dyn_str = TRUE;
+					MEMCPY( llsd->string_.str, p, size );
+				}
 			}
 			va_end( args );
 			break;
@@ -340,19 +366,31 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			size = va_arg( args, int );
 			escaped = va_arg( args, int );
 
-			if ( escaped )
+			if ( size == 0 )
 			{
-				llsd->uri_.esc_len = size;
-				llsd->uri_.esc = UT(CALLOC( size, sizeof(uint8_t) ));
-				llsd->uri_.dyn_esc = TRUE;
-				MEMCPY( llsd->uri_.esc, p, size );
+				llsd->uri_.uri_len = 0;
+				llsd->uri_.uri = NULL;
+				llsd->uri_.dyn_uri = FALSE;
+				llsd->uri_.esc_len = 0;
+				llsd->uri_.esc = NULL;
+				llsd->uri_.dyn_esc = FALSE;
 			}
 			else
 			{
-				llsd->uri_.uri_len = size;
-				llsd->uri_.uri = UT(CALLOC( size, sizeof(uint8_t) ));
-				llsd->uri_.dyn_uri = TRUE;
-				MEMCPY( llsd->uri_.uri, p, size );
+				if ( escaped )
+				{
+					llsd->uri_.esc_len = size;
+					llsd->uri_.esc = UT(CALLOC( size, sizeof(uint8_t) ));
+					llsd->uri_.dyn_esc = TRUE;
+					MEMCPY( llsd->uri_.esc, p, size );
+				}
+				else
+				{
+					llsd->uri_.uri_len = size;
+					llsd->uri_.uri = UT(CALLOC( size, sizeof(uint8_t) ));
+					llsd->uri_.dyn_uri = TRUE;
+					MEMCPY( llsd->uri_.uri, p, size );
+				}
 			}
 			va_end( args );
 			break;
@@ -1493,13 +1531,16 @@ int llsd_destringify_date( llsd_t * llsd )
 {
 	int useconds;
 	struct tm parts;
-	time_t mktimeEpoch = mktime(&parts);
+	time_t mktimeEpoch;
 	double seconds;
 
 	CHECK_PTR_RET( llsd, FALSE );
 	CHECK_RET( (llsd->type_ == LLSD_DATE), FALSE );
 	CHECK_RET( (llsd->date_.len == DATE_STR_LEN), FALSE );
 	CHECK_RET( llsd->date_.str, FALSE );
+
+	MEMSET( &parts, 0, sizeof(struct tm) );
+	mktimeEpoch = mktime(&parts);
 
 	sscanf( llsd->date_.str, 
 			"%04d-%02d-%02dT%02d:%02d:%02d.%03dZ",
