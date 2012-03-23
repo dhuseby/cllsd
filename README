@@ -1,5 +1,0 @@
-C implementation of LLSD serialization/deserialization.
-
-Dependencies:
-CUnit unit test framework: http://cunit.sourceforge.net
-
