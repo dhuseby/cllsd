@@ -24,14 +24,15 @@
 #include <endian.h>
 #include <sys/uio.h>
 
-#include "debug.h"
-#include "macros.h"
+#include <cutil/debug.h>
+#include <cutil/macros.h>
+#include <cutil/array.h>
+#include <cutil/hashtable.h>
+
 #include "llsd.h"
 #include "llsd_util.h"
 #include "llsd_const.h"
 #include "llsd_binary.h"
-#include "array.h"
-#include "hashtable.h"
 
 static llsd_t * llsd_reserve_binary( uint32_t size )
 {

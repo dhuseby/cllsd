@@ -17,9 +17,9 @@
 #ifndef LLSD_H
 #define LLSD_H
 
-#include "macros.h"
-#include "array.h"
-#include "hashtable.h"
+#include <cutil/macros.h>
+#include <cutil/array.h>
+#include <cutil/hashtable.h>
 
 typedef enum llsd_type_e
 {

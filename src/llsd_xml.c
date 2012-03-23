@@ -19,9 +19,10 @@
 #include <sys/uio.h>
 #include <expat.h>
 
-#include "debug.h"
-#include "macros.h"
-#include "array.h"
+#include <cutil/debug.h>
+#include <cutil/macros.h>
+#include <cutil/array.h>
+
 #include "llsd.h"
 #include "llsd_util.h"
 #include "llsd_xml.h"

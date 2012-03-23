@@ -24,8 +24,9 @@
 #include <time.h>
 #include <sys/uio.h>
 
-#include "debug.h"
-#include "macros.h"
+#include <cutil/debug.h>
+#include <cutil/macros.h>
+
 #include "llsd.h"
 #include "llsd_const.h"
 #include "llsd_util.h"

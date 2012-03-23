@@ -16,7 +16,8 @@
 
 #include <stdint.h>
 
-#include "macros.h"
+#include <cutil/macros.h>
+
 #include "llsd.h"
 
 int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT] =
