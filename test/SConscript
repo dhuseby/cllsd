@@ -7,4 +7,4 @@ env.Program(target = 'test_all',
 				  'llsd',
 				  'm',
 				  'expat'],
-		LIBPATH = ['../src/', '../alloc/'])
+		LIBPATH = ['../src/'])
