@@ -1,12 +1,15 @@
 # build cllsd test executable
 #
+
+# configurable variables
+CUTIL_ROOT?=/usr/local
+
 SHELL=/bin/sh
 SRC=test_all.c test_binary.c test_xml.c
 OBJ=$(SRC:.c=.o)
 OUT=test_all
 LIBS=-lcllsd -lcutil -lcunit -lexpat
 CLLSD_ROOT=../src
-CUTIL_ROOT=/usr/local
 CFLAGS=-O3 -gstabs+ -I$(CLLSD_ROOT)/include -I$(CUTIL_ROOT)/include
 LDFLAGS=-gstabs+ -L$(CLLSD_ROOT)/lib -L$(CUTIL_ROOT)/lib
 
