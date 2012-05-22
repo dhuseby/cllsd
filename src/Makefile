@@ -11,7 +11,7 @@ SRC=base64.c llsd_binary.c llsd.c llsd_const.c llsd_util.c llsd_xml.c
 HDR=base64.h llsd_binary.h llsd.h llsd_const.h llsd_util.h llsd_xml.h
 OBJ=$(SRC:.c=.o)
 OUT=libcllsd.a
-CFLAGS=-O3 -gstabs+ -I$(CUTIL_ROOT)/include
+CFLAGS=-O0 -gstabs+ -I$(CUTIL_ROOT)/include
 
 # install utility
 INSTALL=/usr/bin/install

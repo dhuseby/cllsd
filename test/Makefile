@@ -8,9 +8,9 @@ SHELL=/bin/sh
 SRC=test_all.c test_binary.c test_xml.c
 OBJ=$(SRC:.c=.o)
 OUT=test_all
-LIBS=-lcllsd -lcutil -lcunit -lexpat
+LIBS=-lcllsd -lcutil -lcunit -lexpat -lm
 CLLSD_ROOT=../src
-CFLAGS=-O3 -gstabs+ -I$(CLLSD_ROOT)/include -I$(CUTIL_ROOT)/include
+CFLAGS=-O0 -gstabs+ -I$(CLLSD_ROOT)/include -I$(CUTIL_ROOT)/include
 LDFLAGS=-gstabs+ -L$(CLLSD_ROOT)/lib -L$(CUTIL_ROOT)/lib
 
 all:
