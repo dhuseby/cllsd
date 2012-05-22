@@ -172,7 +172,7 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 			return;
 		case LLSD_ARRAY:
 			/* try to get the size attribute if there is one */
-			if ( strncmp( attr[0], "size", 5 ) == 0 )
+			if ( (attr[0] != NULL) && (strncmp( attr[0], "size", 5 ) == 0) )
 			{
 				size = atoi( attr[1] );
 			}
@@ -184,7 +184,7 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 			break;
 		case LLSD_MAP:
 			/* try to get the size attribute if there is one */
-			if ( strncmp( attr[0], "size", 5 ) == 0 )
+			if ( (attr[0] != NULL) && (strncmp( attr[0], "size", 5 ) == 0) )
 			{
 				size = atoi( attr[1] );
 			}

@@ -599,12 +599,25 @@ void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data )
 	ht_add( &(map->map_.ht), (void*)key, (void*)data );
 }
 
-llsd_t * llsd_map_find( llsd_t * map, llsd_t * key )
+llsd_t * llsd_map_find_llsd( llsd_t * map, llsd_t * key )
 {
 	CHECK_PTR_RET( map, NULL );
 	CHECK_PTR_RET( key, NULL );
 	CHECK_MSG( llsd_get_type(map) == LLSD_MAP, "trying to insert k-v-p into non map\n" );
 	CHECK_MSG( llsd_get_type(key) == LLSD_STRING, "trying to use non-string as key\n" );
+	return ht_find( &(map->map_.ht), (void*)key );
+}
+
+llsd_t * llsd_map_find( llsd_t * map, int8_t const * const key )
+{
+	llsd_t t;
+	CHECK_PTR_RET( map, NULL );
+	CHECK_PTR_RET( key, NULL );
+	CHECK_MSG( llsd_get_type(map) == LLSD_MAP, "trying to insert k-v-p into non map\n" );
+
+	/* wrap the key in an llsd struct */
+	llsd_initialize( &t, LLSD_STRING, key, strlen( key ), FALSE, FALSE );
+
 	return ht_find( &(map->map_.ht), (void*)key );
 }
 
@@ -864,7 +877,7 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 				DEBUG("%*sKEY (%*s)\n", indent * 4, " ", kl->string_.str_len, kl->string_.str);
 
 				/* look up the value associated with the same key in the right map */
-				vr = llsd_map_find( r, kl );
+				vr = llsd_map_find_llsd( r, kl );
 
 				if ( vr == FALSE )
 				{

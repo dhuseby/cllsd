@@ -55,7 +55,8 @@ int llsd_get_size( llsd_t * llsd );
 /* append to containers */
 void llsd_array_append( llsd_t * arr, llsd_t * data );
 void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data );
-llsd_t * llsd_map_find( llsd_t * map, llsd_t * key );
+llsd_t * llsd_map_find_llsd( llsd_t * map, llsd_t * key );
+llsd_t * llsd_map_find( llsd_t * map, int8_t const * const key );
 
 /* iterator type */
 typedef int32_t llsd_itr_t;
