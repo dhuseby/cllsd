@@ -120,6 +120,7 @@ typedef struct context_s
 	char * buf;
 	size_t len;
 	int indent;
+	int accept_data;
 	llsd_t * result;
 } context_t;
 
@@ -134,16 +135,16 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 	llsd_type_t t;
 	int size = 0;
 
+	/* turn off accepting data until we see the start of a tag that has a body */
+	ctx->accept_data = FALSE;
+
 	/* get the type */
 	t = llsd_type_from_tag( el );
 
-	if ( ( t == LLSD_LLSD ) || ( t == LLSD_KEY ) )
-		return;
-
-	
 	switch( t )
 	{
 		case LLSD_LLSD:
+			return;
 		case LLSD_KEY:
 		case LLSD_UNDEF:
 		case LLSD_BOOLEAN:
@@ -153,6 +154,7 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 		case LLSD_DATE:
 		case LLSD_STRING:
 		case LLSD_URI:
+			ctx->accept_data = TRUE;
 			return;
 		case LLSD_BINARY:
 			/* try to get the encoding attribute if there is one */
@@ -251,6 +253,9 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 	int size = 0;
 	llsd_bin_enc_t enc;
 	llsd_type_t t;
+
+	/* turn off accepting data */
+	ctx->accept_data = FALSE;
 
 	/* get the type */
 	t = llsd_type_from_tag( el );
@@ -461,9 +466,14 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 
 static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len )
 {
+	llsd_type_t type_;
 	context_t * ctx = (context_t*)data;
 	CHECK_PTR( s );
 	CHECK( len > 0 );
+
+	/* don't accept any data if we're not in the middle of a node with data */
+	if ( ctx->accept_data == FALSE )
+		return;
 
 	/* copy the node data into the context buffer */
 	if ( ctx->buf != NULL )
@@ -506,6 +516,7 @@ llsd_t * llsd_parse_xml( FILE * fin )
 	ctx.buf = NULL;
 	ctx.len = 0;
 	ctx.indent = 0;
+	ctx.accept_data = FALSE;
 	ctx.result = NULL;
 	XML_SetUserData( p, (void*)(&ctx) );
 

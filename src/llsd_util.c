@@ -616,9 +616,10 @@ llsd_t * llsd_map_find( llsd_t * map, int8_t const * const key )
 	CHECK_MSG( llsd_get_type(map) == LLSD_MAP, "trying to insert k-v-p into non map\n" );
 
 	/* wrap the key in an llsd struct */
+	memset( &t, 0, sizeof( llsd_t ) );
 	llsd_initialize( &t, LLSD_STRING, key, strlen( key ), FALSE, FALSE );
 
-	return ht_find( &(map->map_.ht), (void*)key );
+	return ht_find( &(map->map_.ht), (void*)&t );
 }
 
 llsd_itr_t llsd_itr_begin( llsd_t * llsd )
