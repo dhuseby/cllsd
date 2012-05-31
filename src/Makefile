@@ -2,7 +2,7 @@
 #
 
 # configurable variables
-CUTIL_ROOT?=/usr/local
+CUTIL_ROOT?=../cutil/src
 PREFIX?=/usr/local
 
 # define vars

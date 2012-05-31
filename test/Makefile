@@ -2,7 +2,7 @@
 #
 
 # configurable variables
-CUTIL_ROOT?=/usr/local
+CUTIL_ROOT?=../cutil/src
 
 SHELL=/bin/sh
 SRC=test_all.c test_binary.c test_xml.c

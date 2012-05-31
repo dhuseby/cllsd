@@ -6,7 +6,7 @@ INSTALL_PROGRAM=$(INSTALL)
 INSTALL_DATA=$(INSTALL) -m 644
 #include Makefile.conf
 
-DIRS = src test
+DIRS = cutil src test
 BUILDDIRS = $(DIRS:%=build-%)
 INSTALLDIRS = $(DIRS:%=install-%)
 UNINSTALLDIRS = $(DIRS:%=uninstall-%)
