@@ -420,7 +420,11 @@ static void test_serialization( void )
 		/* check that the correct number of bytes were written */
 		if ( expected_sizes[type_] != (s - data_offset) )
 		{
+#if defined(PORTABLE_64_BIT)
+			WARN("type: %s, expected: %ld, actual: %ld\n", llsd_get_type_string( type_ ), expected_sizes[type_], (s - data_offset) ); 
+#else
 			WARN("type: %s, expected: %d, actual: %d\n", llsd_get_type_string( type_ ), expected_sizes[type_], (s - data_offset) ); 
+#endif
 			CU_FAIL();
 		}
 

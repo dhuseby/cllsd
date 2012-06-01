@@ -158,11 +158,11 @@ static int llsd_uri_eq( llsd_t * l, llsd_t * r )
 }
 
 #define FNV_PRIME (0x01000193)
-uint32_t fnv_key_hash(void const * const key)
+uint_t fnv_key_hash(void const * const key)
 {
 	int i;
 	llsd_t * llsd = (llsd_t*)key;
-	uint32_t hash = 0x811c9dc5;
+	uint_t hash = 0x811c9dc5;
 	uint8_t const * p = (llsd->string_.key_esc ? 
 						 (uint8_t const *)llsd->string_.esc : 
 						 (uint8_t const *)llsd->string_.str);
