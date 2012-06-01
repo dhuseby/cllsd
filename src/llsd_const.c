@@ -22,8 +22,7 @@
 /* constants */
 llsd_t const undefined =
 {
-	.type_ = LLSD_UNDEF,
-	.bool_ = FALSE
+	.type_ = LLSD_UNDEF
 };
 
 llsd_int_t const zero_int =

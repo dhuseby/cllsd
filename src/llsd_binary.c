@@ -21,7 +21,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <assert.h>
-#include <endian.h>
+#include <sys/types.h>
+#include <sys/param.h>
 #include <sys/uio.h>
 
 #include <cutil/debug.h>

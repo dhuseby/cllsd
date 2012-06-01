@@ -19,7 +19,8 @@
 #endif
 
 #include <stdarg.h>
-#include <endian.h>
+#include <sys/types.h>
+#include <sys/param.h>
 #include <math.h>
 #include <time.h>
 #include <sys/uio.h>
