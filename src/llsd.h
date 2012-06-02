@@ -122,7 +122,7 @@ struct llsd_uuid_s
 {
 	int					dyn_bits: 1;
 	int					dyn_str:  1;
-	uint_t				len;
+	uint32_t			len;
 	uint8_t *			str;
 	uint8_t *			bits;
 };
@@ -132,11 +132,11 @@ struct llsd_binary_s
 	int					dyn_data: 1;
 	int					dyn_enc: 1;
 	llsd_bin_enc_t		encoding;
-	uint_t				data_size;
+	uint32_t			data_size;
 	uint8_t	*			data;
-	uint_t				enc_size;
+	uint32_t			enc_size;
 	uint8_t *			enc;
-	uint_t				be;
+	uint32_t			be;
 };
 
 /* NOTE: the key_esc flag signifies that the map hashing function
@@ -148,22 +148,22 @@ struct llsd_string_s
 	int					dyn_str: 1;
 	int					dyn_esc: 1;
 	int					key_esc: 1;
-	uint_t				str_len;
+	uint32_t			str_len;
 	uint8_t *			str;
-	uint_t				esc_len;
+	uint32_t			esc_len;
 	uint8_t *			esc;
-	uint_t				be;
+	uint32_t			be;
 };
 
 struct llsd_uri_s
 {
 	int					dyn_uri: 1;
 	int					dyn_esc: 1;
-	uint_t				uri_len;
+	uint32_t			uri_len;
 	uint8_t *			uri;
-	uint_t				esc_len;
+	uint32_t			esc_len;
 	uint8_t *			esc;
-	uint_t				be;
+	uint32_t			be;
 };
 
 /* YYYY-MM-DDTHH:MM:SS.FFFZ */
@@ -171,7 +171,7 @@ struct llsd_date_s
 {
 	int					use_dval: 1;
 	int					dyn_str: 1;
-	uint_t				len;
+	uint32_t			len;
 	double				dval;
 	uint64_t			be;
 	uint8_t*			str;
@@ -180,13 +180,13 @@ struct llsd_date_s
 struct llsd_array_s
 {
 	array_t		array;
-	uint_t		be;
+	uint32_t	be;
 };
 
 struct llsd_map_s
 {
 	ht_t		ht;
-	uint_t		be;
+	uint32_t	be;
 };
 
 /* the llsd types */
