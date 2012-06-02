@@ -390,14 +390,16 @@ static void test_serialization( void )
 	llsd_type_t type_;
 	size_t heap_size;
 	size_t s = 0;
-	uint8_t * buf = UT(CALLOC( BUF_SIZE, sizeof(uint8_t) ));
+	long floc = 0;
+	long nmemb = 0;
+	uint8_t * buf = NULL;
 	CU_ASSERT_PTR_NOT_NULL_FATAL( buf );
 
 	for ( type_ = LLSD_TYPE_FIRST; type_ < LLSD_TYPE_LAST; type_++ )
 	{
 		/*heap_size = get_heap_size();*/
 
-		tmpf = fmemopen( buf, BUF_SIZE, "w+b" );
+		tmpf = tmpfile();
 		CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
 		/* construct the llsd */
@@ -408,12 +410,28 @@ static void test_serialization( void )
 
 		/* serialize it to the file */
 		s = llsd_format( llsd, format, tmpf, FALSE );
-		fclose( tmpf );
-		tmpf = NULL;
+
+		/* get the location */
+		floc = ftell( tmpf );
+
+		/* reset the read location */
+		fseek( tmpf, 0, SEEK_SET );
+
+		/* how many bytes were written? */
+		nmemb = floc - ftell(tmpf);
+
+		/* allocate a buffer for the contents of the file */
+		buf = UT(CALLOC( nmemb, sizeof(uint8_t) ));
+
+		/* read the file into the buffer */
+		CU_ASSERT( nmemb == fread( buf, sizeof(uint8_t), nmemb, tmpf ) );
 
 		/* delete the llsd */
 		llsd_delete( llsd );
 		llsd = NULL;
+
+		/* reset the read location again */
+		fseek( tmpf, 0, SEEK_SET );
 
 		/*CU_ASSERT_EQUAL( heap_size, get_heap_size() );*/
 
@@ -437,10 +455,6 @@ static void test_serialization( void )
 
 		/*heap_size = get_heap_size();*/
 
-		/* reopen the buffer */
-		tmpf = fmemopen( buf, s, "r+b" );
-		CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
-
 		/* try to deserialize the llsd */
 		llsd = llsd_parse( tmpf );
 		CU_ASSERT_PTR_NOT_NULL_FATAL( llsd );
@@ -453,7 +467,8 @@ static void test_serialization( void )
 		tmpf = NULL;
 		llsd_delete( llsd );
 		llsd = NULL;
-		memset( buf, 0, s );
+		FREE( buf );
+		buf = NULL;
 		s = 0;
 
 		/*CU_ASSERT_EQUAL( heap_size, get_heap_size() );*/
