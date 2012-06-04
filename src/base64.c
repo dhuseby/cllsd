@@ -25,14 +25,14 @@
  * Be careful with error checking.	Here is how you would typically
  * use these functions:
  *
- * bool ok = base64_decode_alloc (in, inlen, &out, &outlen);
+ * int ok = base64_decode_alloc (in, inlen, &out, &outlen);
  * if (!ok)
  *	 FAIL: input was not valid base64
  * if (out == NULL)
  *	 FAIL: memory allocation error
  * OK: data in OUT/OUTLEN
  *
- * size_t outlen = base64_encode_alloc (in, inlen, &out);
+ * uint32_t outlen = base64_encode_alloc (in, inlen, &out);
  * if (out == NULL && outlen == 0 && inlen != 0)
  *	 FAIL: input too long
  * if (out == NULL)
@@ -40,6 +40,9 @@
  * OK: data in OUT/OUTLEN.
  *
  */
+
+#include <cutil/debug.h>
+#include <cutil/macros.h>
 
 /* Get prototype. */
 #include "base64.h"
@@ -62,8 +65,8 @@ to_uchar (char ch)
    possible.  If OUTLEN is larger than BASE64_LENGTH(INLEN), also zero
    terminate the output buffer. */
 void
-base64_encode (const char * in, size_t inlen,
-		   char * out, size_t outlen)
+base64_encode (const char * in, uint32_t inlen,
+		   char * out, uint32_t outlen)
 {
   static const char b64str[64] =
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -108,10 +111,10 @@ base64_encode (const char * in, size_t inlen,
    memory allocation failed, OUT is set to NULL, and the return value
    indicates length of the requested memory block, i.e.,
    BASE64_LENGTH(inlen) + 1. */
-size_t
-base64_encode_alloc (const char *in, size_t inlen, char **out)
+uint32_t
+base64_encode_alloc (const char *in, uint32_t inlen, char **out)
 {
-  size_t outlen = 1 + BASE64_LENGTH (inlen);
+  uint32_t outlen = 1 + BASE64_LENGTH (inlen);
 
   /* Check for overflow in outlen computation.
    *
@@ -284,34 +287,34 @@ static const signed char b64[0x100] = {
 };
 
 #if UCHAR_MAX == 255
-# define uchar_in_range(c) true
+# define uchar_in_range(c) TRUE
 #else
 # define uchar_in_range(c) ((c) <= 255)
 #endif
 
-/* Return true if CH is a character from the Base64 alphabet, and
-   false otherwise.  Note that '=' is padding and not considered to be
+/* Return TRUE if CH is a character from the Base64 alphabet, and
+   FALSE otherwise.  Note that '=' is padding and not considered to be
    part of the alphabet.  */
-bool
+int
 isbase64 (char ch)
 {
   return uchar_in_range (to_uchar (ch)) && 0 <= b64[to_uchar (ch)];
 }
 
 /* Decode base64 encoded input array IN of length INLEN to output
-   array OUT that can hold *OUTLEN bytes.  Return true if decoding was
-   successful, i.e. if the input was valid base64 data, false
+   array OUT that can hold *OUTLEN bytes.  Return TRUE if decoding was
+   successful, i.e. if the input was valid base64 data, FALSE
    otherwise.  If *OUTLEN is too small, as many bytes as possible will
    be written to OUT.  On return, *OUTLEN holds the length of decoded
    bytes in OUT.  Note that as soon as any non-alphabet characters are
-   encountered, decoding is stopped and false is returned.	This means
+   encountered, decoding is stopped and FALSE is returned.	This means
    that, when applicable, you must remove any line terminators that is
    part of the data stream before calling this function.  */
-bool
-base64_decode (const char * in, size_t inlen,
-		   char * out, size_t *outlen)
+int
+base64_decode (const char * in, uint32_t inlen,
+		   char * out, uint32_t *outlen)
 {
-  size_t outleft = *outlen;
+  uint32_t outleft = *outlen;
 
   while (inlen >= 2)
 	{
@@ -378,9 +381,9 @@ base64_decode (const char * in, size_t inlen,
   *outlen -= outleft;
 
   if (inlen != 0)
-	return false;
+	return FALSE;
 
-  return true;
+  return TRUE;
 }
 
 /* Allocate an output buffer in *OUT, and decode the base64 encoded
@@ -389,35 +392,35 @@ base64_decode (const char * in, size_t inlen,
    if the caller is not interested in the decoded length.  *OUT may be
    NULL to indicate an out of memory error, in which case *OUTLEN
    contains the size of the memory block needed.  The function returns
-   true on successful decoding and memory allocation errors.  (Use the
+   TRUE on successful decoding and memory allocation errors.  (Use the
    *OUT and *OUTLEN parameters to differentiate between successful
-   decoding and memory error.)	The function returns false if the
+   decoding and memory error.)	The function returns FALSE if the
    input was invalid, in which case *OUT is NULL and *OUTLEN is
    undefined. */
-bool
-base64_decode_alloc (const char *in, size_t inlen, char **out,
-			 size_t *outlen)
+int
+base64_decode_alloc (const char *in, uint32_t inlen, char **out,
+			 uint32_t *outlen)
 {
   /* This may allocate a few bytes too much, depending on input,
 	 but it's not worth the extra CPU time to compute the exact amount.
 	 The exact amount is 3 * inlen / 4, minus 1 if the input ends
 	 with "=" and minus another 1 if the input ends with "==".
 	 Dividing before multiplying avoids the possibility of overflow.  */
-  size_t needlen = 3 * (inlen / 4) + 2;
+  uint32_t needlen = 3 * (inlen / 4) + 2;
 
   *out = malloc (needlen);
   if (!*out)
-	return true;
+	return TRUE;
 
   if (!base64_decode (in, inlen, *out, &needlen))
 	{
 	  free (*out);
 	  *out = NULL;
-	  return false;
+	  return FALSE;
 	}
 
   if (outlen)
 	*outlen = needlen;
 
-  return true;
+  return TRUE;
 }

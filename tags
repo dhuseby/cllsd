@@ -3,36 +3,96 @@
 !_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
-!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+!_TAG_PROGRAM_VERSION	5.8	//
+ARRAY_SIZE	cutil/src/macros.h	35;"	d
+ASSERT	cutil/src/macros.h	38;"	d
 B64	src/base64.c	152;"	d	file:
 BASE64_H	src/base64.h	20;"	d
 BASE64_LENGTH	src/base64.h	30;"	d
+BIT	cutil/src/bitset.c	23;"	d	file:
 BUF_SIZE	test/test_common.c	386;"	d	file:
 BUILDDIRS	Makefile	/^BUILDDIRS = $(DIRS:%=build-%)$/;"	m
-CFLAGS	src/Makefile	/^CFLAGS=-O3 -gstabs+ -I$(CUTIL_ROOT)\/include$/;"	m
-CFLAGS	test/Makefile	/^CFLAGS=-O3 -gstabs+ -I$(CLLSD_ROOT)\/include -I$(CUTIL_ROOT)\/include$/;"	m
+BUILDDIRS	cutil/Makefile	/^BUILDDIRS = $(DIRS:%=build-%)$/;"	m
+C	cutil/src/macros.h	67;"	d
+CALLOC	cutil/src/macros.h	56;"	d
+CFLAGS	cutil/src/Makefile	/^CFLAGS=-O0 -gstabs+$/;"	m
+CFLAGS	cutil/test/Makefile	/^CFLAGS=-O0 -gstabs+ -I$(CUTILS_ROOT)\/include -I$(EXTRA_LIBS_ROOT)\/include$/;"	m
+CFLAGS	src/Makefile	/^CFLAGS=-O0 -gstabs+ -I$(CUTIL_ROOT)\/include$/;"	m
+CFLAGS	test/Makefile	/^CFLAGS=-O0 -gstabs+ -I$(CLLSD_ROOT)\/include -I$(CUTIL_ROOT)\/include$/;"	m
+CHECK	cutil/src/macros.h	45;"	d
+CHECK_MSG	cutil/src/macros.h	46;"	d
+CHECK_PTR	cutil/src/macros.h	49;"	d
+CHECK_PTR_MSG	cutil/src/macros.h	50;"	d
+CHECK_PTR_RET	cutil/src/macros.h	51;"	d
+CHECK_PTR_RET_MSG	cutil/src/macros.h	52;"	d
+CHECK_RET	cutil/src/macros.h	47;"	d
+CHECK_RET_MSG	cutil/src/macros.h	48;"	d
 CLEANDIRS	Makefile	/^CLEANDIRS = $(DIRS:%=clean-%)$/;"	m
+CLEANDIRS	cutil/Makefile	/^CLEANDIRS = $(DIRS:%=clean-%)$/;"	m
 CLLSD_ROOT	test/Makefile	/^CLLSD_ROOT=..\/src$/;"	m
-CUTIL_ROOT	src/Makefile	/^CUTIL_ROOT=\/usr\/local$/;"	m
-CUTIL_ROOT	test/Makefile	/^CUTIL_ROOT=\/usr\/local$/;"	m
-DATE_STR_LEN	src/llsd.h	90;"	d
-DEFAULT_ARRAY_CAPACITY	src/llsd.h	91;"	d
-DEFAULT_MAP_CAPACITY	src/llsd.h	92;"	d
-DIRS	Makefile	/^DIRS = src test$/;"	m
-FALSE	src/llsd.h	84;"	d
-FNV_PRIME	src/llsd_util.c	159;"	d	file:
-FNV_PRIME	src/llsd_util.h	102;"	d
+COVCFLAGS	cutil/src/Makefile	/^COVCFLAGS=-fprofile-arcs -ftest-coverage -O0 -gstabs+$/;"	m
+COVCFLAGS	cutil/test/Makefile	/^COVCFLAGS=-fprofile-arcs -ftest-coverage -O0 -gstabs+ -I$(CUTILS_ROOT)\/include -I$(EXTRA_LIBS_ROOT)\/include$/;"	m
+COVLDFLAGS	cutil/test/Makefile	/^COVLDFLAGS=-fprofile-arcs -O0 -gstabs+ -L$(CUTILS_ROOT)\/lib -L$(EXTRA_LIBS_ROOT)\/lib$/;"	m
+CUTILS_ROOT	cutil/test/Makefile	/^CUTILS_ROOT=..\/src$/;"	m
+CUTIL_ROOT	src/Makefile	/^CUTIL_ROOT?=..\/cutil\/src$/;"	m
+CUTIL_ROOT	test/Makefile	/^CUTIL_ROOT?=..\/cutil\/src$/;"	m
+DATE_STR_LEN	src/llsd.h	95;"	d
+DEBUG	cutil/src/debug.h	17;"	d
+DEBUG	cutil/src/debug.h	20;"	d
+DEBUG	cutil/src/debug.h	22;"	d
+DEBUG_ON	cutil/src/debug.h	25;"	d
+DEFAULT_ARRAY_CAPACITY	src/llsd.h	96;"	d
+DEFAULT_INITIAL_CAPACITY	cutil/src/btree.c	31;"	d	file:
+DEFAULT_MAP_CAPACITY	src/llsd.h	97;"	d
+DIRS	Makefile	/^DIRS = cutil src test$/;"	m
+DIRS	cutil/Makefile	/^DIRS = src test$/;"	m
+DWORDS_NEEDED	cutil/src/bitset.c	21;"	d	file:
+DWORD_INDEX	cutil/src/bitset.c	22;"	d	file:
+EVT_BAD_PTR	cutil/src/events.h	/^	EVT_BAD_PTR = -1,$/;"	e	enum:evt_ret_e
+EVT_CHILD	cutil/src/events.h	/^	EVT_CHILD,$/;"	e	enum:evt_type_e
+EVT_ERROR	cutil/src/events.h	/^	EVT_ERROR = -2$/;"	e	enum:evt_ret_e
+EVT_IO	cutil/src/events.h	/^	EVT_IO$/;"	e	enum:evt_type_e
+EVT_IO_READ	cutil/src/events.h	/^	EVT_IO_READ =  0x01,$/;"	e	enum:evt_io_type_e
+EVT_IO_WRITE	cutil/src/events.h	/^	EVT_IO_WRITE = 0x02$/;"	e	enum:evt_io_type_e
+EVT_OK	cutil/src/events.h	/^	EVT_OK = 1,$/;"	e	enum:evt_ret_e
+EVT_SIGNAL	cutil/src/events.h	/^	EVT_SIGNAL,$/;"	e	enum:evt_type_e
+EV_MULTIPLICITY	cutil/src/events.c	18;"	d	file:
+EV_STANDALONE	cutil/src/events.c	17;"	d	file:
+EXTRA_LIBS_ROOT	cutil/test/Makefile	/^EXTRA_LIBS_ROOT=\/usr\/local$/;"	m
+FAIL	cutil/src/macros.h	42;"	d
+FALSE	cutil/src/macros.h	31;"	d
+FALSE	src/llsd.h	89;"	d
+FNV_PRIME	src/llsd_util.c	160;"	d	file:
+FNV_PRIME	src/llsd_util.h	104;"	d
+FREE	cutil/src/macros.h	58;"	d
+GCDA	cutil/src/Makefile	/^GCDA=$(SRC:.c=.gcda)$/;"	m
+GCDA	cutil/test/Makefile	/^GCDA=$(SRC:.c=.gcda)$/;"	m
+GCNO	cutil/src/Makefile	/^GCNO=$(SRC:.c=.gcno)$/;"	m
+GCNO	cutil/test/Makefile	/^GCNO=$(SRC:.c=.gcno)$/;"	m
+GCOV	cutil/src/Makefile	/^GCOV=$(SRC:.c=.c.gcov)$/;"	m
+GCOV	cutil/test/Makefile	/^GCOV=$(SRC:.c=.c.gcov)$/;"	m
+HDR	cutil/src/Makefile	/^HDR=aiofd.h array.h  bitset.h btree.h buffer.h child.h daemon.h debug.h events.h hashtable.h log.h macros.h pair.h privileges.h sanitize.h socket.h$/;"	m
 HDR	src/Makefile	/^HDR=base64.h llsd_binary.h llsd.h llsd_const.h llsd_util.h llsd_xml.h$/;"	m
-INDENT	src/llsd_binary.c	95;"	d	file:
+INDENT	src/llsd_binary.c	96;"	d	file:
 INSTALL	Makefile	/^INSTALL=\/usr\/bin\/install$/;"	m
+INSTALL	cutil/Makefile	/^INSTALL=\/usr\/bin\/install$/;"	m
+INSTALL	cutil/src/Makefile	/^INSTALL=\/usr\/bin\/install$/;"	m
 INSTALL	src/Makefile	/^INSTALL=\/usr\/bin\/install$/;"	m
 INSTALLDIRS	Makefile	/^INSTALLDIRS = $(DIRS:%=install-%)$/;"	m
+INSTALLDIRS	cutil/Makefile	/^INSTALLDIRS = $(DIRS:%=install-%)$/;"	m
 INSTALL_DATA	Makefile	/^INSTALL_DATA=$(INSTALL) -m 644$/;"	m
+INSTALL_DATA	cutil/Makefile	/^INSTALL_DATA=$(INSTALL) -m 644$/;"	m
+INSTALL_DATA	cutil/src/Makefile	/^INSTALL_DATA=$(INSTALL) -m 644$/;"	m
 INSTALL_DATA	src/Makefile	/^INSTALL_DATA=$(INSTALL) -m 644$/;"	m
 INSTALL_PROGRAM	Makefile	/^INSTALL_PROGRAM=$(INSTALL)$/;"	m
+INSTALL_PROGRAM	cutil/Makefile	/^INSTALL_PROGRAM=$(INSTALL)$/;"	m
+INSTALL_PROGRAM	cutil/src/Makefile	/^INSTALL_PROGRAM=$(INSTALL)$/;"	m
 INSTALL_PROGRAM	src/Makefile	/^INSTALL_PROGRAM=$(INSTALL)$/;"	m
+IPv4	cutil/src/socket.h	/^typedef struct in_addr IPv4;$/;"	t	typeref:struct:in_addr
+LDFLAGS	cutil/test/Makefile	/^LDFLAGS=-O0 -gstabs+ -L$(CUTILS_ROOT)\/lib -L$(EXTRA_LIBS_ROOT)\/lib$/;"	m
 LDFLAGS	test/Makefile	/^LDFLAGS=-gstabs+ -L$(CLLSD_ROOT)\/lib -L$(CUTIL_ROOT)\/lib$/;"	m
-LIBS	test/Makefile	/^LIBS=-lcllsd -lcutil -lcunit -lexpat$/;"	m
+LIBS	cutil/test/Makefile	/^LIBS=-lcutil -lcunit$/;"	m
+LIBS	test/Makefile	/^LIBS=-lcllsd -lcutil -lcunit -lexpat -lm$/;"	m
 LLSD_ARRAY	src/llsd.h	/^	LLSD_ARRAY,$/;"	e	enum:llsd_type_e
 LLSD_BASE16	src/llsd.h	/^	LLSD_BASE16,$/;"	e	enum:llsd_bin_enc_s
 LLSD_BASE64	src/llsd.h	/^	LLSD_BASE64,$/;"	e	enum:llsd_bin_enc_s
@@ -67,67 +127,202 @@ LLSD_URI	src/llsd.h	/^	LLSD_URI,$/;"	e	enum:llsd_type_e
 LLSD_UTIL_H	src/llsd_util.h	18;"	d
 LLSD_UUID	src/llsd.h	/^	LLSD_UUID,$/;"	e	enum:llsd_type_e
 LLSD_XML_H	src/llsd_xml.h	18;"	d
+LOG	cutil/src/macros.h	41;"	d
+MALLOC	cutil/src/macros.h	55;"	d
+MEMCMP	cutil/src/macros.h	60;"	d
+MEMCPY	cutil/src/macros.h	59;"	d
+MEMSET	cutil/src/macros.h	61;"	d
+NAME	cutil/src/Makefile	/^NAME=cutil$/;"	m
+NOTICE	cutil/src/macros.h	40;"	d
+OBJ	cutil/src/Makefile	/^OBJ=$(SRC:.c=.o)$/;"	m
+OBJ	cutil/test/Makefile	/^OBJ=$(SRC:.c=.o)$/;"	m
 OBJ	src/Makefile	/^OBJ=$(SRC:.c=.o)$/;"	m
 OBJ	test/Makefile	/^OBJ=$(SRC:.c=.o)$/;"	m
+OPEN_MAX	cutil/src/sanitize.c	37;"	d	file:
+OUT	cutil/src/Makefile	/^OUT=lib$(NAME).a$/;"	m
+OUT	cutil/test/Makefile	/^OUT=test_all$/;"	m
 OUT	src/Makefile	/^OUT=libcllsd.a$/;"	m
 OUT	test/Makefile	/^OUT=test_all$/;"	m
-PREFIX	src/Makefile	/^PREFIX=\/usr\/local$/;"	m
+PORTABLE_32_BIT	cutil/src/macros.h	75;"	d
+PORTABLE_64_BIT	cutil/src/macros.h	71;"	d
+PREFIX	cutil/src/Makefile	/^PREFIX?=\/usr\/local$/;"	m
+PREFIX	src/Makefile	/^PREFIX?=\/usr\/local$/;"	m
+REALLOC	cutil/src/macros.h	57;"	d
 SHELL	Makefile	/^SHELL=\/bin\/sh$/;"	m
+SHELL	cutil/Makefile	/^SHELL=\/bin\/sh$/;"	m
+SHELL	cutil/src/Makefile	/^SHELL=\/bin\/sh$/;"	m
+SHELL	cutil/test/Makefile	/^SHELL=\/bin\/sh$/;"	m
 SHELL	src/Makefile	/^SHELL=\/bin\/sh$/;"	m
 SHELL	test/Makefile	/^SHELL=\/bin\/sh$/;"	m
-SIG_LEN	src/llsd_util.c	1957;"	d	file:
+SIG_LEN	src/llsd_util.c	1972;"	d	file:
+SOCKET_BADHOSTNAME	cutil/src/socket.h	/^    SOCKET_BADHOSTNAME  = -3,$/;"	e	enum:socket_ret_e
+SOCKET_BADPARAM	cutil/src/socket.h	/^    SOCKET_BADPARAM     = -2,$/;"	e	enum:socket_ret_e
+SOCKET_CONNECTED	cutil/src/socket.h	/^	SOCKET_CONNECTED    = -7$/;"	e	enum:socket_ret_e
+SOCKET_ERROR	cutil/src/socket.h	/^    SOCKET_ERROR        = -1,$/;"	e	enum:socket_ret_e
+SOCKET_INPUT	cutil/src/socket.h	/^    SOCKET_INPUT        = 2,$/;"	e	enum:socket_ret_e
+SOCKET_INVALIDPORT	cutil/src/socket.h	/^    SOCKET_INVALIDPORT  = -4,$/;"	e	enum:socket_ret_e
+SOCKET_OK	cutil/src/socket.h	/^    SOCKET_OK           = 1,$/;"	e	enum:socket_ret_e
+SOCKET_OUTPUT	cutil/src/socket.h	/^    SOCKET_OUTPUT       = 3,$/;"	e	enum:socket_ret_e
+SOCKET_POLLERR	cutil/src/socket.h	/^    SOCKET_POLLERR      = -6,$/;"	e	enum:socket_ret_e
+SOCKET_SCTP	cutil/src/socket.h	/^    SOCKET_SCTP$/;"	e	enum:socket_type_e
+SOCKET_TCP	cutil/src/socket.h	/^    SOCKET_TCP,$/;"	e	enum:socket_type_e
+SOCKET_TIMEOUT	cutil/src/socket.h	/^    SOCKET_TIMEOUT      = -5,$/;"	e	enum:socket_ret_e
+SOCKET_UDP	cutil/src/socket.h	/^    SOCKET_UDP,$/;"	e	enum:socket_type_e
+SRC	cutil/src/Makefile	/^SRC=aiofd.c array.c  bitset.c btree.c buffer.c child.c daemon.c events.c hashtable.c log.c pair.c privileges.c sanitize.c socket.c$/;"	m
+SRC	cutil/test/Makefile	/^SRC=test_all.c test_array.c test_bitset.c test_btree.c test_buffer.c test_hashtable.c test_pair.c$/;"	m
 SRC	src/Makefile	/^SRC=base64.c llsd_binary.c llsd.c llsd_const.c llsd_util.c llsd_xml.c $/;"	m
 SRC	test/Makefile	/^SRC=test_all.c test_binary.c test_xml.c$/;"	m
+STRDUP	cutil/src/macros.h	62;"	d
+T	cutil/src/macros.h	65;"	d
 TESTDIRS	Makefile	/^TESTDIRS = $(DIRS:%=test-%)$/;"	m
-TRUE	src/llsd.h	80;"	d
-TYPE_TO_STRING	src/llsd.h	50;"	d
+TESTDIRS	cutil/Makefile	/^TESTDIRS = $(DIRS:%=test-%)$/;"	m
+TRUE	cutil/src/macros.h	32;"	d
+TRUE	src/llsd.h	85;"	d
+TYPE_TO_STRING	src/llsd.h	55;"	d
 UNINSTALLDIRS	Makefile	/^UNINSTALLDIRS = $(DIRS:%=uninstall-%)$/;"	m
-URL_ENCODED_CHAR	src/llsd_util.c	1762;"	d	file:
-UUID_LEN	src/llsd.h	88;"	d
-UUID_STR_LEN	src/llsd.h	89;"	d
-XML_ARRAYC_LEN	src/llsd_xml.c	563;"	d	file:
-XML_ARRAY_LEN	src/llsd_xml.c	562;"	d	file:
-XML_BINARYC_LEN	src/llsd_xml.c	561;"	d	file:
-XML_BINARY_LEN	src/llsd_xml.c	560;"	d	file:
-XML_BOOLEANC_LEN	src/llsd_xml.c	547;"	d	file:
-XML_BOOLEAN_LEN	src/llsd_xml.c	546;"	d	file:
-XML_BUF_SIZE	src/llsd_xml.c	485;"	d	file:
-XML_DATEC_LEN	src/llsd_xml.c	557;"	d	file:
-XML_DATE_LEN	src/llsd_xml.c	556;"	d	file:
-XML_FOOTER_LEN	src/llsd_util.c	1955;"	d	file:
-XML_HEADER_LEN	src/llsd_util.c	1954;"	d	file:
-XML_INTEGERC_LEN	src/llsd_xml.c	549;"	d	file:
-XML_INTEGER_LEN	src/llsd_xml.c	548;"	d	file:
-XML_KEYC_LEN	src/llsd_xml.c	567;"	d	file:
-XML_KEY_LEN	src/llsd_xml.c	566;"	d	file:
-XML_MAPC_LEN	src/llsd_xml.c	565;"	d	file:
-XML_MAP_LEN	src/llsd_xml.c	564;"	d	file:
-XML_REALC_LEN	src/llsd_xml.c	551;"	d	file:
-XML_REAL_LEN	src/llsd_xml.c	550;"	d	file:
-XML_SIG_LEN	src/llsd_util.c	1953;"	d	file:
-XML_SIZEC_LEN	src/llsd_xml.c	587;"	d	file:
-XML_STRINGC_LEN	src/llsd_xml.c	555;"	d	file:
-XML_STRING_LEN	src/llsd_xml.c	554;"	d	file:
-XML_UNDEFC_LEN	src/llsd_xml.c	545;"	d	file:
-XML_UNDEF_LEN	src/llsd_xml.c	544;"	d	file:
-XML_URIC_LEN	src/llsd_xml.c	559;"	d	file:
-XML_URI_LEN	src/llsd_xml.c	558;"	d	file:
-XML_UUIDC_LEN	src/llsd_xml.c	553;"	d	file:
-XML_UUID_LEN	src/llsd_xml.c	552;"	d	file:
+UNINSTALLDIRS	cutil/Makefile	/^UNINSTALLDIRS = $(DIRS:%=uninstall-%)$/;"	m
+URL_ENCODED_CHAR	src/llsd_util.c	1777;"	d	file:
+UT	cutil/src/macros.h	66;"	d
+UUID_LEN	src/llsd.h	93;"	d
+UUID_STR_LEN	src/llsd.h	94;"	d
+WARN	cutil/src/macros.h	39;"	d
+XML_ARRAYC_LEN	src/llsd_xml.c	574;"	d	file:
+XML_ARRAY_LEN	src/llsd_xml.c	573;"	d	file:
+XML_BINARYC_LEN	src/llsd_xml.c	572;"	d	file:
+XML_BINARY_LEN	src/llsd_xml.c	571;"	d	file:
+XML_BOOLEANC_LEN	src/llsd_xml.c	558;"	d	file:
+XML_BOOLEAN_LEN	src/llsd_xml.c	557;"	d	file:
+XML_BUF_SIZE	src/llsd_xml.c	495;"	d	file:
+XML_DATEC_LEN	src/llsd_xml.c	568;"	d	file:
+XML_DATE_LEN	src/llsd_xml.c	567;"	d	file:
+XML_FOOTER_LEN	src/llsd_util.c	1970;"	d	file:
+XML_HEADER_LEN	src/llsd_util.c	1969;"	d	file:
+XML_INTEGERC_LEN	src/llsd_xml.c	560;"	d	file:
+XML_INTEGER_LEN	src/llsd_xml.c	559;"	d	file:
+XML_KEYC_LEN	src/llsd_xml.c	578;"	d	file:
+XML_KEY_LEN	src/llsd_xml.c	577;"	d	file:
+XML_MAPC_LEN	src/llsd_xml.c	576;"	d	file:
+XML_MAP_LEN	src/llsd_xml.c	575;"	d	file:
+XML_REALC_LEN	src/llsd_xml.c	562;"	d	file:
+XML_REAL_LEN	src/llsd_xml.c	561;"	d	file:
+XML_SIG_LEN	src/llsd_util.c	1968;"	d	file:
+XML_SIZEC_LEN	src/llsd_xml.c	598;"	d	file:
+XML_STRINGC_LEN	src/llsd_xml.c	566;"	d	file:
+XML_STRING_LEN	src/llsd_xml.c	565;"	d	file:
+XML_UNDEFC_LEN	src/llsd_xml.c	556;"	d	file:
+XML_UNDEF_LEN	src/llsd_xml.c	555;"	d	file:
+XML_URIC_LEN	src/llsd_xml.c	570;"	d	file:
+XML_URI_LEN	src/llsd_xml.c	569;"	d	file:
+XML_UUIDC_LEN	src/llsd_xml.c	564;"	d	file:
+XML_UUID_LEN	src/llsd_xml.c	563;"	d	file:
 _BSD_SOURCE	src/llsd_binary.c	18;"	d	file:
 _BSD_SOURCE	src/llsd_util.c	18;"	d	file:
+_GNU_SOURCE	cutil/src/log.c	17;"	d	file:
+__AIOFD_H__	cutil/src/aiofd.h	18;"	d
+__ARRAY_H__	cutil/src/array.h	18;"	d
+__BITSET_H__	cutil/src/bitset.h	18;"	d
+__BTREE_H__	cutil/src/btree.h	18;"	d
+__BUFFER_H__	cutil/src/buffer.h	18;"	d
+__CHILD_H__	cutil/src/child.h	18;"	d
+__DAEMON_H__	cutil/src/daemon.h	18;"	d
+__EVENTS_H__	cutil/src/events.h	18;"	d
+__HASHTABLE_H__	cutil/src/hashtable.h	18;"	d
+__LOG_H__	cutil/src/log.h	18;"	d
+__MACROS_H__	cutil/src/macros.h	18;"	d
+__PAIR_H__	cutil/src/pair.h	18;"	d
+__PRIVILEGES_H__	cutil/src/privileges.h	18;"	d
+__SANITIZE_H__	cutil/src/sanitize.h	18;"	d
+__SOCKET_H__	cutil/src/socket.h	18;"	d
+__TEST_ARRAY__	cutil/test/test_array.h	18;"	d
 __TEST_BINARY__	test/test_binary.h	18;"	d
+__TEST_BITSET__	cutil/test/test_bitset.h	18;"	d
+__TEST_BTREE__	cutil/test/test_btree.h	18;"	d
+__TEST_BUFFER__	cutil/test/test_buffer.h	18;"	d
+__TEST_HASHTABLE__	cutil/test/test_hashtable.h	18;"	d
+__TEST_PAIR__	cutil/test/test_pair.h	18;"	d
 __TEST_XML__	test/test_xml.h	18;"	d
+accept_data	src/llsd_xml.c	/^	int accept_data;$/;"	m	struct:context_s	file:
+add_array_test_suite	cutil/test/test_array.c	/^CU_pSuite add_array_test_suite()$/;"	f
+add_array_tests	cutil/test/test_array.c	/^static CU_pSuite add_array_tests( CU_pSuite pSuite )$/;"	f	file:
 add_binary_test_suite	test/test_binary.c	/^CU_pSuite add_binary_test_suite()$/;"	f
 add_binary_tests	test/test_binary.c	/^static CU_pSuite add_binary_tests( CU_pSuite pSuite )$/;"	f	file:
+add_bitset_test_suite	cutil/test/test_bitset.c	/^CU_pSuite add_bitset_test_suite()$/;"	f
+add_bitset_tests	cutil/test/test_bitset.c	/^static CU_pSuite add_bitset_tests( CU_pSuite pSuite )$/;"	f	file:
+add_btree_test_suite	cutil/test/test_btree.c	/^CU_pSuite add_btree_test_suite()$/;"	f
+add_btree_tests	cutil/test/test_btree.c	/^static CU_pSuite add_btree_tests( CU_pSuite pSuite )$/;"	f	file:
+add_buffer_test_suite	cutil/test/test_buffer.c	/^CU_pSuite add_buffer_test_suite()$/;"	f
+add_buffer_tests	cutil/test/test_buffer.c	/^static CU_pSuite add_buffer_tests( CU_pSuite pSuite )$/;"	f	file:
+add_hashtable_test_suite	cutil/test/test_hashtable.c	/^CU_pSuite add_hashtable_test_suite()$/;"	f
+add_hashtable_tests	cutil/test/test_hashtable.c	/^static CU_pSuite add_hashtable_tests( CU_pSuite pSuite )$/;"	f	file:
+add_pair_test_suite	cutil/test/test_pair.c	/^CU_pSuite add_pair_test_suite()$/;"	f
+add_pair_tests	cutil/test/test_pair.c	/^static CU_pSuite add_pair_tests( CU_pSuite pSuite )$/;"	f	file:
 add_tests	test/test_common.c	/^static CU_pSuite add_tests( CU_pSuite pSuite )$/;"	f	file:
 add_xml_test_suite	test/test_xml.c	/^CU_pSuite add_xml_test_suite()$/;"	f
 add_xml_tests	test/test_xml.c	/^static CU_pSuite add_xml_tests( CU_pSuite pSuite )$/;"	f	file:
+addr	cutil/src/socket.c	/^	IPv4			addr;			\/* IPv4 struct from host string *\/$/;"	m	struct:socket_s	file:
+aiofd	cutil/src/child.c	/^	aiofd_t			aiofd;			\/* the fd management state *\/$/;"	m	struct:child_process_s	file:
+aiofd	cutil/src/socket.c	/^	aiofd_t			aiofd;			\/* the fd management state *\/$/;"	m	struct:socket_s	file:
+aiofd_deinitialize	cutil/src/aiofd.c	/^void aiofd_deinitialize( aiofd_t * const aiofd )$/;"	f
+aiofd_delete	cutil/src/aiofd.c	/^void aiofd_delete( void * aio )$/;"	f
+aiofd_enable_read_evt	cutil/src/aiofd.c	/^int aiofd_enable_read_evt( aiofd_t * const aiofd,$/;"	f
+aiofd_enable_write_evt	cutil/src/aiofd.c	/^int aiofd_enable_write_evt( aiofd_t * const aiofd,$/;"	f
+aiofd_flush	cutil/src/aiofd.c	/^int aiofd_flush( aiofd_t * const aiofd )$/;"	f
+aiofd_initialize	cutil/src/aiofd.c	/^void aiofd_initialize( aiofd_t * const aiofd, $/;"	f
+aiofd_new	cutil/src/aiofd.c	/^aiofd_t * aiofd_new( int const write_fd,$/;"	f
+aiofd_ops_s	cutil/src/aiofd.h	/^	struct aiofd_ops_s$/;"	s	struct:aiofd_s
+aiofd_ops_t	cutil/src/aiofd.h	/^typedef struct aiofd_ops_s aiofd_ops_t;$/;"	t	typeref:struct:aiofd_ops_s
+aiofd_read	cutil/src/aiofd.c	/^int32_t aiofd_read( aiofd_t * const aiofd,$/;"	f
+aiofd_read_fn	cutil/src/aiofd.c	/^static evt_ret_t aiofd_read_fn( evt_loop_t * const el,$/;"	f	file:
+aiofd_s	cutil/src/aiofd.h	/^struct aiofd_s$/;"	s
+aiofd_t	cutil/src/aiofd.h	/^typedef struct aiofd_s aiofd_t;$/;"	t	typeref:struct:aiofd_s
+aiofd_write	cutil/src/aiofd.c	/^int aiofd_write( aiofd_t * const aiofd, $/;"	f
+aiofd_write_common	cutil/src/aiofd.c	/^static int aiofd_write_common( aiofd_t* const aiofd, $/;"	f	file:
+aiofd_write_fn	cutil/src/aiofd.c	/^static evt_ret_t aiofd_write_fn( evt_loop_t * const el,$/;"	f	file:
+aiofd_write_s	cutil/src/aiofd.c	/^typedef struct aiofd_write_s$/;"	s	file:
+aiofd_write_t	cutil/src/aiofd.c	/^} aiofd_write_t;$/;"	t	typeref:struct:aiofd_write_s	file:
+aiofd_writev	cutil/src/aiofd.c	/^int aiofd_writev( aiofd_t * const aiofd,$/;"	f
 array	src/llsd.h	/^	array_t		array;$/;"	m	struct:llsd_array_s
-array_	src/llsd.h	/^		llsd_array_t	array_;$/;"	m	union:llsd_s::__anon1
+array_	src/llsd.h	/^		llsd_array_t	array_;$/;"	m	union:llsd_s::__anon4
 array_	test/test_binary.c	/^static uint8_t const array_[] = { '[', 0x00, 0x00, 0x00, 0x00, ']' };$/;"	v	file:
 array_	test/test_xml.c	/^static uint8_t const array_[] = "<llsd><array size=\\"0\\"><\/array><\/llsd>";$/;"	v	file:
+array_clear	cutil/src/array.c	/^void array_clear(array_t * const array)$/;"	f
+array_deinitialize	cutil/src/array.c	/^void array_deinitialize(array_t * const array)$/;"	f
+array_delete	cutil/src/array.c	/^void array_delete( void * arr )$/;"	f
+array_get_free_node	cutil/src/array.c	/^static array_node_t* array_get_free_node(array_t * const array)$/;"	f	file:
+array_get_head	cutil/src/array.h	104;"	d
+array_get_tail	cutil/src/array.h	105;"	d
+array_grow	cutil/src/array.c	/^static int array_grow(array_t * const array)$/;"	f	file:
+array_initialize	cutil/src/array.c	/^void array_initialize( array_t * const array, $/;"	f
+array_itr_begin	cutil/src/array.c	/^array_itr_t array_itr_begin(array_t const * const array)$/;"	f
+array_itr_end	cutil/src/array.c	/^array_itr_t array_itr_end(array_t const * const array)$/;"	f
+array_itr_end_t	cutil/src/array.c	/^array_itr_t const array_itr_end_t = -1;$/;"	v
+array_itr_get	cutil/src/array.c	/^void* array_itr_get($/;"	f
+array_itr_head	cutil/src/array.h	72;"	d
+array_itr_next	cutil/src/array.c	/^array_itr_t array_itr_next($/;"	f
+array_itr_rbegin	cutil/src/array.h	74;"	d
+array_itr_rend	cutil/src/array.h	75;"	d
+array_itr_rnext	cutil/src/array.c	/^array_itr_t array_itr_rnext($/;"	f
+array_itr_t	cutil/src/array.h	/^typedef int_t array_itr_t;$/;"	t
+array_itr_tail	cutil/src/array.c	/^array_itr_t array_itr_tail(array_t const * const array)$/;"	f
+array_lock	cutil/src/array.c	/^void array_lock(array_t * const array)$/;"	f
+array_mutex	cutil/src/array.c	/^pthread_mutex_t * array_mutex(array_t * const array)$/;"	f
+array_new	cutil/src/array.c	/^array_t * array_new( uint_t initial_capacity, delete_fn pfn )$/;"	f
+array_node_s	cutil/src/array.c	/^struct array_node_s$/;"	s	file:
+array_node_t	cutil/src/array.h	/^typedef struct array_node_s array_node_t;$/;"	t	typeref:struct:array_node_s
+array_pop	cutil/src/array.c	/^void * array_pop($/;"	f
+array_pop_head	cutil/src/array.h	97;"	d
+array_pop_tail	cutil/src/array.h	98;"	d
+array_push	cutil/src/array.c	/^void array_push($/;"	f
+array_push_head	cutil/src/array.h	90;"	d
+array_push_tail	cutil/src/array.h	91;"	d
+array_put_free_node	cutil/src/array.c	/^static void array_put_free_node($/;"	f	file:
+array_s	cutil/src/array.h	/^typedef struct array_s$/;"	s
+array_size	cutil/src/array.c	/^int_t array_size(array_t const * const array)$/;"	f
+array_t	cutil/src/array.h	/^} array_t;$/;"	t	typeref:struct:array_s
+array_try_lock	cutil/src/array.c	/^int array_try_lock(array_t * const array)$/;"	f
+array_unlock	cutil/src/array.c	/^void array_unlock(array_t * const array)$/;"	f
 b64	src/base64.c	/^static const signed char b64[0x100] = {$/;"	v	file:
+balance	cutil/src/btree.c	/^	int32_t balance;			\/* balance factor *\/$/;"	m	struct:node_s	file:
 base64_decode	src/base64.c	/^base64_decode (const char * in, size_t inlen,$/;"	f
 base64_decode_alloc	src/base64.c	/^base64_decode_alloc (const char *in, size_t inlen, char **out,$/;"	f
 base64_encode	src/base64.c	/^base64_encode (const char * in, size_t inlen,$/;"	f
@@ -140,28 +335,127 @@ be	src/llsd.h	/^	uint32_t	be;$/;"	m	struct:llsd_array_s
 be	src/llsd.h	/^	uint32_t	be;$/;"	m	struct:llsd_map_s
 be	src/llsd.h	/^	uint64_t			be;$/;"	m	struct:llsd_date_s
 be	src/llsd.h	/^	uint64_t			be;$/;"	m	struct:llsd_real_s
-binary_	src/llsd.h	/^		llsd_binary_t	binary_;$/;"	m	union:llsd_s::__anon1
+binary_	src/llsd.h	/^		llsd_binary_t	binary_;$/;"	m	union:llsd_s::__anon4
 binary_	test/test_binary.c	/^static uint8_t const binary_[] = { 'b', 0x00, 0x00, 0x00, 0x10, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };$/;"	v	file:
 binary_	test/test_xml.c	/^static uint8_t const binary_[] = "<llsd><binary encoding=\\"base64\\">AQIDBAUGBwgJAAECAwQFBg==<\/binary><\/llsd>";$/;"	v	file:
 binary_header	src/llsd_util.c	/^static uint8_t const * const binary_header = "<? LLSD\/Binary ?>\\n";$/;"	v	file:
+bits	cutil/src/bitset.h	/^	uint32_t * bits;$/;"	m	struct:bitset_s
 bits	src/llsd.h	/^	uint8_t *			bits;$/;"	m	struct:llsd_uuid_s
 bits	src/llsd_const.c	/^static uint8_t bits[] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };$/;"	v	file:
-bool_	src/llsd.h	/^		llsd_bool_t		bool_;$/;"	m	union:llsd_s::__anon1
+bitset_s	cutil/src/bitset.h	/^typedef struct bitset_s$/;"	s
+bitset_t	cutil/src/bitset.h	/^} bitset_t;$/;"	t	typeref:struct:bitset_s
+bool_	src/llsd.h	/^		llsd_bool_t		bool_;$/;"	m	union:llsd_s::__anon4
 boolean_	test/test_binary.c	/^static uint8_t const boolean_[]= { '1' };$/;"	v	file:
 boolean_	test/test_xml.c	/^static uint8_t const boolean_[] = "<llsd><boolean>true<\/boolean><\/llsd>";$/;"	v	file:
+bset_clear	cutil/src/bitset.c	/^int bset_clear( bitset_t * const bset, size_t const bit )$/;"	f
+bset_clear_all	cutil/src/bitset.c	/^void bset_clear_all( bitset_t * const bset )$/;"	f
+bset_deinitialize	cutil/src/bitset.c	/^void bset_deinitialize( bitset_t * const bset )$/;"	f
+bset_delete	cutil/src/bitset.c	/^void bset_delete( void * bset )$/;"	f
+bset_initialize	cutil/src/bitset.c	/^void bset_initialize( bitset_t * const bset, size_t const num_bits )$/;"	f
+bset_new	cutil/src/bitset.c	/^bitset_t * bset_new( size_t const num_bits )$/;"	f
+bset_set	cutil/src/bitset.c	/^int bset_set( bitset_t * const bset, size_t const bit )$/;"	f
+bset_set_all	cutil/src/bitset.c	/^void bset_set_all( bitset_t * const bset )$/;"	f
+bset_test	cutil/src/bitset.c	/^int bset_test( bitset_t const * const bset, size_t const bit )$/;"	f
+bt_add	cutil/src/btree.c	/^int bt_add( bt_t * const btree, $/;"	f
+bt_add_more_nodes	cutil/src/btree.c	/^static void bt_add_more_nodes( bt_t * const btree )$/;"	f	file:
+bt_balance_tree	cutil/src/btree.c	/^static node_t * bt_balance_tree( bt_t * const btree, node_t * n )$/;"	f	file:
+bt_deinitialize	cutil/src/btree.c	/^static void bt_deinitialize(bt_t * const btree)$/;"	f	file:
+bt_delete	cutil/src/btree.c	/^void bt_delete(void * bt)$/;"	f
+bt_delete_fn	cutil/src/btree.h	/^typedef void (*bt_delete_fn)(void * value);$/;"	t
+bt_find	cutil/src/btree.c	/^void * bt_find(bt_t * const btree, void * const key )$/;"	f
+bt_find_node	cutil/src/btree.c	/^static node_t * bt_find_node( bt_t * const btree, void * const key )$/;"	f	file:
+bt_find_tree_max	cutil/src/btree.c	/^static node_t * bt_find_tree_max( node_t * p )$/;"	f	file:
+bt_find_tree_min	cutil/src/btree.c	/^static node_t * bt_find_tree_min( node_t * p )$/;"	f	file:
+bt_get_mutex	cutil/src/btree.c	/^pthread_mutex_t * bt_get_mutex(bt_t * const btree)$/;"	f
+bt_get_node	cutil/src/btree.c	/^static node_t * bt_get_node( node_t ** const nlist )$/;"	f	file:
+bt_initialize	cutil/src/btree.c	/^static void bt_initialize$/;"	f	file:
+bt_insert_node	cutil/src/btree.c	/^static void bt_insert_node( bt_t * const btree,$/;"	f	file:
+bt_is_left_child	cutil/src/btree.c	/^static int bt_is_left_child( node_t * p, node_t * n )$/;"	f	file:
+bt_itr_begin	cutil/src/btree.c	/^bt_itr_t bt_itr_begin(bt_t const * const btree)$/;"	f
+bt_itr_end	cutil/src/btree.c	/^bt_itr_t bt_itr_end(bt_t const * const btree)$/;"	f
+bt_itr_get	cutil/src/btree.c	/^void* bt_itr_get(bt_t const * const btree, bt_itr_t const itr)$/;"	f
+bt_itr_next	cutil/src/btree.c	/^bt_itr_t bt_itr_next(bt_t const * const btree, bt_itr_t const itr)$/;"	f
+bt_itr_rbegin	cutil/src/btree.c	/^bt_itr_t bt_itr_rbegin(bt_t const * const btree)$/;"	f
+bt_itr_rend	cutil/src/btree.c	/^bt_itr_t bt_itr_rend(bt_t const * const btree)$/;"	f
+bt_itr_rnext	cutil/src/btree.c	/^bt_itr_t bt_itr_rnext(bt_t const * const btree, bt_itr_t const itr)$/;"	f
+bt_itr_t	cutil/src/btree.h	/^typedef void * bt_itr_t;$/;"	t
+bt_key_cmp_fn	cutil/src/btree.h	/^typedef int (*bt_key_cmp_fn)( void * l, void * r);$/;"	t
+bt_lock	cutil/src/btree.c	/^void bt_lock(bt_t * const btree)$/;"	f
+bt_new	cutil/src/btree.c	/^bt_t* bt_new$/;"	f
+bt_print	cutil/src/btree.c	/^void bt_print( bt_t * const btree )$/;"	f
+bt_print_node	cutil/src/btree.c	/^void bt_print_node( node_t * const p, int const indent )$/;"	f
+bt_put_node	cutil/src/btree.c	/^static void bt_put_node( node_t ** const nlist, node_t * const node )$/;"	f	file:
+bt_remove	cutil/src/btree.c	/^void * bt_remove(bt_t * const btree, void * const key )$/;"	f
+bt_replace_node	cutil/src/btree.c	/^static node_t * bt_replace_node( node_t * p, node_t * s )$/;"	f	file:
+bt_rotate_left	cutil/src/btree.c	/^static node_t * bt_rotate_left( node_t * const p )$/;"	f	file:
+bt_rotate_left_right	cutil/src/btree.c	/^static node_t * bt_rotate_left_right( node_t * const p )$/;"	f	file:
+bt_rotate_right	cutil/src/btree.c	/^static node_t * bt_rotate_right( node_t * const p )$/;"	f	file:
+bt_rotate_right_left	cutil/src/btree.c	/^static node_t * bt_rotate_right_left( node_t * const p )$/;"	f	file:
+bt_s	cutil/src/btree.c	/^struct bt_s$/;"	s	file:
+bt_size	cutil/src/btree.c	/^uint_t bt_size(bt_t * const btree)$/;"	f
+bt_t	cutil/src/btree.h	/^typedef struct bt_s bt_t;$/;"	t	typeref:struct:bt_s
+bt_try_lock	cutil/src/btree.c	/^int bt_try_lock(bt_t * const btree)$/;"	f
+bt_unlock	cutil/src/btree.c	/^void bt_unlock(bt_t * const btree)$/;"	f
+buf	cutil/test/test_buffer.c	/^int8_t const * const buf = "blah";$/;"	v
 buf	src/llsd_xml.c	/^	char * buf;$/;"	m	struct:context_s	file:
+buffer_delete	cutil/src/buffer.c	/^void buffer_delete( void * b )$/;"	f
+buffer_new	cutil/src/buffer.c	/^buffer_t * buffer_new( void * p, size_t size, int weak )$/;"	f
+buffer_s	cutil/src/buffer.c	/^struct buffer_s$/;"	s	file:
+buffer_size	cutil/src/array.h	/^	uint_t			buffer_size;			\/* number of slots in the node array *\/$/;"	m	struct:array_s
+buffer_t	cutil/src/buffer.h	/^typedef struct buffer_s buffer_t;$/;"	t	typeref:struct:buffer_s
+build_clean_environ	cutil/src/sanitize.c	/^int8_t ** build_clean_environ( int preservec, int8_t ** preservev, int addc, int8_t ** addv )$/;"	f
+callback	cutil/src/events.h	/^	evt_fn			callback;$/;"	m	struct:evt_s
+child	cutil/src/events.h	/^	struct ev_child		child;$/;"	m	union:ev_data_u	typeref:struct:ev_data_u::ev_child
+child_aiofd_error_fn	cutil/src/child.c	/^static int child_aiofd_error_fn( aiofd_t * const aiofd,$/;"	f	file:
+child_aiofd_read_fn	cutil/src/child.c	/^static int child_aiofd_read_fn( aiofd_t * const aiofd,$/;"	f	file:
+child_aiofd_write_fn	cutil/src/child.c	/^static int child_aiofd_write_fn( aiofd_t * const aiofd,$/;"	f	file:
+child_ops_s	cutil/src/child.h	/^typedef struct child_ops_s $/;"	s
+child_ops_t	cutil/src/child.h	/^} child_ops_t;$/;"	t	typeref:struct:child_ops_s
+child_params	cutil/src/events.h	/^	} child_params;$/;"	m	union:evt_params_u	typeref:struct:evt_params_u::__anon2
+child_process_deinitialize	cutil/src/child.c	/^static void child_process_deinitialize( child_process_t * const child, int wait )$/;"	f	file:
+child_process_delete	cutil/src/child.c	/^void child_process_delete( void * cp, int wait )$/;"	f
+child_process_flush	cutil/src/child.c	/^int child_process_flush( child_process_t * const cp )$/;"	f
+child_process_get_pid	cutil/src/child.c	/^pid_t child_process_get_pid( child_process_t * const cp )$/;"	f
+child_process_initialize	cutil/src/child.c	/^static int child_process_initialize( child_process_t * const child,$/;"	f	file:
+child_process_new	cutil/src/child.c	/^child_process_t * child_process_new( int8_t const * const path,$/;"	f
+child_process_read	cutil/src/child.c	/^int32_t child_process_read( child_process_t * const cp, $/;"	f
+child_process_s	cutil/src/child.c	/^struct child_process_s$/;"	s	file:
+child_process_t	cutil/src/child.h	/^typedef struct child_process_s child_process_t;$/;"	t	typeref:struct:child_process_s
+child_process_write	cutil/src/child.c	/^int child_process_write( child_process_t * const cp, $/;"	f
+child_process_writev	cutil/src/child.c	/^int child_process_writev( child_process_t * const cp,$/;"	f
+clean_environ	cutil/src/sanitize.c	/^static int8_t * clean_environ[] =$/;"	v	file:
+connect_fn	cutil/src/socket.h	/^	socket_ret_t (*connect_fn)( socket_t * const s, void * user_data );$/;"	m	struct:socket_ops_s
+connected	cutil/src/socket.c	/^	int32_t			connected;		\/* is the socket connected? *\/$/;"	m	struct:socket_s	file:
 containers	src/llsd_xml.c	/^	array_t * containers;$/;"	m	struct:context_s	file:
 context_s	src/llsd_xml.c	/^typedef struct context_s$/;"	s	file:
 context_t	src/llsd_xml.c	/^} context_t;$/;"	t	typeref:struct:context_s	file:
+daemonize	cutil/src/daemon.c	/^void daemonize( int8_t const * const root_dir )$/;"	f
+data	cutil/src/aiofd.c	/^	void * data;$/;"	m	struct:aiofd_write_s	file:
+data	cutil/src/array.c	/^	void *					data;					\/* pointer to the data *\/$/;"	m	struct:array_node_s	file:
 data	src/llsd.h	/^	uint8_t	*			data;$/;"	m	struct:llsd_binary_s
+data_head	cutil/src/array.h	/^	int_t			data_head;				\/* head node of the data circular list *\/$/;"	m	struct:array_s
 data_offset	test/test_binary.c	/^static size_t const data_offset = 18;$/;"	v	file:
 data_offset	test/test_xml.c	/^static size_t const data_offset = 38;$/;"	v	file:
 data_size	src/llsd.h	/^	uint32_t			data_size;$/;"	m	struct:llsd_binary_s
-date_	src/llsd.h	/^		llsd_date_t		date_;$/;"	m	union:llsd_s::__anon1
+date_	src/llsd.h	/^		llsd_date_t		date_;$/;"	m	union:llsd_s::__anon4
 date_	test/test_binary.c	/^static uint8_t const date_[] = { 'd', 0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };$/;"	v	file:
 date_	test/test_xml.c	/^static uint8_t const date_[] = "<llsd><date>1970-01-01T00:00:01.000Z<\/date><\/llsd>";$/;"	v	file:
+default_key_cmp	cutil/src/btree.c	/^static int default_key_cmp( void * l, void * r )$/;"	f	file:
+default_key_eq	cutil/src/hashtable.c	/^static int default_key_eq(void const * const l, void const * const r)$/;"	f	file:
+default_key_hash	cutil/src/hashtable.c	/^static uint_t default_key_hash(void const * const key)$/;"	f	file:
+default_load_factor	cutil/src/hashtable.c	/^float const default_load_factor = 0.65f;$/;"	v
+deinit_array_suite	cutil/test/test_array.c	/^static int deinit_array_suite( void )$/;"	f	file:
 deinit_binary_suite	test/test_binary.c	/^static int deinit_binary_suite( void )$/;"	f	file:
+deinit_bitset_suite	cutil/test/test_bitset.c	/^static int deinit_bitset_suite( void )$/;"	f	file:
+deinit_btree_suite	cutil/test/test_btree.c	/^static int deinit_btree_suite( void )$/;"	f	file:
+deinit_buffer_suite	cutil/test/test_buffer.c	/^static int deinit_buffer_suite( void )$/;"	f	file:
+deinit_hashtable_suite	cutil/test/test_hashtable.c	/^static int deinit_hashtable_suite( void )$/;"	f	file:
+deinit_pair_suite	cutil/test/test_pair.c	/^static int deinit_pair_suite( void )$/;"	f	file:
 deinit_xml_suite	test/test_xml.c	/^static int deinit_xml_suite( void )$/;"	f	file:
+delete_fn	cutil/src/array.h	/^typedef void (*delete_fn)(void*);$/;"	t
+disconnect_fn	cutil/src/socket.h	/^	socket_ret_t (*disconnect_fn)( socket_t * const s, void * user_data );$/;"	m	struct:socket_ops_s
+drop_privileges	cutil/src/privileges.c	/^void drop_privileges( int permanent )$/;"	f
+dummy	cutil/src/array.c	/^	uint_t				dummy;$/;"	m	struct:array_node_s	file:
 dval	src/llsd.h	/^	double				dval;$/;"	m	struct:llsd_date_s
 dyn_bits	src/llsd.h	/^	int					dyn_bits: 1;$/;"	m	struct:llsd_uuid_s
 dyn_data	src/llsd.h	/^	int					dyn_data: 1;$/;"	m	struct:llsd_binary_s
@@ -172,6 +466,8 @@ dyn_str	src/llsd.h	/^	int					dyn_str:  1;$/;"	m	struct:llsd_uuid_s
 dyn_str	src/llsd.h	/^	int					dyn_str: 1;$/;"	m	struct:llsd_date_s
 dyn_str	src/llsd.h	/^	int					dyn_str: 1;$/;"	m	struct:llsd_string_s
 dyn_uri	src/llsd.h	/^	int					dyn_uri: 1;$/;"	m	struct:llsd_uri_s
+el	cutil/src/aiofd.h	/^	evt_loop_t*	el;				\/* event loop we registered out evt with *\/$/;"	m	struct:aiofd_s
+el	cutil/src/events.h	/^	evt_loop_t *	el;			\/* the event loop associated wtih *\/$/;"	m	struct:evt_s
 empty_array	src/llsd_const.c	/^llsd_array_t const empty_array =$/;"	v
 empty_binary	src/llsd_const.c	/^llsd_binary_t const empty_binary =$/;"	v
 empty_date	src/llsd_const.c	/^llsd_date_t const empty_date =$/;"	v
@@ -181,19 +477,59 @@ empty_uri	src/llsd_const.c	/^llsd_uri_t const empty_uri = $/;"	v
 enc	src/llsd.h	/^	uint8_t *			enc;$/;"	m	struct:llsd_binary_s
 enc_size	src/llsd.h	/^	uint32_t			enc_size;$/;"	m	struct:llsd_binary_s
 encoding	src/llsd.h	/^	llsd_bin_enc_t		encoding;$/;"	m	struct:llsd_binary_s
+error_fn	cutil/src/aiofd.h	/^		int (*error_fn)( aiofd_t * const aiofd, int err, void * user_data );$/;"	m	struct:aiofd_s::aiofd_ops_s
+error_fn	cutil/src/socket.h	/^	socket_ret_t (*error_fn)( socket_t * const s, int err, void * user_data );$/;"	m	struct:socket_ops_s
 esc	src/llsd.h	/^	uint8_t *			esc;$/;"	m	struct:llsd_string_s
 esc	src/llsd.h	/^	uint8_t *			esc;$/;"	m	struct:llsd_uri_s
 esc_len	src/llsd.h	/^	uint32_t			esc_len;$/;"	m	struct:llsd_string_s
 esc_len	src/llsd.h	/^	uint32_t			esc_len;$/;"	m	struct:llsd_uri_s
+ev	cutil/src/events.h	/^	ev_data_t		ev;			\/* MUST BE FIRST *\/$/;"	m	struct:evt_s
+ev_data_t	cutil/src/events.h	/^} ev_data_t;$/;"	t	typeref:union:ev_data_u
+ev_data_u	cutil/src/events.h	/^typedef union ev_data_u$/;"	u
+evt_child_callback	cutil/src/events.c	/^static void evt_child_callback( struct ev_loop * loop,$/;"	f	file:
+evt_deinitialize_event_handler	cutil/src/events.c	/^void evt_deinitialize_event_handler( evt_t * const evt )$/;"	f
+evt_delete	cutil/src/events.c	/^void evt_delete(void * e)$/;"	f
+evt_delete_event_handler	cutil/src/events.c	/^void evt_delete_event_handler( void * e )$/;"	f
+evt_fn	cutil/src/events.h	/^typedef evt_ret_t (*evt_fn)( evt_loop_t * const el,$/;"	t
+evt_initialize_event_handler	cutil/src/events.c	/^void  evt_initialize_event_handler( evt_t * const evt,$/;"	f
+evt_io_callback	cutil/src/events.c	/^static void evt_io_callback( struct ev_loop * loop,$/;"	f	file:
+evt_io_type_e	cutil/src/events.h	/^typedef enum evt_io_type_e$/;"	g
+evt_io_type_t	cutil/src/events.h	/^} evt_io_type_t;$/;"	t	typeref:enum:evt_io_type_e
+evt_log_backend	cutil/src/events.c	/^static void evt_log_backend( evt_loop_t * const el )$/;"	f	file:
+evt_loop_t	cutil/src/events.h	/^typedef struct ev_loop evt_loop_t;$/;"	t	typeref:struct:ev_loop
+evt_new	cutil/src/events.c	/^evt_loop_t* evt_new( void )$/;"	f
+evt_new_event_handler	cutil/src/events.c	/^evt_t * evt_new_event_handler( evt_type_t const t,$/;"	f
+evt_params	cutil/src/events.h	/^	evt_params_t	evt_params;$/;"	m	struct:evt_s
+evt_params_t	cutil/src/events.h	/^} evt_params_t;$/;"	t	typeref:union:evt_params_u
+evt_params_u	cutil/src/events.h	/^typedef union evt_params_u$/;"	u
+evt_ret_e	cutil/src/events.h	/^typedef enum evt_ret_e$/;"	g
+evt_ret_t	cutil/src/events.h	/^} evt_ret_t;$/;"	t	typeref:enum:evt_ret_e
+evt_run	cutil/src/events.c	/^evt_ret_t evt_run( evt_loop_t * const el )$/;"	f
+evt_s	cutil/src/events.h	/^struct evt_s$/;"	s
+evt_signal_callback	cutil/src/events.c	/^static void evt_signal_callback( struct ev_loop * loop,$/;"	f	file:
+evt_start_event_handler	cutil/src/events.c	/^evt_ret_t evt_start_event_handler( evt_loop_t * const el,$/;"	f
+evt_stop	cutil/src/events.c	/^evt_ret_t evt_stop( evt_loop_t * const el )$/;"	f
+evt_stop_event_handler	cutil/src/events.c	/^evt_ret_t evt_stop_event_handler( evt_loop_t * const el,$/;"	f
+evt_t	cutil/src/events.h	/^typedef struct evt_s evt_t;$/;"	t	typeref:struct:evt_s
+evt_type	cutil/src/events.h	/^	evt_type_t		evt_type;$/;"	m	struct:evt_s
+evt_type_e	cutil/src/events.h	/^typedef enum evt_type_e$/;"	g
+evt_type_t	cutil/src/events.h	/^} evt_type_t;$/;"	t	typeref:enum:evt_type_e
+exit_fn	cutil/src/child.h	/^	int (*exit_fn)( child_process_t * const cp, int rpid, int rstatus, void * user_data );$/;"	m	struct:child_ops_s
+exited	cutil/src/child.c	/^	int				exited;			\/* have we received the SIGCHLD signal? *\/$/;"	m	struct:child_process_s	file:
 expected_data	test/test_binary.c	/^static uint8_t const * const expected_data[ LLSD_TYPE_COUNT ] =$/;"	v	file:
 expected_data	test/test_xml.c	/^static uint8_t const * const expected_data[ LLSD_TYPE_COUNT ] =$/;"	v	file:
 expected_sizes	test/test_binary.c	/^static size_t expected_sizes[ LLSD_TYPE_COUNT ] = $/;"	v	file:
 expected_sizes	test/test_xml.c	/^static size_t expected_sizes[ LLSD_TYPE_COUNT ] = $/;"	v	file:
 false_binary	src/llsd_const.c	/^llsd_binary_t const false_binary =$/;"	v
 false_string	src/llsd_const.c	/^llsd_string_t const false_string = $/;"	v
-fnv_key_hash	src/llsd_util.c	/^uint32_t fnv_key_hash(void const * const key)$/;"	f
+fd	cutil/src/events.h	/^		int fd;$/;"	m	struct:evt_params_u::__anon3
+first	cutil/src/pair.c	/^	void * first;$/;"	m	struct:pair_s	file:
+first	cutil/test/test_pair.c	/^int8_t const * const first = "first";$/;"	v
+fnv_key_hash	src/llsd_util.c	/^uint_t fnv_key_hash(void const * const key)$/;"	f
 format	test/test_binary.c	/^static llsd_serializer_t format;$/;"	v	file:
 format	test/test_xml.c	/^static llsd_serializer_t format;$/;"	v	file:
+free_head	cutil/src/array.h	/^	int_t			free_head;				\/* head node of the free circular list *\/$/;"	m	struct:array_s
+free_list	cutil/src/btree.c	/^	node_t*				free_list;	\/* list of free nodes *\/$/;"	m	struct:bt_s	file:
 get_llsd	test/test_common.c	/^static llsd_t * get_llsd( llsd_type_t type_ )$/;"	f	file:
 get_random_array	test/test_common.c	/^static llsd_t * get_random_array( uint32_t size )$/;"	f	file:
 get_random_bin	test/test_common.c	/^static llsd_t* get_random_bin( void )$/;"	f	file:
@@ -204,21 +540,82 @@ get_random_map	test/test_common.c	/^static llsd_t * get_random_map( uint32_t siz
 get_random_str	test/test_common.c	/^static llsd_t* get_random_str( void )$/;"	f	file:
 get_random_uri	test/test_common.c	/^static llsd_t* get_random_uri( void )$/;"	f	file:
 get_random_uuid	test/test_common.c	/^static llsd_t* get_random_uuid( void )$/;"	f	file:
+hash	cutil/src/hashtable.c	/^	uint_t				hash;				\/* hash value of the key *\/$/;"	m	struct:tuple_s	file:
+hashtable_primes	cutil/src/hashtable.c	/^uint_t const hashtable_primes[] =$/;"	v
 hex_to_byte	src/llsd_util.c	/^static uint8_t hex_to_byte( uint8_t hi, uint8_t lo )$/;"	f	file:
+host	cutil/src/socket.c	/^	int8_t*			host;			\/* host name *\/$/;"	m	struct:socket_s	file:
 ht	src/llsd.h	/^	ht_t		ht;$/;"	m	struct:llsd_map_s
+ht_add	cutil/src/hashtable.c	/^int ht_add( ht_t * const htable, $/;"	f
+ht_add_prehash	cutil/src/hashtable.c	/^int ht_add_prehash( ht_t * const htable, $/;"	f
+ht_clear	cutil/src/hashtable.c	/^int ht_clear(ht_t * const htable)$/;"	f
+ht_compact	cutil/src/hashtable.c	/^int ht_compact(ht_t * const htable)$/;"	f
+ht_deinitialize	cutil/src/hashtable.c	/^void ht_deinitialize(ht_t * const htable)$/;"	f
+ht_delete	cutil/src/hashtable.c	/^void ht_delete(void * ht)$/;"	f
+ht_delete_fn	cutil/src/hashtable.h	/^typedef void (*ht_delete_fn)(void * value);$/;"	t
+ht_find	cutil/src/hashtable.c	/^void * ht_find(ht_t const * const htable, void const * const key)$/;"	f
+ht_find_index	cutil/src/hashtable.c	/^static int ht_find_index$/;"	f	file:
+ht_find_prehash	cutil/src/hashtable.c	/^void * ht_find_prehash( ht_t const * const htable,$/;"	f
+ht_get_mutex	cutil/src/hashtable.c	/^pthread_mutex_t * ht_get_mutex(ht_t * const htable)$/;"	f
+ht_get_resize_load_factor	cutil/src/hashtable.c	/^float ht_get_resize_load_factor(ht_t const * const htable)$/;"	f
+ht_grow	cutil/src/hashtable.c	/^static int ht_grow(ht_t * const htable, uint_t new_prime_index)$/;"	f	file:
+ht_initialize	cutil/src/hashtable.c	/^void ht_initialize$/;"	f
+ht_itr_begin	cutil/src/hashtable.c	/^ht_itr_t ht_itr_begin(ht_t const * const htable)$/;"	f
+ht_itr_end	cutil/src/hashtable.c	/^ht_itr_t ht_itr_end(ht_t const * const htable)$/;"	f
+ht_itr_get	cutil/src/hashtable.c	/^void* ht_itr_get(ht_t const * const htable, ht_itr_t const itr, void** key)$/;"	f
+ht_itr_next	cutil/src/hashtable.c	/^ht_itr_t ht_itr_next(ht_t const * const htable, ht_itr_t const itr)$/;"	f
+ht_itr_rbegin	cutil/src/hashtable.c	/^ht_itr_t ht_itr_rbegin(ht_t const * const htable)$/;"	f
+ht_itr_rend	cutil/src/hashtable.h	160;"	d
+ht_itr_rnext	cutil/src/hashtable.c	/^ht_itr_t ht_itr_rnext(ht_t const * const htable, ht_itr_t const itr)$/;"	f
+ht_itr_t	cutil/src/hashtable.h	/^typedef int_t ht_itr_t;$/;"	t
+ht_load	cutil/src/hashtable.c	/^float ht_load(ht_t * const htable)$/;"	f
+ht_lock	cutil/src/hashtable.c	/^void ht_lock(ht_t * const htable)$/;"	f
+ht_needs_to_grow	cutil/src/hashtable.c	/^static int ht_needs_to_grow(ht_t const * const htable, $/;"	f	file:
+ht_new	cutil/src/hashtable.c	/^ht_t* ht_new$/;"	f
+ht_remove	cutil/src/hashtable.c	/^void * ht_remove(ht_t * const htable, void const * const key)$/;"	f
+ht_remove_prehash	cutil/src/hashtable.c	/^void * ht_remove_prehash( ht_t * const htable,$/;"	f
+ht_s	cutil/src/hashtable.h	/^typedef struct ht_s$/;"	s
+ht_set_resize_load_factor	cutil/src/hashtable.c	/^int ht_set_resize_load_factor(ht_t * const htable, float load)$/;"	f
+ht_size	cutil/src/hashtable.c	/^uint_t ht_size(ht_t * const htable)$/;"	f
+ht_t	cutil/src/hashtable.h	/^} ht_t;$/;"	t	typeref:struct:ht_s
+ht_try_lock	cutil/src/hashtable.c	/^int ht_try_lock(ht_t * const htable)$/;"	f
+ht_unlock	cutil/src/hashtable.c	/^void ht_unlock(ht_t * const htable)$/;"	f
 indent	src/llsd_binary.c	/^static int indent = 0;$/;"	v	file:
 indent	src/llsd_util.c	/^static indent = 0;$/;"	v	file:
 indent	src/llsd_xml.c	/^	int indent;$/;"	m	struct:context_s	file:
 indent	src/llsd_xml.c	/^static uint32_t indent = 1;$/;"	v	file:
-indent_xml	src/llsd_xml.c	637;"	d	file:
+indent_xml	src/llsd_xml.c	648;"	d	file:
+init_array_suite	cutil/test/test_array.c	/^static int init_array_suite( void )$/;"	f	file:
 init_binary_suite	test/test_binary.c	/^static int init_binary_suite( void )$/;"	f	file:
+init_bitset_suite	cutil/test/test_bitset.c	/^static int init_bitset_suite( void )$/;"	f	file:
+init_btree_suite	cutil/test/test_btree.c	/^static int init_btree_suite( void )$/;"	f	file:
+init_buffer_suite	cutil/test/test_buffer.c	/^static int init_buffer_suite( void )$/;"	f	file:
+init_hashtable_suite	cutil/test/test_hashtable.c	/^static int init_hashtable_suite( void )$/;"	f	file:
+init_pair_suite	cutil/test/test_pair.c	/^static int init_pair_suite( void )$/;"	f	file:
 init_xml_suite	test/test_xml.c	/^static int init_xml_suite( void )$/;"	f	file:
-int_	src/llsd.h	/^		llsd_int_t		int_;$/;"	m	union:llsd_s::__anon1
+initial_capacity	cutil/src/array.h	/^	uint_t			initial_capacity;		\/* the initial capacity value *\/$/;"	m	struct:array_s
+initial_capacity	cutil/src/hashtable.h	/^	uint_t				initial_capacity;	\/* the initial capacity value *\/$/;"	m	struct:ht_s
+int_	src/llsd.h	/^		llsd_int_t		int_;$/;"	m	union:llsd_s::__anon4
+int_less	cutil/test/test_btree.c	/^static int int_less( void * l, void * r )$/;"	f	file:
+int_t	cutil/src/macros.h	/^typedef int32_t int_t;$/;"	t
+int_t	cutil/src/macros.h	/^typedef int64_t int_t;$/;"	t
 integer_	test/test_binary.c	/^static uint8_t const integer_[] = { 'i', 0x00, 0x00, 0x00, 0x01 };$/;"	v	file:
 integer_	test/test_xml.c	/^static uint8_t const integer_[] = "<llsd><integer>1<\/integer><\/llsd>";$/;"	v	file:
+io	cutil/src/events.h	/^	struct ev_io		io;$/;"	m	union:ev_data_u	typeref:struct:ev_data_u::ev_io
+io_params	cutil/src/events.h	/^	} io_params;$/;"	m	union:evt_params_u	typeref:struct:evt_params_u::__anon3
+iov	cutil/src/aiofd.c	/^	int iov;$/;"	m	struct:aiofd_write_s	file:
 isbase64	src/base64.c	/^isbase64 (char ch)$/;"	f
+itr_end	cutil/src/btree.c	/^static const bt_itr_t itr_end = NULL;$/;"	v	file:
+kcfn	cutil/src/btree.c	/^	bt_key_cmp_fn		kcfn;		\/* key compare function *\/$/;"	m	struct:bt_s	file:
+kdfn	cutil/src/btree.c	/^	bt_delete_fn		kdfn;		\/* key delete function *\/$/;"	m	struct:bt_s	file:
+kdfn	cutil/src/hashtable.h	/^	ht_delete_fn		kdfn;				\/* key delete function *\/$/;"	m	struct:ht_s
+kefn	cutil/src/hashtable.h	/^	key_eq_fn			kefn;				\/* key compare function *\/$/;"	m	struct:ht_s
+key	cutil/src/btree.c	/^	void * key;					\/* key *\/$/;"	m	struct:node_s	file:
+key	cutil/src/hashtable.c	/^	void *				key;				\/* pointer to the key *\/$/;"	m	struct:tuple_s	file:
 key_eq	src/llsd_util.c	/^int key_eq(void const * const l, void const * const r)$/;"	f
+key_eq_fn	cutil/src/hashtable.h	/^typedef int (*key_eq_fn)(void const * const l, void const * const r);$/;"	t
 key_esc	src/llsd.h	/^	int					key_esc: 1;$/;"	m	struct:llsd_string_s
+key_hash_fn	cutil/src/hashtable.h	/^typedef uint_t (*key_hash_fn)(void const * const key);$/;"	t
+khfn	cutil/src/hashtable.h	/^	key_hash_fn			khfn;				\/* key hash function *\/$/;"	m	struct:ht_s
 lbarray	src/llsd_binary.c	/^static uint8_t const * const lbarray	= "[";$/;"	v	file:
 lbarrayc	src/llsd_binary.c	/^static uint8_t const * const lbarrayc	= "]";$/;"	v	file:
 lbbinary	src/llsd_binary.c	/^static uint8_t const * const lbbinary	= "b";$/;"	v	file:
@@ -233,9 +630,11 @@ lbtrue	src/llsd_binary.c	/^static uint8_t const * const lbtrue		= "1";$/;"	v	fil
 lbundef	src/llsd_binary.c	/^static uint8_t const * const lbundef	= "!";$/;"	v	file:
 lburi	src/llsd_binary.c	/^static uint8_t const * const lburi		= "l";$/;"	v	file:
 lbuuid	src/llsd_binary.c	/^static uint8_t const * const lbuuid		= "u";$/;"	v	file:
+left	cutil/src/btree.c	/^	struct node_s * left;		\/* left child *\/$/;"	m	struct:node_s	typeref:struct:node_s::node_s	file:
 len	src/llsd.h	/^	uint32_t			len;$/;"	m	struct:llsd_date_s
 len	src/llsd.h	/^	uint32_t			len;$/;"	m	struct:llsd_uuid_s
 len	src/llsd_xml.c	/^	size_t len;$/;"	m	struct:context_s	file:
+list_size	cutil/src/btree.c	/^	uint_t				list_size;	\/* equal to initial capacity, size blocks in node_list *\/$/;"	m	struct:bt_s	file:
 llsd_array_append	src/llsd_util.c	/^void llsd_array_append( llsd_t * arr, llsd_t * data )$/;"	f
 llsd_array_s	src/llsd.h	/^struct llsd_array_s$/;"	s
 llsd_array_t	src/llsd.h	/^typedef struct llsd_array_s		llsd_array_t;$/;"	t	typeref:struct:llsd_array_s
@@ -287,34 +686,35 @@ llsd_get_zero_copy_size	src/llsd_util.c	/^static size_t llsd_get_zero_copy_size(
 llsd_initialize	src/llsd_util.c	/^static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )$/;"	f	file:
 llsd_int_s	src/llsd.h	/^struct llsd_int_s$/;"	s
 llsd_int_t	src/llsd.h	/^typedef struct llsd_int_s		llsd_int_t;$/;"	t	typeref:struct:llsd_int_s
-llsd_is_array	src/llsd_util.h	48;"	d
-llsd_is_empty	src/llsd_util.h	53;"	d
-llsd_is_map	src/llsd_util.h	49;"	d
+llsd_is_array	src/llsd_util.h	49;"	d
+llsd_is_empty	src/llsd_util.h	54;"	d
+llsd_is_map	src/llsd_util.h	50;"	d
 llsd_itr_begin	src/llsd_util.c	/^llsd_itr_t llsd_itr_begin( llsd_t * llsd )$/;"	f
 llsd_itr_end	src/llsd_util.c	/^llsd_itr_t llsd_itr_end( llsd_t * llsd )$/;"	f
 llsd_itr_get	src/llsd_util.c	/^int llsd_itr_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key )$/;"	f
 llsd_itr_next	src/llsd_util.c	/^llsd_itr_t llsd_itr_next( llsd_t * llsd, llsd_itr_t itr )$/;"	f
 llsd_itr_rbegin	src/llsd_util.c	/^llsd_itr_t llsd_itr_rbegin( llsd_t * llsd )$/;"	f
-llsd_itr_rend	src/llsd_util.h	67;"	d
+llsd_itr_rend	src/llsd_util.h	69;"	d
 llsd_itr_rnext	src/llsd_util.c	/^llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr )$/;"	f
 llsd_itr_t	src/llsd_util.h	/^typedef int32_t llsd_itr_t;$/;"	t
-llsd_map_find	src/llsd_util.c	/^llsd_t * llsd_map_find( llsd_t * map, llsd_t * key )$/;"	f
+llsd_map_find	src/llsd_util.c	/^llsd_t * llsd_map_find( llsd_t * map, int8_t const * const key )$/;"	f
+llsd_map_find_llsd	src/llsd_util.c	/^llsd_t * llsd_map_find_llsd( llsd_t * map, llsd_t * key )$/;"	f
 llsd_map_insert	src/llsd_util.c	/^void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data )$/;"	f
 llsd_map_s	src/llsd.h	/^struct llsd_map_s$/;"	s
 llsd_map_t	src/llsd.h	/^typedef struct llsd_map_s		llsd_map_t;$/;"	t	typeref:struct:llsd_map_s
 llsd_new	src/llsd_util.c	/^llsd_t * llsd_new( llsd_type_t type_, ... )$/;"	f
-llsd_new_array	src/llsd_util.h	33;"	d
-llsd_new_binary	src/llsd_util.h	41;"	d
-llsd_new_boolean	src/llsd_util.h	35;"	d
-llsd_new_date	src/llsd_util.h	42;"	d
-llsd_new_empty_array	src/llsd_util.h	31;"	d
-llsd_new_empty_map	src/llsd_util.h	32;"	d
-llsd_new_integer	src/llsd_util.h	36;"	d
-llsd_new_map	src/llsd_util.h	34;"	d
-llsd_new_real	src/llsd_util.h	37;"	d
-llsd_new_string	src/llsd_util.h	39;"	d
-llsd_new_uri	src/llsd_util.h	40;"	d
-llsd_new_uuid	src/llsd_util.h	38;"	d
+llsd_new_array	src/llsd_util.h	34;"	d
+llsd_new_binary	src/llsd_util.h	42;"	d
+llsd_new_boolean	src/llsd_util.h	36;"	d
+llsd_new_date	src/llsd_util.h	43;"	d
+llsd_new_empty_array	src/llsd_util.h	32;"	d
+llsd_new_empty_map	src/llsd_util.h	33;"	d
+llsd_new_integer	src/llsd_util.h	37;"	d
+llsd_new_map	src/llsd_util.h	35;"	d
+llsd_new_real	src/llsd_util.h	38;"	d
+llsd_new_string	src/llsd_util.h	40;"	d
+llsd_new_uri	src/llsd_util.h	41;"	d
+llsd_new_uuid	src/llsd_util.h	39;"	d
 llsd_parse	src/llsd_util.c	/^llsd_t * llsd_parse( FILE *fin )$/;"	f
 llsd_parse_binary	src/llsd_binary.c	/^llsd_t * llsd_parse_binary( FILE * fin )$/;"	f
 llsd_parse_xml	src/llsd_xml.c	/^llsd_t * llsd_parse_xml( FILE * fin )$/;"	f
@@ -352,6 +752,11 @@ llsd_write_xml_start_tag	src/llsd_xml.c	/^static size_t llsd_write_xml_start_tag
 llsd_xml_data_handler	src/llsd_xml.c	/^static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len )$/;"	f	file:
 llsd_xml_end_tag	src/llsd_xml.c	/^static void XMLCALL llsd_xml_end_tag( void * data, char const * el )$/;"	f	file:
 llsd_xml_start_tag	src/llsd_xml.c	/^static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const ** attr )$/;"	f	file:
+load_factor	cutil/src/hashtable.h	/^	float				load_factor;		\/* load level that triggers resize *\/$/;"	m	struct:ht_s
+lock	cutil/src/array.h	/^	pthread_mutex_t lock;					\/* list lock *\/$/;"	m	struct:array_s
+lock	cutil/src/btree.c	/^	pthread_mutex_t		lock;		\/* btree lock *\/$/;"	m	struct:bt_s	file:
+lock	cutil/src/hashtable.h	/^	pthread_mutex_t		lock;				\/* hashtable lock *\/$/;"	m	struct:ht_s
+log_fns	cutil/src/log.c	/^static cookie_io_functions_t log_fns =$/;"	v	file:
 lxend	src/llsd_xml.c	/^static uint8_t const * const lxend[LLSD_TYPE_COUNT] =$/;"	v	file:
 lxendlen	src/llsd_xml.c	/^static uint32_t lxendlen[LLSD_TYPE_COUNT] =$/;"	v	file:
 lxkey	src/llsd_xml.c	/^static uint8_t const * const lxkey		= "<key>";$/;"	v	file:
@@ -360,28 +765,134 @@ lxstart	src/llsd_xml.c	/^static uint8_t const * const lxstart[LLSD_TYPE_COUNT] =
 lxstartc	src/llsd_xml.c	/^static uint8_t const * const lxstartc = "\\">\\n";$/;"	v	file:
 lxstartlen	src/llsd_xml.c	/^static uint32_t lxstartlen[LLSD_TYPE_COUNT] =$/;"	v	file:
 lxtabs	src/llsd_xml.c	/^static uint8_t const * const lxtabs		= "\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t";$/;"	v	file:
+main	cutil/test/test_all.c	/^int main()$/;"	f
 main	test/test_all.c	/^int main()$/;"	f
-map_	src/llsd.h	/^		llsd_map_t		map_;$/;"	m	union:llsd_s::__anon1
+map_	src/llsd.h	/^		llsd_map_t		map_;$/;"	m	union:llsd_s::__anon4
 map_	test/test_binary.c	/^static uint8_t const map_[] = { '{', 0x00, 0x00, 0x00, 0x00, '}' };$/;"	v	file:
 map_	test/test_xml.c	/^static uint8_t const map_[] = "<llsd><map size=\\"0\\"><\/map><\/llsd>";$/;"	v	file:
+max	cutil/src/btree.c	33;"	d	file:
 mem_len_cmp	src/llsd_util.c	/^static int mem_len_cmp( uint8_t * l, uint32_t llen, uint8_t * r, uint32_t rlen )$/;"	f	file:
+min	cutil/src/btree.c	32;"	d	file:
+next	cutil/src/array.c	/^	struct array_node_s *	next;					\/* next link *\/$/;"	m	struct:array_node_s	typeref:struct:array_node_s::array_node_s	file:
+next	cutil/src/btree.c	/^	struct node_s * next;		\/* traversal threading pointer\/free list pointer *\/$/;"	m	struct:node_s	typeref:struct:node_s::node_s	file:
+nleft	cutil/src/aiofd.c	/^	size_t nleft;$/;"	m	struct:aiofd_write_s	file:
+node_buffer	cutil/src/array.h	/^	array_node_t*	node_buffer;			\/* buffer of nodes *\/$/;"	m	struct:array_s
+node_list	cutil/src/btree.c	/^	node_t**			node_list;	\/* memory for the nodes *\/$/;"	m	struct:bt_s	file:
+node_s	cutil/src/btree.c	/^typedef struct node_s$/;"	s	file:
+node_t	cutil/src/btree.c	/^} node_t;$/;"	t	typeref:struct:node_s	file:
+noop	cutil/src/log.c	/^static int noop( void ) { return 0; }$/;"	f	file:
+num_bits	cutil/src/bitset.h	/^	size_t num_bits;$/;"	m	struct:bitset_s
+num_lists	cutil/src/btree.c	/^	uint_t				num_lists;	\/* number of blocks allocated *\/$/;"	m	struct:bt_s	file:
+num_nodes	cutil/src/array.h	/^	uint_t			num_nodes;				\/* number of nodes in the list *\/$/;"	m	struct:array_s
+num_primes	cutil/src/hashtable.c	/^uint_t const num_primes = 30;$/;"	v
+num_tuples	cutil/src/hashtable.h	/^	uint_t				num_tuples;			\/* number of tuples in the table *\/$/;"	m	struct:ht_s
 one_data	src/llsd_const.c	/^static uint8_t one_data[] = { '1' };$/;"	v	file:
 one_int	src/llsd_const.c	/^llsd_int_t const one_int =$/;"	v
 one_real	src/llsd_const.c	/^llsd_real_t const one_real =$/;"	v
+open_devnull	cutil/src/sanitize.c	/^static int open_devnull( int fd )$/;"	f	file:
+ops	cutil/src/aiofd.h	/^	}			ops;$/;"	m	struct:aiofd_s	typeref:struct:aiofd_s::aiofd_ops_s
+ops	cutil/src/child.c	/^	child_ops_t		ops;			\/* child proces callbacks *\/$/;"	m	struct:child_process_s	file:
+ops	cutil/src/socket.c	/^	socket_ops_t	ops;			\/* socket callbacks *\/$/;"	m	struct:socket_s	file:
+orig_gid	cutil/src/privileges.c	/^static gid_t orig_gid = -1;$/;"	v	file:
+orig_groups	cutil/src/privileges.c	/^static gid_t orig_groups[NGROUPS_MAX];$/;"	v	file:
+orig_ngroups	cutil/src/privileges.c	/^static int orig_ngroups = -1;$/;"	v	file:
+orig_uid	cutil/src/privileges.c	/^static uid_t orig_uid = -1;$/;"	v	file:
+p	cutil/src/buffer.c	/^	void * p;$/;"	m	struct:buffer_s	file:
+pair_delete	cutil/src/pair.c	/^void pair_delete( void * p )$/;"	f
+pair_first	cutil/src/pair.c	/^void * pair_first( pair_t const * const pair )$/;"	f
+pair_new	cutil/src/pair.c	/^pair_t * pair_new( void * first, void * second )$/;"	f
+pair_s	cutil/src/pair.c	/^struct pair_s$/;"	s	file:
+pair_second	cutil/src/pair.c	/^void * pair_second( pair_t const * const pair )$/;"	f
+pair_t	cutil/src/pair.h	/^typedef struct pair_s pair_t;$/;"	t	typeref:struct:pair_s
 params	src/llsd_xml.c	/^	array_t * params;$/;"	m	struct:context_s	file:
+parent	cutil/src/btree.c	/^	struct node_s * parent;		\/* parent pointer *\/$/;"	m	struct:node_s	typeref:struct:node_s::node_s	file:
+pfn	cutil/src/array.h	/^	delete_fn		pfn;					\/* destruction function for each node *\/$/;"	m	struct:array_s
+pid	cutil/src/child.c	/^	pid_t			pid;			\/* the pid of the child process *\/$/;"	m	struct:child_process_s	file:
+pid	cutil/src/daemon.c	/^pid_t pid, sid;$/;"	v
+pid	cutil/src/events.h	/^		int pid;	\/* pid to watch *\/$/;"	m	struct:evt_params_u::__anon2
+port	cutil/src/socket.c	/^	uint16_t		port;			\/* port number *\/$/;"	m	struct:socket_s	file:
+preserve_environ	cutil/src/sanitize.c	/^static int8_t * preserve_environ[] =$/;"	v	file:
+prev	cutil/src/array.c	/^	struct array_node_s *	prev;					\/* prev link *\/$/;"	m	struct:array_node_s	typeref:struct:array_node_s::array_node_s	file:
+prev	cutil/src/btree.c	/^	struct node_s * prev;		\/* traversal threading pointer *\/$/;"	m	struct:node_s	typeref:struct:node_s::node_s	file:
+prime_index	cutil/src/hashtable.h	/^	uint_t				prime_index;		\/* the index of the table size *\/$/;"	m	struct:ht_s
 print_stack	src/llsd_xml.c	/^static void print_stack( array_t * arr )$/;"	f	file:
-real_	src/llsd.h	/^		llsd_real_t		real_;$/;"	m	union:llsd_s::__anon1
+priov	cutil/src/log.c	/^static int8_t * const priov[] =$/;"	v	file:
+read_fn	cutil/src/aiofd.h	/^		int (*read_fn)( aiofd_t * const aiofd, size_t nread, void * user_data );$/;"	m	struct:aiofd_s::aiofd_ops_s
+read_fn	cutil/src/child.h	/^	int32_t (*read_fn)( child_process_t * const cp, size_t nread, void * user_data );$/;"	m	struct:child_ops_s
+read_fn	cutil/src/socket.h	/^	int32_t (*read_fn)( socket_t * const s, size_t nread, void * user_data );$/;"	m	struct:socket_ops_s
+real_	src/llsd.h	/^		llsd_real_t		real_;$/;"	m	union:llsd_s::__anon4
 real_	test/test_binary.c	/^static uint8_t const real_[] = { 'r', 0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };$/;"	v	file:
 real_	test/test_xml.c	/^static uint8_t const real_[] = "<llsd><real>1.000000<\/real><\/llsd>";$/;"	v	file:
+restore_privileges	cutil/src/privileges.c	/^void restore_privileges( void )$/;"	f
 result	src/llsd_xml.c	/^	llsd_t * result;$/;"	m	struct:context_s	file:
+revt	cutil/src/aiofd.h	/^	evt_t		revt;			\/* read event *\/$/;"	m	struct:aiofd_s
+rfd	cutil/src/aiofd.h	/^	int			rfd;			\/* read fd if two are given *\/$/;"	m	struct:aiofd_s
+right	cutil/src/btree.c	/^	struct node_s * right;		\/* right child *\/$/;"	m	struct:node_s	typeref:struct:node_s::node_s	file:
+rpid	cutil/src/events.h	/^		int rpid;	\/* pid of process causing change *\/$/;"	m	struct:evt_params_u::__anon2
+rstatus	cutil/src/events.h	/^		int rstatus;\/* status word of process, use macros from sys\/wait.h, waitpid *\/$/;"	m	struct:evt_params_u::__anon2
+safe_fork	cutil/src/child.c	/^static pid_t safe_fork( void )$/;"	f	file:
+sanitize_files	cutil/src/sanitize.c	/^void sanitize_files( void )$/;"	f
+second	cutil/src/pair.c	/^	void * second;$/;"	m	struct:pair_s	file:
+second	cutil/test/test_pair.c	/^int8_t const * const second = "second";$/;"	v
+sid	cutil/src/daemon.c	/^pid_t pid, sid;$/;"	v
+sig	cutil/src/events.h	/^	struct ev_signal	sig;$/;"	m	union:ev_data_u	typeref:struct:ev_data_u::ev_signal
+sigchld	cutil/src/child.c	/^	evt_t			sigchld;		\/* the SIGCHILD signal event handler *\/$/;"	m	struct:child_process_s	file:
+sigchld_cb	cutil/src/child.c	/^static evt_ret_t sigchld_cb( evt_loop_t * const el,$/;"	f	file:
+signal_params	cutil/src/events.h	/^	} signal_params;$/;"	m	union:evt_params_u	typeref:struct:evt_params_u::__anon1
+signum	cutil/src/events.h	/^		int signum;$/;"	m	struct:evt_params_u::__anon1
+size	cutil/src/aiofd.c	/^	size_t size;$/;"	m	struct:aiofd_write_s	file:
+size	cutil/src/btree.c	/^	uint_t				size;		\/* number of nodes in the tree *\/$/;"	m	struct:bt_s	file:
+size	cutil/src/buffer.c	/^	size_t size;$/;"	m	struct:buffer_s	file:
+size	cutil/test/test_buffer.c	/^size_t const size = 5;$/;"	v
+socket_aiofd_error_fn	cutil/src/socket.c	/^static int socket_aiofd_error_fn( aiofd_t * const aiofd,$/;"	f	file:
+socket_aiofd_read_fn	cutil/src/socket.c	/^static int socket_aiofd_read_fn( aiofd_t * const aiofd,$/;"	f	file:
+socket_aiofd_write_fn	cutil/src/socket.c	/^static int socket_aiofd_write_fn( aiofd_t * const aiofd,$/;"	f	file:
+socket_connect	cutil/src/socket.c	/^socket_ret_t socket_connect( socket_t* const s, $/;"	f
+socket_deinitialize	cutil/src/socket.c	/^static void socket_deinitialize( socket_t * const s )$/;"	f	file:
+socket_delete	cutil/src/socket.c	/^void socket_delete( void * s )$/;"	f
+socket_disconnect	cutil/src/socket.c	/^socket_ret_t socket_disconnect( socket_t* const s )$/;"	f
+socket_flush	cutil/src/socket.c	/^socket_ret_t socket_flush( socket_t* const s )$/;"	f
+socket_initialize	cutil/src/socket.c	/^static void socket_initialize( socket_t * const s,$/;"	f	file:
+socket_is_connected	cutil/src/socket.c	/^int socket_is_connected( socket_t* const s )$/;"	f
+socket_lookup_host	cutil/src/socket.c	/^static socket_ret_t socket_lookup_host( socket_t * const s, $/;"	f	file:
+socket_new	cutil/src/socket.c	/^socket_t* socket_new( socket_type_t const type, $/;"	f
+socket_ops_s	cutil/src/socket.h	/^typedef struct socket_ops_s $/;"	s
+socket_ops_t	cutil/src/socket.h	/^} socket_ops_t;$/;"	t	typeref:struct:socket_ops_s
+socket_read	cutil/src/socket.c	/^int32_t socket_read( socket_t* const s, $/;"	f
+socket_ret_e	cutil/src/socket.h	/^typedef enum socket_ret_e$/;"	g
+socket_ret_t	cutil/src/socket.h	/^} socket_ret_t;$/;"	t	typeref:enum:socket_ret_e
+socket_s	cutil/src/socket.c	/^struct socket_s$/;"	s	file:
+socket_t	cutil/src/socket.h	/^typedef struct socket_s socket_t;$/;"	t	typeref:struct:socket_s
+socket_type_e	cutil/src/socket.h	/^typedef enum socket_type_e$/;"	g
+socket_type_t	cutil/src/socket.h	/^} socket_type_t;$/;"	t	typeref:enum:socket_type_e
+socket_write	cutil/src/socket.c	/^socket_ret_t socket_write( socket_t * const s,$/;"	f
+socket_writev	cutil/src/socket.c	/^socket_ret_t socket_writev( socket_t * const s,$/;"	f
+start_logging	cutil/src/log.c	/^void start_logging( void )$/;"	f
+stop_logging	cutil/src/log.c	/^void stop_logging( void )$/;"	f
 str	src/llsd.h	/^	uint8_t *			str;$/;"	m	struct:llsd_string_s
 str	src/llsd.h	/^	uint8_t *			str;$/;"	m	struct:llsd_uuid_s
 str	src/llsd.h	/^	uint8_t*			str;$/;"	m	struct:llsd_date_s
 str_len	src/llsd.h	/^	uint32_t			str_len;$/;"	m	struct:llsd_string_s
-string_	src/llsd.h	/^		llsd_string_t	string_;$/;"	m	union:llsd_s::__anon1
+string_	src/llsd.h	/^		llsd_string_t	string_;$/;"	m	union:llsd_s::__anon4
 string_	test/test_binary.c	/^static uint8_t const string_[] = { 's', 0x00, 0x00, 0x00, 0x0c, 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '!' };$/;"	v	file:
 string_	test/test_xml.c	/^static uint8_t const string_[] = "<llsd><string>Hello World!<\/string><\/llsd>";$/;"	v	file:
+test_array_initdeinit	cutil/test/test_array.c	/^void test_array_initdeinit( void )$/;"	f
+test_array_newdel	cutil/test/test_array.c	/^void test_array_newdel( void )$/;"	f
+test_bitset_clearall	cutil/test/test_bitset.c	/^void test_bitset_clearall( void )$/;"	f
+test_bitset_initdeinit	cutil/test/test_bitset.c	/^void test_bitset_initdeinit( void )$/;"	f
+test_bitset_maxsize	cutil/test/test_bitset.c	/^void test_bitset_maxsize( void )$/;"	f
+test_bitset_newdel	cutil/test/test_bitset.c	/^void test_bitset_newdel( void )$/;"	f
+test_bitset_patternbitflips	cutil/test/test_bitset.c	/^void test_bitset_patternbitflips( void )$/;"	f
+test_bitset_randombitflips	cutil/test/test_bitset.c	/^void test_bitset_randombitflips( void )$/;"	f
+test_bitset_setall	cutil/test/test_bitset.c	/^void test_bitset_setall( void )$/;"	f
+test_bitset_zerosize	cutil/test/test_bitset.c	/^void test_bitset_zerosize( void )$/;"	f
+test_btree_iterator	cutil/test/test_btree.c	/^void test_btree_iterator( void )$/;"	f
+test_btree_newdel	cutil/test/test_btree.c	/^void test_btree_newdel( void )$/;"	f
+test_btree_random	cutil/test/test_btree.c	/^void test_btree_random( void )$/;"	f
+test_buffer_newdel	cutil/test/test_buffer.c	/^void test_buffer_newdel( void )$/;"	f
 test_newdel	test/test_common.c	/^static void test_newdel( void )$/;"	f	file:
+test_pair_newdel	cutil/test/test_pair.c	/^void test_pair_newdel( void )$/;"	f
+test_pair_nulls	cutil/test/test_pair.c	/^void test_pair_nulls( void )$/;"	f
 test_random_serialize	test/test_common.c	/^static void test_random_serialize( void )$/;"	f	file:
 test_random_serialize_zero_copy	test/test_common.c	/^static void test_random_serialize_zero_copy( void )$/;"	f	file:
 test_serialization	test/test_common.c	/^static void test_serialization( void )$/;"	f	file:
@@ -391,25 +902,51 @@ testurl	test/test_common.c	/^static int8_t const * const testurl = T("http:\/\/w
 tmpf	test/test_binary.c	/^static FILE* tmpf;$/;"	v	file:
 tmpf	test/test_xml.c	/^static FILE* tmpf;$/;"	v	file:
 to_uchar	src/base64.c	/^to_uchar (char ch)$/;"	f	file:
+trace	cutil/src/events.h	/^		int trace;	\/* 0 == only signal upon termination, 1 == also signal when stopped\/continued *\/$/;"	m	struct:evt_params_u::__anon2
+tree	cutil/src/btree.c	/^	node_t*				tree;		\/* pointer to btree root *\/$/;"	m	struct:bt_s	file:
 true_binary	src/llsd_const.c	/^llsd_binary_t const true_binary =$/;"	v
 true_string	src/llsd_const.c	/^llsd_string_t const true_string = $/;"	v
+tuple_s	cutil/src/hashtable.c	/^struct tuple_s$/;"	s	file:
+tuple_t	cutil/src/hashtable.h	/^typedef struct tuple_s tuple_t;$/;"	t	typeref:struct:tuple_s
+tuples	cutil/src/hashtable.h	/^	tuple_t*			tuples;				\/* pointer to tuple table *\/$/;"	m	struct:ht_s
+type	cutil/src/socket.c	/^	socket_type_t	type;			\/* type of socket *\/$/;"	m	struct:socket_s	file:
 type_	src/llsd.h	/^	llsd_type_t			type_;$/;"	m	struct:llsd_s
+types	cutil/src/events.h	/^		evt_io_type_t types;$/;"	m	struct:evt_params_u::__anon3
 uchar_in_range	src/base64.c	287;"	d	file:
 uchar_in_range	src/base64.c	289;"	d	file:
+uint_t	cutil/src/macros.h	/^typedef uint32_t uint_t;$/;"	t
+uint_t	cutil/src/macros.h	/^typedef uint64_t uint_t;$/;"	t
 undef_	test/test_binary.c	/^static uint8_t const undef_[] = { '!' };$/;"	v	file:
 undef_	test/test_xml.c	/^static uint8_t const undef_[] = "<llsd><undef \/><\/llsd>";$/;"	v	file:
 undefined	src/llsd_const.c	/^llsd_t const undefined =$/;"	v
 uri	src/llsd.h	/^	uint8_t *			uri;$/;"	m	struct:llsd_uri_s
-uri_	src/llsd.h	/^		llsd_uri_t		uri_;$/;"	m	union:llsd_s::__anon1
+uri_	src/llsd.h	/^		llsd_uri_t		uri_;$/;"	m	union:llsd_s::__anon4
 uri_	test/test_binary.c	/^static uint8_t const uri_[] = { 'l', 0x00, 0x00, 0x00, 0x16, 'h', 't', 't', 'p', ':', '\/', '\/', 'w', 'w', 'w', '.', 'i', 'x', 'q', 'u', 'i', 'c', 'k', '.', 'c', 'o', 'm' };$/;"	v	file:
 uri_	test/test_xml.c	/^static uint8_t const uri_[] = "<llsd><uri>http:\/\/www.ixquick.com<\/uri><\/llsd>";$/;"	v	file:
 uri_len	src/llsd.h	/^	uint32_t			uri_len;$/;"	m	struct:llsd_uri_s
 use_dval	src/llsd.h	/^	int					use_dval: 1;$/;"	m	struct:llsd_date_s
-uuid_	src/llsd.h	/^		llsd_uuid_t		uuid_;$/;"	m	union:llsd_s::__anon1
+user_data	cutil/src/aiofd.h	/^	void *		user_data;		\/* context to pass to callbacks *\/$/;"	m	struct:aiofd_s
+user_data	cutil/src/child.c	/^	void *			user_data;		\/* passed to ops callbacks *\/$/;"	m	struct:child_process_s	file:
+user_data	cutil/src/events.h	/^	void *			user_data;$/;"	m	struct:evt_s
+user_data	cutil/src/socket.c	/^	void *			user_data;		\/* passed to ops callbacks *\/$/;"	m	struct:socket_s	file:
+uuid_	src/llsd.h	/^		llsd_uuid_t		uuid_;$/;"	m	union:llsd_s::__anon4
 uuid_	test/test_binary.c	/^static uint8_t const uuid_[] = { 'u', 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };$/;"	v	file:
 uuid_	test/test_xml.c	/^static uint8_t const uuid_[] = "<llsd><uuid>01020304-0506-0708-0900-010203040506<\/uuid><\/llsd>";$/;"	v	file:
 v	src/llsd.h	/^	double				v;$/;"	m	struct:llsd_real_s
 v	src/llsd.h	/^	int32_t				v;$/;"	m	struct:llsd_int_s
+val	cutil/src/btree.c	/^	void * val;					\/* value *\/$/;"	m	struct:node_s	file:
+value	cutil/src/hashtable.c	/^	void *				value;				\/* pointer to the value *\/$/;"	m	struct:tuple_s	file:
+vdfn	cutil/src/btree.c	/^	bt_delete_fn		vdfn;		\/* value delete function *\/$/;"	m	struct:bt_s	file:
+vdfn	cutil/src/hashtable.h	/^	ht_delete_fn		vdfn;				\/* value delete function *\/$/;"	m	struct:ht_s
+wbuf	cutil/src/aiofd.h	/^	array_t		wbuf;			\/* array of buffers waiting to be written *\/$/;"	m	struct:aiofd_s
+weak	cutil/src/buffer.c	/^	int weak;$/;"	m	struct:buffer_s	file:
+wevt	cutil/src/aiofd.h	/^	evt_t		wevt;			\/* write event *\/$/;"	m	struct:aiofd_s
+wfd	cutil/src/aiofd.h	/^	int			wfd;			\/* read\/write fd, if only one given, write-only otherwise *\/$/;"	m	struct:aiofd_s
+write_fn	cutil/src/aiofd.h	/^		int (*write_fn)( aiofd_t * const aiofd, uint8_t const * const buffer, void * user_data );$/;"	m	struct:aiofd_s::aiofd_ops_s
+write_fn	cutil/src/child.h	/^	int32_t (*write_fn)( child_process_t * const cp, uint8_t const * const buffer, void * user_data );$/;"	m	struct:child_ops_s
+write_fn	cutil/src/socket.h	/^	int32_t (*write_fn)( socket_t * const s, uint8_t const * const buffer, void * user_data );$/;"	m	struct:socket_ops_s
+writefn	cutil/src/log.c	/^typedef int (*writefn)(void *, const char *, int);$/;"	t	file:
+writer	cutil/src/log.c	/^static ssize_t writer( void * cookie, char const * data, size_t leng )$/;"	f	file:
 xml_footer	src/llsd_util.c	/^static uint8_t const * const xml_footer = "<\/llsd>\\n";$/;"	v	file:
 xml_header	src/llsd_util.c	/^static uint8_t const * const xml_header = "<llsd>\\n";$/;"	v	file:
 xml_signature	src/llsd_util.c	/^static uint8_t const * const xml_signature = "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>\\n";$/;"	v	file:
