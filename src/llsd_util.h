@@ -112,5 +112,14 @@ size_t llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout, int prett
 /* zero copy serialization interface */
 size_t llsd_format_zero_copy( llsd_t * llsd, llsd_serializer_t fmt, struct iovec ** v, int pretty );
 
+#if defined(MISSING_STRNLEN)
+uint32_t strnlen( uint8_t const * const s, uint32_t const n );
+#endif
+
+#if defined(MISSING_64BIT_ENDIAN)
+uint64_t be64toh( uint64_t const be );
+uint64_t htobe64( uint64_t const h );
+#endif
+
 #endif/*LLSD_UTIL_H*/
 

@@ -35,6 +35,59 @@
 #include "llsd_xml.h"
 #include "base64.h"
 
+#if defined(MISSING_STRNLEN)
+/* provide our own strnlen if the system doesn't */
+uint32_t strnlen( uint8_t const * const s, uint32_t const n )
+{
+	uint8_t const * p = UT(memchr( s, 0, n ));
+	return ( p ? (p - s) : n );
+}
+#endif
+
+#if defined(MISSING_64BIT_ENDIAN)
+uint64_t be64toh( uint64_t const be )
+{
+	uint8_t c;
+	union 
+	{
+		uint64_t ull;
+		uint8_t b[8];
+	} x;
+
+	x.ull = (uint64_t)0x01;
+	if ( x.b[7] == (uint8_t)0x01 )
+	{
+		/* big endian platform, do nothing */
+		return be;
+	}
+
+	/* little endian platform, swap it */
+	return ( ( (uint64_t)(ntohl( (uint32_t)((be << 32) >> 32) )) << 32) | 
+			    ntohl( ((uint32_t)(be >> 32)) ) );
+}
+
+uint64_t htobe64( uint64_t const h )
+{
+	uint8_t c;
+	union 
+	{
+		uint64_t ull;
+		uint8_t b[8];
+	} x;
+
+	x.ull = (uint64_t)0x01;
+	if ( x.b[7] == (uint8_t)0x01 )
+	{
+		/* big endian platform, do nothing */
+		return h;
+	}
+
+	/* little endian platform, swap it */
+	return ( ( (uint64_t)(htonl( (uint32_t)((h << 32) >> 32) )) << 32) | 
+			    htonl( ((uint32_t)(h >> 32)) ) );
+}
+#endif
+
 
 /* this function does the minimum amount of work to the l and r llsd objects
  * so that we can use standard ways of comparing the two.  so if the l object
@@ -1774,22 +1827,22 @@ int llsd_unescape_string( llsd_t * llsd )
 	return TRUE;
 }
 
-#define URL_ENCODED_CHAR( x ) ( ( (x >= 0x00) && (x <= 0x1F) ) || \
-								( (x >= 0x7F) && (x <= 0xFF) ) || \
-								( x == ' ' ) || \
+#define URL_ENCODED_CHAR( x ) ( ( x <= 0x1F ) || \
+								( x >= 0x7F ) || \
+								( x == ' '  ) || \
 								( x == '\'' ) || \
-								( x == '"' ) || \
-								( x == '<' ) || \
-								( x == '>' ) || \
-								( x == '%' ) || \
-								( x == '{' ) || \
-								( x == '}' ) || \
-								( x == '|' ) || \
+								( x == '"'  ) || \
+								( x == '<'  ) || \
+								( x == '>'  ) || \
+								( x == '%'  ) || \
+								( x == '{'  ) || \
+								( x == '}'  ) || \
+								( x == '|'  ) || \
 								( x == '\\' ) || \
-								( x == '^' ) || \
-								( x == '[' ) || \
-								( x == ']' ) || \
-								( x == '`' ) )
+								( x == '^'  ) || \
+								( x == '['  ) || \
+								( x == ']'  ) || \
+								( x == '`'  ) )
 
 static uint32_t llsd_escaped_uri_len( llsd_t * llsd )
 {
