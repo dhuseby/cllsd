@@ -24,6 +24,7 @@
 #include <math.h>
 #include <time.h>
 #include <sys/uio.h>
+#include <float.h>
 
 #include <cutil/debug.h>
 #include <cutil/macros.h>
@@ -473,16 +474,23 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 				{
 					llsd->binary_.enc_size = size;
 					llsd->binary_.enc = UT(CALLOC( size, sizeof(uint8_t) ));
-					llsd->binary_.dyn_enc = TRUE;
-					llsd->binary_.encoding = encoding;
 					MEMCPY( llsd->binary_.enc, p, size );
+					llsd->binary_.dyn_enc = TRUE;
+					llsd->binary_.data_size = 0;
+					llsd->binary_.data = NULL;
+					llsd->binary_.dyn_data = FALSE;
+					llsd->binary_.encoding = encoding;
 				}
 				else
 				{
+					llsd->binary_.enc_size = 0;
+					llsd->binary_.enc = NULL;
+					llsd->binary_.dyn_enc = FALSE;
 					llsd->binary_.data_size = size;
 					llsd->binary_.data = UT(CALLOC( size, sizeof(uint8_t) ));
-					llsd->binary_.dyn_data = TRUE;
 					MEMCPY( llsd->binary_.data, p, size );
+					llsd->binary_.dyn_data = TRUE;
+					llsd->binary_.encoding = LLSD_NONE;
 				}
 			}
 			va_end( args );
@@ -801,7 +809,8 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 			return TRUE;
 
 		case LLSD_REAL:
-			CHECK_RET_MSG( l->real_.v == r->real_.v, FALSE, "real mismatch\n" );
+			CHECK_RET_MSG( mem_len_cmp( llsd_as_string(l).str, llsd_as_string(l).str_len, llsd_as_string(r).str, llsd_as_string(r).str_len ), FALSE, "real mismatch\n" );
+
 			DEBUG( "%*sREAL (%f)\n", indent * 4, " ", l->real_.v );
 			return TRUE;
 
@@ -912,7 +921,10 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 				llsd_itr_get( r, itrr, &vr, &kr );
 				if ( !llsd_equal( vl, vr ) )
 				{
-					WARN("array_member mismatch\n")
+					WARN("%*sLEFT (%*s) (%s)\n", indent * 4, " ", llsd_as_string(vl).str_len, llsd_as_string(vl).str, llsd_get_type_string( llsd_get_type( vl ) ) );
+					WARN("%*sRIGHT (%*s) (%s)\n", indent * 4, " ", llsd_as_string(vr).str_len, llsd_as_string(vr).str, llsd_get_type_string( llsd_get_type( vr ) ) );
+
+					WARN("array_member mismatch\n");
 					return FALSE;
 				}
 			}
@@ -942,8 +954,8 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 
 				if ( !llsd_equal( vl, vr ) )
 				{
-					DEBUG("%*sLEFT (%*s)\n", indent * 4, " ", llsd_as_string(vl).str_len, llsd_as_string(vl).str );
-					DEBUG("%*sRIGHT (%*s)\n", indent * 4, " ", llsd_as_string(vr).str_len, llsd_as_string(vr).str );
+					WARN("%*sLEFT (%*s)\n", indent * 4, " ", llsd_as_string(vl).str_len, llsd_as_string(vl).str );
+					WARN("%*sRIGHT (%*s)\n", indent * 4, " ", llsd_as_string(vr).str_len, llsd_as_string(vr).str );
 
 					WARN( "map member mismatch\n" );
 					return FALSE;
@@ -1263,14 +1275,17 @@ llsd_string_t llsd_as_string( llsd_t * llsd )
 
 		case LLSD_BINARY:
 			/* encode binary if needed */
-			llsd_encode_binary( llsd, LLSD_BASE64 );
-			return (llsd_string_t){ .dyn_str = FALSE, 
-									.dyn_esc = FALSE,
-									.key_esc = FALSE,
-									.str_len = llsd->binary_.enc_size,
-									.str = llsd->binary_.enc,
-									.esc_len = 0,
-									.esc = NULL };
+			if ( llsd_encode_binary( llsd, LLSD_BASE64 ) )
+			{
+				return (llsd_string_t){ .dyn_str = FALSE, 
+										.dyn_esc = FALSE,
+										.key_esc = FALSE,
+										.str_len = llsd->binary_.enc_size,
+										.str = llsd->binary_.enc,
+										.esc_len = 0,
+										.esc = NULL };
+			}
+			return empty_string;
 	}
 }
 
@@ -1925,6 +1940,16 @@ int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding )
 
 	switch ( encoding )
 	{
+		case LLSD_NONE:
+			if ( llsd->binary_.data != NULL )
+			{
+				WARN( "LLSD_NONE encoding with non-null data buffer\n" );
+			}
+			if ( llsd->binary_.data_size > 0 )
+			{
+				WARN( "LLSD_NONE encoding with non-zero data size\n" );
+			}
+			return FALSE;
 		case LLSD_BASE16:
 			WARN( "base 16 encoding unimplemented\n" );
 			return FALSE;
@@ -1941,6 +1966,12 @@ int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding )
 						   llsd->binary_.enc,
 						   llsd->binary_.enc_size );
 			break;
+		case LLSD_BASE85:
+			WARN( "base 85 encoding unimplemented\n" );
+			return FALSE;
+		default:
+			WARN( "unknown binary encoding (%d)\n", (int)encoding );
+			return FALSE;
 	}
 
 	return TRUE;
@@ -1963,6 +1994,8 @@ static uint32_t llsd_decoded_binary_len( llsd_t * llsd )
 
 	switch ( llsd->binary_.encoding )
 	{
+		case LLSD_NONE:
+			break;
 		case LLSD_BASE16:
 			break;
 		case LLSD_BASE64:
@@ -1972,6 +2005,10 @@ static uint32_t llsd_decoded_binary_len( llsd_t * llsd )
 			if ( llsd->binary_.data[ size - 2 ] == '=' )
 				len--;
 			return len;
+		case LLSD_BASE85:
+			break;
+		default:
+			break;
 	}
 	return -1;
 }

@@ -131,7 +131,7 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 	llsd_t * key = NULL;
 	llsd_t * llsd = NULL;
 	llsd_t * container = NULL;
-	llsd_bin_enc_t enc = LLSD_BASE64;
+	llsd_bin_enc_t enc = LLSD_NONE;
 	llsd_type_t t;
 	int size = 0;
 
@@ -171,6 +171,8 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 			{
 				FAIL("failed to push binary on params stack\n");
 			}
+			/* make sure we grab the body of the node */
+			ctx->accept_data = TRUE;
 			return;
 		case LLSD_ARRAY:
 			/* try to get the size attribute if there is one */
@@ -725,38 +727,68 @@ size_t llsd_format_xml( llsd_t * llsd, FILE * fout, int pretty )
 		case LLSD_BINARY:
 			s = llsd_as_string( llsd );
 			num += indent_xml( pretty, fout );
-			num += llsd_write_xml_start_tag( t, fout, pretty, s.str_len );
-			p = llsd_get_bin_enc_type_string( llsd->binary_.encoding );
-			num += fwrite( p, sizeof(uint8_t), strlen(p), fout );
-			num += fwrite( lxstartc, sizeof(uint8_t), XML_SIZEC_LEN, fout );
-			num += fwrite( s.str, sizeof(uint8_t), s.str_len, fout );
-			num += llsd_write_xml_end_tag( t, fout, pretty );
+			if ( s.str_len == 0 )
+			{
+				/* write empty binary tag */
+				num += fwrite( "<binary />", sizeof(uint8_t), 10, fout );
+				if ( pretty )
+					num += fwrite( "\n", sizeof(uint8_t), 1, fout );
+			}
+			else
+			{
+				num += llsd_write_xml_start_tag( t, fout, pretty, s.str_len );
+				p = llsd_get_bin_enc_type_string( llsd->binary_.encoding );
+				num += fwrite( p, sizeof(uint8_t), strlen(p), fout );
+				num += fwrite( lxstartc, sizeof(uint8_t), XML_SIZEC_LEN, fout );
+				num += fwrite( s.str, sizeof(uint8_t), s.str_len, fout );
+				num += llsd_write_xml_end_tag( t, fout, pretty );
+			}
 			DEBUG( "%*s%s %lu - %lu\n", indent * 4, " ", llsd_get_type_string( t ), start, ftell( fout ) - 1 );
 			return num;
 
 		case LLSD_ARRAY:
 		case LLSD_MAP:
 			num += indent_xml( pretty, fout );
-			num += llsd_write_xml_start_tag( t, fout, pretty, llsd_get_size( llsd ) );
-			DEBUG( "%*s%s (%d)\n", indent * 4, " ", llsd_get_type_string( t ), llsd_get_size( llsd ) );
-			indent++;
-			itr = llsd_itr_begin( llsd );
-			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
+			if ( llsd_get_size( llsd ) == 0 )
 			{
-				llsd_itr_get( llsd, itr, &v, &k );
-				if ( k != NULL )
+				if ( t == LLSD_ARRAY )
 				{
-					s = llsd_as_string( k );
-					num += indent_xml( pretty, fout );
-					num += fwrite( lxkey, sizeof(uint8_t), XML_KEY_LEN, fout );
-					num += fwrite( s.str, sizeof(uint8_t), s.str_len, fout );
-					num += fwrite( lxkeyc, sizeof(uint8_t), XML_KEYC_LEN + (pretty ? 1 : 0), fout );
+					/* write empty array tag */
+					num += fwrite( "<array />", sizeof(uint8_t), 9, fout );
+					if ( pretty )
+						num += fwrite( "\n", sizeof(uint8_t), 1, fout );
 				}
-				num += llsd_format_xml( v, fout, pretty );
+				else
+				{
+					/* write empty map tag */
+					num += fwrite( "<map />", sizeof(uint8_t), 7, fout );
+					if ( pretty )
+						num += fwrite( "\n", sizeof(uint8_t), 1, fout );
+				}
 			}
-			indent--;
-			num += indent_xml( pretty, fout );
-			num += llsd_write_xml_end_tag( t, fout, pretty );
+			else
+			{
+				num += llsd_write_xml_start_tag( t, fout, pretty, llsd_get_size( llsd ) );
+				DEBUG( "%*s%s (%d)\n", indent * 4, " ", llsd_get_type_string( t ), llsd_get_size( llsd ) );
+				indent++;
+				itr = llsd_itr_begin( llsd );
+				for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
+				{
+					llsd_itr_get( llsd, itr, &v, &k );
+					if ( k != NULL )
+					{
+						s = llsd_as_string( k );
+						num += indent_xml( pretty, fout );
+						num += fwrite( lxkey, sizeof(uint8_t), XML_KEY_LEN, fout );
+						num += fwrite( s.str, sizeof(uint8_t), s.str_len, fout );
+						num += fwrite( lxkeyc, sizeof(uint8_t), XML_KEYC_LEN + (pretty ? 1 : 0), fout );
+					}
+					num += llsd_format_xml( v, fout, pretty );
+				}
+				indent--;
+				num += indent_xml( pretty, fout );
+				num += llsd_write_xml_end_tag( t, fout, pretty );
+			}
 			DEBUG( "%*s%s (%d) %lu - %lu\n", indent * 4, " ", llsd_get_type_string( t ), llsd_get_size( llsd ), start, ftell( fout ) - 1 );
 			break;
 	}
