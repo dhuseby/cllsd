@@ -49,8 +49,8 @@ static size_t expected_sizes[ LLSD_TYPE_COUNT ] =
 	50,		/* LLSD_DATE */
 	46,		/* LLSD_URI '<uri>' + 'http://ixquick.com' + '</uri>' */
 	72,		/* LLSD_BINARY '<binary>' + 'AQIDBAUGBwgJAAECAwQFBg==' + '</binary>' */
-	37,		/* LLSD_ARRAY '<array size="0">>' + '</array>' */
-	33		/* LLSD_MAP '<map size="0"> + '</map>' */
+	22,		/* LLSD_ARRAY '<array />' */
+	20		/* LLSD_MAP '<map />' */
 };
 
 static uint8_t const undef_[] = "<llsd><undef /></llsd>";
@@ -62,8 +62,8 @@ static uint8_t const string_[] = "<llsd><string>Hello World!</string></llsd>";
 static uint8_t const date_[] = "<llsd><date>1970-01-01T00:00:01.000Z</date></llsd>";
 static uint8_t const uri_[] = "<llsd><uri>http://www.ixquick.com</uri></llsd>";
 static uint8_t const binary_[] = "<llsd><binary encoding=\"base64\">AQIDBAUGBwgJAAECAwQFBg==</binary></llsd>";
-static uint8_t const array_[] = "<llsd><array size=\"0\"></array></llsd>";
-static uint8_t const map_[] = "<llsd><map size=\"0\"></map></llsd>";
+static uint8_t const array_[] = "<llsd><array /></llsd>";
+static uint8_t const map_[] = "<llsd><map /></llsd>";
 
 static uint8_t const * const expected_data[ LLSD_TYPE_COUNT ] =
 {

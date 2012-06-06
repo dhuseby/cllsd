@@ -593,38 +593,11 @@ static void test_random_serialize_zero_copy( void )
 	/*CU_ASSERT_EQUAL( heap_size, get_heap_size() );*/
 }
 
-static test_edge_cases( void )
-{
-	llsd_t * llsd_out = NULL;
-	llsd_t * llsd_in = NULL;
-	FILE* fin = NULL;
-	FILE* fout = NULL;
-
-	/* get the initial heap size */
-	/*size_t heap_size = get_heap_size();*/
-
-	/* read in the edge case llsd */
-	fin = fopen( "edge.llsd", "r+b" );
-	llsd_in = llsd_parse( fin );
-	fclose( fin );
-
-	/* dump the llsd in pretty format */
-	fout = fopen( "edge.out.llsd", "w+b" );
-	llsd_format( llsd_in, LLSD_ENC_XML, fout, TRUE );
-	fclose(fout);
-
-	llsd_delete( llsd_in );
-	llsd_in = NULL;
-
-	/*CU_ASSERT_EQUAL( heap_size, get_heap_size() );*/
-}
-
 static CU_pSuite add_tests( CU_pSuite pSuite )
 {
 	CHECK_PTR_RET( CU_add_test( pSuite, "new/delete of all types", test_newdel), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of all types", test_serialization), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd", test_random_serialize), NULL );
-	CHECK_PTR_RET( CU_add_test( pSuite, "XML edge cases llsd", test_edge_cases), NULL );
 	if ( format != LLSD_ENC_XML )
 		CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd zero copy", test_random_serialize_zero_copy), NULL );
 	return pSuite;

@@ -121,6 +121,7 @@ typedef struct context_s
 	size_t len;
 	int indent;
 	int accept_data;
+	llsd_type_t last_type;
 	llsd_t * result;
 } context_t;
 
@@ -140,6 +141,7 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 
 	/* get the type */
 	t = llsd_type_from_tag( el );
+	ctx->last_type = t;
 
 	switch( t )
 	{
@@ -246,12 +248,14 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 
 static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 {
+	int8_t buf[256];
+	int8_t tmpbuf[256];
 	context_t * ctx = (context_t*)data;
 	llsd_t * container = (llsd_t*)array_get_tail( ctx->containers );
 	llsd_t * key = NULL;
 	llsd_t * llsd = NULL;
 	int32_t v1 = 0;
-	double v2 = 0;
+	double v2 = 0.0;
 	int size = 0;
 	llsd_bin_enc_t enc;
 	llsd_type_t t;
@@ -263,7 +267,15 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 	t = llsd_type_from_tag( el );
 
 	if ( t == LLSD_LLSD )
+	{
+		if ( ctx->buf != NULL )
+			FREE( ctx->buf );
+		ctx->buf = NULL;
+		ctx->len = 0;
+		ASSERT( ctx->buf == NULL );
+		ASSERT( ctx->len == 0 );
 		return;
+	}
 
 	switch( t )
 	{
@@ -283,6 +295,8 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			ctx->buf = NULL;
 			ctx->len = 0;
 			DEBUG( "%*sKEY (%s)\n", ctx->indent * 4, " ", llsd->string_.str );
+			ASSERT( ctx->buf == NULL );
+			ASSERT( ctx->len == 0 );
 			return;
 		case LLSD_UNDEF:
 			llsd = llsd_new( LLSD_UNDEF );
@@ -317,15 +331,34 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			break;
 		case LLSD_INTEGER:
 			ASSERT( ctx->buf != NULL );
-			v1 = atoi( ctx->buf );
+			MEMSET( buf, 0, 256 );
+			MEMCPY( buf, ctx->buf, ctx->len );
+			buf[ctx->len] == '\0';
+			v1 = atoi( buf );
 			llsd = llsd_new_integer( v1 );
 			DEBUG( "%*sINTEGER (%d)\n", ctx->indent * 4, " ", llsd->int_.v );
 			break;
 		case LLSD_REAL:
 			ASSERT( ctx->buf != NULL );
-			v2 = strtod( ctx->buf, NULL );
+			MEMSET( buf, 0, 256 );
+			MEMCPY( buf, ctx->buf, ctx->len );
+			v2 = atof( ctx->buf );
 			llsd = llsd_new_real( v2 );
-			DEBUG( "%*sREAL (%f)\n", ctx->indent * 4, " ", llsd->real_.v );
+#if 0
+			if ( v2 != llsd->real_.v )
+			{
+				WARN("F: %f != %f\n", v2, llsd->real_.v );
+			}
+#endif
+
+			/*snprintf( tmpbuf, 256, "%f", llsd->real_.v );*/
+			MEMSET( tmpbuf, 0, 256 );
+			snprintf( tmpbuf, 256, "%f", v2 );
+			if ( strncmp( buf, tmpbuf, 256 ) != 0 )
+			{
+				WARN("S: %s != %s\n", buf, tmpbuf );
+			}
+			DEBUG( "%*sREAL [%f](%f)\n", ctx->indent * 4, " ", v2, llsd->real_.v );
 			break;
 		case LLSD_UUID:
 			ASSERT( ctx->buf != NULL );
@@ -468,7 +501,7 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 
 static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len )
 {
-	llsd_type_t type_;
+	int i;
 	context_t * ctx = (context_t*)data;
 	CHECK_PTR( s );
 	CHECK( len > 0 );
@@ -476,6 +509,18 @@ static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len 
 	/* don't accept any data if we're not in the middle of a node with data */
 	if ( ctx->accept_data == FALSE )
 		return;
+
+#if 0
+	if ( ctx->last_type == LLSD_REAL )
+	{
+		WARN("%s: (%d)", llsd_get_type_string( ctx->last_type ), len );
+		for ( i = 0; i < len; i++ )
+		{
+			fprintf(stderr, "%c", s[i] );
+		}
+		fprintf(stderr, "\n");
+	}
+#endif
 
 	/* copy the node data into the context buffer */
 	if ( ctx->buf != NULL )
