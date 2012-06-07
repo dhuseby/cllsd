@@ -248,8 +248,6 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 
 static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 {
-	int8_t buf[256];
-	int8_t tmpbuf[256];
 	context_t * ctx = (context_t*)data;
 	llsd_t * container = (llsd_t*)array_get_tail( ctx->containers );
 	llsd_t * key = NULL;
@@ -331,33 +329,14 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			break;
 		case LLSD_INTEGER:
 			ASSERT( ctx->buf != NULL );
-			MEMSET( buf, 0, 256 );
-			MEMCPY( buf, ctx->buf, ctx->len );
-			buf[ctx->len] == '\0';
-			v1 = atoi( buf );
+			v1 = atoi( ctx->buf );
 			llsd = llsd_new_integer( v1 );
 			DEBUG( "%*sINTEGER (%d)\n", ctx->indent * 4, " ", llsd->int_.v );
 			break;
 		case LLSD_REAL:
 			ASSERT( ctx->buf != NULL );
-			MEMSET( buf, 0, 256 );
-			MEMCPY( buf, ctx->buf, ctx->len );
 			v2 = atof( ctx->buf );
 			llsd = llsd_new_real( v2 );
-#if 0
-			if ( v2 != llsd->real_.v )
-			{
-				WARN("F: %f != %f\n", v2, llsd->real_.v );
-			}
-#endif
-
-			/*snprintf( tmpbuf, 256, "%f", llsd->real_.v );*/
-			MEMSET( tmpbuf, 0, 256 );
-			snprintf( tmpbuf, 256, "%f", v2 );
-			if ( strncmp( buf, tmpbuf, 256 ) != 0 )
-			{
-				WARN("S: %s != %s\n", buf, tmpbuf );
-			}
 			DEBUG( "%*sREAL [%f](%f)\n", ctx->indent * 4, " ", v2, llsd->real_.v );
 			break;
 		case LLSD_UUID:
@@ -510,32 +489,23 @@ static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len 
 	if ( ctx->accept_data == FALSE )
 		return;
 
-#if 0
-	if ( ctx->last_type == LLSD_REAL )
-	{
-		WARN("%s: (%d)", llsd_get_type_string( ctx->last_type ), len );
-		for ( i = 0; i < len; i++ )
-		{
-			fprintf(stderr, "%c", s[i] );
-		}
-		fprintf(stderr, "\n");
-	}
-#endif
-
 	/* copy the node data into the context buffer */
 	if ( ctx->buf != NULL )
 	{
-		ctx->buf = REALLOC( ctx->buf, ctx->len + len );
+		ctx->buf = REALLOC( ctx->buf, ctx->len + len + 1 );
 		ASSERT( ctx->buf != NULL );
 		MEMCPY( &(ctx->buf[ctx->len]), s, len );
 		ctx->len += len;
+		ctx->buf[ctx->len] = '\0';
 	}
 	else
 	{
-		ctx->buf = CALLOC( len, sizeof(uint8_t) );
+		/* make sure the buffer is null terminated */
+		ctx->buf = CALLOC( len + 1, sizeof(uint8_t) );
 		ASSERT( ctx->buf );
 		MEMCPY( ctx->buf, s, len );
 		ctx->len = len;
+		ctx->buf[ctx->len] = '\0';
 	}
 }
 

@@ -476,17 +476,6 @@ static void test_serialization( void )
 	FREE(buf);
 }
 
-#if 0
-static void test_parse( void )
-{
-	llsd_t * llsd_tmp = NULL;
-	tmpf = fopen( "test.llsd", "r+b" );
-	llsd_tmp = llsd_parse( tmpf );
-	fclose( tmpf );
-	llsd_delete( llsd_tmp );
-}
-#endif
-
 static void test_random_serialize( void )
 {
 	const uint32_t seed = 0xDEADBEEF;
@@ -510,11 +499,6 @@ static void test_random_serialize( void )
 	fclose( tmpf );
 	tmpf = NULL;
 
-	/* dump the llsd in pretty format */
-	fout = fopen( "out.llsd.xml", "w+b" );
-	llsd_format( llsd_out, LLSD_ENC_XML, fout, TRUE );
-	fclose(fout);
-
 	tmpf = fopen( "test.llsd", "r+b" );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
@@ -523,19 +507,8 @@ static void test_random_serialize( void )
 	fclose( tmpf );
 	tmpf = NULL;
 
-	/* dump the llsd in pretty format */
-	fin = fopen( "in.llsd.xml", "w+b" );
-	llsd_format( llsd_in, LLSD_ENC_XML, fin, TRUE );
-	fclose( fin );
-
 	/* make sure the two llsd structures are equivilent */
 	CU_ASSERT_FATAL( llsd_equal( llsd_out, llsd_in ) );
-	/*
-	if ( !llsd_equal( llsd_out, llsd_in ) )
-	{
-		test_parse();
-	}
-	*/
 
 	llsd_delete( llsd_out );
 	llsd_out = NULL;
