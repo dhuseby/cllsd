@@ -4,8 +4,12 @@ syntax: glob
 *.a
 .*.swp
 .sconsign.dblite
-test/test_all
-test/test.llsd
+tests/test_all
+tests/test.llsd
 src/cllsd
 src/include
 src/lib
+*.gcno
+*.gcda
+src/cutil.info
+src/cllsd.info
