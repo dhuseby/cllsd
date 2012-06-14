@@ -663,16 +663,21 @@ void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data )
 
 llsd_t * llsd_map_find_llsd( llsd_t * map, llsd_t * key )
 {
+	ht_itr_t itr;
 	CHECK_PTR_RET( map, NULL );
 	CHECK_PTR_RET( key, NULL );
 	CHECK_MSG( llsd_get_type(map) == LLSD_MAP, "trying to insert k-v-p into non map\n" );
 	CHECK_MSG( llsd_get_type(key) == LLSD_STRING, "trying to use non-string as key\n" );
-	return ht_find( &(map->map_.ht), (void*)key );
+	
+	itr = ht_find( &(map->map_.ht), (void*)key );
+	CHECK_RET_MSG( itr != ht_itr_end( &(map->map_.ht) ), NULL, "failed to find key\n" );
+	return (llsd_t*)ht_itr_get( &(map->map_.ht), itr, NULL );
 }
 
 llsd_t * llsd_map_find( llsd_t * map, int8_t const * const key )
 {
 	llsd_t t;
+	ht_itr_t itr;
 	CHECK_PTR_RET( map, NULL );
 	CHECK_PTR_RET( key, NULL );
 	CHECK_MSG( llsd_get_type(map) == LLSD_MAP, "trying to insert k-v-p into non map\n" );
@@ -681,7 +686,13 @@ llsd_t * llsd_map_find( llsd_t * map, int8_t const * const key )
 	memset( &t, 0, sizeof( llsd_t ) );
 	llsd_initialize( &t, LLSD_STRING, key, strlen( key ), FALSE, FALSE );
 
-	return ht_find( &(map->map_.ht), (void*)&t );
+	itr = ht_find( &(map->map_.ht), (void*)&t );
+
+	/* free up the memory */
+	llsd_deinitialize( &t );
+
+	CHECK_RET_MSG( itr != ht_itr_end( &(map->map_.ht) ), NULL, "failed to find key\n" );
+	return (llsd_t*)ht_itr_get( &(map->map_.ht), itr, NULL );
 }
 
 llsd_itr_t llsd_itr_begin( llsd_t * llsd )
