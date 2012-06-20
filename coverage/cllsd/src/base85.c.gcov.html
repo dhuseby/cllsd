@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-06-19</td>
+            <td class="headerValue">2012-06-20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -208,7 +208,7 @@
 <span class="lineNum">     136 </span>                :            : 
 <span class="lineNum">     137 </span>                :<span class="lineCov">         70 :         MEMSET( buf, 0, (5 * sizeof(uint8_t)) );</span>
 <span class="lineNum">     138 </span>                :<span class="lineCov">         70 :         ret = encode_quintet( &amp;(in[i]), ilen, buf );</span>
-<span class="lineNum">     139 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 70 times"> + </span>]:<span class="lineCov">         70 :         CHECK( ret != -1 );</span>
+<span class="lineNum">     139 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 70 times"> + </span>]:<span class="lineCov">         70 :         CHECK_RET( ret != -1, FALSE );</span>
 <span class="lineNum">     140 </span>                :            : 
 <span class="lineNum">     141 </span>                :            :         /* copy the bytes over */
 <span class="lineNum">     142 </span>                :<span class="lineCov">         70 :         MEMCPY( &amp;(out[o]), buf, ret );</span>

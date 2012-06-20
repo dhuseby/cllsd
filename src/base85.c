@@ -136,7 +136,7 @@ int base85_encode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t *
 
 		MEMSET( buf, 0, (5 * sizeof(uint8_t)) );
 		ret = encode_quintet( &(in[i]), ilen, buf );
-		CHECK( ret != -1 );
+		CHECK_RET( ret != -1, FALSE );
 
 		/* copy the bytes over */
 		MEMCPY( &(out[o]), buf, ret );
