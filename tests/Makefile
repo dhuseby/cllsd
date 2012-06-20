@@ -5,7 +5,7 @@
 CUTIL_ROOT?=../cutil/src
 
 SHELL=/bin/sh
-SRC=test_all.c test_binary.c test_xml.c
+SRC=test_all.c test_base16.c test_base64.c test_base85.c test_binary.c test_xml.c
 OBJ=$(SRC:.c=.o)
 GCDA=$(SRC:.c=.gcda)
 GCNO=$(SRC:.c=.gcno)

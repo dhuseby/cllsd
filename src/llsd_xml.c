@@ -91,28 +91,6 @@ static llsd_type_t llsd_type_from_tag( char const * tag )
 	return LLSD_TYPE_INVALID;
 }
 
-static void print_stack( array_t * arr )
-{
-	array_itr_t f;
-	array_itr_t r;
-
-	f = array_itr_begin( arr );
-	DEBUG("F:");
-	for ( ; f != array_itr_end( arr ); f = array_itr_next( arr, f ) )
-	{
-		LOG(" %s", llsd_get_type_string( llsd_get_type( (llsd_t*)array_itr_get(arr, f) ) ) );
-	}
-	LOG("\n");
-
-	r = array_itr_rbegin( arr );
-	DEBUG("R:");
-	for ( ; r != array_itr_rend( arr ); r = array_itr_rnext( arr, r ) )
-	{
-		LOG(" %s", llsd_get_type_string( llsd_get_type( (llsd_t*)array_itr_get(arr, r) ) ) );
-	}
-	LOG("\n");
-}
-
 typedef struct context_s
 {
 	array_t * containers;
@@ -218,7 +196,8 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 			{
 				FAIL("not a key on top of stack\n");
 			}
-			key = (llsd_t*)array_pop_tail( ctx->params );
+			key = (llsd_t*)array_get_tail( ctx->params );
+			array_pop_tail( ctx->params );
 
 			/* add the new map to the current one */
 			if ( llsd_get_type( key ) != LLSD_STRING )
@@ -394,7 +373,8 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			{
 				FAIL("binary not on top of stack\n");
 			}
-			llsd = (llsd_t*)array_pop_tail( ctx->params );
+			llsd = (llsd_t*)array_get_tail( ctx->params );
+			array_pop_tail( ctx->params );
 			if ( ctx->buf != NULL )
 			{
 				/* take ownership of the encoded binary str */
@@ -424,7 +404,8 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			{
 				FAIL("not correct container on top of containers stack\n");
 			}
-			llsd = (llsd_t*)array_pop_tail( ctx->containers );
+			llsd = (llsd_t*)array_get_tail( ctx->containers );
+			array_pop_tail( ctx->containers );
 			DEBUG( "%*s%s (%d)\n", ctx->indent * 4, " ", llsd_get_type_string( t ), llsd_get_size(llsd) );
 			CHECK_MSG( ctx->buf == NULL, "context buffer has data when it shouldn't\n" );
 
@@ -449,7 +430,8 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			{
 				FAIL("a key is not on top of the stack\n" );
 			}
-			key = (llsd_t*)array_pop_tail( ctx->params );
+			key = (llsd_t*)array_get_tail( ctx->params );
+			array_pop_tail( ctx->params );
 			if ( llsd_get_type( key ) != LLSD_STRING )
 			{
 				FAIL("trying to use non-string key\n");
@@ -813,13 +795,13 @@ size_t llsd_format_xml( llsd_t * llsd, FILE * fout, int pretty )
 
 size_t llsd_get_xml_zero_copy_size( llsd_t * llsd, int pretty )
 {
-	FAIL( "XML serialization doesn't support zero copy\n" );
+	DEBUG( "XML serialization doesn't support zero copy\n" );
 	return 0;
 }
 
 size_t llsd_format_xml_zero_copy( llsd_t * llsd, struct iovec * v, int pretty )
 {
-	FAIL( "XML serialization doesn't support zero copy\n" );
+	DEBUG( "XML serialization doesn't support zero copy\n" );
 	return 0;
 }
 

@@ -32,8 +32,6 @@
 #include <llsd_util.h>
 #include <llsd_xml.h>
 
-#include "test_xml.h"
-
 /* offset of first by after header */
 static size_t const data_offset = 38;
 

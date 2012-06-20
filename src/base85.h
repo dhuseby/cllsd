@@ -14,11 +14,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef __TEST_XML__
-#define __TEST_XML__
+#ifndef __BASE85_H__
+#define __BASE85_H__
 
-/* adds the suite of xml tests to the CUnit registry */
-CU_pSuite add_xml_test_suite();
+#include <stdint.h>
 
-#endif//__TEST_XML__
+/* This uses that the expression (n+(k-1))/k means the smallest
+   integer >= n/k, i.e., the ceiling of n/k.  */
+#define BASE85_LENGTH(inlen) ((((inlen) + 3) / 4) * 5)
+
+int base85_encode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen);
+int base85_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen);
+uint32_t base85_decoded_len( uint8_t const * in, uint32_t inlen );
+
+#endif/*__BASE85_H__*/
 

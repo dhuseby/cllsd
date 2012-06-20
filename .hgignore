@@ -6,6 +6,7 @@ syntax: glob
 .sconsign.dblite
 tests/test_all
 tests/test.llsd
+tests/testzc.llsd
 src/cllsd
 src/include
 src/lib

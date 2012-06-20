@@ -19,6 +19,9 @@
  * deserializer functions are specified when the suites are initialized.
  */
 
+#include <stdio.h>
+#include <errno.h>
+
 extern FILE* tmpf;
 extern llsd_serializer_t format;
 
@@ -541,27 +544,45 @@ static void test_random_serialize_zero_copy( void )
 	/* get the zero copy list of iovec structs */
 	s = llsd_format_zero_copy( llsd_out, format, &iov, TRUE );
 
-	/* use gather write to write to file */
-	ret = writev( fileno( tmpf ), iov, s );
-	fclose( tmpf );
-	tmpf = NULL;
+	if ( format == LLSD_ENC_XML )
+	{
+		CU_ASSERT_EQUAL( s, 3 );
+	}
+	else
+	{
+		/* use gather write to write to file */
+		ret = writev( fileno( tmpf ), iov, s );
+		if ( ret == -1 )
+		{
+			perror(NULL);
+			fclose(tmpf);
+			tmpf = NULL;
+			llsd_delete( llsd_out );
+			llsd_out = NULL;
+			return;
+		}
+		CU_ASSERT_NOT_EQUAL( ret, -1 );
+		fclose( tmpf );
+		tmpf = NULL;
 
-	tmpf = fopen( "testzc.llsd", "r+b" );
-	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
+		tmpf = fopen( "testzc.llsd", "r+b" );
+		CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
-	llsd_in = llsd_parse( tmpf );
-	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_in );
+		llsd_in = llsd_parse( tmpf );
+		CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_in );
 
-	fclose( tmpf );
-	tmpf = NULL;
+		fclose( tmpf );
+		tmpf = NULL;
 
-	/* make sure the two llsd structures are equivilent */
-	CU_ASSERT( llsd_equal( llsd_out, llsd_in ) );
+		/* make sure the two llsd structures are equivilent */
+		CU_ASSERT( llsd_equal( llsd_out, llsd_in ) );
+
+		llsd_delete( llsd_in );
+		llsd_in = NULL;
+	}
 
 	llsd_delete( llsd_out );
 	llsd_out = NULL;
-	llsd_delete( llsd_in );
-	llsd_in = NULL;
 
 	/*CU_ASSERT_EQUAL( heap_size, get_heap_size() );*/
 }
@@ -571,8 +592,11 @@ static CU_pSuite add_tests( CU_pSuite pSuite )
 	CHECK_PTR_RET( CU_add_test( pSuite, "new/delete of all types", test_newdel), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of all types", test_serialization), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd", test_random_serialize), NULL );
+	CHECK_PTR_RET( CU_add_test( pSuite, "zero copy serialization of random llsd", test_random_serialize_zero_copy), NULL );
+	/*
 	if ( format != LLSD_ENC_XML )
 		CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd zero copy", test_random_serialize_zero_copy), NULL );
+	*/
 	return pSuite;
 }
 

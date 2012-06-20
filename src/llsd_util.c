@@ -34,7 +34,9 @@
 #include "llsd_util.h"
 #include "llsd_binary.h"
 #include "llsd_xml.h"
+#include "base16.h"
 #include "base64.h"
+#include "base85.h"
 
 #if defined(MISSING_STRNLEN)
 /* provide our own strnlen if the system doesn't */
@@ -1962,8 +1964,18 @@ int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding )
 			}
 			return FALSE;
 		case LLSD_BASE16:
-			WARN( "base 16 encoding unimplemented\n" );
-			return FALSE;
+			/* allocate enc buffer */
+			llsd->binary_.enc_size = BASE16_LENGTH( llsd->binary_.data_size );
+			llsd->binary_.enc = UT(CALLOC( llsd->binary_.enc_size, sizeof(uint8_t) ));
+			llsd->binary_.dyn_enc = TRUE;
+			llsd->binary_.encoding = LLSD_BASE16;
+
+			/* encode the data */
+			base16_encode( llsd->binary_.data,
+						   llsd->binary_.data_size,
+						   llsd->binary_.enc,
+						   &(llsd->binary_.enc_size) );
+			break;
 		case LLSD_BASE64:
 			/* allocate enc buffer */
 			llsd->binary_.enc_size = BASE64_LENGTH( llsd->binary_.data_size );
@@ -1975,11 +1987,21 @@ int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding )
 			base64_encode( llsd->binary_.data,
 						   llsd->binary_.data_size,
 						   llsd->binary_.enc,
-						   llsd->binary_.enc_size );
+						   &(llsd->binary_.enc_size) );
 			break;
 		case LLSD_BASE85:
-			WARN( "base 85 encoding unimplemented\n" );
-			return FALSE;
+			/* allocate enc buffer */
+			llsd->binary_.enc_size = BASE85_LENGTH( llsd->binary_.data_size );
+			llsd->binary_.enc = UT(CALLOC( llsd->binary_.enc_size, sizeof(uint8_t) ));
+			llsd->binary_.dyn_enc = TRUE;
+			llsd->binary_.encoding = LLSD_BASE85;
+
+			/* encode the data */
+			base85_encode( llsd->binary_.data,
+						   llsd->binary_.data_size,
+						   llsd->binary_.enc,
+						   &(llsd->binary_.enc_size) );
+			break;
 		default:
 			WARN( "unknown binary encoding (%d)\n", (int)encoding );
 			return FALSE;
@@ -1993,35 +2015,26 @@ int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding )
  Dividing before multiplying avoids the possibility of overflow.  */
 static uint32_t llsd_decoded_binary_len( llsd_t * llsd )
 {
-	uint32_t len = 0;
-	uint32_t size = 0;
 	CHECK_PTR_RET( llsd, -1 );
 	CHECK_RET( (llsd->type_ == LLSD_BINARY), -1 );
 	CHECK_RET( (llsd->binary_.enc_size != 0), -1 );
 	CHECK_PTR_RET( llsd->binary_.enc, -1 );
 	CHECK_RET( ((llsd->binary_.encoding >= LLSD_BIN_ENC_FIRST) && (llsd->binary_.encoding < LLSD_BIN_ENC_LAST)), -1 );
 
-	size = llsd->binary_.data_size;
-
 	switch ( llsd->binary_.encoding )
 	{
 		case LLSD_NONE:
 			break;
 		case LLSD_BASE16:
-			break;
+			return base16_decoded_len( llsd->binary_.data, llsd->binary_.data_size );
 		case LLSD_BASE64:
-			len = 3 * (size / 4) + 2;
-			if ( llsd->binary_.data[ size - 1 ] == '=' )
-				len--;
-			if ( llsd->binary_.data[ size - 2 ] == '=' )
-				len--;
-			return len;
+			return base64_decoded_len( llsd->binary_.data, llsd->binary_.data_size );
 		case LLSD_BASE85:
-			break;
+			return base85_decoded_len( llsd->binary_.data, llsd->binary_.data_size );
 		default:
 			break;
 	}
-	return -1;
+	return 0;
 }
 
 int llsd_decode_binary( llsd_t * llsd )
@@ -2034,28 +2047,46 @@ int llsd_decode_binary( llsd_t * llsd )
 	CHECK_RET( (llsd->binary_.enc_size != 0), FALSE );
 	CHECK_PTR_RET( llsd->binary_.enc, FALSE );
 	CHECK_RET( ((llsd->binary_.encoding >= LLSD_BIN_ENC_FIRST) && (llsd->binary_.encoding < LLSD_BIN_ENC_LAST)), FALSE );
+	
+	/* figure out the size of the needed buffer */
+	size = llsd_decoded_binary_len( llsd );
+	CHECK_RET( (size > -1), FALSE );
+
+	/* allocate the data buffer */
+	llsd->binary_.data = UT(CALLOC( size, sizeof(uint8_t) ));
+	llsd->binary_.dyn_data = TRUE;
 
 	switch ( llsd->binary_.encoding )
 	{
-		case LLSD_BASE16:
+		case LLSD_NONE:
 			break;
+
+		case LLSD_BASE16:
+			/* decode the base16 data */
+			base16_decode( llsd->binary_.enc,
+						   llsd->binary_.enc_size,
+						   llsd->binary_.data,
+						   &(llsd->binary_.data_size) );
+			break;
+
 		case LLSD_BASE64:
-			/* figure out the size of the needed buffer */
-			size = llsd_decoded_binary_len( llsd );
-			CHECK_RET( (size > -1), FALSE );
-
-			/* allocate the data buffer */
-			llsd->binary_.data = UT(CALLOC( size, sizeof(uint8_t) ));
-			llsd->binary_.dyn_data = TRUE;
-
 			/* decode the base64 data */
 			base64_decode( llsd->binary_.enc,
 						   llsd->binary_.enc_size,
 						   llsd->binary_.data,
 						   &(llsd->binary_.data_size) );
-			CHECK_RET( (llsd->binary_.data_size == size), FALSE );
+			break;
+
+		case LLSD_BASE85:
+			/* decode the base64 data */
+			base85_decode( llsd->binary_.enc,
+						   llsd->binary_.enc_size,
+						   llsd->binary_.data,
+						   &(llsd->binary_.data_size) );
 			break;
 	}
+	
+	CHECK_RET( (llsd->binary_.data_size == size), FALSE );
 
 	return TRUE;
 }

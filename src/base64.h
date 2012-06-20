@@ -17,19 +17,17 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
 
 #ifndef BASE64_H
-# define BASE64_H
+#define BASE64_H
 
 /* Get uint32_t */
-# include <stdint.h>
+#include <stdint.h>
 
 /* This uses that the expression (n+(k-1))/k means the smallest
    integer >= n/k, i.e., the ceiling of n/k.  */
-# define BASE64_LENGTH(inlen) ((((inlen) + 2) / 3) * 4)
+#define BASE64_LENGTH(inlen) ((((inlen) + 2) / 3) * 4)
 
-int isbase64 (char ch);
-void base64_encode (const char * in, uint32_t inlen, char * out, uint32_t outlen);
-uint32_t base64_encode_alloc (const char *in, uint32_t inlen, char **out);
-int base64_decode (const char * in, uint32_t inlen, char * out, uint32_t *outlen);
-int base64_decode_alloc (const char *in, uint32_t inlen, char **out, uint32_t *outlen);
+int base64_encode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen);
+int base64_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen);
+uint32_t base64_decoded_len( uint8_t const * in, uint32_t inlen );
 
 #endif /* BASE64_H */

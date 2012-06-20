@@ -29,22 +29,37 @@
 
 #include <cllsd/llsd.h>
 
-#include "test_binary.h"
-#include "test_xml.h"
+#define SUITE(x) extern CU_pSuite add_##x##_test_suite();
+#define SUITE_VAR(x) CU_pSuite x##_test_suite;
+#define ADD_SUITE(x) x##_test_suite = add_##x##_test_suite();
+
+SUITE( base16 );
+SUITE( base64 );
+SUITE( base85 );
+SUITE( binary );
+SUITE( notation );
+SUITE( xml );
 
 int main()
 {
-	CU_pSuite binary_test_suite;
-	CU_pSuite notation_test_suite;
-	CU_pSuite xml_test_suite;
+	SUITE_VAR( base16 );
+	SUITE_VAR( base64 );
+	SUITE_VAR( base85 );
+	SUITE_VAR( binary );
+	SUITE_VAR( notation );
+	SUITE_VAR( xml );
 
 	/* initialize the CUnit test registry */
 	if ( CUE_SUCCESS != CU_initialize_registry() )
 		return CU_get_error();
 
 	/* add each suite of tests */
-	binary_test_suite = add_binary_test_suite();
-	xml_test_suite = add_xml_test_suite();
+	ADD_SUITE( base16 );
+	ADD_SUITE( base64 );
+	ADD_SUITE( base85 );
+	ADD_SUITE( binary );
+	/*ADD_SUITE( notation );*/
+	ADD_SUITE( xml );
 
 	/* run all tests using the CUnit Basic interface */
 	CU_basic_set_mode( CU_BRM_VERBOSE );

@@ -14,11 +14,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef __TEST_BINARY__
-#define __TEST_BINARY__
+#ifndef __BASE16_H__
+#define __BASE16_H__
 
-/* adds the suite of binary tests to the CUnit registry */
-CU_pSuite add_binary_test_suite();
+#include <stdint.h>
 
-#endif//__TEST_BINARY__
+#define BASE16_LENGTH(x) (x * 2)
+
+int base16_encode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen);
+int base16_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen);
+uint32_t base16_decoded_len( uint8_t const * in, uint32_t inlen );
+
+#endif/*__BASE16_H__*/
 

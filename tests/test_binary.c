@@ -32,8 +32,6 @@
 #include <llsd_util.h>
 #include <llsd_binary.h>
 
-#include "test_binary.h"
-
 /* offset of first by after header */
 static size_t const data_offset = 18;
 

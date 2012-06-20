@@ -60,37 +60,56 @@ to_uchar (char ch)
   return ch;
 }
 
+uint32_t base64_decoded_len( uint8_t const * in, uint32_t inlen )
+{
+	uint32_t len = 0;
+	CHECK_PTR_RET( in, 0 );
+	
+	len = 3 * (inlen / 4) + 2;
+	if ( in[ inlen - 1 ] == '=' )
+		len--;
+	if ( in[ inlen - 2 ] == '=' )
+		len--;
+	return len;
+}
+
 /* Base64 encode IN array of size INLEN into OUT array of size OUTLEN.
    If OUTLEN is less than BASE64_LENGTH(INLEN), write as many bytes as
    possible.  If OUTLEN is larger than BASE64_LENGTH(INLEN), also zero
    terminate the output buffer. */
-void
-base64_encode (const char * in, uint32_t inlen,
-		   char * out, uint32_t outlen)
+int
+base64_encode (uint8_t const * in, uint32_t inlen,
+		   uint8_t * out, uint32_t * outlen)
 {
+  uint32_t olen;
   static const char b64str[64] =
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-  while (inlen && outlen)
+  CHECK_PTR_RET( in, FALSE );
+  CHECK_PTR_RET( outlen, FALSE );
+
+  olen = *(outlen);
+
+  while (inlen && olen)
 	{
-	  *out++ = b64str[(to_uchar (in[0]) >> 2) & 0x3f];
-	  if (!--outlen)
+	  *out++ = b64str[(in[0] >> 2) & 0x3f];
+	  if (!--olen)
 	break;
-	  *out++ = b64str[((to_uchar (in[0]) << 4)
-			   + (--inlen ? to_uchar (in[1]) >> 4 : 0))
+	  *out++ = b64str[((in[0] << 4)
+			   + (--inlen ? in[1] >> 4 : 0))
 			  & 0x3f];
-	  if (!--outlen)
+	  if (!--olen)
 	break;
 	  *out++ =
 	(inlen
-	 ? b64str[((to_uchar (in[1]) << 2)
-		   + (--inlen ? to_uchar (in[2]) >> 6 : 0))
+	 ? b64str[((in[1] << 2)
+		   + (--inlen ? in[2] >> 6 : 0))
 		  & 0x3f]
 	 : '=');
-	  if (!--outlen)
+	  if (!--olen)
 	break;
-	  *out++ = inlen ? b64str[to_uchar (in[2]) & 0x3f] : '=';
-	  if (!--outlen)
+	  *out++ = inlen ? b64str[in[2] & 0x3f] : '=';
+	  if (!--olen)
 	break;
 	  if (inlen)
 	inlen--;
@@ -98,8 +117,10 @@ base64_encode (const char * in, uint32_t inlen,
 	in += 3;
 	}
 
-  if (outlen)
+  if (olen)
 	*out = '\0';
+
+  return TRUE;
 }
 
 /* Allocate a buffer and store zero terminated base64 encoded data
@@ -296,9 +317,9 @@ static const signed char b64[0x100] = {
    FALSE otherwise.  Note that '=' is padding and not considered to be
    part of the alphabet.  */
 int
-isbase64 (char ch)
+isbase64 (uint8_t ch)
 {
-  return uchar_in_range (to_uchar (ch)) && 0 <= b64[to_uchar (ch)];
+  return uchar_in_range ( ch ) && 0 <= b64[ ch ];
 }
 
 /* Decode base64 encoded input array IN of length INLEN to output
@@ -311,8 +332,8 @@ isbase64 (char ch)
    that, when applicable, you must remove any line terminators that is
    part of the data stream before calling this function.  */
 int
-base64_decode (const char * in, uint32_t inlen,
-		   char * out, uint32_t *outlen)
+base64_decode (uint8_t const * in, uint32_t inlen,
+		   uint8_t * out, uint32_t *outlen)
 {
   uint32_t outleft = *outlen;
 
@@ -323,8 +344,8 @@ base64_decode (const char * in, uint32_t inlen,
 
 	  if (outleft)
 	{
-	  *out++ = ((b64[to_uchar (in[0])] << 2)
-			| (b64[to_uchar (in[1])] >> 4));
+	  *out++ = ((b64[ in[0] ] << 2)
+			| (b64[ in[1] ] >> 4));
 	  outleft--;
 	}
 
@@ -347,8 +368,8 @@ base64_decode (const char * in, uint32_t inlen,
 
 	  if (outleft)
 		{
-		  *out++ = (((b64[to_uchar (in[1])] << 4) & 0xf0)
-			| (b64[to_uchar (in[2])] >> 2));
+		  *out++ = (((b64[ in[1] ] << 4) & 0xf0)
+			| (b64[ in[2] ] >> 2));
 		  outleft--;
 		}
 
@@ -367,8 +388,8 @@ base64_decode (const char * in, uint32_t inlen,
 
 		  if (outleft)
 		{
-		  *out++ = (((b64[to_uchar (in[2])] << 6) & 0xc0)
-				| b64[to_uchar (in[3])]);
+		  *out++ = (((b64[ in[2] ] << 6) & 0xc0)
+				| b64[ in[3] ]);
 		  outleft--;
 		}
 		}
