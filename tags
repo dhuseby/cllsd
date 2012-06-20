@@ -635,6 +635,7 @@ array_size	cutil/src/array.c	/^int_t array_size( array_t const * const array )$/
 array_t	cutil/src/array.h	/^} array_t;$/;"	t	typeref:struct:array_s
 array_try_lock	cutil/src/array.c	/^int array_try_lock(array_t * const array)$/;"	f
 array_unlock	cutil/src/array.c	/^void array_unlock(array_t * const array)$/;"	f
+bad	tests/test_base16.c	/^static uint8_t * bad = "jk2e23r3";$/;"	v	file:
 balance	cutil/src/btree.c	/^	int32_t balance;			\/* balance factor *\/$/;"	m	struct:node_s	file:
 base16	tests/test_all.c	/^SUITE( base16 );$/;"	v
 base16_decode	src/base16.c	/^int base16_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)$/;"	f
@@ -1139,6 +1140,7 @@ lock	cutil/src/array.h	/^	pthread_mutex_t lock;					\/* list lock *\/$/;"	m	stru
 lock	cutil/src/btree.c	/^	pthread_mutex_t		lock;		\/* btree lock *\/$/;"	m	struct:bt_s	file:
 lock	cutil/src/hashtable.h	/^	pthread_mutex_t		lock;				\/* hashtable lock *\/$/;"	m	struct:ht_s
 log_fns	cutil/src/log.c	/^static cookie_io_functions_t log_fns =$/;"	v	file:
+low	tests/test_base16.c	/^static uint8_t * low = "4d616e2069732064697374696e677569736865642c206e6f74206f6"$/;"	v	file:
 lxend	src/llsd_xml.c	/^static uint8_t const * const lxend[LLSD_TYPE_COUNT] =$/;"	v	file:
 lxendlen	src/llsd_xml.c	/^static uint32_t lxendlen[LLSD_TYPE_COUNT] =$/;"	v	file:
 lxkey	src/llsd_xml.c	/^static uint8_t const * const lxkey		= "<key>";$/;"	v	file:
@@ -1304,8 +1306,11 @@ test_buffer_newdel	cutil/tests/test_buffer.c	/^void test_buffer_newdel( void )$/
 test_buffer_newdel_weak	cutil/tests/test_buffer.c	/^void test_buffer_newdel_weak( void )$/;"	f
 test_child_newdel	cutil/tests/test_child.c	/^static void test_child_newdel( void )$/;"	f	file:
 test_decenc_random	tests/test_base_common.c	/^static void test_decenc_random( void )$/;"	f	file:
+test_decode_short_output_buffer	tests/test_base16.c	/^static void test_decode_short_output_buffer( void )$/;"	f	file:
 test_decoding	tests/test_base_common.c	/^static void test_decoding( void )$/;"	f	file:
+test_decoding_bad_data	tests/test_base16.c	/^static void test_decoding_bad_data( void )$/;"	f	file:
 test_encdec_random	tests/test_base_common.c	/^static void test_encdec_random( void )$/;"	f	file:
+test_encode_short_output_buffer	tests/test_base16.c	/^static void test_encode_short_output_buffer( void )$/;"	f	file:
 test_encoding	tests/test_base_common.c	/^static void test_encoding( void )$/;"	f	file:
 test_hashtable_add_dynamic	cutil/tests/test_hashtable.c	/^static void test_hashtable_add_dynamic( void )$/;"	f	file:
 test_hashtable_add_fail	cutil/tests/test_hashtable.c	/^static void test_hashtable_add_fail( void )$/;"	f	file:
@@ -1329,6 +1334,7 @@ test_hashtable_remove	cutil/tests/test_hashtable.c	/^static void test_hashtable_
 test_hashtable_remove_dynamic	cutil/tests/test_hashtable.c	/^static void test_hashtable_remove_dynamic( void )$/;"	f	file:
 test_hashtable_reverse_itr	cutil/tests/test_hashtable.c	/^static void test_hashtable_reverse_itr( void )$/;"	f	file:
 test_hashtable_static_grow	cutil/tests/test_hashtable.c	/^static void test_hashtable_static_grow( void )$/;"	f	file:
+test_lower_case_decoding	tests/test_base16.c	/^static void test_lower_case_decoding( void )$/;"	f	file:
 test_newdel	tests/test_common.c	/^static void test_newdel( void )$/;"	f	file:
 test_pair_newdel	cutil/tests/test_pair.c	/^void test_pair_newdel( void )$/;"	f
 test_pair_nulls	cutil/tests/test_pair.c	/^void test_pair_nulls( void )$/;"	f

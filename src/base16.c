@@ -86,10 +86,11 @@ int base16_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t *
 
 	while( i < (inlen - 1) )
 	{
+		if ( (o + 1) > (*outlen) )
+			break;
+
 		if ( !is_base16(in[i]) || !is_base16(in[i+1]) )
-		{
 			return FALSE;
-		}
 	
 		out[o] = ( (dhex(in[i]) << 4) | (dhex(in[i+1])) );
 		
