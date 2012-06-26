@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <title>LCOV - cutil test coverage - cllsd/src/base64.c</title>
   <link rel="stylesheet" type="text/css" href="../../gcov.css">
 </head>
@@ -31,13 +31,13 @@
             <td class="headerValue">cutil test coverage</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">91</td>
-            <td class="headerCovTableEntry">98</td>
-            <td class="headerCovTableEntryHi">92.9 %</td>
+            <td class="headerCovTableEntry">86</td>
+            <td class="headerCovTableEntry">93</td>
+            <td class="headerCovTableEntryHi">92.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-06-20</td>
+            <td class="headerValue">2012-06-25</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -90,51 +90,54 @@
 <span class="lineNum">      19 </span>                :            : #include &lt;cutil/macros.h&gt;
 <span class="lineNum">      20 </span>                :            : 
 <span class="lineNum">      21 </span>                :            : #include &quot;base64.h&quot;
-<a name="22"><span class="lineNum">      22 </span>                :            : </a>
-<span class="lineNum">      23 </span>                :            : 
-<span class="lineNum">      24 </span>                :<span class="lineCov">     294684 : static int encode_quartet( uint8_t const * in, uint32_t inlen, uint8_t * out )</span>
-<span class="lineNum">      25 </span>                :            : {
+<span class="lineNum">      22 </span>                :            : 
+<a name="23"><span class="lineNum">      23 </span>                :            : </a>
+<span class="lineNum">      24 </span>                :            : static int encode_quartet( uint8_t const * in, uint32_t inlen, uint8_t * out )
+<span class="lineNum">      25 </span>                :<span class="lineCov">     306660 : {</span>
 <span class="lineNum">      26 </span>                :            :     static const char b64str[64] = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;;
-<span class="lineNum">      27 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 294684 times"> + </span>]:<span class="lineCov">     294684 :     CHECK_PTR_RET( in, FALSE);</span>
-<span class="lineNum">      28 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 294684 times"> + </span>]:<span class="lineCov">     294684 :     CHECK_RET( inlen &gt; 0, FALSE );</span>
-<span class="lineNum">      29 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 294684 times"> + </span>]:<span class="lineCov">     294684 :     CHECK_PTR_RET( out, FALSE );</span>
+<span class="lineNum">      27 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 306660 times"> + </span>]:<span class="lineCov">     306660 :     CHECK_PTR_RET( in, FALSE);</span>
+<span class="lineNum">      28 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 306660 times"> + </span>]:<span class="lineCov">     306660 :     CHECK_RET( inlen &gt; 0, FALSE );</span>
+<span class="lineNum">      29 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 306660 times"> + </span>]:<span class="lineCov">     306660 :     CHECK_PTR_RET( out, FALSE );</span>
 <span class="lineNum">      30 </span>                :            : 
-<span class="lineNum">      31 </span>                :<span class="lineCov">     294684 :     out[0] = b64str[((in[0] &amp; 0xfc) &gt;&gt; 2)];</span>
+<span class="lineNum">      31 </span>                :<span class="lineCov">     306660 :     out[0] = b64str[((in[0] &amp; 0xfc) &gt;&gt; 2)];</span>
 <span class="lineNum">      32 </span>                :            : 
-<span class="lineNum">      33 </span>  [<span class="branchCov" title="Branch 0 was taken 586 times"> + </span><span class="branchCov" title="Branch 1 was taken 593 times"> + </span><span class="branchCov" title="Branch 2 was taken 293505 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">     294684 :     switch( inlen )</span>
+<span class="lineNum">      33 </span>  [<span class="branchCov" title="Branch 0 was taken 621 times"> + </span><span class="branchCov" title="Branch 1 was taken 574 times"> + </span><span class="branchCov" title="Branch 2 was taken 305465 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">     306660 :     switch( inlen )</span>
 <span class="lineNum">      34 </span>                :            :     {
 <span class="lineNum">      35 </span>                :            :         case 1:
-<span class="lineNum">      36 </span>                :<span class="lineCov">        586 :             out[1] = b64str[((in[0] &amp; 0x03) &lt;&lt; 4)];</span>
-<span class="lineNum">      37 </span>                :<span class="lineCov">        586 :             out[2] = '=';</span>
-<span class="lineNum">      38 </span>                :<span class="lineCov">        586 :             out[3] = '=';</span>
-<span class="lineNum">      39 </span>                :<span class="lineCov">        586 :             break;</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">        621 :             out[1] = b64str[((in[0] &amp; 0x03) &lt;&lt; 4)];</span>
+<span class="lineNum">      37 </span>                :<span class="lineCov">        621 :             out[2] = '=';</span>
+<span class="lineNum">      38 </span>                :<span class="lineCov">        621 :             out[3] = '=';</span>
+<span class="lineNum">      39 </span>                :<span class="lineCov">        621 :             break;</span>
 <span class="lineNum">      40 </span>                :            :         case 2:
-<span class="lineNum">      41 </span>                :<span class="lineCov">        593 :             out[1] = b64str[(((in[0] &amp; 0x03) &lt;&lt; 4) | ((in[1] &amp; 0xf0) &gt;&gt; 4))];</span>
-<span class="lineNum">      42 </span>                :<span class="lineCov">        593 :             out[2] = b64str[((in[1] &amp; 0x0f) &lt;&lt; 2)];</span>
-<span class="lineNum">      43 </span>                :<span class="lineCov">        593 :             out[3] = '=';</span>
-<span class="lineNum">      44 </span>                :<span class="lineCov">        593 :             break;</span>
+<span class="lineNum">      41 </span>                :<span class="lineCov">        574 :             out[1] = b64str[(((in[0] &amp; 0x03) &lt;&lt; 4) | ((in[1] &amp; 0xf0) &gt;&gt; 4))];</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">        574 :             out[2] = b64str[((in[1] &amp; 0x0f) &lt;&lt; 2)];</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">        574 :             out[3] = '=';</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">        574 :             break;</span>
 <span class="lineNum">      45 </span>                :            :         case 3:
-<span class="lineNum">      46 </span>                :<span class="lineCov">     293505 :             out[1] = b64str[(((in[0] &amp; 0x03) &lt;&lt; 4) | ((in[1] &amp; 0xf0) &gt;&gt; 4))];</span>
-<span class="lineNum">      47 </span>                :<span class="lineCov">     293505 :             out[2] = b64str[(((in[1] &amp; 0x0f) &lt;&lt; 2) | ((in[2] &amp; 0xc0) &gt;&gt; 6))];</span>
-<span class="lineNum">      48 </span>                :<span class="lineCov">     293505 :             out[3] = b64str[(in[2] &amp; 0x3f)];</span>
-<span class="lineNum">      49 </span>                :<span class="lineCov">     293505 :             break;</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">     305465 :             out[1] = b64str[(((in[0] &amp; 0x03) &lt;&lt; 4) | ((in[1] &amp; 0xf0) &gt;&gt; 4))];</span>
+<span class="lineNum">      47 </span>                :<span class="lineCov">     305465 :             out[2] = b64str[(((in[1] &amp; 0x0f) &lt;&lt; 2) | ((in[2] &amp; 0xc0) &gt;&gt; 6))];</span>
+<span class="lineNum">      48 </span>                :<span class="lineCov">     305465 :             out[3] = b64str[(in[2] &amp; 0x3f)];</span>
+<span class="lineNum">      49 </span>                :            :             break;
 <span class="lineNum">      50 </span>                :            :     }
-<span class="lineNum">      51 </span>                :<span class="lineCov">     294684 :     return TRUE;</span>
-<a name="52"><span class="lineNum">      52 </span>                :            : }</a>
-<span class="lineNum">      53 </span>                :            : 
-<span class="lineNum">      54 </span>                :<span class="lineCov">        360 : static int in_range( uint8_t ch )</span>
-<span class="lineNum">      55 </span>                :            : {
-<span class="lineNum">      56 </span>[<span class="branchCov" title="Branch 0 was taken 320 times"> + </span><span class="branchCov" title="Branch 1 was taken 40 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 164 times"> + </span><span class="branchCov" title="Branch 3 was taken 156 times"> + </span>]:<span class="lineCov">        564 :     return ( ((ch &gt;= 'A') &amp;&amp; (ch &lt;= 'Z')) ||</span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 164 times"> + </span><span class="branchCov" title="Branch 5 was taken 40 times"> + </span>]
-<span class="lineNum">      57 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 164 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 40 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        204 :              ((ch &gt;= 'a') &amp;&amp; (ch &lt;= 'z')) ||</span>
-<span class="lineNum">      58 </span>[<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 39 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         40 :              ((ch &gt;= '0') &amp;&amp; (ch &lt;= '9')) ||</span>
-<span class="lineNum">      59 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          1 :              (ch == '+') ||</span>
-<span class="lineNum">      60 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          1 :              (ch == '/') ||</span>
+<span class="lineNum">      51 </span>                :<span class="lineCov">     306660 :     return TRUE;</span>
+<span class="lineNum">      52 </span>                :            : }
+<a name="53"><span class="lineNum">      53 </span>                :            : </a>
+<span class="lineNum">      54 </span>                :            : static int in_range( uint8_t ch )
+<span class="lineNum">      55 </span>                :<span class="lineCov">        360 : {</span>
+<span class="lineNum">      56 </span>[<span class="branchCov" title="Branch 0 was taken 320 times"> + </span><span class="branchCov" title="Branch 1 was taken 40 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 164 times"> + </span><span class="branchCov" title="Branch 3 was taken 156 times"> + </span>]:<span class="lineCov">        360 :     return ( ((ch &gt;= 'A') &amp;&amp; (ch &lt;= 'Z')) ||</span>
+<span class="lineNum">         </span>[<span class="branchCov" title="Branch 4 was taken 164 times"> + </span><span class="branchCov" title="Branch 5 was taken 40 times"> + </span>][<span class="branchNoCov" title="Branch 6 was not taken"> - </span><span class="branchCov" title="Branch 7 was taken 164 times"> + </span>]
+<span class="lineNum">         </span>[<span class="branchCov" title="Branch 8 was taken 40 times"> + </span><span class="branchNoCov" title="Branch 9 was not taken"> - </span>][<span class="branchCov" title="Branch 10 was taken 1 time"> + </span><span class="branchCov" title="Branch 11 was taken 39 times"> + </span>]
+<span class="lineNum">         </span>[<span class="branchCov" title="Branch 12 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 13 was not taken"> - </span>][<span class="branchCov" title="Branch 14 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 15 was not taken"> - </span>]
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 16 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 17 was not taken"> - </span>]
+<span class="lineNum">      57 </span>                :            :              ((ch &gt;= 'a') &amp;&amp; (ch &lt;= 'z')) ||
+<span class="lineNum">      58 </span>                :            :              ((ch &gt;= '0') &amp;&amp; (ch &lt;= '9')) ||
+<span class="lineNum">      59 </span>                :            :              (ch == '+') ||
+<span class="lineNum">      60 </span>                :            :              (ch == '/') ||
 <span class="lineNum">      61 </span>                :            :              (ch == '=') );
-<a name="62"><span class="lineNum">      62 </span>                :            : }</a>
-<span class="lineNum">      63 </span>                :            : 
-<span class="lineNum">      64 </span>                :<span class="lineCov">        539 : static uint8_t to_idx( uint8_t ch )</span>
-<span class="lineNum">      65 </span>                :            : {
+<span class="lineNum">      62 </span>                :            : }
+<a name="63"><span class="lineNum">      63 </span>                :            : </a>
+<span class="lineNum">      64 </span>                :            : static uint8_t to_idx( uint8_t ch )
+<span class="lineNum">      65 </span>                :<span class="lineCov">        539 : {</span>
 <span class="lineNum">      66 </span>[<span class="branchCov" title="Branch 0 was taken 473 times"> + </span><span class="branchCov" title="Branch 1 was taken 66 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 271 times"> + </span><span class="branchCov" title="Branch 3 was taken 202 times"> + </span>]:<span class="lineCov">        539 :     if ( (ch &gt;= 'A') &amp;&amp; (ch &lt;= 'Z') )</span>
 <span class="lineNum">      67 </span>                :<span class="lineCov">        271 :         return (ch - 'A');</span>
 <span class="lineNum">      68 </span>[<span class="branchCov" title="Branch 0 was taken 202 times"> + </span><span class="branchCov" title="Branch 1 was taken 66 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 202 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        268 :     else if ( (ch &gt;= 'a') &amp;&amp; (ch &lt;= 'z') )</span>
@@ -146,10 +149,10 @@
 <span class="lineNum">      74 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     else if ( ch == '/' )</span>
 <span class="lineNum">      75 </span>                :<span class="lineNoCov">          0 :         return 63;</span>
 <span class="lineNum">      76 </span>                :<span class="lineCov">        539 :     return 0;</span>
-<a name="77"><span class="lineNum">      77 </span>                :            : }</a>
-<span class="lineNum">      78 </span>                :            : 
-<span class="lineNum">      79 </span>                :<span class="lineCov">         90 : static int decode_quartet( uint8_t const * in, uint32_t inlen, uint8_t * out )</span>
-<span class="lineNum">      80 </span>                :            : {
+<span class="lineNum">      77 </span>                :            : }
+<a name="78"><span class="lineNum">      78 </span>                :            : </a>
+<span class="lineNum">      79 </span>                :            : static int decode_quartet( uint8_t const * in, uint32_t inlen, uint8_t * out )
+<span class="lineNum">      80 </span>                :<span class="lineCov">         90 : {</span>
 <span class="lineNum">      81 </span>                :<span class="lineCov">         90 :     int i = 0;</span>
 <span class="lineNum">      82 </span>                :<span class="lineCov">         90 :     int o = 0;</span>
 <span class="lineNum">      83 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 90 times"> + </span>]:<span class="lineCov">         90 :     CHECK_PTR_RET( in, FALSE );</span>
@@ -170,44 +173,44 @@
 <span class="lineNum">      98 </span>                :<span class="lineCov">         89 :         out[o-1] |= (to_idx(in[i+3]) &amp; 0x3f);</span>
 <span class="lineNum">      99 </span>                :            : 
 <span class="lineNum">     100 </span>                :<span class="lineCov">         90 :     return TRUE;</span>
-<a name="101"><span class="lineNum">     101 </span>                :            : }</a>
-<span class="lineNum">     102 </span>                :            : 
-<span class="lineNum">     103 </span>                :<span class="lineCov">       1734 : int base64_encode( uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)</span>
-<span class="lineNum">     104 </span>                :            : {
+<span class="lineNum">     101 </span>                :            : }
+<a name="102"><span class="lineNum">     102 </span>                :            : </a>
+<span class="lineNum">     103 </span>                :            : int base64_encode( uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)
+<span class="lineNum">     104 </span>                :<span class="lineCov">       1788 : {</span>
 <span class="lineNum">     105 </span>                :            :     int ret;
-<span class="lineNum">     106 </span>                :<span class="lineCov">       1734 :     int i = 0;</span>
-<span class="lineNum">     107 </span>                :<span class="lineCov">       1734 :     int o = 0;</span>
+<span class="lineNum">     106 </span>                :<span class="lineCov">       1788 :     int i = 0;</span>
+<span class="lineNum">     107 </span>                :<span class="lineCov">       1788 :     int o = 0;</span>
 <span class="lineNum">     108 </span>                :            :     uint32_t ilen;
 <span class="lineNum">     109 </span>                :            : 
-<span class="lineNum">     110 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1734 times"> + </span>]:<span class="lineCov">       1734 :     CHECK_PTR_RET( in, FALSE );</span>
-<span class="lineNum">     111 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1734 times"> + </span>]:<span class="lineCov">       1734 :     CHECK_RET( inlen &gt; 0, FALSE );</span>
-<span class="lineNum">     112 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1734 times"> + </span>]:<span class="lineCov">       1734 :     CHECK_PTR_RET( out, FALSE );</span>
-<span class="lineNum">     113 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1734 times"> + </span>]:<span class="lineCov">       1734 :     CHECK_PTR_RET( outlen, FALSE );</span>
-<span class="lineNum">     114 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1734 times"> + </span>]:<span class="lineCov">       1734 :     CHECK_RET( (*outlen) &gt; 0, FALSE );</span>
+<span class="lineNum">     110 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1788 times"> + </span>]:<span class="lineCov">       1788 :     CHECK_PTR_RET( in, FALSE );</span>
+<span class="lineNum">     111 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1788 times"> + </span>]:<span class="lineCov">       1788 :     CHECK_RET( inlen &gt; 0, FALSE );</span>
+<span class="lineNum">     112 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1788 times"> + </span>]:<span class="lineCov">       1788 :     CHECK_PTR_RET( out, FALSE );</span>
+<span class="lineNum">     113 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1788 times"> + </span>]:<span class="lineCov">       1788 :     CHECK_PTR_RET( outlen, FALSE );</span>
+<span class="lineNum">     114 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1788 times"> + </span>]:<span class="lineCov">       1788 :     CHECK_RET( (*outlen) &gt; 0, FALSE );</span>
 <span class="lineNum">     115 </span>                :            : 
-<span class="lineNum">     116 </span>        [<span class="branchCov" title="Branch 0 was taken 294684 times"> + </span><span class="branchCov" title="Branch 1 was taken 1734 times"> + </span>]:<span class="lineCov">     296418 :     while( i &lt; inlen )</span>
+<span class="lineNum">     116 </span>        [<span class="branchCov" title="Branch 0 was taken 306660 times"> + </span><span class="branchCov" title="Branch 1 was taken 1788 times"> + </span>]:<span class="lineCov">     308448 :     while( i &lt; inlen )</span>
 <span class="lineNum">     117 </span>                :            :     {
-<span class="lineNum">     118 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 294684 times"> + </span>]:<span class="lineCov">     294684 :         if ( (o + 4) &gt; (*outlen) )</span>
+<span class="lineNum">     118 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 306660 times"> + </span>]:<span class="lineCov">     306660 :         if ( (o + 4) &gt; (*outlen) )</span>
 <span class="lineNum">     119 </span>                :<span class="lineNoCov">          0 :             break;</span>
 <span class="lineNum">     120 </span>                :            : 
 <span class="lineNum">     121 </span>                :            :         /* figure out how many bytes go into this quintet */
-<span class="lineNum">     122 </span>                :<span class="lineCov">     294684 :         ilen = ((inlen - i) &lt; 3) ? (inlen - i) : 3;</span>
+<span class="lineNum">     122 </span>                :<span class="lineCov">     306660 :         ilen = ((inlen - i) &lt; 3) ? (inlen - i) : 3;</span>
 <span class="lineNum">     123 </span>                :            : 
 <span class="lineNum">     124 </span>                :            :         /* encode three bytes as four base64 chars */
-<span class="lineNum">     125 </span>                :<span class="lineCov">     294684 :         ret = encode_quartet( &amp;(in[i]), ilen, &amp;(out[o]) );</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">     306660 :         ret = encode_quartet( &amp;(in[i]), ilen, &amp;(out[o]) );</span>
 <span class="lineNum">     126 </span>                :            : 
-<span class="lineNum">     127 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 294684 times"> + </span>]:<span class="lineCov">     294684 :         CHECK_RET( ret == TRUE, FALSE );</span>
+<span class="lineNum">     127 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 306660 times"> + </span>]:<span class="lineCov">     306660 :         CHECK_RET( ret == TRUE, FALSE );</span>
 <span class="lineNum">     128 </span>                :            : 
 <span class="lineNum">     129 </span>                :            :         /* move the indexes */
-<span class="lineNum">     130 </span>                :<span class="lineCov">     294684 :         i += ilen;</span>
-<span class="lineNum">     131 </span>                :<span class="lineCov">     294684 :         o += 4;</span>
+<span class="lineNum">     130 </span>                :<span class="lineCov">     306660 :         i += ilen;</span>
+<span class="lineNum">     131 </span>                :<span class="lineCov">     306660 :         o += 4;</span>
 <span class="lineNum">     132 </span>                :            :     }
 <span class="lineNum">     133 </span>                :            : 
-<span class="lineNum">     134 </span>                :<span class="lineCov">       1734 :     return TRUE;</span>
-<a name="135"><span class="lineNum">     135 </span>                :            : }</a>
-<span class="lineNum">     136 </span>                :            : 
-<span class="lineNum">     137 </span>                :<span class="lineCov">          1 : int base64_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)</span>
-<span class="lineNum">     138 </span>                :            : {
+<span class="lineNum">     134 </span>                :<span class="lineCov">       1788 :     return TRUE;</span>
+<span class="lineNum">     135 </span>                :            : }
+<a name="136"><span class="lineNum">     136 </span>                :            : </a>
+<span class="lineNum">     137 </span>                :            : int base64_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)
+<span class="lineNum">     138 </span>                :<span class="lineCov">          1 : {</span>
 <span class="lineNum">     139 </span>                :            :     int ret;
 <span class="lineNum">     140 </span>                :<span class="lineCov">          1 :     int i = 0;</span>
 <span class="lineNum">     141 </span>                :<span class="lineCov">          1 :     int o = 0;</span>
@@ -234,10 +237,10 @@
 <span class="lineNum">     162 </span>                :<span class="lineCov">          1 :     (*outlen) = o;</span>
 <span class="lineNum">     163 </span>                :            : 
 <span class="lineNum">     164 </span>                :<span class="lineCov">          1 :     return TRUE;</span>
-<a name="165"><span class="lineNum">     165 </span>                :            : }</a>
-<span class="lineNum">     166 </span>                :            : 
-<span class="lineNum">     167 </span>                :<span class="lineCov">          1 : uint32_t base64_decoded_len( uint8_t const * in, uint32_t inlen )</span>
-<span class="lineNum">     168 </span>                :            : {
+<span class="lineNum">     165 </span>                :            : }
+<a name="166"><span class="lineNum">     166 </span>                :            : </a>
+<span class="lineNum">     167 </span>                :            : uint32_t base64_decoded_len( uint8_t const * in, uint32_t inlen )
+<span class="lineNum">     168 </span>                :<span class="lineCov">          1 : {</span>
 <span class="lineNum">     169 </span>                :<span class="lineCov">          1 :     uint32_t len = 0;</span>
 <span class="lineNum">     170 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :     CHECK_PTR_RET( in, 0 );</span>
 <span class="lineNum">     171 </span>                :            :     

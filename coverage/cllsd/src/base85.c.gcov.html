@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <title>LCOV - cutil test coverage - cllsd/src/base85.c</title>
   <link rel="stylesheet" type="text/css" href="../../gcov.css">
 </head>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-06-20</td>
+            <td class="headerValue">2012-06-25</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">62</td>
-            <td class="headerCovTableEntry">96</td>
-            <td class="headerCovTableEntryLo">64.6 %</td>
+            <td class="headerCovTableEntry">63</td>
+            <td class="headerCovTableEntry">98</td>
+            <td class="headerCovTableEntryLo">64.3 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -90,15 +90,15 @@
 <span class="lineNum">      19 </span>                :            : 
 <span class="lineNum">      20 </span>                :            : #include &quot;base85.h&quot;
 <span class="lineNum">      21 </span>                :            : 
-<a name="22"><span class="lineNum">      22 </span>                :            : static uint32_t eightyfives[5] = { 1, 85, 7225, 614125, 52200625 };</a>
-<span class="lineNum">      23 </span>                :            : 
-<span class="lineNum">      24 </span>                :<span class="lineCov">       1019 : static int in_range( uint8_t ch )</span>
-<span class="lineNum">      25 </span>                :            : {
+<span class="lineNum">      22 </span>                :            : static uint32_t eightyfives[5] = { 1, 85, 7225, 614125, 52200625 };
+<a name="23"><span class="lineNum">      23 </span>                :            : </a>
+<span class="lineNum">      24 </span>                :            : static int in_range( uint8_t ch )
+<span class="lineNum">      25 </span>                :<span class="lineCov">       1019 : {</span>
 <span class="lineNum">      26 </span>[<span class="branchCov" title="Branch 0 was taken 1019 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 1019 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">       1019 :     return ((ch &gt;= 0x21) &amp;&amp; (ch &lt;= 0x75));</span>
-<a name="27"><span class="lineNum">      27 </span>                :            : }</a>
-<span class="lineNum">      28 </span>                :            : 
-<span class="lineNum">      29 </span>                :<span class="lineCov">         73 : static int decode_quintet( uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t padding )</span>
-<span class="lineNum">      30 </span>                :            : {
+<span class="lineNum">      27 </span>                :            : }
+<a name="28"><span class="lineNum">      28 </span>                :            : </a>
+<span class="lineNum">      29 </span>                :            : static int decode_quintet( uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t padding )
+<span class="lineNum">      30 </span>                :<span class="lineCov">         73 : {</span>
 <span class="lineNum">      31 </span>                :            :     int i;
 <span class="lineNum">      32 </span>                :<span class="lineCov">         73 :     uint64_t tmp = 0ULL;</span>
 <span class="lineNum">      33 </span>                :            :     union {
@@ -127,10 +127,10 @@
 <span class="lineNum">      56 </span>                :            :     }
 <span class="lineNum">      57 </span>                :            : 
 <span class="lineNum">      58 </span>                :<span class="lineCov">         73 :     return (4 - padding);</span>
-<a name="59"><span class="lineNum">      59 </span>                :            : }</a>
-<span class="lineNum">      60 </span>                :            : 
-<span class="lineNum">      61 </span>                :<span class="lineCov">         70 : static int encode_quintet( uint8_t const * in, uint32_t inlen, uint8_t * out )</span>
-<span class="lineNum">      62 </span>                :            : {
+<span class="lineNum">      59 </span>                :            : }
+<a name="60"><span class="lineNum">      60 </span>                :            : </a>
+<span class="lineNum">      61 </span>                :            : static int encode_quintet( uint8_t const * in, uint32_t inlen, uint8_t * out )
+<span class="lineNum">      62 </span>                :<span class="lineCov">         70 : {</span>
 <span class="lineNum">      63 </span>                :            :     int i;
 <span class="lineNum">      64 </span>                :            :     uint8_t tmp;
 <span class="lineNum">      65 </span>                :            :     uint32_t hval;
@@ -182,10 +182,10 @@
 <span class="lineNum">     110 </span>                :<span class="lineCov">         70 :         return (1 + inlen);</span>
 <span class="lineNum">     111 </span>                :            :     }
 <span class="lineNum">     112 </span>                :            :     return -1;
-<a name="113"><span class="lineNum">     113 </span>                :            : }</a>
-<span class="lineNum">     114 </span>                :            : 
-<span class="lineNum">     115 </span>                :<span class="lineCov">          3 : int base85_encode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)</span>
-<span class="lineNum">     116 </span>                :            : {
+<span class="lineNum">     113 </span>                :            : }
+<a name="114"><span class="lineNum">     114 </span>                :            : </a>
+<span class="lineNum">     115 </span>                :            : int base85_encode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)
+<span class="lineNum">     116 </span>                :<span class="lineCov">          3 : {</span>
 <span class="lineNum">     117 </span>                :            :     int ret;
 <span class="lineNum">     118 </span>                :<span class="lineCov">          3 :     int i = 0;</span>
 <span class="lineNum">     119 </span>                :<span class="lineCov">          3 :     int o = 0;</span>
@@ -211,7 +211,7 @@
 <span class="lineNum">     139 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 70 times"> + </span>]:<span class="lineCov">         70 :         CHECK_RET( ret != -1, FALSE );</span>
 <span class="lineNum">     140 </span>                :            : 
 <span class="lineNum">     141 </span>                :            :         /* copy the bytes over */
-<span class="lineNum">     142 </span>                :<span class="lineCov">         70 :         MEMCPY( &amp;(out[o]), buf, ret );</span>
+<span class="lineNum">     142 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 70 times"> + </span>]:<span class="lineCov">         70 :         MEMCPY( &amp;(out[o]), buf, ret );</span>
 <span class="lineNum">     143 </span>                :            : 
 <span class="lineNum">     144 </span>                :            :         /* move the indexes */
 <span class="lineNum">     145 </span>                :<span class="lineCov">         70 :         i += ilen;</span>
@@ -221,10 +221,10 @@
 <span class="lineNum">     149 </span>                :<span class="lineCov">          3 :     (*outlen) = o;</span>
 <span class="lineNum">     150 </span>                :            : 
 <span class="lineNum">     151 </span>                :<span class="lineCov">          3 :     return TRUE;</span>
-<a name="152"><span class="lineNum">     152 </span>                :            : }</a>
-<span class="lineNum">     153 </span>                :            : 
-<span class="lineNum">     154 </span>                :<span class="lineCov">          3 : int base85_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)</span>
-<span class="lineNum">     155 </span>                :            : {
+<span class="lineNum">     152 </span>                :            : }
+<a name="153"><span class="lineNum">     153 </span>                :            : </a>
+<span class="lineNum">     154 </span>                :            : int base85_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)
+<span class="lineNum">     155 </span>                :<span class="lineCov">          3 : {</span>
 <span class="lineNum">     156 </span>                :<span class="lineCov">          3 :     int i = 0;;</span>
 <span class="lineNum">     157 </span>                :<span class="lineCov">          3 :     int j = 0;</span>
 <span class="lineNum">     158 </span>                :<span class="lineCov">          3 :     int o = 0;</span>
@@ -287,10 +287,10 @@
 <span class="lineNum">     214 </span>                :<span class="lineCov">          3 :         *(outlen) = o;</span>
 <span class="lineNum">     215 </span>                :            : 
 <span class="lineNum">     216 </span>                :<span class="lineCov">          3 :     return TRUE;</span>
-<a name="217"><span class="lineNum">     217 </span>                :            : }</a>
-<span class="lineNum">     218 </span>                :            : 
-<span class="lineNum">     219 </span>                :<span class="lineCov">          3 : uint32_t base85_decoded_len( uint8_t const * in, uint32_t inlen )</span>
-<span class="lineNum">     220 </span>                :            : {
+<span class="lineNum">     217 </span>                :            : }
+<a name="218"><span class="lineNum">     218 </span>                :            : </a>
+<span class="lineNum">     219 </span>                :            : uint32_t base85_decoded_len( uint8_t const * in, uint32_t inlen )
+<span class="lineNum">     220 </span>                :<span class="lineCov">          3 : {</span>
 <span class="lineNum">     221 </span>                :<span class="lineCov">          3 :     int i = 0;</span>
 <span class="lineNum">     222 </span>                :<span class="lineCov">          3 :     int j = 0;</span>
 <span class="lineNum">     223 </span>                :<span class="lineCov">          3 :     uint32_t outlen = 0;</span>
