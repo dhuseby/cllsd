@@ -88,7 +88,7 @@ llsd_binary_t llsd_as_binary( llsd_t * llsd );
 llsd_array_t llsd_as_array( llsd_t * llsd );
 llsd_map_t llsd_as_map( llsd_t * llsd );
 
-/* xml/binary conversions */
+/* xml/binary/notation conversions */
 int llsd_stringify_uuid( llsd_t * llsd );
 int llsd_destringify_uuid( llsd_t * llsd );
 int llsd_stringify_date( llsd_t * llsd );

@@ -1938,6 +1938,7 @@ int llsd_escape_uri( llsd_t * llsd )
 
 int llsd_unescape_uri( llsd_t * llsd )
 {
+	/* TODO */
 	return TRUE;
 }
 

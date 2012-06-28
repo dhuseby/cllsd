@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>LCOV - cutil test coverage - cllsd/src/base16.c</title>
   <link rel="stylesheet" type="text/css" href="../../gcov.css">
 </head>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-06-25</td>
+            <td class="headerValue">2012-06-28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -89,16 +89,16 @@
 <span class="lineNum">      18 </span>                :            : #include &lt;cutil/debug.h&gt;
 <span class="lineNum">      19 </span>                :            : #include &lt;cutil/macros.h&gt;
 <span class="lineNum">      20 </span>                :            : 
-<span class="lineNum">      21 </span>                :            : #include &quot;base16.h&quot;
-<a name="22"><span class="lineNum">      22 </span>                :            : </a>
-<span class="lineNum">      23 </span>                :            : uint32_t base16_decoded_len( uint8_t const * in, uint32_t inlen )
-<span class="lineNum">      24 </span>                :<span class="lineCov">          4 : {</span>
+<a name="21"><span class="lineNum">      21 </span>                :            : #include &quot;base16.h&quot;</a>
+<span class="lineNum">      22 </span>                :            : 
+<span class="lineNum">      23 </span>                :<span class="lineCov">          4 : uint32_t base16_decoded_len( uint8_t const * in, uint32_t inlen )</span>
+<span class="lineNum">      24 </span>                :            : {
 <span class="lineNum">      25 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">          4 :     CHECK_PTR_RET( in, 0 );</span>
 <span class="lineNum">      26 </span>                :<span class="lineCov">          4 :     return (inlen / 2);</span>
-<span class="lineNum">      27 </span>                :            : }
-<a name="28"><span class="lineNum">      28 </span>                :            : </a>
-<span class="lineNum">      29 </span>                :            : int base16_encode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)
-<span class="lineNum">      30 </span>                :<span class="lineCov">          2 : {</span>
+<a name="27"><span class="lineNum">      27 </span>                :            : }</a>
+<span class="lineNum">      28 </span>                :            : 
+<span class="lineNum">      29 </span>                :<span class="lineCov">          2 : int base16_encode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)</span>
+<span class="lineNum">      30 </span>                :            : {
 <span class="lineNum">      31 </span>                :            :     static uint8_t const b16str[16] = &quot;0123456789ABCDEF&quot;;
 <span class="lineNum">      32 </span>                :            :     int i;
 <span class="lineNum">      33 </span>                :<span class="lineCov">          2 :     int o = 0;</span>
@@ -121,15 +121,15 @@
 <span class="lineNum">      50 </span>                :<span class="lineCov">          2 :     (*outlen) = o;</span>
 <span class="lineNum">      51 </span>                :            : 
 <span class="lineNum">      52 </span>                :<span class="lineCov">          2 :     return TRUE;</span>
-<span class="lineNum">      53 </span>                :            : }
-<a name="54"><span class="lineNum">      54 </span>                :            : </a>
-<span class="lineNum">      55 </span>                :            : static int is_base16( uint8_t c )
-<span class="lineNum">      56 </span>                :<span class="lineCov">       1595 : {</span>
+<a name="53"><span class="lineNum">      53 </span>                :            : }</a>
+<span class="lineNum">      54 </span>                :            : 
+<span class="lineNum">      55 </span>                :<span class="lineCov">       1595 : static int is_base16( uint8_t c )</span>
+<span class="lineNum">      56 </span>                :            : {
 <span class="lineNum">      57 </span>                :<span class="lineCov">       1595 :     return isxdigit((int)c);</span>
-<span class="lineNum">      58 </span>                :            : }
-<a name="59"><span class="lineNum">      59 </span>                :            : </a>
-<span class="lineNum">      60 </span>                :            : static uint8_t dhex( uint8_t c )
-<span class="lineNum">      61 </span>                :<span class="lineCov">       1594 : {</span>
+<a name="58"><span class="lineNum">      58 </span>                :            : }</a>
+<span class="lineNum">      59 </span>                :            : 
+<span class="lineNum">      60 </span>                :<span class="lineCov">       1594 : static uint8_t dhex( uint8_t c )</span>
+<span class="lineNum">      61 </span>                :            : {
 <span class="lineNum">      62 </span>[<span class="branchCov" title="Branch 0 was taken 1594 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 1428 times"> + </span><span class="branchCov" title="Branch 3 was taken 166 times"> + </span>]:<span class="lineCov">       1594 :     if ( (c &gt;= 0x30) &amp;&amp; (c &lt;= 0x39) )     /* '0' &lt;= c &lt;= '9' */</span>
 <span class="lineNum">      63 </span>                :            :     {
 <span class="lineNum">      64 </span>                :<span class="lineCov">       1428 :         return (c - 0x30);</span>
@@ -144,10 +144,10 @@
 <span class="lineNum">      73 </span>                :            :     }
 <span class="lineNum">      74 </span>                :            :     
 <span class="lineNum">      75 </span>                :<span class="lineCov">       1594 :     FAIL( &quot;invalid base16 character\n&quot; );</span>
-<span class="lineNum">      76 </span>                :            : }
-<a name="77"><span class="lineNum">      77 </span>                :            : </a>
-<span class="lineNum">      78 </span>                :            : int base16_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)
-<span class="lineNum">      79 </span>                :<span class="lineCov">          4 : {</span>
+<a name="76"><span class="lineNum">      76 </span>                :            : }</a>
+<span class="lineNum">      77 </span>                :            : 
+<span class="lineNum">      78 </span>                :<span class="lineCov">          4 : int base16_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)</span>
+<span class="lineNum">      79 </span>                :            : {
 <span class="lineNum">      80 </span>                :<span class="lineCov">          4 :     int i = 0;</span>
 <span class="lineNum">      81 </span>                :<span class="lineCov">          4 :     int o = 0;</span>
 <span class="lineNum">      82 </span>                :            : 
