@@ -14,3 +14,4 @@ src/lib
 *.gcda
 src/cutil.info
 src/cllsd.info
+test.llsd

@@ -261,7 +261,7 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_STRING;
 			/* take ownership of the key str */
-			llsd->string_.str = (uint8_t*)ctx->buf;
+			llsd->string_.str = UT(ctx->buf);
 			llsd->string_.str_len = ctx->len;
 			llsd->string_.dyn_str = TRUE;
 			array_push_tail( ctx->params, (void*)llsd );
@@ -272,8 +272,6 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			ctx->buf = NULL;
 			ctx->len = 0;
 			DEBUG( "%*sKEY (%s)\n", ctx->indent * 4, " ", llsd->string_.str );
-			ASSERT( ctx->buf == NULL );
-			ASSERT( ctx->len == 0 );
 			return;
 		case LLSD_UNDEF:
 			llsd = llsd_new( LLSD_UNDEF );
@@ -307,62 +305,109 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			}
 			break;
 		case LLSD_INTEGER:
-			ASSERT( ctx->buf != NULL );
-			v1 = atoi( ctx->buf );
+			if ( ctx->buf != NULL )
+			{
+				v1 = atoi( ctx->buf );
+			}
+			else
+			{
+				v1 = 0;
+			}
 			llsd = llsd_new_integer( v1 );
 			DEBUG( "%*sINTEGER (%d)\n", ctx->indent * 4, " ", llsd->int_.v );
 			break;
 		case LLSD_REAL:
-			ASSERT( ctx->buf != NULL );
-			v2 = atof( ctx->buf );
+			if ( ctx->buf != NULL )
+			{
+				v2 = atof( ctx->buf );
+			}
+			else
+			{
+				v2 = 0.0;
+			}
 			llsd = llsd_new_real( v2 );
 			DEBUG( "%*sREAL [%f](%f)\n", ctx->indent * 4, " ", v2, llsd->real_.v );
 			break;
 		case LLSD_UUID:
-			ASSERT( ctx->buf != NULL );
-			ASSERT( ctx->len == UUID_STR_LEN );
 			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_UUID;
-			/* take ownership of the UUID str */
-			llsd->uuid_.str = (uint8_t*)ctx->buf;
-			llsd->uuid_.dyn_str = TRUE;
+			if ( ctx->buf != NULL )
+			{
+				ASSERT( ctx->len == UUID_STR_LEN );
+				/* take ownership of the UUID str */
+				llsd->uuid_.str = UT(ctx->buf);
+				llsd->uuid_.dyn_str = TRUE;
+			}
+			else
+			{
+				/* allocate an empty UUID str */
+				llsd->uuid_.str = UT(CALLOC( UUID_STR_LEN + 1, sizeof(uint8_t) ));
+				MEMCPY( llsd->uuid_.str, "00000000-0000-0000-0000-000000000000", UUID_STR_LEN );
+				llsd->uuid_.dyn_str = TRUE;
+			}
 			ctx->buf = NULL;
 			ctx->len = 0;
 			DEBUG( "%*sUUID (%s)\n", ctx->indent * 4, " ", llsd->uuid_.str );
 			break;
 		case LLSD_DATE:
-			ASSERT( ctx->buf != NULL );
 			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_DATE;
-			/* take ownership of the date str */
-			llsd->date_.str = (uint8_t*)ctx->buf;
-			llsd->date_.dyn_str = TRUE;
-			llsd->date_.use_dval = FALSE;
-			llsd->date_.dval = 0.0;
-			llsd->date_.len = ctx->len;
+			if ( ctx->buf != NULL )
+			{
+				/* take ownership of the date str */
+				llsd->date_.str = UT(ctx->buf);
+				llsd->date_.dyn_str = TRUE;
+				llsd->date_.use_dval = FALSE;
+				llsd->date_.dval = 0.0;
+				llsd->date_.len = ctx->len;
+			}
+			else
+			{
+				llsd->date_.dval = 0.0;
+				llsd->date_.use_dval = TRUE;
+				llsd->date_.dyn_str = FALSE;
+				llsd->date_.str = NULL;
+				llsd->date_.len = 0;
+			}
 			ctx->buf = NULL;
 			ctx->len = 0;
 			DEBUG( "%*sDATE (%*s)\n", ctx->indent * 4, " ", llsd->date_.len, llsd->date_.str );
 			break;
 		case LLSD_STRING:
-			ASSERT( ctx->buf != NULL );
 			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_STRING;
-			/* take ownership of the string str */
-			llsd->string_.str = (uint8_t*)ctx->buf;
-			llsd->string_.str_len = ctx->len;
+			if ( ctx->buf != NULL )
+			{
+				/* take ownership of the string str */
+				llsd->string_.str = UT(ctx->buf);
+				llsd->string_.str_len = ctx->len;
+			}
+			else
+			{
+				/* allocate an empty string */
+				llsd->string_.str = UT(CALLOC( 1, sizeof(uint8_t) ));
+				llsd->string_.str_len = 0;
+			}
 			llsd->string_.dyn_str = TRUE;
 			ctx->buf = NULL;
 			ctx->len = 0;
 			DEBUG( "%*sSTRING (%*s)\n", ctx->indent * 4, " ", llsd->string_.str_len, llsd->string_.str );
 			break;
 		case LLSD_URI:
-			ASSERT( ctx->buf != NULL );
 			llsd = llsd_new( LLSD_TYPE_INVALID );
 			llsd->type_ = LLSD_URI;
-			/* take ownership of the uri str */
-			llsd->uri_.uri = (uint8_t*)ctx->buf;
-			llsd->uri_.uri_len = ctx->len;
+			if ( ctx->buf != NULL )
+			{
+				/* take ownership of the uri str */
+				llsd->uri_.uri = UT(ctx->buf);
+				llsd->uri_.uri_len = ctx->len;
+			}
+			else
+			{
+				/* allocate and empty uri */
+				llsd->uri_.uri = UT(CALLOC( 1, sizeof(uint8_t) ));
+				llsd->uri_.uri_len = 0;
+			}
 			llsd->uri_.dyn_uri = TRUE;
 			ctx->buf = NULL;
 			ctx->len = 0;
@@ -378,7 +423,7 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			if ( ctx->buf != NULL )
 			{
 				/* take ownership of the encoded binary str */
-				llsd->binary_.enc = (uint8_t*)ctx->buf;
+				llsd->binary_.enc = UT(ctx->buf);
 				llsd->binary_.enc_size = ctx->len;
 				llsd->binary_.dyn_enc = TRUE;
 				ctx->buf = NULL;

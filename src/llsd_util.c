@@ -371,7 +371,7 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			if ( size == 0 )
 			{
 				llsd->string_.str_len = 0;
-				llsd->string_.str = NULL;
+				llsd->string_.str = UT(CALLOC( 1, sizeof(uint8_t) ));
 				llsd->string_.dyn_str = FALSE;
 				llsd->string_.esc_len = 0;
 				llsd->string_.esc = NULL;
@@ -427,8 +427,8 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			if ( size == 0 )
 			{
 				llsd->uri_.uri_len = 0;
-				llsd->uri_.uri = NULL;
-				llsd->uri_.dyn_uri = FALSE;
+				llsd->uri_.uri = UT(CALLOC( 1, sizeof(uint8_t) ));
+				llsd->uri_.dyn_uri = TRUE;
 				llsd->uri_.esc_len = 0;
 				llsd->uri_.esc = NULL;
 				llsd->uri_.dyn_esc = FALSE;
@@ -463,8 +463,8 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			if ( size == 0 )
 			{
 				llsd->binary_.enc_size = 0;
-				llsd->binary_.enc = NULL;
-				llsd->binary_.dyn_enc = FALSE;
+				llsd->binary_.enc = UT(CALLOC( 1, sizeof(uint8_t) ));
+				llsd->binary_.dyn_enc = TRUE;
 				llsd->binary_.data_size = 0;
 				llsd->binary_.data = NULL;
 				llsd->binary_.dyn_data = FALSE;

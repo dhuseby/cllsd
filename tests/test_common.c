@@ -34,13 +34,13 @@ static llsd_t* get_random_str( void )
 {
 	static uint8_t str[1024];
 	int i;
-	int len = (24 + (rand() % 128));
+	int len = (rand() % 128);
 
 	for ( i = 0; i < len; i++ )
 	{
 		/* get a random, printable ascii character */
-		/*str[i] = (32 + (rand() % 94));*/
-		str[i] = (rand() % 26) + 'a';
+		str[i] = (32 + (rand() % 94));
+		/*str[i] = (rand() % 26) + 'a';*/
 	}
 	str[len] = '\0';
 	return llsd_new_string( str, len, FALSE, FALSE );
@@ -50,13 +50,13 @@ static llsd_t* get_random_uri( void )
 {
 	static uint8_t uri[1024];
 	int i;
-	int len = (24 + (rand() % 128));
+	int len = (rand() % 128);
 
 	for ( i = 0; i < len; i++ )
 	{
 		/* get a random, printable ascii character */
-		/*uri[i] = (32 + (rand() % 94));*/
-		uri[i] = (rand() % 26) + 'a';
+		uri[i] = (32 + (rand() % 94));
+		/*uri[i] = (rand() % 26) + 'a';*/
 	}
 	uri[len] = '\0';
 	return llsd_new_uri( uri, len, FALSE );
