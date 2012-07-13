@@ -2103,23 +2103,29 @@ int llsd_decode_binary( llsd_t * llsd )
 
 
 static uint8_t const * const binary_header = "<? LLSD/Binary ?>\n";
+static uint8_t const * const notation_header = "<?llsd/notation?>\n";
 static uint8_t const * const xml_signature = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 static uint8_t const * const xml_header = "<llsd>\n";
 static uint8_t const * const xml_footer = "</llsd>\n";
 
+#define BINARY_SIG_LEN (18)
+#define NOTATION_SIG_LEN (18)
 #define XML_SIG_LEN (38)
 #define XML_HEADER_LEN (6)
 #define XML_FOOTER_LEN (7)
 
-#define SIG_LEN (18)
 llsd_t * llsd_parse( FILE *fin )
 {
 	size_t ret;
-	uint8_t sig[SIG_LEN];
+	uint8_t sig[BINARY_SIG_LEN];
 	CHECK_RET_MSG( fin, NULL, "invalid file pointer\n" );
-	ret = fread( sig, sizeof(uint8_t), SIG_LEN, fin );
-	CHECK_MSG( ret == SIG_LEN, "failed to read signature from LLSD file\n" );
-	if ( memcmp( sig, binary_header, SIG_LEN ) == 0 )
+	ret = fread( sig, sizeof(uint8_t), BINARY_SIG_LEN, fin );
+
+	if ( memcmp( sig, notation_header, NOTATION_SIG_LEN ) == 0 )
+	{
+		return llsd_parse_notation( fin );
+	}
+	else if ( memcmp( sig, binary_header, BINARY_SIG_LEN ) == 0 )
 	{
 		return llsd_parse_binary( fin );
 	}
@@ -2153,8 +2159,14 @@ size_t llsd_format( llsd_t * llsd, llsd_serializer_t fmt, FILE * fout, int prett
 			DEBUG( "END LLSD %lu - %lu\n", start, ftell( fout ) - 1 );
 			return s;
 		case LLSD_ENC_BINARY:
-			s += fwrite( binary_header, sizeof(uint8_t), 18, fout );
+			s += fwrite( binary_header, sizeof(uint8_t), BINARY_SIG_LEN, fout );
+			DEBUG( "BINARY SIG %lu - %lu\n", start, ftell( fout ) - 1 );
 			s += llsd_format_binary( llsd, fout );
+			return s;
+		case LLSD_ENC_NOTATION:
+			s += fwrite( notation_header, sizeof(uint8_t), NOTATION_SIG_LEN, fout );
+			DEBUG( "NOTATION SIG %lu - %lu\n", start, ftell( fout ) - 1 );
+			s += llsd_format_notation( llsd, fout, pretty );
 			return s;
 	}
 	return 0;
@@ -2176,8 +2188,11 @@ static size_t llsd_get_zero_copy_size( llsd_t * llsd, llsd_serializer_t fmt, int
 			s += 1; /* binary header */
 			s += llsd_get_binary_zero_copy_size( llsd );
 			return s;
+		case LLSD_ENC_NOTATION:
+			s += 1; /* notation header */
+			s += llsd_get_notation_zero_copy_size( llsd );
 	}
-	return 0;
+	return s;
 }
 
 size_t llsd_format_zero_copy( llsd_t * llsd, llsd_serializer_t fmt, struct iovec ** v, int pretty )
@@ -2212,11 +2227,22 @@ size_t llsd_format_zero_copy( llsd_t * llsd, llsd_serializer_t fmt, struct iovec
 		case LLSD_ENC_BINARY:
 			/* add in the header */
 			(*v)[0].iov_base = (void*)binary_header;
-			(*v)[0].iov_len = SIG_LEN;
+			(*v)[0].iov_len = BINARY_SIG_LEN;
 
 			/* add in the iovec structs for the llsd */
 			s = 1;
 			s += llsd_format_binary_zero_copy( llsd, &((*v)[s]) );
+
+			return s;
+
+		case LLSD_ENC_NOTATION:
+			/* add in the header */
+			(*v)[0].iov_base = (void*)notation_header;
+			(*v)[0].iov_len = NOTATION_SIG_LEN;
+
+			/* add in the iovec structs for the llsd */
+			s = 1;
+			s += llsd_format_notation_zero_copy( llsd, &((*v)[s]) );
 
 			return s;
 	}

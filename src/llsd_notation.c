@@ -152,14 +152,14 @@ static int llsd_read_until( uint8_t ** out, uint32_t * out_size, uint8_t delim, 
 			/* update the total */
 			total += i;
 
-			/* reset i */
-			i = 0;
-
 			if ( buf[i] == delim )
 			{
 				(*out_size) = total;
 				return total;
 			}
+
+			/* reset i */
+			i = 0;
 		}
 		else
 			i++;
@@ -170,11 +170,12 @@ static int llsd_read_until( uint8_t ** out, uint32_t * out_size, uint8_t delim, 
 	return 0;
 }
 
-static size_t llsd_write_notation_start_tag( llsd_t * llsd, FILE * fout, int pretty, int size)
+static size_t llsd_write_notation_start_tag( llsd_t * llsd, FILE * fout, int pretty )
 {
-	static uint8_t buf[32];
-	int sz = 0;
+	static uint8_t tmp[64];
+	int len = 0;
 	size_t num = 0;
+	int8_t const * str = NULL;
 	llsd_type_t t;
 	CHECK_PTR_RET( llsd, 0 );
 	t = llsd_get_type( llsd );
@@ -194,16 +195,37 @@ static size_t llsd_write_notation_start_tag( llsd_t * llsd, FILE * fout, int pre
 		case LLSD_DATE:
 			return fwrite( "d\"", sizeof(uint8_t), 1, fout );
 		case LLSD_STRING:
-			/* TODO */
-			return 0;
+			if ( llsd->string_.raw == TRUE )
+			{
+				len = snprintf( tmp, 64, "%d", llsd->binary_.data_size );
+				num += fwrite( "s(", sizeof(uint8_t), 2, fout );
+				num += fwrite( tmp, sizeof(uint8_t), len, fout );
+				num += fwrite( ")", sizeof(uint8_t), 1, fout );
+			}
+			num += fwrite( "\"", sizeof(uint8_t), 1, fout );
+			return num;
 		case LLSD_URI:
 			return fwrite( "l\"", sizeof(uint8_t), 1, fout );
 		case LLSD_BINARY:
-			/* TODO */
+			if ( llsd->binary_.encoding == LLSD_RAW )
+			{
+				/* raw binary */
+				len = snprintf( tmp, 64, "%d", llsd->binary_.data_size );
+				num += fwrite( "b(", sizeof(uint8_t), 2, fout );
+				num += fwrite( tmp, sizeof(uint8_t), len, fout );
+				num += fwrite( ")", sizeof(uint8_t), 1, fout );
+			}
+			else
+			{
+				str = llsd_get_bin_enc_type_string( llsd->binary_.encoding, LLSD_ENC_NOTATION );
+				num += fwrite( str, sizeof(uint8_t), strlen(str), fout );
+			}
+			num += fwrite( "\"", sizeof(uint8_t), 1, fout );
+			return num;
 		case LLSD_ARRAY:
-			return fwrite( "[", sizeof(uint8_t), 1, fout );
+			return fwrite( "[\n", sizeof(uint8_t), ((pretty && (llsd_get_size(llsd) > 0)) ? 2 : 1), fout );
 		case LLSD_MAP:
-			return fwrite( "{", sizeof(uint8_t), 1, fout );
+			return fwrite( "{\n", sizeof(uint8_t), ((pretty && (llsd_get_size(llsd) > 0)) ? 2 : 1), fout );
 	}
 	return 0;
 }
@@ -226,10 +248,8 @@ static size_t llsd_write_notation_end_tag( llsd_t * llsd, FILE * fout, int prett
 		case LLSD_DATE:
 		case LLSD_BINARY:
 		case LLSD_URI:
-			return fwrite( "\"", sizeof(uint8_t), 1, fout );
 		case LLSD_STRING:
-			/* TODO */
-			return 0;
+			return fwrite( "\"", sizeof(uint8_t), 1, fout );
 		case LLSD_ARRAY:
 			return fwrite( "]", sizeof(uint8_t), 1, fout );
 		case LLSD_MAP:
@@ -476,7 +496,7 @@ size_t llsd_format_notation( llsd_t * llsd, FILE * fout, int pretty )
 		case LLSD_URI:
 			s = llsd_as_string( llsd );
 			num += indent_notation( pretty, fout );
-			num += llsd_write_notation_start_tag( llsd, fout, pretty, 0 );
+			num += llsd_write_notation_start_tag( llsd, fout, pretty );
 			num += fwrite( s.str, sizeof(uint8_t), s.str_len, fout );
 			num += llsd_write_notation_end_tag( llsd, fout, pretty );
 			DEBUG( "%*s%s %lu - %lu\n", indent * 4, " ", llsd_get_type_string( t ), start, ftell( fout ) - 1 );
@@ -496,44 +516,18 @@ size_t llsd_format_notation( llsd_t * llsd, FILE * fout, int pretty )
 			}
 			
 			num += indent_notation( pretty, fout );
-			
-			/* handle the corner case that we decoded raw binary */
-			if ( llsd->binary_.encoding == LLSD_RAW )
+
+			num += llsd_write_notation_start_tag( llsd, fout, pretty );
+			if ( (llsd->binary_.encoding == LLSD_RAW) || (llsd_get_size( llsd ) == 0) )
 			{
-				/* write out raw binary */
-				num += fwrite( "b(", sizeof(uint8_t), 2, fout );
-				len = snprintf( tmp, 64, "%d", llsd->binary_.data_size );
-				num += fwrite( tmp, sizeof(uint8_t), len, fout );
-				num += fwrite( ")\"", sizeof(uint8_t), 2, fout );
 				num += fwrite( llsd->binary_.data, sizeof(uint8_t), llsd->binary_.data_size, fout );
-				num += fwrite( "\"", sizeof(uint8_t), 1, fout );
-				if ( pretty )
-					num += fwrite( "\n", sizeof(uint8_t), 1, fout );
 			}
 			else
 			{
-				/* this will encode the binary to BASE64 if it isn't encoded.
-				 * NOTE: it will NOT convert BASE16 to BASE64 */
 				s = llsd_as_string( llsd );
-
-				if ( s.str_len == 0 )
-				{
-					/* write empty binary tag */
-					num += fwrite( "b(0)\"\"", sizeof(uint8_t), 6, fout );
-					if ( pretty )
-						num += fwrite( "\n", sizeof(uint8_t), 1, fout );
-				}
-				else
-				{
-					num += llsd_write_notation_start_tag( llsd, fout, pretty, s.str_len );
-					str = llsd_get_bin_enc_type_string( llsd->binary_.encoding, LLSD_ENC_NOTATION );
-					num += fwrite( str, sizeof(uint8_t), strlen(str), fout );
-					p = '"';
-					num += fwrite( &p, sizeof(uint8_t), 1, fout );
-					num += fwrite( s.str, sizeof(uint8_t), s.str_len, fout );
-					num += llsd_write_notation_end_tag( llsd, fout, pretty );
-				}
+				num += fwrite( s.str, sizeof(uint8_t), s.str_len, fout );
 			}
+			num += llsd_write_notation_end_tag( llsd, fout, pretty );
 			DEBUG( "%*s%s %lu - %lu\n", indent * 4, " ", llsd_get_type_string( t ), start, ftell( fout ) - 1 );
 			return num;
 
@@ -541,46 +535,27 @@ size_t llsd_format_notation( llsd_t * llsd, FILE * fout, int pretty )
 		case LLSD_ARRAY:
 		case LLSD_MAP:
 			num += indent_notation( pretty, fout );
-			if ( llsd_get_size( llsd ) == 0 )
+			num += llsd_write_notation_start_tag( llsd, fout, pretty );
+			DEBUG( "%*s%s (%d)\n", indent * 4, " ", llsd_get_type_string( t ), llsd_get_size( llsd ) );
+			indent++;
+			itr = llsd_itr_begin( llsd );
+			for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
 			{
-				if ( t == LLSD_ARRAY )
-				{
-					/* write empty array tag */
-					num += fwrite( "[]", sizeof(uint8_t), 2, fout );
-					if ( pretty )
-						num += fwrite( "\n", sizeof(uint8_t), 1, fout );
-				}
-				else
-				{
-					/* write empty map tag */
-					num += fwrite( "{}", sizeof(uint8_t), 2, fout );
-					if ( pretty )
-						num += fwrite( "\n", sizeof(uint8_t), 1, fout );
-				}
-			}
-			else
-			{
-				num += llsd_write_notation_start_tag( llsd, fout, pretty, llsd_get_size( llsd ) );
-				DEBUG( "%*s%s (%d)\n", indent * 4, " ", llsd_get_type_string( t ), llsd_get_size( llsd ) );
-				indent++;
-				itr = llsd_itr_begin( llsd );
-				for ( ; itr != llsd_itr_end( llsd ); itr = llsd_itr_next( llsd, itr ) )
-				{
-					num += indent_notation( pretty, fout );
-					llsd_itr_get( llsd, itr, &v, &k );
-					if ( k != NULL )
-					{
-						ASSERT( llsd_get_type( k ) == LLSD_STRING );
-						num += llsd_format_notation( v, fout, pretty );
-						num += fwrite( ":", sizeof(uint8_t), 1, fout );
-					}
-					num += llsd_format_notation( v, fout, pretty );
-					num += fwrite( ",\n", sizeof(uint8_t), (pretty ? 2 : 1), fout );
-				}
-				indent--;
 				num += indent_notation( pretty, fout );
-				num += llsd_write_notation_end_tag( llsd, fout, pretty );
+				llsd_itr_get( llsd, itr, &v, &k );
+				if ( k != NULL )
+				{
+					ASSERT( llsd_get_type( k ) == LLSD_STRING );
+					num += llsd_format_notation( v, fout, pretty );
+					num += fwrite( ":", sizeof(uint8_t), 1, fout );
+				}
+				num += llsd_format_notation( v, fout, pretty );
+				num += fwrite( ",\n", sizeof(uint8_t), (pretty ? 2 : 1), fout );
 			}
+			indent--;
+			if ( llsd_get_size( llsd ) > 0 )
+				num += indent_notation( pretty, fout );
+			num += llsd_write_notation_end_tag( llsd, fout, pretty );
 			DEBUG( "%*s%s (%d) %lu - %lu\n", indent * 4, " ", llsd_get_type_string( t ), llsd_get_size( llsd ), start, ftell( fout ) - 1 );
 			break;
 	}

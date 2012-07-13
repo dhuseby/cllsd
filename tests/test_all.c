@@ -29,8 +29,7 @@
 
 #include <cllsd/llsd.h>
 
-#define SUITE(x) extern CU_pSuite add_##x##_test_suite();
-#define SUITE_VAR(x) CU_pSuite x##_test_suite;
+#define SUITE(x) extern CU_pSuite add_##x##_test_suite(); CU_pSuite x##_test_suite;
 #define ADD_SUITE(x) x##_test_suite = add_##x##_test_suite();
 
 SUITE( base16 );
@@ -42,13 +41,6 @@ SUITE( xml );
 
 int main()
 {
-	SUITE_VAR( base16 );
-	SUITE_VAR( base64 );
-	SUITE_VAR( base85 );
-	SUITE_VAR( binary );
-	SUITE_VAR( notation );
-	SUITE_VAR( xml );
-
 	/* initialize the CUnit test registry */
 	if ( CUE_SUCCESS != CU_initialize_registry() )
 		return CU_get_error();
@@ -58,7 +50,7 @@ int main()
 	ADD_SUITE( base64 );
 	ADD_SUITE( base85 );
 	ADD_SUITE( binary );
-	/*ADD_SUITE( notation );*/
+	ADD_SUITE( notation );
 	ADD_SUITE( xml );
 
 	/* run all tests using the CUnit Basic interface */
