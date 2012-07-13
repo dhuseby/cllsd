@@ -35,12 +35,20 @@ int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT] =
 	T("MAP")
 };
 
-int8_t const * const llsd_bin_enc_type_strings[LLSD_BIN_ENC_COUNT] =
+int8_t const * const llsd_xml_bin_enc_type_strings[LLSD_BIN_ENC_COUNT] =
 {
 	T("NONE"),
 	T("base16"),
 	T("base64"),
 	T("base85")
+};
+
+int8_t const * const llsd_notation_bin_enc_type_strings[LLSD_BIN_ENC_COUNT] =
+{
+	T("NONE"),
+	T("b16"),
+	T("b64"),
+	T("b85")
 };
 
 

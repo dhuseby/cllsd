@@ -59,6 +59,7 @@ typedef enum llsd_serializer_s
 {
 	LLSD_ENC_XML,
 	LLSD_ENC_BINARY,
+	LLSD_ENC_NOTATION,
 
 	LLSD_ENC_LAST,
 	LLSD_ENC_FIRST = LLSD_ENC_XML,
@@ -75,11 +76,14 @@ typedef enum llsd_bin_enc_s
 
 	LLSD_BIN_ENC_LAST,
 	LLSD_BIN_ENC_FIRST = LLSD_NONE,
-	LLSD_BIN_ENC_COUNT = LLSD_BIN_ENC_LAST - LLSD_BIN_ENC_FIRST
+	LLSD_BIN_ENC_COUNT = LLSD_BIN_ENC_LAST - LLSD_BIN_ENC_FIRST,
+
+	LLSD_RAW	/* used for some special cases */
 
 } llsd_bin_enc_t;
 
-extern int8_t const * const llsd_bin_enc_type_strings[LLSD_BIN_ENC_COUNT];
+extern int8_t const * const llsd_xml_bin_enc_type_strings[LLSD_BIN_ENC_COUNT];
+extern int8_t const * const llsd_notation_bin_enc_type_strings[LLSD_BIN_ENC_COUNT];
 
 #ifndef TRUE
 #define TRUE (1)
@@ -138,6 +142,7 @@ struct llsd_string_s
 	int					dyn_str: 1;
 	int					dyn_esc: 1;
 	int					key_esc: 1;
+	int					raw: 1;
 	uint32_t			str_len;
 	uint8_t *			str;
 	uint32_t			esc_len;

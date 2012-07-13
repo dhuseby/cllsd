@@ -63,8 +63,8 @@ llsd_string_t const false_string =
 	.dyn_str = FALSE,
 	.dyn_esc = FALSE,
 	.key_esc = FALSE,
-	.str_len = 5,
-	.str = "false",
+	.str_len = 1,
+	.str = "0",
 	.esc_len = 0,
 	.esc = NULL
 };
@@ -73,8 +73,8 @@ llsd_string_t const true_string =
 	.dyn_str = FALSE,
 	.dyn_esc = FALSE,
 	.key_esc = FALSE,
-	.str_len = 4,
-	.str = "true",
+	.str_len = 1,
+	.str = "1",
 	.esc_len = 0,
 	.esc = NULL
 };
@@ -84,7 +84,7 @@ llsd_string_t const empty_string =
 	.dyn_esc = FALSE,
 	.key_esc = FALSE,
 	.str_len = 0,
-	.str = NULL,
+	.str = "",
 	.esc_len = 0,
 	.esc = NULL
 };

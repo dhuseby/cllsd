@@ -24,9 +24,9 @@
 #include "llsd.h"
 
 llsd_t * llsd_parse_notation( FILE * fin );
-size_t llsd_format_notation( llsd_t * llsd, FILE * fout );
-size_t llsd_get_notation_zero_copy_size( llsd_t * llsd );
-size_t llsd_format_notation_zero_copy( llsd_t * llsd, struct iovec * v );
+size_t llsd_format_notation( llsd_t * llsd, FILE * fout, int pretty );
+size_t llsd_get_notation_zero_copy_size( llsd_t * llsd, int pretty );
+size_t llsd_format_notation_zero_copy( llsd_t * llsd, struct iovec * v, int pretty );
 
 #endif /* LLSD_NOTATION_H */
 

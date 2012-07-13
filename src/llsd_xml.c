@@ -389,6 +389,7 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 				llsd->string_.str_len = 0;
 			}
 			llsd->string_.dyn_str = TRUE;
+			llsd->string_.raw = FALSE;
 			ctx->buf = NULL;
 			ctx->len = 0;
 			DEBUG( "%*sSTRING (%*s)\n", ctx->indent * 4, " ", llsd->string_.str_len, llsd->string_.str );
@@ -779,7 +780,7 @@ size_t llsd_format_xml( llsd_t * llsd, FILE * fout, int pretty )
 			else
 			{
 				num += llsd_write_xml_start_tag( t, fout, pretty, s.str_len );
-				p = llsd_get_bin_enc_type_string( llsd->binary_.encoding );
+				p = llsd_get_bin_enc_type_string( llsd->binary_.encoding, LLSD_ENC_XML );
 				num += fwrite( p, sizeof(uint8_t), strlen(p), fout );
 				num += fwrite( lxstartc, sizeof(uint8_t), XML_SIZEC_LEN, fout );
 				num += fwrite( s.str, sizeof(uint8_t), s.str_len, fout );

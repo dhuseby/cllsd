@@ -625,10 +625,19 @@ int8_t const * llsd_get_type_string( llsd_type_t type_ )
 	return llsd_type_strings[ type_ ];
 }
 
-int8_t const * llsd_get_bin_enc_type_string( llsd_bin_enc_t enc )
+int8_t const * llsd_get_bin_enc_type_string( llsd_bin_enc_t enc, llsd_serializer_t fmt )
 {
 	CHECK_RET( ((enc >= LLSD_BIN_ENC_FIRST) && (enc < LLSD_BIN_ENC_LAST)), NULL );
-	return llsd_bin_enc_type_strings[ enc ];
+	switch( fmt )
+	{
+		case LLSD_ENC_XML:
+			return llsd_xml_bin_enc_type_strings[ enc ];
+		case LLSD_ENC_BINARY:
+			return NULL;
+		case LLSD_ENC_NOTATION:
+			return llsd_notation_bin_enc_type_strings[ enc ];
+	}
+	return NULL;
 }
 
 int llsd_get_size( llsd_t * llsd )
@@ -1967,7 +1976,7 @@ int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding )
 		case LLSD_BASE16:
 			/* allocate enc buffer */
 			llsd->binary_.enc_size = BASE16_LENGTH( llsd->binary_.data_size );
-			llsd->binary_.enc = UT(CALLOC( llsd->binary_.enc_size, sizeof(uint8_t) ));
+			llsd->binary_.enc = UT(CALLOC( llsd->binary_.enc_size + 1, sizeof(uint8_t) ));
 			llsd->binary_.dyn_enc = TRUE;
 			llsd->binary_.encoding = LLSD_BASE16;
 
@@ -1980,7 +1989,7 @@ int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding )
 		case LLSD_BASE64:
 			/* allocate enc buffer */
 			llsd->binary_.enc_size = BASE64_LENGTH( llsd->binary_.data_size );
-			llsd->binary_.enc = UT(CALLOC( llsd->binary_.enc_size, sizeof(uint8_t) ));
+			llsd->binary_.enc = UT(CALLOC( llsd->binary_.enc_size + 1, sizeof(uint8_t) ));
 			llsd->binary_.dyn_enc = TRUE;
 			llsd->binary_.encoding = LLSD_BASE64;
 
@@ -1993,7 +2002,7 @@ int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding )
 		case LLSD_BASE85:
 			/* allocate enc buffer */
 			llsd->binary_.enc_size = BASE85_LENGTH( llsd->binary_.data_size );
-			llsd->binary_.enc = UT(CALLOC( llsd->binary_.enc_size, sizeof(uint8_t) ));
+			llsd->binary_.enc = UT(CALLOC( llsd->binary_.enc_size + 1, sizeof(uint8_t) ));
 			llsd->binary_.dyn_enc = TRUE;
 			llsd->binary_.encoding = LLSD_BASE85;
 
