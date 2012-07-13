@@ -382,7 +382,7 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 				if ( escaped )
 				{
 					llsd->string_.esc_len = size;
-					llsd->string_.esc = UT(CALLOC( size, sizeof(uint8_t) ));
+					llsd->string_.esc = UT(CALLOC( size + 1, sizeof(uint8_t) ));
 					llsd->string_.dyn_esc = TRUE;
 					llsd->string_.key_esc = is_key;
 					MEMCPY( llsd->string_.esc, p, size );
@@ -390,7 +390,7 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 				else
 				{
 					llsd->string_.str_len = size;
-					llsd->string_.str = UT(CALLOC( size, sizeof(uint8_t) ));
+					llsd->string_.str = UT(CALLOC( size + 1, sizeof(uint8_t) ));
 					llsd->string_.dyn_str = TRUE;
 					MEMCPY( llsd->string_.str, p, size );
 				}
@@ -407,7 +407,7 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			if ( (p != NULL) && (size > 0) )
 			{
 				llsd->date_.len = size;
-				llsd->date_.str = UT(CALLOC( size, sizeof(uint8_t) ));
+				llsd->date_.str = UT(CALLOC( size + 1, sizeof(uint8_t) ));
 				llsd->date_.dyn_str = TRUE;
 				MEMCPY( llsd->date_.str, p, size );
 			}
@@ -438,14 +438,14 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 				if ( escaped )
 				{
 					llsd->uri_.esc_len = size;
-					llsd->uri_.esc = UT(CALLOC( size, sizeof(uint8_t) ));
+					llsd->uri_.esc = UT(CALLOC( size + 1, sizeof(uint8_t) ));
 					llsd->uri_.dyn_esc = TRUE;
 					MEMCPY( llsd->uri_.esc, p, size );
 				}
 				else
 				{
 					llsd->uri_.uri_len = size;
-					llsd->uri_.uri = UT(CALLOC( size, sizeof(uint8_t) ));
+					llsd->uri_.uri = UT(CALLOC( size + 1, sizeof(uint8_t) ));
 					llsd->uri_.dyn_uri = TRUE;
 					MEMCPY( llsd->uri_.uri, p, size );
 				}

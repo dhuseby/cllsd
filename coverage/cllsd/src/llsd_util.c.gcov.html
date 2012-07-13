@@ -463,7 +463,7 @@
 <span class="lineNum">     382 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 44448 times"> + </span>]:<span class="lineCov">      44448 :                 if ( escaped )</span>
 <span class="lineNum">     383 </span>                :            :                 {
 <span class="lineNum">     384 </span>                :<span class="lineNoCov">          0 :                     llsd-&gt;string_.esc_len = size;</span>
-<span class="lineNum">     385 </span>                :<span class="lineNoCov">          0 :                     llsd-&gt;string_.esc = UT(CALLOC( size, sizeof(uint8_t) ));</span>
+<span class="lineNum">     385 </span>                :<span class="lineNoCov">          0 :                     llsd-&gt;string_.esc = UT(CALLOC( size + 1, sizeof(uint8_t) ));</span>
 <span class="lineNum">     386 </span>                :<span class="lineNoCov">          0 :                     llsd-&gt;string_.dyn_esc = TRUE;</span>
 <span class="lineNum">     387 </span>                :<span class="lineNoCov">          0 :                     llsd-&gt;string_.key_esc = is_key;</span>
 <span class="lineNum">     388 </span>                :<span class="lineNoCov">          0 :                     MEMCPY( llsd-&gt;string_.esc, p, size );</span>
@@ -471,7 +471,7 @@
 <span class="lineNum">     390 </span>                :            :                 else
 <span class="lineNum">     391 </span>                :            :                 {
 <span class="lineNum">     392 </span>                :<span class="lineCov">      44448 :                     llsd-&gt;string_.str_len = size;</span>
-<span class="lineNum">     393 </span>                :<span class="lineCov">      44448 :                     llsd-&gt;string_.str = UT(CALLOC( size, sizeof(uint8_t) ));</span>
+<span class="lineNum">     393 </span>                :<span class="lineCov">      44448 :                     llsd-&gt;string_.str = UT(CALLOC( size + 1, sizeof(uint8_t) ));</span>
 <span class="lineNum">     394 </span>                :<span class="lineCov">      44448 :                     llsd-&gt;string_.dyn_str = TRUE;</span>
 <span class="lineNum">     395 </span>                :<span class="lineCov">      44448 :                     MEMCPY( llsd-&gt;string_.str, p, size );</span>
 <span class="lineNum">     396 </span>                :            :                 }
@@ -488,7 +488,7 @@
 <span class="lineNum">     407 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8450 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">       8450 :             if ( (p != NULL) &amp;&amp; (size &gt; 0) )</span>
 <span class="lineNum">     408 </span>                :            :             {
 <span class="lineNum">     409 </span>                :<span class="lineNoCov">          0 :                 llsd-&gt;date_.len = size;</span>
-<span class="lineNum">     410 </span>                :<span class="lineNoCov">          0 :                 llsd-&gt;date_.str = UT(CALLOC( size, sizeof(uint8_t) ));</span>
+<span class="lineNum">     410 </span>                :<span class="lineNoCov">          0 :                 llsd-&gt;date_.str = UT(CALLOC( size + 1, sizeof(uint8_t) ));</span>
 <span class="lineNum">     411 </span>                :<span class="lineNoCov">          0 :                 llsd-&gt;date_.dyn_str = TRUE;</span>
 <span class="lineNum">     412 </span>                :<span class="lineNoCov">          0 :                 MEMCPY( llsd-&gt;date_.str, p, size );</span>
 <span class="lineNum">     413 </span>                :            :             }
@@ -519,14 +519,14 @@
 <span class="lineNum">     438 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6980 times"> + </span>]:<span class="lineCov">       6980 :                 if ( escaped )</span>
 <span class="lineNum">     439 </span>                :            :                 {
 <span class="lineNum">     440 </span>                :<span class="lineNoCov">          0 :                     llsd-&gt;uri_.esc_len = size;</span>
-<span class="lineNum">     441 </span>                :<span class="lineNoCov">          0 :                     llsd-&gt;uri_.esc = UT(CALLOC( size, sizeof(uint8_t) ));</span>
+<span class="lineNum">     441 </span>                :<span class="lineNoCov">          0 :                     llsd-&gt;uri_.esc = UT(CALLOC( size + 1, sizeof(uint8_t) ));</span>
 <span class="lineNum">     442 </span>                :<span class="lineNoCov">          0 :                     llsd-&gt;uri_.dyn_esc = TRUE;</span>
 <span class="lineNum">     443 </span>                :<span class="lineNoCov">          0 :                     MEMCPY( llsd-&gt;uri_.esc, p, size );</span>
 <span class="lineNum">     444 </span>                :            :                 }
 <span class="lineNum">     445 </span>                :            :                 else
 <span class="lineNum">     446 </span>                :            :                 {
 <span class="lineNum">     447 </span>                :<span class="lineCov">       6980 :                     llsd-&gt;uri_.uri_len = size;</span>
-<span class="lineNum">     448 </span>                :<span class="lineCov">       6980 :                     llsd-&gt;uri_.uri = UT(CALLOC( size, sizeof(uint8_t) ));</span>
+<span class="lineNum">     448 </span>                :<span class="lineCov">       6980 :                     llsd-&gt;uri_.uri = UT(CALLOC( size + 1, sizeof(uint8_t) ));</span>
 <span class="lineNum">     449 </span>                :<span class="lineCov">       6980 :                     llsd-&gt;uri_.dyn_uri = TRUE;</span>
 <span class="lineNum">     450 </span>                :<span class="lineCov">       6980 :                     MEMCPY( llsd-&gt;uri_.uri, p, size );</span>
 <span class="lineNum">     451 </span>                :            :                 }
