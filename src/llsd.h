@@ -26,6 +26,11 @@
 #include <pthread.h>
 #endif
 
+/* different sig lengths */
+#define BINARY_SIG_LEN (18)
+#define NOTATION_SIG_LEN (18)
+#define XML_SIG_LEN (38)
+
 typedef enum llsd_type_e
 {
 	LLSD_UNDEF,

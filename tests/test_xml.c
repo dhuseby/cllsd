@@ -33,7 +33,7 @@
 #include <llsd_xml.h>
 
 /* offset of first by after header */
-static size_t const data_offset = 38;
+static size_t const data_offset = XML_SIG_LEN;
 
 /* expected values */
 static size_t expected_sizes[ LLSD_TYPE_COUNT ] = 
@@ -108,7 +108,7 @@ CU_pSuite add_xml_test_suite()
 	pSuite = CU_add_suite("XML LLSD Tests", init_xml_suite, deinit_xml_suite);
 	CHECK_PTR_RET( pSuite, NULL );
 
-	/* add in binary serialization specific tests */
+	/* add in xml serialization specific tests */
 	CHECK_PTR_RET( add_xml_tests( pSuite ), NULL );
 
 	/* add in the tests */

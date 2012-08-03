@@ -2108,9 +2108,6 @@ static uint8_t const * const xml_signature = "<?xml version=\"1.0\" encoding=\"U
 static uint8_t const * const xml_header = "<llsd>\n";
 static uint8_t const * const xml_footer = "</llsd>\n";
 
-#define BINARY_SIG_LEN (18)
-#define NOTATION_SIG_LEN (18)
-#define XML_SIG_LEN (38)
 #define XML_HEADER_LEN (6)
 #define XML_FOOTER_LEN (7)
 
