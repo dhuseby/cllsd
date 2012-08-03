@@ -44,33 +44,31 @@ static uint32_t indent = 1;
 
 static llsd_t * llsd_reserve_binary( uint32_t size )
 {
-	uint32_t alloc_size = ( (size > 0)  ? size + 1 : 0 );
-	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + alloc_size );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) );
 	llsd->type_ = LLSD_BINARY;
 	if ( size > 0 )
 	{
 		llsd->binary_.data_size = size;
-		llsd->binary_.data = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
+		llsd->binary_.data = (uint8_t*)CALLOC( size + 1, sizeof(uint8_t) );
 	}
 	return llsd;
 }
 
 static llsd_t * llsd_reserve_string( int escaped, uint32_t size )
 {
-	uint32_t alloc_size = ( (size > 0)  ? size + 1 : 0 );
-	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + alloc_size );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) );
 	llsd->type_ = LLSD_STRING;
 	if ( size > 0 )
 	{
 		if ( escaped )
 		{
 			llsd->string_.esc_len = size;
-			llsd->string_.esc = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
+			llsd->string_.esc = (uint8_t*)CALLOC( size + 1, sizeof(uint8_t) );
 		}
 		else
 		{
 			llsd->string_.str_len = size;
-			llsd->string_.str = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
+			llsd->string_.str = (uint8_t*)CALLOC( size + 1, sizeof(uint8_t) );
 		}
 	}
 	return llsd;
@@ -78,27 +76,25 @@ static llsd_t * llsd_reserve_string( int escaped, uint32_t size )
 
 static llsd_t * llsd_reserve_uri( uint32_t size )
 {
-	uint32_t alloc_size = ( (size > 0)  ? size + 1 : 0 );
-	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + alloc_size );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) );
 	llsd->type_ = LLSD_URI;
 	if ( size > 0 )
 	{
 		llsd->uri_.uri_len = size;
-		llsd->uri_.uri = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
+		llsd->uri_.uri = (uint8_t*)CALLOC( size + 1, sizeof(uint8_t) );
 	}
 	return llsd;
 }
 
 static llsd_t * llsd_reserve_date( uint32_t size )
 {
-	uint32_t alloc_size = ( (size > 0)  ? size + 1 : 0 );
-	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + alloc_size );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) );
 	llsd->type_ = LLSD_DATE;
 	llsd->date_.use_dval = FALSE;
 	if ( size > 0 )
 	{
 		llsd->date_.len = size;
-		llsd->date_.str = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
+		llsd->date_.str = (uint8_t*)CALLOC( size + 1, sizeof(uint8_t) );
 	}
 }
 

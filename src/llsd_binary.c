@@ -37,37 +37,43 @@
 
 static llsd_t * llsd_reserve_binary( uint32_t size )
 {
-	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + size );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) );
 	llsd->type_ = LLSD_BINARY;
 	if ( size > 0 )
 	{
 		llsd->binary_.data_size = size;
-		llsd->binary_.data = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
+		llsd->binary_.data = (uint8_t*)CALLOC( size, sizeof(uint8_t) );
 	}
 	return llsd;
 }
 
 static llsd_t * llsd_reserve_string( uint32_t size )
 {
-	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + size );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) );
 	llsd->type_ = LLSD_STRING;
-	llsd->string_.str_len = size;
-	llsd->string_.str = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
+	if ( size > 0 )
+	{
+		llsd->string_.str_len = size;
+		llsd->string_.str = (uint8_t*)CALLOC( size, sizeof(uint8_t) );
+	}
 	return llsd;
 }
 
 static llsd_t * llsd_reserve_uri( uint32_t size )
 {
-	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + size );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) );
 	llsd->type_ = LLSD_URI;
-	llsd->uri_.uri_len = size;
-	llsd->uri_.uri = (uint8_t*)( ((void*)llsd) + sizeof(llsd_t) );
+	if ( size > 0 )
+	{
+		llsd->uri_.uri_len = size;
+		llsd->uri_.uri = (uint8_t*)CALLOC( size, sizeof(uint8_t) );
+	}
 	return llsd;
 }
 
 static llsd_t * llsd_reserve_date( uint32_t size )
 {
-	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) + size );
+	llsd_t * llsd = (llsd_t *)CALLOC( 1, sizeof(llsd_t) );
 	llsd->type_ = LLSD_DATE;
 	llsd->date_.use_dval = TRUE;
 }
