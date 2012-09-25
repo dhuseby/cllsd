@@ -3,6 +3,7 @@
 
 # configurable variables
 CUTIL_ROOT?=../cutil/src
+EXTRA_LIBS_ROOT?=/usr/local
 
 SHELL=/bin/sh
 SRC=test_all.c test_base16.c test_base64.c test_base85.c test_binary.c test_notation.c test_xml.c
