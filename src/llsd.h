@@ -17,18 +17,11 @@
 #ifndef LLSD_H
 #define LLSD_H
 
-#include <stdint.h>
 #include <cutil/macros.h>
-#include <cutil/array.h>
+#include <cutil/list.h>
 #include <cutil/hashtable.h>
 
-#ifdef USE_THREADING
-#include <pthread.h>
-#endif
-
 /* different sig lengths */
-#define BINARY_SIG_LEN (18)
-#define NOTATION_SIG_LEN (18)
 #define XML_SIG_LEN (38)
 
 typedef enum llsd_type_e
@@ -90,136 +83,38 @@ typedef enum llsd_bin_enc_s
 extern int8_t const * const llsd_xml_bin_enc_type_strings[LLSD_BIN_ENC_COUNT];
 extern int8_t const * const llsd_notation_bin_enc_type_strings[LLSD_BIN_ENC_COUNT];
 
-#ifndef TRUE
-#define TRUE (1)
-#endif
-
-#ifndef FALSE
-#define FALSE (0)
-#endif
-
 /* LLSD magic values */
 #define UUID_LEN (16)
 #define UUID_STR_LEN (36)
 #define DATE_STR_LEN (24)
-#define DEFAULT_ARRAY_CAPACITY (8)
-#define DEFAULT_MAP_CAPACITY (5)
 
-struct llsd_int_s
-{
-	int32_t				v;
-	uint32_t			be;
-};
+typedef struct llsd_s llsd_t;
 
-struct llsd_real_s
-{
-	double				v;
-	uint64_t			be;
-};
+/* new/delete llsd objects */
+llsd_t * llsd_new( llsd_type_t type_, ... );
+void llsd_delete( void * p );
 
-struct llsd_uuid_s
-{
-	int					dyn_bits: 1;
-	int					dyn_str:  1;
-	uint32_t			len;
-	uint8_t *			str;
-	uint8_t *			bits;
-};
+/* utility macros */
+#define llsd_new_empty_array() llsd_new( LLSD_ARRAY )
+#define llsd_new_empty_map() llsd_new( LLSD_MAP )
+#define llsd_new_boolean( val ) llsd_new ( LLSD_BOOLEAN, val )
+#define llsd_new_integer( val ) llsd_new ( LLSD_INTEGER, val )
+#define llsd_new_real( val ) llsd_new ( LLSD_REAL, val )
+#define llsd_new_uuid( bits ) llsd_new ( LLSD_UUID, bits )
+#define llsd_new_string( s ) llsd_new( LLSD_STRING, s )
+#define llsd_new_uri( s ) llsd_new( LLSD_URI, s )
+#define llsd_new_binary( p, len ) llsd_new( LLSD_BINARY, p, len )
+#define llsd_new_date( d ) llsd_new( LLSD_DATE, d )
 
-struct llsd_binary_s
-{
-	int					dyn_data: 1;
-	int					dyn_enc: 1;
-	llsd_bin_enc_t		encoding;
-	uint32_t			data_size;
-	uint8_t	*			data;
-	uint32_t			enc_size;
-	uint8_t *			enc;
-	uint32_t			be;
-};
+/* get the type of the particular object */
+llsd_type_t llsd_get_type( llsd_t * llsd );
+int8_t const * llsd_get_type_string( llsd_type_t type_ );
+int8_t const * llsd_get_bin_enc_type_string( llsd_bin_enc_t enc, llsd_serializer_t fmt );
+#define llsd_is_array(x) (llsd_get_type(x) == LLSD_ARRAY)
+#define llsd_is_map(x) (llsd_get_type(x) == LLSD_MAP)
 
-/* NOTE: the key_esc flag signifies that the map hashing function
- * should use the escaped version of the string when hashing. this
- * allows us to avoid the copy/unescape process for string keys
- * during loading. */
-struct llsd_string_s
-{
-	int					dyn_str: 1;
-	int					dyn_esc: 1;
-	int					key_esc: 1;
-	int					raw: 1;
-	uint32_t			str_len;
-	uint8_t *			str;
-	uint32_t			esc_len;
-	uint8_t *			esc;
-	uint32_t			be;
-};
-
-struct llsd_uri_s
-{
-	int					dyn_uri: 1;
-	int					dyn_esc: 1;
-	uint32_t			uri_len;
-	uint8_t *			uri;
-	uint32_t			esc_len;
-	uint8_t *			esc;
-	uint32_t			be;
-};
-
-/* YYYY-MM-DDTHH:MM:SS.FFFZ */
-struct llsd_date_s
-{
-	int					use_dval: 1;
-	int					dyn_str: 1;
-	uint32_t			len;
-	double				dval;
-	uint64_t			be;
-	uint8_t*			str;
-};
-
-struct llsd_array_s
-{
-	array_t		array;
-	uint32_t	be;
-};
-
-struct llsd_map_s
-{
-	ht_t		ht;
-	uint32_t	be;
-};
-
-/* the llsd types */
-typedef int						llsd_bool_t;
-typedef struct llsd_int_s		llsd_int_t;
-typedef struct llsd_real_s		llsd_real_t;
-typedef struct llsd_uuid_s		llsd_uuid_t;
-typedef struct llsd_string_s	llsd_string_t;
-typedef struct llsd_date_s		llsd_date_t;
-typedef struct llsd_uri_s		llsd_uri_t;
-typedef struct llsd_binary_s	llsd_binary_t;
-typedef struct llsd_array_s		llsd_array_t;
-typedef struct llsd_map_s		llsd_map_t;
-
-typedef struct llsd_s
-{
-	llsd_type_t			type_;
-	union
-	{
-		llsd_bool_t		bool_;
-		llsd_int_t		int_;
-		llsd_real_t		real_;
-		llsd_uuid_t		uuid_;
-		llsd_string_t	string_;
-		llsd_date_t		date_;
-		llsd_uri_t		uri_;
-		llsd_binary_t	binary_;
-		llsd_array_t	array_;
-		llsd_map_t		map_;
-
-	};
-
-} llsd_t;
+/* compare two llsd items */
+int llsd_equal( llsd_t * l, llsd_t * r );
 
 #endif /*LLSD_H*/
 

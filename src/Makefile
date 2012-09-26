@@ -9,8 +9,8 @@ COVERAGE?=../coverage
 # define vars
 SHELL=/bin/sh
 NAME=cllsd
-SRC=base16.c base64.c base85.c llsd.c llsd_binary.c llsd_const.c llsd_notation.c llsd_util.c llsd_xml.c 
-HDR=base16.h base64.h base85.h llsd.h llsd_binary.h llsd_const.h llsd_notation.h llsd_util.h llsd_xml.h
+SRC=base16.c base64.c base85.c llsd.c llsd_parser.c llsd_binary_parser.c llsd_notation_parser.c
+HDR=base16.h base64.h base85.h llsd.h llsd_binary.h llsd_binary_parser.h llsd_notation_parser.h
 OBJ=$(SRC:.c=.o)
 OUT=lib$(NAME).a
 GCDA=$(SRC:.c=.gcda)

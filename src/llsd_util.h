@@ -24,31 +24,6 @@
 
 #include "llsd.h"
 
-/* new/delete llsd objects */
-llsd_t * llsd_new( llsd_type_t type_, ... );
-void llsd_delete( void * p );
-
-/* utility macros */
-#define llsd_new_empty_array() llsd_new( LLSD_ARRAY, 0 )
-#define llsd_new_empty_map() llsd_new( LLSD_MAP, 0 )
-#define llsd_new_array( s ) llsd_new ( LLSD_ARRAY, s )
-#define llsd_new_map( s ) llsd_new ( LLSD_MAP, s )
-#define llsd_new_boolean( val ) llsd_new ( LLSD_BOOLEAN, val )
-#define llsd_new_integer( val ) llsd_new ( LLSD_INTEGER, val )
-#define llsd_new_real( val ) llsd_new ( LLSD_REAL, val )
-#define llsd_new_uuid( bits ) llsd_new ( LLSD_UUID, bits )
-#define llsd_new_string( s, len, esc, key ) llsd_new( LLSD_STRING, s, len, esc, key )
-#define llsd_new_uri( s, len, esc ) llsd_new( LLSD_URI, s, len, esc )
-#define llsd_new_binary( p, len, enc, encoding ) llsd_new( LLSD_BINARY, p, len, enc, encoding )
-#define llsd_new_date( d, s, len ) llsd_new( LLSD_DATE, d, s, len )
-
-/* get the type of the particular object */
-llsd_type_t llsd_get_type( llsd_t * llsd );
-int8_t const * llsd_get_type_string( llsd_type_t type_ );
-int8_t const * llsd_get_bin_enc_type_string( llsd_bin_enc_t enc, llsd_serializer_t fmt );
-#define llsd_is_array(x) (llsd_get_type(x) == LLSD_ARRAY)
-#define llsd_is_map(x) (llsd_get_type(x) == LLSD_MAP)
-
 /* get the size of the cotainer types */
 int llsd_get_size( llsd_t * llsd );
 #define llsd_is_empty(x) (llsd_get_size(x) == 0)

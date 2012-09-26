@@ -2102,8 +2102,6 @@ int llsd_decode_binary( llsd_t * llsd )
 }
 
 
-static uint8_t const * const binary_header = "<? LLSD/Binary ?>\n";
-static uint8_t const * const notation_header = "<?llsd/notation?>\n";
 static uint8_t const * const xml_signature = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 static uint8_t const * const xml_header = "<llsd>\n";
 static uint8_t const * const xml_footer = "</llsd>\n";
