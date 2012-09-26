@@ -14,6 +14,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
+#include <time.h>
+
 #include "llsd_notation_parser.h"
 
 #define NOTATION_SIG_LEN (18)
@@ -33,7 +35,7 @@ int llsd_notation_check_sig_file( FILE * fin )
 	rewind( fin );
 
 	/* if it matches the signature, return TRUE, otherwise FALSE */
-	return ( memcmp( sig, notation_header, NOTATION_SIG_LEN ) == 0 )
+	return ( memcmp( sig, notation_header, NOTATION_SIG_LEN ) == 0 );
 }
 
 static int llsd_notation_parse_boolean( FILE * fin, int * bval )
@@ -62,15 +64,15 @@ static int llsd_notation_parse_integer( FILE * fin, int * ival )
 {
 	CHECK_PTR_RET( fin, FALSE );
 	CHECK_PTR_RET( ival, FALSE );
-	fscanf( fin, "%ld", ival );
+	CHECK_RET( fscanf( fin, "%d", ival ) == 1, FALSE );
 	return TRUE;
 }
 
-static int llsd_notation parse_real( FILE * fin, double * dval )
+static int llsd_notation_parse_real( FILE * fin, double * dval )
 {
 	CHECK_PTR_RET( fin, FALSE );
 	CHECK_PTR_RET( dval, FALSE );
-	fscanf( fin, "%lf", dval );
+	CHECK_RET( fscanf( fin, "%lf", dval ) == 1, FALSE );
 	return TRUE;
 }
 
@@ -158,9 +160,7 @@ static int llsd_notation_parse_paren_size( FILE * fin, uint32_t * len )
 {
 	CHECK_PTR_RET( fin, FALSE );
 	CHECK_PTR_RET( len, FALSE );
-
-	fscanf( fin, "(%ld)", len );
-
+	CHECK_RET( fscanf( fin, "(%u)", len ) == 1, FALSE );
 	return TRUE;
 }
 
@@ -259,6 +259,7 @@ static int llsd_notation_decode_date( uint8_t * data, double * real_val )
 
 int llsd_notation_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * const user_data )
 {
+	uint8_t p;
 	size_t ret;
 	int bool_val;
 	int32_t int_val;
@@ -268,6 +269,7 @@ int llsd_notation_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * 
 	uint8_t * encoded;
 	uint32_t len;
 	uint32_t enc_len;
+	llsd_bin_enc_t encoding;
 
 	CHECK_PTR_RET( fin, FALSE );
 	CHECK_PTR_RET( ops, FALSE );
@@ -342,7 +344,7 @@ int llsd_notation_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * 
 				else
 				{
 					/* it is a base encoding number */
-					CHECK_RET( llsd_parse_base_number( fin, &encoding ), FALSE );
+					CHECK_RET( llsd_notation_parse_base_number( fin, &encoding ), FALSE );
 					CHECK_RET( (encoding >= LLSD_BASE16) && (encoding <= LLSD_BASE85), FALSE );
 					CHECK_RET( fread( &p, sizeof(uint8_t), 1, fin ) == 1, FALSE );
 					CHECK_RET( llsd_parse_quoted( fin, &encoded, &enc_len ), FALSE );

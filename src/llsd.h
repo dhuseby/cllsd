@@ -95,8 +95,7 @@ llsd_t * llsd_new( llsd_type_t type_, ... );
 void llsd_delete( void * p );
 
 /* utility macros */
-#define llsd_new_empty_array() llsd_new( LLSD_ARRAY )
-#define llsd_new_empty_map() llsd_new( LLSD_MAP )
+#define llsd_new_undef() llsd_new( LLSD_UNDEF )
 #define llsd_new_boolean( val ) llsd_new ( LLSD_BOOLEAN, val )
 #define llsd_new_integer( val ) llsd_new ( LLSD_INTEGER, val )
 #define llsd_new_real( val ) llsd_new ( LLSD_REAL, val )
@@ -105,6 +104,8 @@ void llsd_delete( void * p );
 #define llsd_new_uri( s ) llsd_new( LLSD_URI, s )
 #define llsd_new_binary( p, len ) llsd_new( LLSD_BINARY, p, len )
 #define llsd_new_date( d ) llsd_new( LLSD_DATE, d )
+#define llsd_new_array() llsd_new( LLSD_ARRAY )
+#define llsd_new_map() llsd_new( LLSD_MAP )
 
 /* get the type of the particular object */
 llsd_type_t llsd_get_type( llsd_t * llsd );
@@ -112,6 +113,10 @@ int8_t const * llsd_get_type_string( llsd_type_t type_ );
 int8_t const * llsd_get_bin_enc_type_string( llsd_bin_enc_t enc, llsd_serializer_t fmt );
 #define llsd_is_array(x) (llsd_get_type(x) == LLSD_ARRAY)
 #define llsd_is_map(x) (llsd_get_type(x) == LLSD_MAP)
+
+/* append to containers */
+int llsd_array_append( llsd_t * arr, llsd_t * data );
+int llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data );
 
 /* compare two llsd items */
 int llsd_equal( llsd_t * l, llsd_t * r );

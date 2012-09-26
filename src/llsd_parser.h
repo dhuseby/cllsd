@@ -19,7 +19,7 @@
 
 #include <stdint.h>
 
-#define UUID_LEN (16)
+#include "llsd.h"
 
 typedef struct llsd_parser_ops_s
 {

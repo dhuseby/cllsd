@@ -15,8 +15,10 @@
  */
 
 #include <stdint.h>
+#include <stdarg.h>
 
 #include <cutil/macros.h>
+#include <cutil/pair.h>
 
 #include "llsd.h"
 
@@ -30,7 +32,7 @@ struct llsd_binary_s
 typedef int						llsd_bool_t;
 typedef int32_t					llsd_int_t;
 typedef double					llsd_real_t;
-typedef uint8_t[UUID_LEN]		llsd_uuid_t;
+typedef uint8_t					llsd_uuid_t[UUID_LEN];
 typedef uint8_t *				llsd_string_t;
 typedef double					llsd_date_t;
 typedef uint8_t *				llsd_uri_t;
@@ -359,6 +361,32 @@ int8_t const * llsd_get_bin_enc_type_string( llsd_bin_enc_t enc, llsd_serializer
 			return llsd_notation_bin_enc_type_strings[ enc ];
 	}
 	return NULL;
+}
+
+int llsd_array_append( llsd_t * arr, llsd_t * value )
+{
+	CHECK_PTR_RET( arr, FALSE );
+	CHECK_PTR_RET( value, FALSE );
+	CHECK_RET( llsd_get_type( arr ) == LLSD_ARRAY, FALSE );
+	array_push_tail( &(arr->array_), (void*)value );
+}
+
+int llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * value )
+{
+	pair_t * p = NULL;
+	CHECK_PTR_RET( map, FALSE );
+	CHECK_PTR_RET( key, FALSE );
+	CHECK_PTR_RET( value, FALSE );
+	CHECK_RET( llsd_get_type( map ) == LLSD_MAP, FALSE );
+	CHECK_RET( llsd_get_type( key ) == LLSD_STRING, FALSE );
+	p = pair_new( key, value );
+	CHECK_PTR_RET( p, FALSE );
+	if ( !ht_insert( &(map->map_), (void*)p ) )
+	{
+		pair_delete( p );
+		return FALSE;
+	}
+	return TRUE;
 }
 
 int llsd_equal( llsd_t * l, llsd_t * r )

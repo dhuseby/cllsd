@@ -33,7 +33,7 @@ int llsd_binary_check_sig_file( FILE * fin )
 	rewind( fin );
 
 	/* if it matches the signature, return TRUE, otherwise FALSE */
-	return ( memcmp( sig, binary_header, BINARY_SIG_LEN ) == 0 )
+	return ( memcmp( sig, binary_header, BINARY_SIG_LEN ) == 0 );
 }
 
 int llsd_binary_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * const user_data )
