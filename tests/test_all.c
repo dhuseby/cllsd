@@ -29,15 +29,17 @@
 
 #include <cllsd/llsd.h>
 
-#define SUITE(x) extern CU_pSuite add_##x##_test_suite(); CU_pSuite x##_test_suite;
-#define ADD_SUITE(x) x##_test_suite = add_##x##_test_suite();
+#include "test_flags.h"
+#include "test_macros.h"
 
 SUITE( base16 );
 SUITE( base64 );
 SUITE( base85 );
 SUITE( binary );
+#if 0
 SUITE( notation );
 SUITE( xml );
+#endif
 
 int main()
 {
@@ -50,8 +52,10 @@ int main()
 	ADD_SUITE( base64 );
 	ADD_SUITE( base85 );
 	ADD_SUITE( binary );
+#if 0
 	ADD_SUITE( notation );
 	ADD_SUITE( xml );
+#endif
 
 	/* run all tests using the CUnit Basic interface */
 	CU_basic_set_mode( CU_BRM_VERBOSE );

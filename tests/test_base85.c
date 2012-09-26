@@ -20,8 +20,6 @@
 #include <cutil/macros.h>
 
 #include <llsd.h>
-#include <llsd_const.h>
-#include <llsd_util.h>
 
 #include <base85.h>
 

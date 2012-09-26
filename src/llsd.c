@@ -100,7 +100,7 @@ static uint32_t llsd_pair_hash( void const * const data )
 	uint_t hash = 0x811c9dc5;
 	uint8_t const * p = (uint8_t const *)key->string_;
 	uint32_t const len = strnlen( p, 64 );
-	CHECK_RET_MSG( (key->type_ == LLSD_STRING), 0 );
+	CHECK_RET( (key->type_ == LLSD_STRING), 0 );
 	for( i = 0; i < len; i++ )
 	{
 		hash *= FNV_PRIME;
@@ -200,7 +200,7 @@ static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			break;
 
 		case LLSD_ARRAY:
-			array_initialize( &(llsd->array_), 0, &llsd_delete );
+			list_initialize( &(llsd->array_), 0, &llsd_delete );
 			break;
 
 		case LLSD_MAP:
