@@ -14,6 +14,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
+#include "llsd.h"
 #include "llsd_binary_parser.h"
 
 #define BINARY_SIG_LEN (18)
@@ -36,7 +37,7 @@ int llsd_binary_check_sig_file( FILE * fin )
 	return ( memcmp( sig, binary_header, BINARY_SIG_LEN ) == 0 );
 }
 
-int llsd_binary_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * const user_data )
+int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data )
 {
 	size_t ret;
 	uint8_t p;
@@ -55,6 +56,9 @@ int llsd_binary_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * co
 	{
 		/* read the type marker */
 		ret = fread( &p, sizeof(uint8_t), 1, fin );
+		if ( feof( fin ) )
+			return TRUE;
+
 		CHECK_RET( ret == 1, FALSE );
 
 		switch( p )
@@ -99,7 +103,8 @@ int llsd_binary_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * co
 					return FALSE;
 				}
 				buffer = NULL;
-				CHECK_RET( (*(ops->binary_fn))( buffer, be_int, user_data ), FALSE );
+				/* tell it to take ownership of the memory */
+				CHECK_RET( (*(ops->binary_fn))( buffer, be_int, TRUE, user_data ), FALSE );
 				break;
 
 			case 's':
@@ -115,7 +120,8 @@ int llsd_binary_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * co
 					return FALSE;
 				}
 				buffer = NULL;
-				CHECK_RET( (*(ops->string_fn))( buffer, user_data ), FALSE );
+				/* tell it to take ownership of the memory */
+				CHECK_RET( (*(ops->string_fn))( buffer, TRUE, user_data ), FALSE );
 				break;
 
 			case 'l':
@@ -131,7 +137,8 @@ int llsd_binary_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * co
 					return FALSE;
 				}
 				buffer = NULL;
-				CHECK_RET( (*(ops->uri_fn))( buffer, user_data ), FALSE );
+				/* tell it to take ownership of the memory */
+				CHECK_RET( (*(ops->uri_fn))( buffer, TRUE, user_data ), FALSE );
 				break;
 
 			case 'd':

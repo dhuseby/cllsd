@@ -28,6 +28,7 @@
 #include <cutil/macros.h>
 
 #include <llsd.h>
+#include <llsd_parser.h>
 
 /* offset of first by after header */
 #define BINARY_SIG_LEN (18)

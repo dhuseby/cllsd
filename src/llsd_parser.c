@@ -63,7 +63,7 @@ static int llsd_undef_fn( void * const user_data )
 	/* if there isn't a container, set the llsd to the literal */
 	if ( container == NULL )
 	{
-		CHECK_RET( state->llsd != NULL, FALSE );
+		CHECK_RET( state->llsd == NULL, FALSE );
 		state->llsd = v;
 		return TRUE;
 	}
@@ -96,7 +96,7 @@ static int llsd_boolean_fn( int const value, void * const user_data )
 	/* if there isn't a container, set the llsd to the literal */
 	if ( container == NULL )
 	{
-		CHECK_RET( state->llsd != NULL, FALSE );
+		CHECK_RET( state->llsd == NULL, FALSE );
 		state->llsd = v;
 		return TRUE;
 	}
@@ -129,7 +129,7 @@ static int llsd_integer_fn( int32_t const value, void * const user_data )
 	/* if there isn't a container, set the llsd to the literal */
 	if ( container == NULL )
 	{
-		CHECK_RET( state->llsd != NULL, FALSE );
+		CHECK_RET( state->llsd == NULL, FALSE );
 		state->llsd = v;
 		return TRUE;
 	}
@@ -162,7 +162,7 @@ static int llsd_real_fn( double const value, void * const user_data )
 	/* if there isn't a container, set the llsd to the literal */
 	if ( container == NULL )
 	{
-		CHECK_RET( state->llsd != NULL, FALSE );
+		CHECK_RET( state->llsd == NULL, FALSE );
 		state->llsd = v;
 		return TRUE;
 	}
@@ -195,7 +195,7 @@ static int llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )
 	/* if there isn't a container, set the llsd to the literal */
 	if ( container == NULL )
 	{
-		CHECK_RET( state->llsd != NULL, FALSE );
+		CHECK_RET( state->llsd == NULL, FALSE );
 		state->llsd = v;
 		return TRUE;
 	}
@@ -211,7 +211,7 @@ static int llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )
 	return TRUE;
 }
 
-static int llsd_string_fn( uint8_t const * str, void * const user_data )
+static int llsd_string_fn( uint8_t const * str, int own_it, void * const user_data )
 {
 	llsd_t * v = NULL;
 	llsd_t * container = NULL;
@@ -222,13 +222,13 @@ static int llsd_string_fn( uint8_t const * str, void * const user_data )
 	container = list_get_head( state->container_stack );
 
 	/* create the string */
-	v = llsd_new_string( str );
+	v = llsd_new_string( str, own_it );
 	CHECK_PTR_RET( v, FALSE );
 
 	/* if there isn't a container, set the llsd to the literal */
 	if ( container == NULL )
 	{
-		CHECK_RET( state->llsd != NULL, FALSE );
+		CHECK_RET( state->llsd == NULL, FALSE );
 		state->llsd = v;
 		return TRUE;
 	}
@@ -269,7 +269,7 @@ static int llsd_date_fn( double const value, void * const user_data )
 	/* if there isn't a container, set the llsd to the literal */
 	if ( container == NULL )
 	{
-		CHECK_RET( state->llsd != NULL, FALSE );
+		CHECK_RET( state->llsd == NULL, FALSE );
 		state->llsd = v;
 		return TRUE;
 	}
@@ -285,7 +285,7 @@ static int llsd_date_fn( double const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_uri_fn( uint8_t const * uri, void * const user_data )
+static int llsd_uri_fn( uint8_t const * uri, int own_it, void * const user_data )
 {
 	llsd_t * v = NULL;
 	llsd_t * container = NULL;
@@ -296,13 +296,13 @@ static int llsd_uri_fn( uint8_t const * uri, void * const user_data )
 	container = list_get_head( state->container_stack );
 
 	/* create the uri */
-	v = llsd_new_uri( uri );
+	v = llsd_new_uri( uri, own_it );
 	CHECK_PTR_RET( v, FALSE );
 
 	/* if there isn't a container, set the llsd to the literal */
 	if ( container == NULL )
 	{
-		CHECK_RET( state->llsd != NULL, FALSE );
+		CHECK_RET( state->llsd == NULL, FALSE );
 		state->llsd = v;
 		return TRUE;
 	}
@@ -318,7 +318,7 @@ static int llsd_uri_fn( uint8_t const * uri, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_binary_fn( uint8_t const * data, uint32_t const len, void * const user_data )
+static int llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it, void * const user_data )
 {
 	llsd_t * v = NULL;
 	llsd_t * container = NULL;
@@ -329,13 +329,13 @@ static int llsd_binary_fn( uint8_t const * data, uint32_t const len, void * cons
 	container = list_get_head( state->container_stack );
 
 	/* create the binary */
-	v = llsd_new_binary( data, len );
+	v = llsd_new_binary( data, len, own_it );
 	CHECK_PTR_RET( v, FALSE );
 
 	/* if there isn't a container, set the llsd to the literal */
 	if ( container == NULL )
 	{
-		CHECK_RET( state->llsd != NULL, FALSE );
+		CHECK_RET( state->llsd == NULL, FALSE );
 		state->llsd = v;
 		return TRUE;
 	}
@@ -399,7 +399,7 @@ static int llsd_array_end_fn( void * const user_data )
 	CHECK_RET( llsd_get_type( container ) == LLSD_ARRAY, FALSE );
 
 	/* remove the container from the top of the stack */
-	llsd_pop_head( state->container_stack );
+	list_pop_head( state->container_stack );
 
 	/* if the container stack is now empty, set the array as the llsd value
 	 * and return */
@@ -459,7 +459,7 @@ static int llsd_map_end_fn( void * const user_data )
 	CHECK_RET( llsd_get_type( container ) == LLSD_MAP, FALSE );
 
 	/* remove the container from the stack */
-	llsd_pop_head( state->container_stack );
+	list_pop_head( state->container_stack );
 
 	/* if the container stack is now empty, set the array as the llsd value
 	 * and return */
@@ -471,11 +471,11 @@ static int llsd_map_end_fn( void * const user_data )
 }
 
 
-llsd_t * llsd_parse_file( FILE * fin )
+llsd_t * llsd_parse_from_file( FILE * fin )
 {
 	int ok = FALSE;
 	parser_state_t state;
-	llsd_parser_ops_t ops = 
+	llsd_ops_t ops = 
 	{
 		&llsd_undef_fn,
 		&llsd_boolean_fn,
@@ -519,10 +519,14 @@ llsd_t * llsd_parse_file( FILE * fin )
 #endif
 
 	/* make sure we had a complete parse */
+	if ( list_count( state.container_stack ) > 0 )
+	{
+		ok = FALSE;
+	}
+
 	if ( state.container_stack != NULL )
 	{
 		list_delete( state.container_stack );
-		ok = FALSE;
 	}
 
 	if ( !ok )

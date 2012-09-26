@@ -21,25 +21,7 @@
 
 #include "llsd.h"
 
-typedef struct llsd_parser_ops_s
-{
-	int (*undef_fn)( void * const user_data );
-	int (*boolean_fn)( int const value, void * const user_data );
-	int (*integer_fn)( int32_t const value, void * const user_data );
-	int (*real_fn)( double const value, void * const user_data );
-	int (*uuid_fn)( uint8_t const value[UUID_LEN], void * const user_data );
-	int (*string_fn)( uint8_t const * str, void * const user_data );
-	int (*date_fn)( double const value, void * const user_data );
-	int (*uri_fn)( uint8_t const * uri, void * const user_data );
-	int (*binary_fn)( uint8_t const * data, uint32_t const len, void * const user_data );
-	int (*array_begin_fn)( uint32_t const size, void * const user_data );
-	int (*array_end_fn)( void * const user_data );
-	int (*map_begin_fn)( uint32_t const size, void * const user_data );
-	int (*map_end_fn)( void * const user_data );
-
-} llsd_parser_ops_t;
-
-llsd_t * llsd_parse_file( FILE * fin );
+llsd_t * llsd_parse_from_file( FILE * fin );
 
 #endif/*LLSD_PARSER_H*/
 

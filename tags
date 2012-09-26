@@ -7,9 +7,13 @@
 1	coverage/cllsd/src/base16.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
 1	coverage/cllsd/src/base64.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
 1	coverage/cllsd/src/base85.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
-1	coverage/cllsd/src/llsd_binary.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
-1	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
-1	coverage/cllsd/src/llsd_xml.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
+1	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
+1	coverage/cllsd/src/llsd_binary_parser.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
+1	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
+1	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
+1	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
+1	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
+1	coverage/cllsd/src/llsd_serializer.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
 1	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
 1	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
 1	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
@@ -22,166 +26,178 @@
 1	cutil/coverage/cutil/src/privileges.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
 1	cutil/coverage/cutil/src/sanitize.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
 1	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
+100	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="100"><span class="lineNum">     100 <\/span>                :            : }<\/a>$/;"	a
 100	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="100"><span class="lineNum">     100 <\/span>                :            : }<\/a>$/;"	a
 1002	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1002"><span class="lineNum">    1002 <\/span>                :            : }<\/a>$/;"	a
 101	coverage/cllsd/src/base64.c.gcov.html	/^<a name="101"><span class="lineNum">     101 <\/span>                :            : }<\/a>$/;"	a
 1018	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1018"><span class="lineNum">    1018 <\/span>                :            : }<\/a>$/;"	a
-1028	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1028"><span class="lineNum">    1028 <\/span>                :            : }<\/a>$/;"	a
 1029	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1029"><span class="lineNum">    1029 <\/span>                :            : static const bt_itr_t itr_end = NULL;<\/a>$/;"	a
 103	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="103"><span class="lineNum">     103 <\/span>                :            : }<\/a>$/;"	a
 1037	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1037"><span class="lineNum">    1037 <\/span>                :            : <\/a>$/;"	a
-104	coverage/cllsd/src/llsd_xml.c.gcov.html	/^<a name="104"><span class="lineNum">     104 <\/span>                :            : } context_t;<\/a>$/;"	a
 1048	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1048"><span class="lineNum">    1048 <\/span>                :            : <\/a>$/;"	a
 1054	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1054"><span class="lineNum">    1054 <\/span>                :            : <\/a>$/;"	a
+106	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="106"><span class="lineNum">     106 <\/span>                :            : }<\/a>$/;"	a
 1062	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1062"><span class="lineNum">    1062 <\/span>                :            : <\/a>$/;"	a
+107	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="107"><span class="lineNum">     107 <\/span>                :            : }<\/a>$/;"	a
 107	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="107"><span class="lineNum">     107 <\/span>                :            : }<\/a>$/;"	a
 1073	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1073"><span class="lineNum">    1073 <\/span>                :            : <\/a>$/;"	a
 1079	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1079"><span class="lineNum">    1079 <\/span>                :            : <\/a>$/;"	a
+108	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="108"><span class="lineNum">     108 <\/span>                :            : }<\/a>$/;"	a
 108	cutil/coverage/cutil/src/buffer.c.gcov.html	/^<a name="108"><span class="lineNum">     108 <\/span>                :            : }<\/a>$/;"	a
 1088	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1088"><span class="lineNum">    1088 <\/span>                :            : }<\/a>$/;"	a
 109	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="109"><span class="lineNum">     109 <\/span>                :            : }<\/a>$/;"	a
-1091	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1091"><span class="lineNum">    1091 <\/span>                :            : }<\/a>$/;"	a
 1101	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1101"><span class="lineNum">    1101 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
 113	coverage/cllsd/src/base85.c.gcov.html	/^<a name="113"><span class="lineNum">     113 <\/span>                :            : }<\/a>$/;"	a
-1140	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1140"><span class="lineNum">    1140 <\/span>                :            : }<\/a>$/;"	a
+113	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="113"><span class="lineNum">     113 <\/span>                :            : }<\/a>$/;"	a
 116	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="116"><span class="lineNum">     116 <\/span>                :            : }<\/a>$/;"	a
+117	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="117"><span class="lineNum">     117 <\/span>                :            : }<\/a>$/;"	a
+117	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="117"><span class="lineNum">     117 <\/span>                :            : static uint8_t const * const notation_header = &quot;&lt;?llsd\/notation?&gt;\\n&quot;;<\/a>$/;"	a
+118	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="118"><span class="lineNum">     118 <\/span>                :            : }<\/a>$/;"	a
 119	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="119"><span class="lineNum">     119 <\/span>                :            : }<\/a>$/;"	a
 119	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="119"><span class="lineNum">     119 <\/span>                :            : <\/a>$/;"	a
 119	cutil/coverage/cutil/src/sanitize.c.gcov.html	/^<a name="119"><span class="lineNum">     119 <\/span>                :            : };<\/a>$/;"	a
-1196	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1196"><span class="lineNum">    1196 <\/span>                :            : }<\/a>$/;"	a
 120	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="120"><span class="lineNum">     120 <\/span>                :            : }<\/a>$/;"	a
-1207	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1207"><span class="lineNum">    1207 <\/span>                :            : }<\/a>$/;"	a
-1218	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1218"><span class="lineNum">    1218 <\/span>                :            : }<\/a>$/;"	a
 122	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="122"><span class="lineNum">     122 <\/span>                :            : <\/a>$/;"	a
 122	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="122"><span class="lineNum">     122 <\/span>                :            : }<\/a>$/;"	a
 123	cutil/coverage/cutil/src/privileges.c.gcov.html	/^<a name="123"><span class="lineNum">     123 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
-1303	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1303"><span class="lineNum">    1303 <\/span>                :<span class="lineCov">      26541 : }<\/span><\/a>$/;"	a
+125	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="125"><span class="lineNum">     125 <\/span>                :<span class="lineNoCov">          0 : }<\/span><\/a>$/;"	a
+129	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="129"><span class="lineNum">     129 <\/span>                :            : }<\/a>$/;"	a
 131	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="131"><span class="lineNum">     131 <\/span>                :            : <\/a>$/;"	a
 131	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="131"><span class="lineNum">     131 <\/span>                :            : }<\/a>$/;"	a
 134	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="134"><span class="lineNum">     134 <\/span>                :            : <\/a>$/;"	a
 135	coverage/cllsd/src/base64.c.gcov.html	/^<a name="135"><span class="lineNum">     135 <\/span>                :            : }<\/a>$/;"	a
 135	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="135"><span class="lineNum">     135 <\/span>                :            : <\/a>$/;"	a
-1350	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1350"><span class="lineNum">    1350 <\/span>                :<span class="lineNoCov">          0 : }<\/span><\/a>$/;"	a
+137	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="137"><span class="lineNum">     137 <\/span>                :            : }<\/a>$/;"	a
 137	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="137"><span class="lineNum">     137 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
 139	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="139"><span class="lineNum">     139 <\/span>                :            : }<\/a>$/;"	a
-1393	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1393"><span class="lineNum">    1393 <\/span>                :<span class="lineNoCov">          0 : }<\/span><\/a>$/;"	a
 140	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="140"><span class="lineNum">     140 <\/span>                :            : <\/a>$/;"	a
 142	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="142"><span class="lineNum">     142 <\/span>                :            : }<\/a>$/;"	a
 143	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="143"><span class="lineNum">     143 <\/span>                :            : }<\/a>$/;"	a
 144	cutil/coverage/cutil/src/buffer.c.gcov.html	/^<a name="144"><span class="lineNum">     144 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
-1473	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1473"><span class="lineNum">    1473 <\/span>                :            : <\/a>$/;"	a
+146	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="146"><span class="lineNum">     146 <\/span>                :            : }<\/a>$/;"	a
+148	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="148"><span class="lineNum">     148 <\/span>                :            : }<\/a>$/;"	a
 148	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="148"><span class="lineNum">     148 <\/span>                :            : }<\/a>$/;"	a
-1495	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1495"><span class="lineNum">    1495 <\/span>                :            : <\/a>$/;"	a
 152	coverage/cllsd/src/base85.c.gcov.html	/^<a name="152"><span class="lineNum">     152 <\/span>                :            : }<\/a>$/;"	a
-1523	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1523"><span class="lineNum">    1523 <\/span>                :            : <\/a>$/;"	a
 153	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="153"><span class="lineNum">     153 <\/span>                :            : }<\/a>$/;"	a
 154	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="154"><span class="lineNum">     154 <\/span>                :            : <\/a>$/;"	a
+156	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="156"><span class="lineNum">     156 <\/span>                :            : <\/a>$/;"	a
+158	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="158"><span class="lineNum">     158 <\/span>                :            : }<\/a>$/;"	a
 158	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="158"><span class="lineNum">     158 <\/span>                :            : }<\/a>$/;"	a
-1592	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1592"><span class="lineNum">    1592 <\/span>                :            : }<\/a>$/;"	a
-162	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="162"><span class="lineNum">     162 <\/span>                :            : }<\/a>$/;"	a
-1625	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1625"><span class="lineNum">    1625 <\/span>                :            : }<\/a>$/;"	a
+159	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="159"><span class="lineNum">     159 <\/span>                :            : static uint8_t const * const binary_header = &quot;&lt;? LLSD\/Binary ?&gt;\\n&quot;;<\/a>$/;"	a
 164	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="164"><span class="lineNum">     164 <\/span>                :            : <\/a>$/;"	a
 165	coverage/cllsd/src/base64.c.gcov.html	/^<a name="165"><span class="lineNum">     165 <\/span>                :            : }<\/a>$/;"	a
 165	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="165"><span class="lineNum">     165 <\/span>                :            : }<\/a>$/;"	a
-1667	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1667"><span class="lineNum">    1667 <\/span>                :            : }<\/a>$/;"	a
-1687	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1687"><span class="lineNum">    1687 <\/span>                :            : }<\/a>$/;"	a
+166	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="166"><span class="lineNum">     166 <\/span>                :            : }<\/a>$/;"	a
 170	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="170"><span class="lineNum">     170 <\/span>                :            : }<\/a>$/;"	a
 171	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="171"><span class="lineNum">     171 <\/span>                :            : }<\/a>$/;"	a
-172	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="172"><span class="lineNum">     172 <\/span>                :            : <\/a>$/;"	a
-1720	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1720"><span class="lineNum">    1720 <\/span>                :            : }<\/a>$/;"	a
 173	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="173"><span class="lineNum">     173 <\/span>                :            : }<\/a>$/;"	a
-1760	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1760"><span class="lineNum">    1760 <\/span>                :            : }<\/a>$/;"	a
 177	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="177"><span class="lineNum">     177 <\/span>                :            : \/* NOTE: If NULL is passed in for the bt_key_cmp_fn function, the default<\/a>$/;"	a
+179	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="179"><span class="lineNum">     179 <\/span>                :            : }<\/a>$/;"	a
 179	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="179"><span class="lineNum">     179 <\/span>                :            : }<\/a>$/;"	a
 187	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="187"><span class="lineNum">     187 <\/span>                :            : <\/a>$/;"	a
-1873	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1873"><span class="lineNum">    1873 <\/span>                :            :                                 ( x == '`'  ) )<\/a>$/;"	a
+189	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="189"><span class="lineNum">     189 <\/span>                :            : }<\/a>$/;"	a
 189	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="189"><span class="lineNum">     189 <\/span>                :            : #define PIPE_WRITE_FD 1<\/a>$/;"	a
 189	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="189"><span class="lineNum">     189 <\/span>                :            : }<\/a>$/;"	a
-1900	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1900"><span class="lineNum">    1900 <\/span>                :            : }<\/a>$/;"	a
 191	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="191"><span class="lineNum">     191 <\/span>                :            : }<\/a>$/;"	a
-193	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="193"><span class="lineNum">     193 <\/span>                :            : }<\/a>$/;"	a
-1937	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1937"><span class="lineNum">    1937 <\/span>                :            : }<\/a>$/;"	a
-1943	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="1943"><span class="lineNum">    1943 <\/span>                :            : }<\/a>$/;"	a
+198	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="198"><span class="lineNum">     198 <\/span>                :            : <\/a>$/;"	a
 200	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="200"><span class="lineNum">     200 <\/span>                :            : <\/a>$/;"	a
-2015	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="2015"><span class="lineNum">    2015 <\/span>                :            :  with &quot;=&quot; and minus another 1 if the input ends with &quot;==&quot;.<\/a>$/;"	a
 203	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="203"><span class="lineNum">     203 <\/span>                :            : }<\/a>$/;"	a
-2039	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="2039"><span class="lineNum">    2039 <\/span>                :            : }<\/a>$/;"	a
 207	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="207"><span class="lineNum">     207 <\/span>                :            : }<\/a>$/;"	a
 209	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="209"><span class="lineNum">     209 <\/span>                :            : }<\/a>$/;"	a
 21	coverage/cllsd/src/base16.c.gcov.html	/^<a name="21"><span class="lineNum">      21 <\/span>                :            : #include &quot;base16.h&quot;<\/a>$/;"	a
-2104	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="2104"><span class="lineNum">    2104 <\/span>                :            : <\/a>$/;"	a
-2123	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="2123"><span class="lineNum">    2123 <\/span>                :            : <\/a>$/;"	a
-215	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="215"><span class="lineNum">     215 <\/span>                :            : <\/a>$/;"	a
-2152	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="2152"><span class="lineNum">    2152 <\/span>                :            : }<\/a>$/;"	a
+21	coverage/cllsd/src/llsd_binary_parser.c.gcov.html	/^<a name="21"><span class="lineNum">      21 <\/span>                :            : static uint8_t const * const binary_header = &quot;&lt;? LLSD\/Binary ?&gt;\\n&quot;;<\/a>$/;"	a
+212	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="212"><span class="lineNum">     212 <\/span>                :            : }<\/a>$/;"	a
 217	coverage/cllsd/src/base85.c.gcov.html	/^<a name="217"><span class="lineNum">     217 <\/span>                :            : }<\/a>$/;"	a
-2172	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="2172"><span class="lineNum">    2172 <\/span>                :            : }<\/a>$/;"	a
 218	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="218"><span class="lineNum">     218 <\/span>                :            : }<\/a>$/;"	a
 219	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="219"><span class="lineNum">     219 <\/span>                :            : }<\/a>$/;"	a
 22	coverage/cllsd/src/base64.c.gcov.html	/^<a name="22"><span class="lineNum">      22 <\/span>                :            : <\/a>$/;"	a
 22	coverage/cllsd/src/base85.c.gcov.html	/^<a name="22"><span class="lineNum">      22 <\/span>                :            : static uint32_t eightyfives[5] = { 1, 85, 7225, 614125, 52200625 };<\/a>$/;"	a
 225	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="225"><span class="lineNum">     225 <\/span>                :            : <\/a>$/;"	a
-226	coverage/cllsd/src/llsd_xml.c.gcov.html	/^<a name="226"><span class="lineNum">     226 <\/span>                :            : }<\/a>$/;"	a
+23	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="23"><span class="lineNum">      23 <\/span>                :            : } bs_state_t;<\/a>$/;"	a
+23	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="23"><span class="lineNum">      23 <\/span>                :            : static uint8_t const * const notation_header = &quot;&lt;?llsd\/notation?&gt;\\n&quot;;<\/a>$/;"	a
+23	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="23"><span class="lineNum">      23 <\/span>                :            : } ns_state_t;<\/a>$/;"	a
+231	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="231"><span class="lineNum">     231 <\/span>                :            : }<\/a>$/;"	a
 232	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="232"><span class="lineNum">     232 <\/span>                :            : }<\/a>$/;"	a
 234	cutil/coverage/cutil/src/sanitize.c.gcov.html	/^<a name="234"><span class="lineNum">     234 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
 235	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="235"><span class="lineNum">     235 <\/span>                :            : }<\/a>$/;"	a
-236	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="236"><span class="lineNum">     236 <\/span>                :            : <\/a>$/;"	a
 236	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="236"><span class="lineNum">     236 <\/span>                :            : <\/a>$/;"	a
-238	coverage/cllsd/src/llsd_binary.c.gcov.html	/^<a name="238"><span class="lineNum">     238 <\/span>                :            : <\/a>$/;"	a
 238	cutil/coverage/cutil/src/sanitize.c.gcov.html	/^<a name="238"><span class="lineNum">     238 <\/span>                :<span class="lineCov">          1 : }<\/span><\/a>$/;"	a
-243	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="243"><span class="lineNum">     243 <\/span>                :            : }<\/a>$/;"	a
+239	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="239"><span class="lineNum">     239 <\/span>                :            : }<\/a>$/;"	a
+244	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="244"><span class="lineNum">     244 <\/span>                :            : }<\/a>$/;"	a
 245	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="245"><span class="lineNum">     245 <\/span>                :            : }<\/a>$/;"	a
 245	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="245"><span class="lineNum">     245 <\/span>                :            : <\/a>$/;"	a
-247	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="247"><span class="lineNum">     247 <\/span>                :            : \/********** PRIVATE **********\/<\/a>$/;"	a
 250	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="250"><span class="lineNum">     250 <\/span>                :            : <\/a>$/;"	a
+253	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="253"><span class="lineNum">     253 <\/span>                :            : }<\/a>$/;"	a
 254	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="254"><span class="lineNum">     254 <\/span>                :<span class="lineCov">        825 : }<\/span><\/a>$/;"	a
 257	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="257"><span class="lineNum">     257 <\/span>                :            : }<\/a>$/;"	a
-263	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="263"><span class="lineNum">     263 <\/span>                :            : }<\/a>$/;"	a
+259	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="259"><span class="lineNum">     259 <\/span>                :            : }<\/a>$/;"	a
+262	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="262"><span class="lineNum">     262 <\/span>                :            : }<\/a>$/;"	a
 265	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="265"><span class="lineNum">     265 <\/span>                :            : };<\/a>$/;"	a
+267	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="267"><span class="lineNum">     267 <\/span>                :            : }<\/a>$/;"	a
 268	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="268"><span class="lineNum">     268 <\/span>                :            : }<\/a>$/;"	a
 27	coverage/cllsd/src/base16.c.gcov.html	/^<a name="27"><span class="lineNum">      27 <\/span>                :            : }<\/a>$/;"	a
 27	coverage/cllsd/src/base85.c.gcov.html	/^<a name="27"><span class="lineNum">      27 <\/span>                :            : }<\/a>$/;"	a
 27	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="27"><span class="lineNum">      27 <\/span>                :            : #define BIT(x) ((uint32_t)(1 &lt;&lt; (x &amp; 0x1f)))<\/a>$/;"	a
 271	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="271"><span class="lineNum">     271 <\/span>                :            : }<\/a>$/;"	a
-28	coverage/cllsd/src/llsd_xml.c.gcov.html	/^<a name="28"><span class="lineNum">      28 <\/span>                :            : #include &quot;llsd_xml.h&quot;<\/a>$/;"	a
+286	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="286"><span class="lineNum">     286 <\/span>                :            : }<\/a>$/;"	a
+286	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="286"><span class="lineNum">     286 <\/span>                :            : }<\/a>$/;"	a
 287	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="287"><span class="lineNum">     287 <\/span>                :            : }<\/a>$/;"	a
 29	cutil/coverage/cutil/src/pair.c.gcov.html	/^<a name="29"><span class="lineNum">      29 <\/span>                :            : };<\/a>$/;"	a
 290	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="290"><span class="lineNum">     290 <\/span>                :            : \/* removes the item at index &quot;itr&quot; and returns the iterator of the<\/a>$/;"	a
-298	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="298"><span class="lineNum">     298 <\/span>                :            : }<\/a>$/;"	a
 299	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="299"><span class="lineNum">     299 <\/span>                :<span class="lineCov">        410 : }<\/span><\/a>$/;"	a
+30	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="30"><span class="lineNum">      30 <\/span>                :            : }<\/a>$/;"	a
 306	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="306"><span class="lineNum">     306 <\/span>                :            : }<\/a>$/;"	a
-309	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="309"><span class="lineNum">     309 <\/span>                :            : }<\/a>$/;"	a
+31	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="31"><span class="lineNum">      31 <\/span>                :            : }<\/a>$/;"	a
+31	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="31"><span class="lineNum">      31 <\/span>                :            : } parser_state_t;<\/a>$/;"	a
 31	cutil/coverage/cutil/src/buffer.c.gcov.html	/^<a name="31"><span class="lineNum">      31 <\/span>                :            :  *\/<\/a>$/;"	a
+310	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="310"><span class="lineNum">     310 <\/span>                :            : }<\/a>$/;"	a
 313	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="313"><span class="lineNum">     313 <\/span>                :            : <\/a>$/;"	a
 315	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="315"><span class="lineNum">     315 <\/span>                :            : }<\/a>$/;"	a
 315	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="315"><span class="lineNum">     315 <\/span>                :            : }<\/a>$/;"	a
-328	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="328"><span class="lineNum">     328 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
+319	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="319"><span class="lineNum">     319 <\/span>                :            : }<\/a>$/;"	a
+319	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="319"><span class="lineNum">     319 <\/span>                :            : }<\/a>$/;"	a
 33	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="33"><span class="lineNum">      33 <\/span>                :            : <\/a>$/;"	a
 336	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="336"><span class="lineNum">     336 <\/span>                :            : }<\/a>$/;"	a
 336	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="336"><span class="lineNum">     336 <\/span>                :            : }<\/a>$/;"	a
 337	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="337"><span class="lineNum">     337 <\/span>                :            : }<\/a>$/;"	a
+338	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="338"><span class="lineNum">     338 <\/span>                :            : \/********** PRIVATE **********\/<\/a>$/;"	a
 34	cutil/coverage/cutil/src/privileges.c.gcov.html	/^<a name="34"><span class="lineNum">      34 <\/span>                :            :  *\/<\/a>$/;"	a
 342	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="342"><span class="lineNum">     342 <\/span>                :            : <\/a>$/;"	a
 343	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="343"><span class="lineNum">     343 <\/span>                :            : }<\/a>$/;"	a
 344	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="344"><span class="lineNum">     344 <\/span>                :            : <\/a>$/;"	a
+352	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="352"><span class="lineNum">     352 <\/span>                :            : }<\/a>$/;"	a
 354	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="354"><span class="lineNum">     354 <\/span>                :            : }<\/a>$/;"	a
-36	coverage/cllsd/src/llsd_binary.c.gcov.html	/^<a name="36"><span class="lineNum">      36 <\/span>                :            : #include &quot;llsd_binary.h&quot;<\/a>$/;"	a
+354	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="354"><span class="lineNum">     354 <\/span>                :            : }<\/a>$/;"	a
+355	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="355"><span class="lineNum">     355 <\/span>                :            : }<\/a>$/;"	a
 360	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="360"><span class="lineNum">     360 <\/span>                :            : <\/a>$/;"	a
+366	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="366"><span class="lineNum">     366 <\/span>                :            : }<\/a>$/;"	a
 366	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="366"><span class="lineNum">     366 <\/span>                :            : }<\/a>$/;"	a
 369	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="369"><span class="lineNum">     369 <\/span>                :            : <\/a>$/;"	a
+37	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="37"><span class="lineNum">      37 <\/span>                :            : }<\/a>$/;"	a
+372	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="372"><span class="lineNum">     372 <\/span>                :            : }<\/a>$/;"	a
 373	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="373"><span class="lineNum">     373 <\/span>                :            : static int test_flag = FALSE;<\/a>$/;"	a
 377	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="377"><span class="lineNum">     377 <\/span>                :            : }<\/a>$/;"	a
+378	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="378"><span class="lineNum">     378 <\/span>                :            : }<\/a>$/;"	a
 378	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="378"><span class="lineNum">     378 <\/span>                :<span class="lineCov">          3 : }<\/span><\/a>$/;"	a
+38	coverage/cllsd/src/llsd_binary_parser.c.gcov.html	/^<a name="38"><span class="lineNum">      38 <\/span>                :            : }<\/a>$/;"	a
 383	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="383"><span class="lineNum">     383 <\/span>                :            : }<\/a>$/;"	a
+387	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="387"><span class="lineNum">     387 <\/span>                :            : }<\/a>$/;"	a
+39	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="39"><span class="lineNum">      39 <\/span>                :            : }<\/a>$/;"	a
 39	cutil/coverage/cutil/src/pair.c.gcov.html	/^<a name="39"><span class="lineNum">      39 <\/span>                :            : }<\/a>$/;"	a
-391	coverage/cllsd/src/llsd_binary.c.gcov.html	/^<a name="391"><span class="lineNum">     391 <\/span>                :            : }<\/a>$/;"	a
+393	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="393"><span class="lineNum">     393 <\/span>                :            : }<\/a>$/;"	a
 393	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="393"><span class="lineNum">     393 <\/span>                :            : }<\/a>$/;"	a
 399	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="399"><span class="lineNum">     399 <\/span>                :<span class="lineCov">          1 : }<\/span><\/a>$/;"	a
+40	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="40"><span class="lineNum">      40 <\/span>                :            : }<\/a>$/;"	a
+401	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="401"><span class="lineNum">     401 <\/span>                :<span class="lineNoCov">          0 : }<\/span><\/a>$/;"	a
 401	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="401"><span class="lineNum">     401 <\/span>                :            : }<\/a>$/;"	a
 402	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="402"><span class="lineNum">     402 <\/span>                :            : }<\/a>$/;"	a
 405	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="405"><span class="lineNum">     405 <\/span>                :            : }<\/a>$/;"	a
 409	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="409"><span class="lineNum">     409 <\/span>                :            : }<\/a>$/;"	a
+412	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="412"><span class="lineNum">     412 <\/span>                :            : }<\/a>$/;"	a
 413	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="413"><span class="lineNum">     413 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
 417	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="417"><span class="lineNum">     417 <\/span>                :            : }<\/a>$/;"	a
+419	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="419"><span class="lineNum">     419 <\/span>                :            : }<\/a>$/;"	a
+419	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="419"><span class="lineNum">     419 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
 42	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="42"><span class="lineNum">      42 <\/span>                :            : <\/a>$/;"	a
 42	cutil/coverage/cutil/src/sanitize.c.gcov.html	/^<a name="42"><span class="lineNum">      42 <\/span>                :            : #endif<\/a>$/;"	a
 420	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="420"><span class="lineNum">     420 <\/span>                :<span class="lineCov">          1 : }<\/span><\/a>$/;"	a
@@ -189,110 +205,117 @@
 427	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="427"><span class="lineNum">     427 <\/span>                :            : }<\/a>$/;"	a
 427	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="427"><span class="lineNum">     427 <\/span>                :            : }<\/a>$/;"	a
 433	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="433"><span class="lineNum">     433 <\/span>                :            : }<\/a>$/;"	a
+44	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="44"><span class="lineNum">      44 <\/span>                :            : }<\/a>$/;"	a
+44	coverage/cllsd/src/llsd_serializer.c.gcov.html	/^<a name="44"><span class="lineNum">      44 <\/span>                :            : };<\/a>$/;"	a
 44	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="44"><span class="lineNum">      44 <\/span>                :            : }<\/a>$/;"	a
+440	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="440"><span class="lineNum">     440 <\/span>                :            : }<\/a>$/;"	a
 440	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="440"><span class="lineNum">     440 <\/span>                :            : <\/a>$/;"	a
 441	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="441"><span class="lineNum">     441 <\/span>                :<span class="lineCov">          1 : }<\/span><\/a>$/;"	a
+447	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="447"><span class="lineNum">     447 <\/span>                :            : }<\/a>$/;"	a
 447	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="447"><span class="lineNum">     447 <\/span>                :            : }<\/a>$/;"	a
 447	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="447"><span class="lineNum">     447 <\/span>                :            : <\/a>$/;"	a
-456	coverage/cllsd/src/llsd_binary.c.gcov.html	/^<a name="456"><span class="lineNum">     456 <\/span>                :            : static uint8_t const * const lbmapc     = &quot;}&quot;;<\/a>$/;"	a
+448	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="448"><span class="lineNum">     448 <\/span>                :            : }<\/a>$/;"	a
 460	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="460"><span class="lineNum">     460 <\/span>                :            : }<\/a>$/;"	a
 465	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="465"><span class="lineNum">     465 <\/span>                :<span class="lineCov">          1 : }<\/span><\/a>$/;"	a
+469	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="469"><span class="lineNum">     469 <\/span>                :            : }<\/a>$/;"	a
 469	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="469"><span class="lineNum">     469 <\/span>                :            : }<\/a>$/;"	a
-47	coverage/cllsd/src/llsd_xml.c.gcov.html	/^<a name="47"><span class="lineNum">      47 <\/span>                :            : }<\/a>$/;"	a
+47	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="47"><span class="lineNum">      47 <\/span>                :            : }<\/a>$/;"	a
 47	cutil/coverage/cutil/src/pair.c.gcov.html	/^<a name="47"><span class="lineNum">      47 <\/span>                :            : }<\/a>$/;"	a
-48	coverage/cllsd/src/llsd_binary.c.gcov.html	/^<a name="48"><span class="lineNum">      48 <\/span>                :            : }<\/a>$/;"	a
+472	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="472"><span class="lineNum">     472 <\/span>                :            : <\/a>$/;"	a
 48	cutil/coverage/cutil/src/buffer.c.gcov.html	/^<a name="48"><span class="lineNum">      48 <\/span>                :            : }<\/a>$/;"	a
+488	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="488"><span class="lineNum">     488 <\/span>                :            : }<\/a>$/;"	a
 489	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="489"><span class="lineNum">     489 <\/span>                :            : static int error_callback_ret = TRUE;<\/a>$/;"	a
+49	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="49"><span class="lineNum">      49 <\/span>                :            : }<\/a>$/;"	a
 493	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="493"><span class="lineNum">     493 <\/span>                :<span class="lineCov">          1 : }<\/span><\/a>$/;"	a
 495	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="495"><span class="lineNum">     495 <\/span>                :            : }<\/a>$/;"	a
 501	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="501"><span class="lineNum">     501 <\/span>                :            : }<\/a>$/;"	a
 502	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="502"><span class="lineNum">     502 <\/span>                :            : }<\/a>$/;"	a
-506	coverage/cllsd/src/llsd_xml.c.gcov.html	/^<a name="506"><span class="lineNum">     506 <\/span>                :            : }<\/a>$/;"	a
 506	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="506"><span class="lineNum">     506 <\/span>                :<span class="lineCov">          1 : }<\/span><\/a>$/;"	a
+507	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="507"><span class="lineNum">     507 <\/span>                :            : }<\/a>$/;"	a
 507	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="507"><span class="lineNum">     507 <\/span>                :            : }<\/a>$/;"	a
+51	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="51"><span class="lineNum">      51 <\/span>                :            : }<\/a>$/;"	a
 519	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="519"><span class="lineNum">     519 <\/span>                :            : }<\/a>$/;"	a
 52	coverage/cllsd/src/base64.c.gcov.html	/^<a name="52"><span class="lineNum">      52 <\/span>                :            : }<\/a>$/;"	a
 52	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="52"><span class="lineNum">      52 <\/span>                :            : }<\/a>$/;"	a
 524	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="524"><span class="lineNum">     524 <\/span>                :            : }<\/a>$/;"	a
-525	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="525"><span class="lineNum">     525 <\/span>                :            : <\/a>$/;"	a
 526	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="526"><span class="lineNum">     526 <\/span>                :<span class="lineCov">          1 : }<\/span><\/a>$/;"	a
 53	coverage/cllsd/src/base16.c.gcov.html	/^<a name="53"><span class="lineNum">      53 <\/span>                :            : }<\/a>$/;"	a
 53	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="53"><span class="lineNum">      53 <\/span>                :            : \/********** PUBLIC **********\/<\/a>$/;"	a
 53	cutil/coverage/cutil/src/pair.c.gcov.html	/^<a name="53"><span class="lineNum">      53 <\/span>                :            : }<\/a>$/;"	a
+534	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="534"><span class="lineNum">     534 <\/span>                :            : }<\/a>$/;"	a
 535	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="535"><span class="lineNum">     535 <\/span>                :<span class="lineCov">        147 : }<\/span><\/a>$/;"	a
-538	coverage/cllsd/src/llsd_xml.c.gcov.html	/^<a name="538"><span class="lineNum">     538 <\/span>                :            : <\/a>$/;"	a
 54	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="54"><span class="lineNum">      54 <\/span>                :            : };<\/a>$/;"	a
 546	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="546"><span class="lineNum">     546 <\/span>                :            : <\/a>$/;"	a
+555	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="555"><span class="lineNum">     555 <\/span>                :            : }<\/a>$/;"	a
 557	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="557"><span class="lineNum">     557 <\/span>                :            : }<\/a>$/;"	a
 56	cutil/coverage/cutil/src/buffer.c.gcov.html	/^<a name="56"><span class="lineNum">      56 <\/span>                :            : }<\/a>$/;"	a
-57	coverage/cllsd/src/llsd_binary.c.gcov.html	/^<a name="57"><span class="lineNum">      57 <\/span>                :            : }<\/a>$/;"	a
+570	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="570"><span class="lineNum">     570 <\/span>                :            : }<\/a>$/;"	a
 58	coverage/cllsd/src/base16.c.gcov.html	/^<a name="58"><span class="lineNum">      58 <\/span>                :            : }<\/a>$/;"	a
+58	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="58"><span class="lineNum">      58 <\/span>                :            : }<\/a>$/;"	a
 58	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="58"><span class="lineNum">      58 <\/span>                :            : };<\/a>$/;"	a
 59	coverage/cllsd/src/base85.c.gcov.html	/^<a name="59"><span class="lineNum">      59 <\/span>                :            : }<\/a>$/;"	a
+59	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="59"><span class="lineNum">      59 <\/span>                :            : }<\/a>$/;"	a
 60	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="60"><span class="lineNum">      60 <\/span>                :            : <\/a>$/;"	a
 61	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="61"><span class="lineNum">      61 <\/span>                :            : <\/a>$/;"	a
 612	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="612"><span class="lineNum">     612 <\/span>                :            : <\/a>$/;"	a
-614	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="614"><span class="lineNum">     614 <\/span>                :            : }<\/a>$/;"	a
 62	coverage/cllsd/src/base64.c.gcov.html	/^<a name="62"><span class="lineNum">      62 <\/span>                :            : }<\/a>$/;"	a
-620	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="620"><span class="lineNum">     620 <\/span>                :            : }<\/a>$/;"	a
+62	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="62"><span class="lineNum">      62 <\/span>                :            : }<\/a>$/;"	a
 622	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="622"><span class="lineNum">     622 <\/span>                :            : }<\/a>$/;"	a
-626	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="626"><span class="lineNum">     626 <\/span>                :            : }<\/a>$/;"	a
 63	cutil/coverage/cutil/src/pair.c.gcov.html	/^<a name="63"><span class="lineNum">      63 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
-632	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="632"><span class="lineNum">     632 <\/span>                :            : }<\/a>$/;"	a
+631	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="631"><span class="lineNum">     631 <\/span>                :            : }<\/a>$/;"	a
 634	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="634"><span class="lineNum">     634 <\/span>                :            : <\/a>$/;"	a
-643	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="643"><span class="lineNum">     643 <\/span>                :            : <\/a>$/;"	a
+65	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="65"><span class="lineNum">      65 <\/span>                :            : }<\/a>$/;"	a
+65	coverage/cllsd/src/llsd_serializer.c.gcov.html	/^<a name="65"><span class="lineNum">      65 <\/span>                :            : }<\/a>$/;"	a
 65	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="65"><span class="lineNum">      65 <\/span>                :            : }<\/a>$/;"	a
-651	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="651"><span class="lineNum">     651 <\/span>                :            : }<\/a>$/;"	a
-66	coverage/cllsd/src/llsd_binary.c.gcov.html	/^<a name="66"><span class="lineNum">      66 <\/span>                :            : }<\/a>$/;"	a
 66	cutil/coverage/cutil/src/sanitize.c.gcov.html	/^<a name="66"><span class="lineNum">      66 <\/span>                :            : }<\/a>$/;"	a
-664	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="664"><span class="lineNum">     664 <\/span>                :            : }<\/a>$/;"	a
-677	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="677"><span class="lineNum">     677 <\/span>                :            : }<\/a>$/;"	a
+68	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="68"><span class="lineNum">      68 <\/span>                :            : }<\/a>$/;"	a
 68	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="68"><span class="lineNum">      68 <\/span>                :            : <\/a>$/;"	a
 680	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="680"><span class="lineNum">     680 <\/span>                :            : }<\/a>$/;"	a
+684	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="684"><span class="lineNum">     684 <\/span>                :            : }<\/a>$/;"	a
 69	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="69"><span class="lineNum">      69 <\/span>                :            : }<\/a>$/;"	a
-692	coverage/cllsd/src/llsd_xml.c.gcov.html	/^<a name="692"><span class="lineNum">     692 <\/span>                :            : #define indent_xml(p,f) ( p ? fwrite(lxtabs, sizeof(uint8_t), ((indent&lt;=255)?indent:255), f) : 0 );<\/a>$/;"	a
-698	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="698"><span class="lineNum">     698 <\/span>                :            : }<\/a>$/;"	a
+70	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="70"><span class="lineNum">      70 <\/span>                :            : }<\/a>$/;"	a
 700	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="700"><span class="lineNum">     700 <\/span>                :            : }<\/a>$/;"	a
+705	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="705"><span class="lineNum">     705 <\/span>                :<span class="lineNoCov">          0 : }<\/span><\/a>$/;"	a
 706	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="706"><span class="lineNum">     706 <\/span>                :            : }<\/a>$/;"	a
-712	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="712"><span class="lineNum">     712 <\/span>                :            : }<\/a>$/;"	a
 716	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="716"><span class="lineNum">     716 <\/span>                :            : <\/a>$/;"	a
-717	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="717"><span class="lineNum">     717 <\/span>                :            : }<\/a>$/;"	a
+72	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="72"><span class="lineNum">      72 <\/span>                :            : }<\/a>$/;"	a
 72	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="72"><span class="lineNum">      72 <\/span>                :            : }<\/a>$/;"	a
 722	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="722"><span class="lineNum">     722 <\/span>                :<span class="lineCov">          1 : }<\/span><\/a>$/;"	a
-723	coverage/cllsd/src/llsd_xml.c.gcov.html	/^<a name="723"><span class="lineNum">     723 <\/span>                :            : }<\/a>$/;"	a
-73	coverage/cllsd/src/llsd_binary.c.gcov.html	/^<a name="73"><span class="lineNum">      73 <\/span>                :<span class="lineNoCov">          0 : }<\/span><\/a>$/;"	a
-730	coverage/cllsd/src/llsd_xml.c.gcov.html	/^<a name="730"><span class="lineNum">     730 <\/span>                :            : <\/a>$/;"	a
-731	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="731"><span class="lineNum">     731 <\/span>                :            : }<\/a>$/;"	a
-743	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="743"><span class="lineNum">     743 <\/span>                :            : }<\/a>$/;"	a
 75	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="75"><span class="lineNum">      75 <\/span>                :            : }<\/a>$/;"	a
-755	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="755"><span class="lineNum">     755 <\/span>                :            : }<\/a>$/;"	a
 76	coverage/cllsd/src/base16.c.gcov.html	/^<a name="76"><span class="lineNum">      76 <\/span>                :            : }<\/a>$/;"	a
 77	coverage/cllsd/src/base64.c.gcov.html	/^<a name="77"><span class="lineNum">      77 <\/span>                :            : }<\/a>$/;"	a
 77	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="77"><span class="lineNum">      77 <\/span>                :            : }<\/a>$/;"	a
-783	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="783"><span class="lineNum">     783 <\/span>                :            : <\/a>$/;"	a
+78	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="78"><span class="lineNum">      78 <\/span>                :            : }<\/a>$/;"	a
+79	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="79"><span class="lineNum">      79 <\/span>                :            : }<\/a>$/;"	a
 793	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="793"><span class="lineNum">     793 <\/span>                :            : \/* NOTE: if the number of values stored in the table will exceed a load <\/a>$/;"	a
+794	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="794"><span class="lineNum">     794 <\/span>                :            : }<\/a>$/;"	a
+80	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="80"><span class="lineNum">      80 <\/span>                :            : }<\/a>$/;"	a
 800	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="800"><span class="lineNum">     800 <\/span>                :<span class="lineCov">          1 : }<\/span><\/a>$/;"	a
-81	coverage/cllsd/src/llsd_binary.c.gcov.html	/^<a name="81"><span class="lineNum">      81 <\/span>                :            : }<\/a>$/;"	a
 814	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="814"><span class="lineNum">     814 <\/span>                :            : <\/a>$/;"	a
+82	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="82"><span class="lineNum">      82 <\/span>                :            : }<\/a>$/;"	a
 82	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="82"><span class="lineNum">      82 <\/span>                :            : <\/a>$/;"	a
 82	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="82"><span class="lineNum">      82 <\/span>                :            : <\/a>$/;"	a
 831	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="831"><span class="lineNum">     831 <\/span>                :<span class="lineCov">          1 : }<\/span><\/a>$/;"	a
-839	coverage/cllsd/src/llsd_xml.c.gcov.html	/^<a name="839"><span class="lineNum">     839 <\/span>                :            : }<\/a>$/;"	a
 84	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="84"><span class="lineNum">      84 <\/span>                :            : }<\/a>$/;"	a
 840	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="840"><span class="lineNum">     840 <\/span>                :            : }<\/a>$/;"	a
-845	coverage/cllsd/src/llsd_xml.c.gcov.html	/^<a name="845"><span class="lineNum">     845 <\/span>                :            : }<\/a>$/;"	a
 849	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="849"><span class="lineNum">     849 <\/span>                :            : }<\/a>$/;"	a
 852	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="852"><span class="lineNum">     852 <\/span>                :            : }<\/a>$/;"	a
+86	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="86"><span class="lineNum">      86 <\/span>                :            : }<\/a>$/;"	a
 865	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="865"><span class="lineNum">     865 <\/span>                :            : <\/a>$/;"	a
+866	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="866"><span class="lineNum">     866 <\/span>                :            : }<\/a>$/;"	a
 877	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="877"><span class="lineNum">     877 <\/span>                :            : }<\/a>$/;"	a
 878	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="878"><span class="lineNum">     878 <\/span>                :            : }<\/a>$/;"	a
 883	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="883"><span class="lineNum">     883 <\/span>                :            : }<\/a>$/;"	a
 89	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="89"><span class="lineNum">      89 <\/span>                :            : <\/a>$/;"	a
 894	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="894"><span class="lineNum">     894 <\/span>                :            : }<\/a>$/;"	a
 902	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="902"><span class="lineNum">     902 <\/span>                :            : }<\/a>$/;"	a
+91	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="91"><span class="lineNum">      91 <\/span>                :            : <\/a>$/;"	a
 911	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="911"><span class="lineNum">     911 <\/span>                :            : <\/a>$/;"	a
+919	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="919"><span class="lineNum">     919 <\/span>                :            : }<\/a>$/;"	a
+92	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="92"><span class="lineNum">      92 <\/span>                :            : }<\/a>$/;"	a
 92	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="92"><span class="lineNum">      92 <\/span>                :            : }<\/a>$/;"	a
 924	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="924"><span class="lineNum">     924 <\/span>                :            : socket_ret_t test_connect_fn_ret = SOCKET_OK;<\/a>$/;"	a
+93	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="93"><span class="lineNum">      93 <\/span>                :            : }<\/a>$/;"	a
 930	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="930"><span class="lineNum">     930 <\/span>                :            : }<\/a>$/;"	a
 936	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="936"><span class="lineNum">     936 <\/span>                :            : }<\/a>$/;"	a
 939	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="939"><span class="lineNum">     939 <\/span>                :            : <\/a>$/;"	a
@@ -300,30 +323,32 @@
 95	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="95"><span class="lineNum">      95 <\/span>                :            : <\/a>$/;"	a
 96	cutil/coverage/cutil/src/buffer.c.gcov.html	/^<a name="96"><span class="lineNum">      96 <\/span>                :            : }<\/a>$/;"	a
 96	cutil/coverage/cutil/src/privileges.c.gcov.html	/^<a name="96"><span class="lineNum">      96 <\/span>                :            : }<\/a>$/;"	a
-97	coverage/cllsd/src/llsd_binary.c.gcov.html	/^<a name="97"><span class="lineNum">      97 <\/span>                :            : static int indent = 0;<\/a>$/;"	a
-97	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="97"><span class="lineNum">      97 <\/span>                :            :  * is in an escaped\/encoded form and the r is not, the l one will be decoded<\/a>$/;"	a
-985	coverage/cllsd/src/llsd_util.c.gcov.html	/^<a name="985"><span class="lineNum">     985 <\/span>                :            : <\/a>$/;"	a
-ACCEPT	cutil/src/macros.h	185;"	d
-ACCEPT	cutil/src/macros.h	73;"	d
+986	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="986"><span class="lineNum">     986 <\/span>                :            : }<\/a>$/;"	a
+99	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="99"><span class="lineNum">      99 <\/span>                :<span class="lineNoCov">          0 : }<\/span><\/a>$/;"	a
+ACCEPT	cutil/src/macros.h	186;"	d
+ACCEPT	cutil/src/macros.h	74;"	d
 ADD_SUITE	cutil/tests/test_macros.h	21;"	d
-ADD_SUITE	tests/test_all.c	33;"	d	file:
+ADD_SUITE	tests/test_macros.h	21;"	d
 ADD_TEST	cutil/tests/test_macros.h	22;"	d
+ADD_TEST	tests/test_macros.h	22;"	d
 ARRAY_SIZE	cutil/src/macros.h	37;"	d
 ASSERT	cutil/src/macros.h	40;"	d
 BASE16_LENGTH	src/base16.h	22;"	d
 BASE64_LENGTH	src/base64.h	24;"	d
 BASE85_LENGTH	src/base85.h	24;"	d
 BASEDIRS	Makefile	/^BASEDIRS = src tests$/;"	m
-BINARY_SIG_LEN	src/llsd.h	30;"	d
-BIND	cutil/src/macros.h	186;"	d
-BIND	cutil/src/macros.h	77;"	d
+BINARY_SIG_LEN	src/llsd_binary_parser.c	20;"	d	file:
+BINARY_SIG_LEN	src/llsd_binary_serializer.c	158;"	d	file:
+BINARY_SIG_LEN	tests/test_binary.c	34;"	d	file:
+BIND	cutil/src/macros.h	187;"	d
+BIND	cutil/src/macros.h	78;"	d
 BIT	cutil/src/bitset.c	27;"	d	file:
-BUF_SIZE	tests/test_common.c	389;"	d	file:
+BUF_SIZE	tests/test_common.c	388;"	d	file:
 BUILDDIRS	Makefile	/^BUILDDIRS = $(DIRS:%=build-%)$/;"	m
 BUILDDIRS	cutil/Makefile	/^BUILDDIRS = $(DIRS:%=build-%)$/;"	m
-C	cutil/src/macros.h	219;"	d
-CALLOC	cutil/src/macros.h	183;"	d
-CALLOC	cutil/src/macros.h	68;"	d
+C	cutil/src/macros.h	220;"	d
+CALLOC	cutil/src/macros.h	184;"	d
+CALLOC	cutil/src/macros.h	69;"	d
 CFLAGS	cutil/src/Makefile	/^CFLAGS=-O3 -I$(EXTRA_LIBS_ROOT)\/include$/;"	m
 CFLAGS	cutil/src/Makefile	/^coverage: CFLAGS=-fprofile-arcs -ftest-coverage -O0 -gstabs+ -DUNIT_TESTING -I$(EXTRA_LIBS_ROOT)\/include -I..\/tests$/;"	m
 CFLAGS	cutil/src/Makefile	/^debug: CFLAGS=-O0 -gstabs+ -I$(EXTRA_LIBS_ROOT)\/include$/;"	m
@@ -344,8 +369,8 @@ CHECK_RET_MSG	cutil/src/macros.h	50;"	d
 CLEANDIRS	Makefile	/^CLEANDIRS = $(DIRS:%=clean-%)$/;"	m
 CLEANDIRS	cutil/Makefile	/^CLEANDIRS = $(DIRS:%=clean-%)$/;"	m
 CLLSD_ROOT	tests/Makefile	/^CLLSD_ROOT=..\/src$/;"	m
-CONNECT	cutil/src/macros.h	187;"	d
-CONNECT	cutil/src/macros.h	81;"	d
+CONNECT	cutil/src/macros.h	188;"	d
+CONNECT	cutil/src/macros.h	82;"	d
 COVERAGE	Makefile	/^COVERAGE?=.\/coverage$/;"	m
 COVERAGE	cutil/Makefile	/^COVERAGE?=.\/coverage$/;"	m
 COVERAGE	cutil/src/Makefile	/^COVERAGE?=..\/coverage$/;"	m
@@ -355,22 +380,20 @@ CUTILDIRS	Makefile	/^CUTILDIRS = $(CUTIL:%=cutildir-%)$/;"	m
 CUTIL_ROOT	cutil/tests/Makefile	/^CUTIL_ROOT=..\/src$/;"	m
 CUTIL_ROOT	src/Makefile	/^CUTIL_ROOT?=..\/cutil\/src$/;"	m
 CUTIL_ROOT	tests/Makefile	/^CUTIL_ROOT?=..\/cutil\/src$/;"	m
-DATE_STR_LEN	src/llsd.h	104;"	d
+DATE_STR_LEN	src/llsd.h	93;"	d
 DEBUG	cutil/src/debug.h	17;"	d
 DEBUG	cutil/src/debug.h	20;"	d
 DEBUG	cutil/src/debug.h	22;"	d
 DEBUGDIRS	cutil/Makefile	/^DEBUGDIRS = $(SRCDIR:%=debug-%)$/;"	m
 DEBUG_ON	cutil/src/debug.h	25;"	d
-DEFAULT_ARRAY_CAPACITY	src/llsd.h	105;"	d
 DEFAULT_INITIAL_CAPACITY	cutil/src/btree.c	32;"	d	file:
-DEFAULT_MAP_CAPACITY	src/llsd.h	106;"	d
 DIRS	Makefile	/^DIRS = $(CUTIL) $(BASEDIRS)$/;"	m
 DIRS	cutil/Makefile	/^DIRS = $(SRCDIR) $(TESTDIR)$/;"	m
 DWORDS_NEEDED	cutil/src/bitset.c	25;"	d	file:
 DWORD_INDEX	cutil/src/bitset.c	26;"	d	file:
 EMPTY_ENV	cutil/src/child.h	24;"	d
-ERRNO	cutil/src/macros.h	188;"	d
-ERRNO	cutil/src/macros.h	85;"	d
+ERRNO	cutil/src/macros.h	189;"	d
+ERRNO	cutil/src/macros.h	86;"	d
 EVT_BADPARAM	cutil/src/events.h	/^	EVT_BADPARAM = -3$/;"	e	enum:evt_ret_e
 EVT_BADPTR	cutil/src/events.h	/^	EVT_BADPTR = -1,$/;"	e	enum:evt_ret_e
 EVT_CHILD	cutil/src/events.h	/^	EVT_CHILD,$/;"	e	enum:evt_type_e
@@ -383,8 +406,8 @@ EVT_SIGNAL	cutil/src/events.h	/^	EVT_SIGNAL,$/;"	e	enum:evt_type_e
 EVT_TYPE_COUNT	cutil/src/events.h	/^	EVT_TYPE_COUNT = EVT_TYPE_LAST - EVT_TYPE_FIRST$/;"	e	enum:evt_type_e
 EVT_TYPE_FIRST	cutil/src/events.h	/^	EVT_TYPE_FIRST = EVT_SIGNAL,$/;"	e	enum:evt_type_e
 EVT_TYPE_LAST	cutil/src/events.h	/^	EVT_TYPE_LAST,$/;"	e	enum:evt_type_e
-EV_DEFAULT_LOOP	cutil/src/macros.h	178;"	d
-EV_DEFAULT_LOOP	cutil/src/macros.h	212;"	d
+EV_DEFAULT_LOOP	cutil/src/macros.h	179;"	d
+EV_DEFAULT_LOOP	cutil/src/macros.h	213;"	d
 EV_MULTIPLICITY	cutil/src/events.c	18;"	d	file:
 EV_STANDALONE	cutil/src/events.c	17;"	d	file:
 EXTRA_LIBS_ROOT	cutil/src/Makefile	/^EXTRA_LIBS_ROOT?=\/usr\/local$/;"	m
@@ -392,16 +415,16 @@ EXTRA_LIBS_ROOT	cutil/tests/Makefile	/^EXTRA_LIBS_ROOT?=\/usr\/local$/;"	m
 EXTRA_LIBS_ROOT	tests/Makefile	/^EXTRA_LIBS_ROOT?=\/usr\/local$/;"	m
 FAIL	cutil/src/macros.h	44;"	d
 FALSE	cutil/src/macros.h	33;"	d
-FALSE	src/llsd.h	98;"	d
-FCNTL	cutil/src/macros.h	189;"	d
-FCNTL	cutil/src/macros.h	89;"	d
+FCNTL	cutil/src/macros.h	190;"	d
+FCNTL	cutil/src/macros.h	90;"	d
+FNV_PRIME	src/llsd.c	92;"	d	file:
 FNV_PRIME	src/llsd_util.c	216;"	d	file:
-FNV_PRIME	src/llsd_util.h	104;"	d
-FORK	cutil/src/macros.h	191;"	d
-FORK	cutil/src/macros.h	93;"	d
+FNV_PRIME	src/llsd_util.h	79;"	d
+FORK	cutil/src/macros.h	192;"	d
+FORK	cutil/src/macros.h	94;"	d
 FREE	cutil/src/macros.h	57;"	d
-FSTAT	cutil/src/macros.h	190;"	d
-FSTAT	cutil/src/macros.h	97;"	d
+FSTAT	cutil/src/macros.h	191;"	d
+FSTAT	cutil/src/macros.h	98;"	d
 GCDA	cutil/src/Makefile	/^GCDA=$(SRC:.c=.gcda)$/;"	m
 GCDA	cutil/tests/Makefile	/^GCDA=$(SRC:.c=.gcda)$/;"	m
 GCDA	src/Makefile	/^GCDA=$(SRC:.c=.gcda)$/;"	m
@@ -416,20 +439,20 @@ GCOV	src/Makefile	/^GCOV=$(SRC:.c=.c.gcov)$/;"	m
 GCOV	tests/Makefile	/^GCOV=$(SRC:.c=.c.gcov)$/;"	m
 GCOVDIRS	Makefile	/^GCOVDIRS = $(BASEDIRS:%=gcov-%)$/;"	m
 GCOVDIRS	cutil/Makefile	/^GCOVDIRS = $(DIRS:%=gcov-%)$/;"	m
-GETDTABLESIZE	cutil/src/macros.h	101;"	d
-GETDTABLESIZE	cutil/src/macros.h	192;"	d
-GETEGID	cutil/src/macros.h	105;"	d
-GETEGID	cutil/src/macros.h	193;"	d
-GETEUID	cutil/src/macros.h	109;"	d
-GETEUID	cutil/src/macros.h	194;"	d
-GETGID	cutil/src/macros.h	113;"	d
-GETGID	cutil/src/macros.h	195;"	d
-GETGROUPS	cutil/src/macros.h	117;"	d
-GETGROUPS	cutil/src/macros.h	196;"	d
-GETUID	cutil/src/macros.h	121;"	d
-GETUID	cutil/src/macros.h	197;"	d
+GETDTABLESIZE	cutil/src/macros.h	102;"	d
+GETDTABLESIZE	cutil/src/macros.h	193;"	d
+GETEGID	cutil/src/macros.h	106;"	d
+GETEGID	cutil/src/macros.h	194;"	d
+GETEUID	cutil/src/macros.h	110;"	d
+GETEUID	cutil/src/macros.h	195;"	d
+GETGID	cutil/src/macros.h	114;"	d
+GETGID	cutil/src/macros.h	196;"	d
+GETGROUPS	cutil/src/macros.h	118;"	d
+GETGROUPS	cutil/src/macros.h	197;"	d
+GETUID	cutil/src/macros.h	122;"	d
+GETUID	cutil/src/macros.h	198;"	d
 HDR	cutil/src/Makefile	/^HDR=aiofd.h bitset.h btree.h buffer.h child.h daemon.h debug.h events.h hashtable.h list.h log.h macros.h pair.h privileges.h sanitize.h socket.h$/;"	m
-HDR	src/Makefile	/^HDR=base16.h base64.h base85.h llsd.h llsd_binary.h llsd_const.h llsd_notation.h llsd_util.h llsd_xml.h$/;"	m
+HDR	src/Makefile	/^HDR=base16.h base64.h base85.h llsd.h llsd_binary.h llsd_binary_parser.h llsd_notation_parser.h llsd_serializer.h llsd_binary_serializer.h llsd_notation_serializer.h$/;"	m
 INDENT	src/llsd_binary.c	102;"	d	file:
 INSTALL	Makefile	/^INSTALL=\/usr\/bin\/install$/;"	m
 INSTALL	cutil/Makefile	/^INSTALL=\/usr\/bin\/install$/;"	m
@@ -445,10 +468,13 @@ INSTALL_PROGRAM	Makefile	/^INSTALL_PROGRAM=$(INSTALL)$/;"	m
 INSTALL_PROGRAM	cutil/Makefile	/^INSTALL_PROGRAM=$(INSTALL)$/;"	m
 INSTALL_PROGRAM	cutil/src/Makefile	/^INSTALL_PROGRAM=$(INSTALL)$/;"	m
 INSTALL_PROGRAM	src/Makefile	/^INSTALL_PROGRAM=$(INSTALL)$/;"	m
-IOCTL	cutil/src/macros.h	125;"	d
-IOCTL	cutil/src/macros.h	198;"	d
+IOCTL	cutil/src/macros.h	126;"	d
+IOCTL	cutil/src/macros.h	199;"	d
 IPv4	cutil/src/socket.h	/^typedef struct in_addr IPv4;$/;"	t	typeref:struct:in_addr
 IPv6	cutil/src/socket.h	/^typedef struct in6_addr IPv6;$/;"	t	typeref:struct:in6_addr
+IS_VALID_BINARY_ENCODING	src/llsd.h	85;"	d
+IS_VALID_LLSD_TYPE	src/llsd.h	50;"	d
+IS_VALID_SERIALIZER	src/llsd.h	69;"	d
 ITEM_AT	cutil/src/hashtable.c	34;"	d	file:
 ITEM_AT	cutil/src/list.c	40;"	d	file:
 ITR_EQ	cutil/src/hashtable.h	31;"	d
@@ -458,8 +484,8 @@ LDFLAGS	tests/Makefile	/^LDFLAGS=-gstabs+ -L$(CLLSD_ROOT)\/lib -L$(CUTIL_ROOT)\/
 LDFLAGS	tests/Makefile	/^coverage: LDFLAGS=-fprofile-arcs -O0 -gstabs+ -L$(CLLSD_ROOT)\/lib -L$(CUTIL_ROOT)\/lib -L$(EXTRA_LIBS_ROOT)\/lib$/;"	m
 LIBS	cutil/tests/Makefile	/^LIBS=-lcutil -lcunit -lev$/;"	m
 LIBS	tests/Makefile	/^LIBS=-lcllsd -lcutil -lcunit -lexpat -lm$/;"	m
-LISTEN	cutil/src/macros.h	129;"	d
-LISTEN	cutil/src/macros.h	199;"	d
+LISTEN	cutil/src/macros.h	130;"	d
+LISTEN	cutil/src/macros.h	200;"	d
 LIST_AT	cutil/src/hashtable.c	33;"	d	file:
 LLSD_ARRAY	src/llsd.h	/^	LLSD_ARRAY,$/;"	e	enum:llsd_type_e
 LLSD_BASE16	src/llsd.h	/^	LLSD_BASE16,$/;"	e	enum:llsd_bin_enc_s
@@ -467,27 +493,34 @@ LLSD_BASE64	src/llsd.h	/^	LLSD_BASE64,$/;"	e	enum:llsd_bin_enc_s
 LLSD_BASE85	src/llsd.h	/^	LLSD_BASE85,$/;"	e	enum:llsd_bin_enc_s
 LLSD_BINARY	src/llsd.h	/^	LLSD_BINARY,$/;"	e	enum:llsd_type_e
 LLSD_BINARY_H	src/llsd_binary.h	18;"	d
+LLSD_BINARY_PARSER_H	src/llsd_binary_parser.h	18;"	d
+LLSD_BINARY_SERIALIZER_H	src/llsd_binary_serializer.h	18;"	d
 LLSD_BIN_ENC_COUNT	src/llsd.h	/^	LLSD_BIN_ENC_COUNT = LLSD_BIN_ENC_LAST - LLSD_BIN_ENC_FIRST,$/;"	e	enum:llsd_bin_enc_s
 LLSD_BIN_ENC_FIRST	src/llsd.h	/^	LLSD_BIN_ENC_FIRST = LLSD_NONE,$/;"	e	enum:llsd_bin_enc_s
 LLSD_BIN_ENC_LAST	src/llsd.h	/^	LLSD_BIN_ENC_LAST,$/;"	e	enum:llsd_bin_enc_s
 LLSD_BOOLEAN	src/llsd.h	/^	LLSD_BOOLEAN,$/;"	e	enum:llsd_type_e
-LLSD_CONST_H	src/llsd_const.h	18;"	d
 LLSD_DATE	src/llsd.h	/^	LLSD_DATE,$/;"	e	enum:llsd_type_e
 LLSD_ENC_BINARY	src/llsd.h	/^	LLSD_ENC_BINARY,$/;"	e	enum:llsd_serializer_s
 LLSD_ENC_COUNT	src/llsd.h	/^	LLSD_ENC_COUNT = LLSD_ENC_LAST - LLSD_ENC_FIRST$/;"	e	enum:llsd_serializer_s
 LLSD_ENC_FIRST	src/llsd.h	/^	LLSD_ENC_FIRST = LLSD_ENC_XML,$/;"	e	enum:llsd_serializer_s
+LLSD_ENC_JSON	src/llsd.h	/^	LLSD_ENC_JSON,$/;"	e	enum:llsd_serializer_s
 LLSD_ENC_LAST	src/llsd.h	/^	LLSD_ENC_LAST,$/;"	e	enum:llsd_serializer_s
 LLSD_ENC_NOTATION	src/llsd.h	/^	LLSD_ENC_NOTATION,$/;"	e	enum:llsd_serializer_s
 LLSD_ENC_XML	src/llsd.h	/^	LLSD_ENC_XML,$/;"	e	enum:llsd_serializer_s
 LLSD_H	src/llsd.h	18;"	d
 LLSD_INTEGER	src/llsd.h	/^	LLSD_INTEGER,$/;"	e	enum:llsd_type_e
+LLSD_ITR_EQ	src/llsd.h	127;"	d
 LLSD_KEY	src/llsd.h	/^	LLSD_KEY, \/* type of LLSD key tag in XML *\/$/;"	e	enum:llsd_type_e
 LLSD_LLSD	src/llsd.h	/^	LLSD_LLSD \/* type of LLSD tag in XML *\/$/;"	e	enum:llsd_type_e
 LLSD_MAP	src/llsd.h	/^	LLSD_MAP,$/;"	e	enum:llsd_type_e
 LLSD_NONE	src/llsd.h	/^	LLSD_NONE,$/;"	e	enum:llsd_bin_enc_s
 LLSD_NOTATION_H	src/llsd_notation.h	18;"	d
+LLSD_NOTATION_PARSER_H	src/llsd_notation_parser.h	18;"	d
+LLSD_NOTATION_SERIALIZER_H	src/llsd_notation_serializer.h	18;"	d
+LLSD_PARSER_H	src/llsd_parser.h	18;"	d
 LLSD_RAW	src/llsd.h	/^	LLSD_RAW	\/* used for some special cases *\/$/;"	e	enum:llsd_bin_enc_s
 LLSD_REAL	src/llsd.h	/^	LLSD_REAL,$/;"	e	enum:llsd_type_e
+LLSD_SERIALIZER_H	src/llsd_serializer.h	18;"	d
 LLSD_STRING	src/llsd.h	/^	LLSD_STRING,$/;"	e	enum:llsd_type_e
 LLSD_TYPE_COUNT	src/llsd.h	/^	LLSD_TYPE_COUNT = LLSD_TYPE_LAST - LLSD_TYPE_FIRST,$/;"	e	enum:llsd_type_e
 LLSD_TYPE_FIRST	src/llsd.h	/^	LLSD_TYPE_FIRST = LLSD_UNDEF,$/;"	e	enum:llsd_type_e
@@ -501,13 +534,13 @@ LLSD_XML_H	src/llsd_xml.h	18;"	d
 LOG	cutil/src/macros.h	43;"	d
 LOG_TYPE_FILE	cutil/src/log.h	/^	LOG_TYPE_FILE$/;"	e	enum:log_type_s
 LOG_TYPE_SYSLOG	cutil/src/log.h	/^	LOG_TYPE_SYSLOG,$/;"	e	enum:log_type_s
-MALLOC	cutil/src/macros.h	182;"	d
-MALLOC	cutil/src/macros.h	67;"	d
+MALLOC	cutil/src/macros.h	183;"	d
+MALLOC	cutil/src/macros.h	68;"	d
 MEMCMP	cutil/src/macros.h	59;"	d
 MEMCPY	cutil/src/macros.h	58;"	d
 MEMSET	cutil/src/macros.h	60;"	d
-MISSING_64BIT_ENDIAN	cutil/src/macros.h	235;"	d
-MISSING_STRNLEN	cutil/src/macros.h	234;"	d
+MISSING_64BIT_ENDIAN	cutil/src/macros.h	236;"	d
+MISSING_STRNLEN	cutil/src/macros.h	235;"	d
 MULTIPLE	cutil/tests/test_aiofd.c	36;"	d	file:
 MULTIPLE	cutil/tests/test_child.c	36;"	d	file:
 MULTIPLE	cutil/tests/test_events.c	37;"	d	file:
@@ -517,7 +550,9 @@ MULTIPLE	cutil/tests/test_privileges.c	35;"	d	file:
 MULTIPLE	cutil/tests/test_socket.c	36;"	d	file:
 NAME	cutil/src/Makefile	/^NAME=cutil$/;"	m
 NAME	src/Makefile	/^NAME=cllsd$/;"	m
-NOTATION_SIG_LEN	src/llsd.h	31;"	d
+NOTATION_SIG_LEN	src/llsd_notation_parser.c	22;"	d	file:
+NOTATION_SIG_LEN	src/llsd_notation_serializer.c	116;"	d	file:
+NOTATION_SIG_LEN	tests/test_notation.c	33;"	d	file:
 NOTICE	cutil/src/macros.h	42;"	d
 NO_ARGS	cutil/src/child.h	23;"	d
 NUM_PRIMES	cutil/src/hashtable.c	/^uint_t const NUM_PRIMES = 30;$/;"	v
@@ -530,19 +565,19 @@ OUT	cutil/src/Makefile	/^OUT=lib$(NAME).a$/;"	m
 OUT	cutil/tests/Makefile	/^OUT=test_all$/;"	m
 OUT	src/Makefile	/^OUT=lib$(NAME).a$/;"	m
 OUT	tests/Makefile	/^OUT=test_all$/;"	m
-PIPE	cutil/src/macros.h	133;"	d
-PIPE	cutil/src/macros.h	200;"	d
+PIPE	cutil/src/macros.h	134;"	d
+PIPE	cutil/src/macros.h	201;"	d
 PIPE_READ_FD	cutil/src/child.c	188;"	d	file:
 PIPE_WRITE_FD	cutil/src/child.c	189;"	d	file:
-PORTABLE_32_BIT	cutil/src/macros.h	227;"	d
-PORTABLE_64_BIT	cutil/src/macros.h	223;"	d
+PORTABLE_32_BIT	cutil/src/macros.h	228;"	d
+PORTABLE_64_BIT	cutil/src/macros.h	224;"	d
 PREFIX	cutil/src/Makefile	/^PREFIX?=\/usr\/local$/;"	m
 PREFIX	src/Makefile	/^PREFIX?=\/usr\/local$/;"	m
 PRIMES	cutil/src/hashtable.c	/^uint_t const PRIMES[] =$/;"	v
-READ	cutil/src/macros.h	137;"	d
-READ	cutil/src/macros.h	201;"	d
-REALLOC	cutil/src/macros.h	184;"	d
-REALLOC	cutil/src/macros.h	69;"	d
+READ	cutil/src/macros.h	138;"	d
+READ	cutil/src/macros.h	202;"	d
+REALLOC	cutil/src/macros.h	185;"	d
+REALLOC	cutil/src/macros.h	70;"	d
 REPEAT	cutil/tests/test_aiofd.c	34;"	d	file:
 REPEAT	cutil/tests/test_child.c	34;"	d	file:
 REPEAT	cutil/tests/test_events.c	35;"	d	file:
@@ -552,18 +587,18 @@ REPEAT	cutil/tests/test_privileges.c	33;"	d	file:
 REPEAT	cutil/tests/test_socket.c	34;"	d	file:
 REPORTDIRS	Makefile	/^REPORTDIRS = $(BASEDIRS:%=report-%)$/;"	m
 REPORTDIRS	cutil/Makefile	/^REPORTDIRS = $(DIRS:%=report-%)$/;"	m
-SETEGID	cutil/src/macros.h	141;"	d
-SETEGID	cutil/src/macros.h	202;"	d
-SETEUID	cutil/src/macros.h	145;"	d
-SETEUID	cutil/src/macros.h	203;"	d
-SETGROUPS	cutil/src/macros.h	149;"	d
-SETGROUPS	cutil/src/macros.h	204;"	d
-SETREGID	cutil/src/macros.h	153;"	d
-SETREGID	cutil/src/macros.h	205;"	d
-SETREUID	cutil/src/macros.h	157;"	d
-SETREUID	cutil/src/macros.h	206;"	d
-SETSOCKOPT	cutil/src/macros.h	161;"	d
-SETSOCKOPT	cutil/src/macros.h	207;"	d
+SETEGID	cutil/src/macros.h	142;"	d
+SETEGID	cutil/src/macros.h	203;"	d
+SETEUID	cutil/src/macros.h	146;"	d
+SETEUID	cutil/src/macros.h	204;"	d
+SETGROUPS	cutil/src/macros.h	150;"	d
+SETGROUPS	cutil/src/macros.h	205;"	d
+SETREGID	cutil/src/macros.h	154;"	d
+SETREGID	cutil/src/macros.h	206;"	d
+SETREUID	cutil/src/macros.h	158;"	d
+SETREUID	cutil/src/macros.h	207;"	d
+SETSOCKOPT	cutil/src/macros.h	162;"	d
+SETSOCKOPT	cutil/src/macros.h	208;"	d
 SHELL	Makefile	/^SHELL=\/bin\/sh$/;"	m
 SHELL	cutil/Makefile	/^SHELL=\/bin\/sh$/;"	m
 SHELL	cutil/src/Makefile	/^SHELL=\/bin\/sh$/;"	m
@@ -577,8 +612,8 @@ SIZEMAX	cutil/tests/test_hashtable.c	35;"	d	file:
 SIZEMAX	cutil/tests/test_list.c	35;"	d	file:
 SIZEMAX	cutil/tests/test_privileges.c	34;"	d	file:
 SIZEMAX	cutil/tests/test_socket.c	35;"	d	file:
-SOCKET	cutil/src/macros.h	165;"	d
-SOCKET	cutil/src/macros.h	208;"	d
+SOCKET	cutil/src/macros.h	166;"	d
+SOCKET	cutil/src/macros.h	209;"	d
 SOCKET_BADHOSTNAME	cutil/src/socket.h	/^    SOCKET_BADHOSTNAME  = -3,$/;"	e	enum:socket_ret_e
 SOCKET_BADPARAM	cutil/src/socket.h	/^    SOCKET_BADPARAM     = -2,$/;"	e	enum:socket_ret_e
 SOCKET_BOUND	cutil/src/socket.h	/^	SOCKET_BOUND		= -8,$/;"	e	enum:socket_ret_e
@@ -599,32 +634,32 @@ SOCKET_UNIX	cutil/src/socket.h	/^	SOCKET_UNIX,$/;"	e	enum:socket_type_e
 SOCKET_UNKNOWN	cutil/src/socket.h	/^	SOCKET_UNKNOWN = -1$/;"	e	enum:socket_type_e
 SRC	cutil/src/Makefile	/^SRC=aiofd.c bitset.c btree.c buffer.c child.c daemon.c events.c hashtable.c list.c log.c pair.c privileges.c sanitize.c socket.c$/;"	m
 SRC	cutil/tests/Makefile	/^SRC=test_all.c test_aiofd.c test_bitset.c test_btree.c test_buffer.c test_child.c test_events.c test_flags.c test_hashtable.c test_list.c test_pair.c test_privileges.c test_sanitize.c test_socket.c$/;"	m
-SRC	src/Makefile	/^SRC=base16.c base64.c base85.c llsd.c llsd_binary.c llsd_const.c llsd_notation.c llsd_util.c llsd_xml.c $/;"	m
-SRC	tests/Makefile	/^SRC=test_all.c test_base16.c test_base64.c test_base85.c test_binary.c test_notation.c test_xml.c$/;"	m
+SRC	src/Makefile	/^SRC=base16.c base64.c base85.c llsd.c llsd_parser.c llsd_binary_parser.c llsd_notation_parser.c llsd_serializer.c llsd_binary_serializer.c llsd_notation_serializer.c$/;"	m
+SRC	tests/Makefile	/^SRC=test_all.c test_base16.c test_base64.c test_base85.c test_binary.c test_flags.c test_notation.c$/;"	m
 SRCDIR	cutil/Makefile	/^SRCDIR = src$/;"	m
+STRCMP	cutil/src/macros.h	62;"	d
 STRDUP	cutil/src/macros.h	61;"	d
 SUITE	cutil/tests/test_macros.h	20;"	d
-SUITE	tests/test_all.c	32;"	d	file:
-T	cutil/src/macros.h	217;"	d
+SUITE	tests/test_macros.h	20;"	d
+T	cutil/src/macros.h	218;"	d
 TESTDIR	cutil/Makefile	/^TESTDIR = tests$/;"	m
 TESTDIRS	Makefile	/^TESTDIRS = $(DIRS:%=test-%)$/;"	m
 TESTDIRS	cutil/Makefile	/^TESTDIRS = $(DIRS:%=test-%)$/;"	m
 TRUE	cutil/src/macros.h	34;"	d
-TRUE	src/llsd.h	94;"	d
-TYPE_TO_STRING	src/llsd.h	60;"	d
+TYPE_TO_STRING	src/llsd.h	54;"	d
 UNINSTALLDIRS	Makefile	/^UNINSTALLDIRS = $(DIRS:%=uninstall-%)$/;"	m
 UNINSTALLDIRS	cutil/Makefile	/^UNINSTALLDIRS = $(DIRS:%=uninstall-%)$/;"	m
 URL_ENCODED_CHAR	src/llsd_util.c	1867;"	d	file:
-UT	cutil/src/macros.h	218;"	d
-UUID_LEN	src/llsd.h	102;"	d
-UUID_STR_LEN	src/llsd.h	103;"	d
+UT	cutil/src/macros.h	219;"	d
+UUID_LEN	src/llsd.h	91;"	d
+UUID_STR_LEN	src/llsd.h	92;"	d
 VALID_EVENT_TYPE	cutil/src/events.h	46;"	d
 VALID_SOCKET_TYPE	cutil/src/socket.h	57;"	d
 WARN	cutil/src/macros.h	41;"	d
-WRITE	cutil/src/macros.h	169;"	d
-WRITE	cutil/src/macros.h	209;"	d
-WRITEV	cutil/src/macros.h	173;"	d
-WRITEV	cutil/src/macros.h	210;"	d
+WRITE	cutil/src/macros.h	170;"	d
+WRITE	cutil/src/macros.h	210;"	d
+WRITEV	cutil/src/macros.h	174;"	d
+WRITEV	cutil/src/macros.h	211;"	d
 XML_ARRAYC_LEN	src/llsd_xml.c	619;"	d	file:
 XML_ARRAY_LEN	src/llsd_xml.c	618;"	d	file:
 XML_BINARYC_LEN	src/llsd_xml.c	617;"	d	file:
@@ -634,8 +669,8 @@ XML_BOOLEAN_LEN	src/llsd_xml.c	602;"	d	file:
 XML_BUF_SIZE	src/llsd_xml.c	540;"	d	file:
 XML_DATEC_LEN	src/llsd_xml.c	613;"	d	file:
 XML_DATE_LEN	src/llsd_xml.c	612;"	d	file:
-XML_FOOTER_LEN	src/llsd_util.c	2112;"	d	file:
-XML_HEADER_LEN	src/llsd_util.c	2111;"	d	file:
+XML_FOOTER_LEN	src/llsd_util.c	2110;"	d	file:
+XML_HEADER_LEN	src/llsd_util.c	2109;"	d	file:
 XML_INTEGERC_LEN	src/llsd_xml.c	605;"	d	file:
 XML_INTEGER_LEN	src/llsd_xml.c	604;"	d	file:
 XML_KEYC_LEN	src/llsd_xml.c	623;"	d	file:
@@ -644,7 +679,7 @@ XML_MAPC_LEN	src/llsd_xml.c	621;"	d	file:
 XML_MAP_LEN	src/llsd_xml.c	620;"	d	file:
 XML_REALC_LEN	src/llsd_xml.c	607;"	d	file:
 XML_REAL_LEN	src/llsd_xml.c	606;"	d	file:
-XML_SIG_LEN	src/llsd.h	32;"	d
+XML_SIG_LEN	src/llsd.h	25;"	d
 XML_SIZEC_LEN	src/llsd_xml.c	643;"	d	file:
 XML_STRINGC_LEN	src/llsd_xml.c	611;"	d	file:
 XML_STRING_LEN	src/llsd_xml.c	610;"	d	file:
@@ -677,6 +712,7 @@ __PRIVILEGES_H__	cutil/src/privileges.h	18;"	d
 __SANITIZE_H__	cutil/src/sanitize.h	18;"	d
 __SOCKET_H__	cutil/src/socket.h	18;"	d
 __TEST_MACROS_H__	cutil/tests/test_macros.h	18;"	d
+__TEST_MACROS_H__	tests/test_macros.h	18;"	d
 accept_data	src/llsd_xml.c	/^	int accept_data;$/;"	m	struct:context_s	file:
 add_aiofd_test_suite	cutil/tests/test_aiofd.c	/^CU_pSuite add_aiofd_test_suite()$/;"	f
 add_aiofd_tests	cutil/tests/test_aiofd.c	/^static CU_pSuite add_aiofd_tests( CU_pSuite pSuite )$/;"	f	file:
@@ -743,11 +779,12 @@ aiofd_write_fn	cutil/src/aiofd.c	/^static evt_ret_t aiofd_write_fn( evt_loop_t *
 aiofd_write_s	cutil/src/aiofd.c	/^typedef struct aiofd_write_s$/;"	s	file:
 aiofd_write_t	cutil/src/aiofd.c	/^} aiofd_write_t;$/;"	t	typeref:struct:aiofd_write_s	file:
 aiofd_writev	cutil/src/aiofd.c	/^int aiofd_writev( aiofd_t * const aiofd,$/;"	f
-array	src/llsd.h	/^	array_t		array;$/;"	m	struct:llsd_array_s
-array_	src/llsd.h	/^		llsd_array_t	array_;$/;"	m	union:llsd_s::__anon1
+array_	src/llsd.c	/^		llsd_array_t	array_;$/;"	m	union:llsd_s::__anon1	file:
 array_	tests/test_binary.c	/^static uint8_t const array_[] = { '[', 0x00, 0x00, 0x00, 0x00, ']' };$/;"	v	file:
 array_	tests/test_notation.c	/^static uint8_t const array_[] = "[]";$/;"	v	file:
 array_	tests/test_xml.c	/^static uint8_t const array_[] = "<llsd><array \/><\/llsd>";$/;"	v	file:
+array_begin_fn	src/llsd.h	/^	int (*array_begin_fn)( uint32_t const size, void * const user_data );$/;"	m	struct:llsd_ops_s
+array_end_fn	src/llsd.h	/^	int (*array_end_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
 bad	tests/test_base16.c	/^static uint8_t * bad = "jk2e23r3";$/;"	v	file:
 balance	cutil/src/btree.c	/^	int32_t balance;			\/* balance factor *\/$/;"	m	struct:node_s	file:
 base16	tests/test_all.c	/^SUITE( base16 );$/;"	v
@@ -762,32 +799,27 @@ base85	tests/test_all.c	/^SUITE( base85 );$/;"	v
 base85_decode	src/base85.c	/^int base85_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)$/;"	f
 base85_decoded_len	src/base85.c	/^uint32_t base85_decoded_len( uint8_t const * in, uint32_t inlen )$/;"	f
 base85_encode	src/base85.c	/^int base85_encode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)$/;"	f
-be	src/llsd.h	/^	uint32_t			be;$/;"	m	struct:llsd_binary_s
-be	src/llsd.h	/^	uint32_t			be;$/;"	m	struct:llsd_int_s
-be	src/llsd.h	/^	uint32_t			be;$/;"	m	struct:llsd_string_s
-be	src/llsd.h	/^	uint32_t			be;$/;"	m	struct:llsd_uri_s
-be	src/llsd.h	/^	uint32_t	be;$/;"	m	struct:llsd_array_s
-be	src/llsd.h	/^	uint32_t	be;$/;"	m	struct:llsd_map_s
-be	src/llsd.h	/^	uint64_t			be;$/;"	m	struct:llsd_date_s
-be	src/llsd.h	/^	uint64_t			be;$/;"	m	struct:llsd_real_s
 be64toh	src/llsd_util.c	/^uint64_t be64toh( uint64_t const be )$/;"	f
 binary	tests/test_all.c	/^SUITE( binary );$/;"	v
-binary_	src/llsd.h	/^		llsd_binary_t	binary_;$/;"	m	union:llsd_s::__anon1
+binary_	src/llsd.c	/^		llsd_binary_t	binary_;$/;"	m	union:llsd_s::__anon1	file:
 binary_	tests/test_binary.c	/^static uint8_t const binary_[] = { 'b', 0x00, 0x00, 0x00, 0x10, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };$/;"	v	file:
 binary_	tests/test_notation.c	/^static uint8_t const binary_[] = "b64\\"AQIDBAUGBwgJAAECAwQFBg==\\"";$/;"	v	file:
 binary_	tests/test_xml.c	/^static uint8_t const binary_[] = "<llsd><binary encoding=\\"base64\\">AQIDBAUGBwgJAAECAwQFBg==<\/binary><\/llsd>";$/;"	v	file:
-binary_header	src/llsd_util.c	/^static uint8_t const * const binary_header = "<? LLSD\/Binary ?>\\n";$/;"	v	file:
+binary_fn	src/llsd.h	/^	int (*binary_fn)( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data );$/;"	m	struct:llsd_ops_s
+binary_header	src/llsd_binary_parser.c	/^static uint8_t const * const binary_header = "<? LLSD\/Binary ?>\\n";$/;"	v	file:
+binary_header	src/llsd_binary_serializer.c	/^static uint8_t const * const binary_header = "<? LLSD\/Binary ?>\\n";$/;"	v	file:
 bits	cutil/src/bitset.h	/^	uint32_t * bits;$/;"	m	struct:bitset_s
-bits	src/llsd.h	/^	uint8_t *			bits;$/;"	m	struct:llsd_uuid_s
-bits	src/llsd_const.c	/^static uint8_t bits[] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };$/;"	v	file:
 bitset	cutil/tests/test_all.c	/^SUITE( bitset );$/;"	v
 bitset_s	cutil/src/bitset.h	/^typedef struct bitset_s$/;"	s
 bitset_t	cutil/src/bitset.h	/^} bitset_t;$/;"	t	typeref:struct:bitset_s
-bool_	src/llsd.h	/^		llsd_bool_t		bool_;$/;"	m	union:llsd_s::__anon1
+bool_	src/llsd.c	/^		llsd_bool_t		bool_;$/;"	m	union:llsd_s::__anon1	file:
 boolean_	tests/test_binary.c	/^static uint8_t const boolean_[]= { '1' };$/;"	v	file:
 boolean_	tests/test_notation.c	/^static uint8_t const boolean_[] = "T";$/;"	v	file:
 boolean_	tests/test_xml.c	/^static uint8_t const boolean_[] = "<llsd><boolean>true<\/boolean><\/llsd>";$/;"	v	file:
+boolean_fn	src/llsd.h	/^	int (*boolean_fn)( int const value, void * const user_data );$/;"	m	struct:llsd_ops_s
 bound	cutil/src/socket.c	/^	int32_t			bound;			\/* is the socket bound? *\/$/;"	m	struct:socket_s	file:
+bs_state_s	src/llsd_binary_serializer.c	/^typedef struct bs_state_s$/;"	s	file:
+bs_state_t	src/llsd_binary_serializer.c	/^} bs_state_t;$/;"	t	typeref:struct:bs_state_s	file:
 bset_clear	cutil/src/bitset.c	/^int bset_clear( bitset_t * const bset, size_t const bit )$/;"	f
 bset_clear_all	cutil/src/bitset.c	/^int bset_clear_all( bitset_t * const bset )$/;"	f
 bset_deinitialize	cutil/src/bitset.c	/^int bset_deinitialize( bitset_t * const bset )$/;"	f
@@ -877,6 +909,7 @@ connect_tests_connect_fn	cutil/tests/test_socket.c	/^static socket_ret_t connect
 connect_tests_error_fn	cutil/tests/test_socket.c	/^static socket_ret_t connect_tests_error_fn( socket_t * const s, int err, void * user_data )$/;"	f	file:
 connected	cutil/src/socket.c	/^	int32_t			connected;		\/* is the socket connected? *\/$/;"	m	struct:socket_s	file:
 connected	cutil/tests/test_socket.c	/^	int connected;$/;"	m	struct:sock_state_s	file:
+container_stack	src/llsd_parser.c	/^	list_t * container_stack;$/;"	m	struct:parser_state_s	file:
 containers	src/llsd_xml.c	/^	array_t * containers;$/;"	m	struct:context_s	file:
 context_s	src/llsd_xml.c	/^typedef struct context_s$/;"	s	file:
 context_t	src/llsd_xml.c	/^} context_t;$/;"	t	typeref:struct:context_s	file:
@@ -888,16 +921,15 @@ create_start_file	cutil/src/daemon.c	/^int create_start_file( int8_t const * con
 daemonize	cutil/src/daemon.c	/^void daemonize( int8_t const * const root_dir )$/;"	f
 data	cutil/src/aiofd.c	/^	void * data;$/;"	m	struct:aiofd_write_s	file:
 data	cutil/src/list.c	/^	void *	data;	\/* pointer to the data *\/$/;"	m	struct:list_item_s	file:
-data	src/llsd.h	/^	uint8_t	*			data;$/;"	m	struct:llsd_binary_s
 data	tests/test_base_common.c	/^static uint8_t * data = "Man is distinguished, not only by his reason, but by this "$/;"	v	file:
 data_offset	tests/test_binary.c	/^static size_t const data_offset = BINARY_SIG_LEN;$/;"	v	file:
 data_offset	tests/test_notation.c	/^static size_t const data_offset = NOTATION_SIG_LEN;$/;"	v	file:
 data_offset	tests/test_xml.c	/^static size_t const data_offset = XML_SIG_LEN;$/;"	v	file:
-data_size	src/llsd.h	/^	uint32_t			data_size;$/;"	m	struct:llsd_binary_s
-date_	src/llsd.h	/^		llsd_date_t		date_;$/;"	m	union:llsd_s::__anon1
+date_	src/llsd.c	/^		llsd_date_t		date_;$/;"	m	union:llsd_s::__anon1	file:
 date_	tests/test_binary.c	/^static uint8_t const date_[] = { 'd', 0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };$/;"	v	file:
 date_	tests/test_notation.c	/^static uint8_t const date_[] = "d\\"1970-01-01T00:00:01.000Z\\"";$/;"	v	file:
 date_	tests/test_xml.c	/^static uint8_t const date_[] = "<llsd><date>1970-01-01T00:00:01.000Z<\/date><\/llsd>";$/;"	v	file:
+date_fn	src/llsd.h	/^	int (*date_fn)( double const value, void * const user_data );$/;"	m	struct:llsd_ops_s
 decode_fn	tests/test_base16.c	/^static int (*decode_fn)(uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen);$/;"	v	file:
 decode_fn	tests/test_base64.c	/^static int (*decode_fn)(uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen);$/;"	v	file:
 decode_fn	tests/test_base85.c	/^static int (*decode_fn)(uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen);$/;"	v	file:
@@ -918,6 +950,7 @@ deinit_btree_suite	cutil/tests/test_btree.c	/^static int deinit_btree_suite( voi
 deinit_buffer_suite	cutil/tests/test_buffer.c	/^static int deinit_buffer_suite( void )$/;"	f	file:
 deinit_child_suite	cutil/tests/test_child.c	/^static int deinit_child_suite( void )$/;"	f	file:
 deinit_events_suite	cutil/tests/test_events.c	/^static int deinit_events_suite( void )$/;"	f	file:
+deinit_fns	src/llsd_serializer.c	/^serializer_deinit_fn const deinit_fns[LLSD_ENC_COUNT] =$/;"	v
 deinit_hashtable_suite	cutil/tests/test_hashtable.c	/^static int deinit_hashtable_suite( void )$/;"	f	file:
 deinit_list_suite	cutil/tests/test_list.c	/^static int deinit_list_suite( void )$/;"	f	file:
 deinit_notation_suite	tests/test_notation.c	/^static int deinit_notation_suite( void )$/;"	f	file:
@@ -932,38 +965,19 @@ dhex	src/base16.c	/^static uint8_t dhex( uint8_t c )$/;"	f	file:
 disconnect_fn	cutil/src/socket.h	/^	socket_ret_t (*disconnect_fn)( socket_t * const s, void * user_data );$/;"	m	struct:socket_ops_s
 disconnect_fn	cutil/tests/test_socket.c	/^static socket_ret_t disconnect_fn( socket_t * const s, void * user_data )$/;"	f	file:
 drop_privileges	cutil/src/privileges.c	/^int drop_privileges( int permanent, priv_state_t * const orig )$/;"	f
-dval	src/llsd.h	/^	double				dval;$/;"	m	struct:llsd_date_s
-dyn_bits	src/llsd.h	/^	int					dyn_bits: 1;$/;"	m	struct:llsd_uuid_s
-dyn_data	src/llsd.h	/^	int					dyn_data: 1;$/;"	m	struct:llsd_binary_s
-dyn_enc	src/llsd.h	/^	int					dyn_enc: 1;$/;"	m	struct:llsd_binary_s
-dyn_esc	src/llsd.h	/^	int					dyn_esc: 1;$/;"	m	struct:llsd_string_s
-dyn_esc	src/llsd.h	/^	int					dyn_esc: 1;$/;"	m	struct:llsd_uri_s
-dyn_str	src/llsd.h	/^	int					dyn_str:  1;$/;"	m	struct:llsd_uuid_s
-dyn_str	src/llsd.h	/^	int					dyn_str: 1;$/;"	m	struct:llsd_date_s
-dyn_str	src/llsd.h	/^	int					dyn_str: 1;$/;"	m	struct:llsd_string_s
-dyn_uri	src/llsd.h	/^	int					dyn_uri: 1;$/;"	m	struct:llsd_uri_s
 e	cutil/src/aiofd.c	/^	int r, w, e;$/;"	m	struct:cb_count_s	file:
 eightyfives	src/base85.c	/^static uint32_t eightyfives[5] = { 1, 85, 7225, 614125, 52200625 };$/;"	v	file:
 el	cutil/src/aiofd.h	/^	evt_loop_t*	el;				\/* event loop we registered out evt with *\/$/;"	m	struct:aiofd_s
 el	cutil/src/events.h	/^	evt_loop_t *	el;			\/* the event loop associated wtih *\/$/;"	m	struct:evt_s
 el	cutil/tests/test_all.c	/^evt_loop_t * el = NULL;$/;"	v
-empty_array	src/llsd_const.c	/^llsd_array_t const empty_array =$/;"	v
-empty_binary	src/llsd_const.c	/^llsd_binary_t const empty_binary =$/;"	v
-empty_date	src/llsd_const.c	/^llsd_date_t const empty_date =$/;"	v
-empty_map	src/llsd_const.c	/^llsd_map_t const empty_map =$/;"	v
-empty_string	src/llsd_const.c	/^llsd_string_t const empty_string = $/;"	v
-empty_uri	src/llsd_const.c	/^llsd_uri_t const empty_uri = $/;"	v
-enc	src/llsd.h	/^	uint8_t *			enc;$/;"	m	struct:llsd_binary_s
 enc	tests/test_base16.c	/^static uint8_t * enc = "4D616E2069732064697374696E677569736865642C206E6F74206F6"$/;"	v	file:
 enc	tests/test_base64.c	/^static uint8_t * enc = "TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWF"$/;"	v	file:
 enc	tests/test_base85.c	/^static uint8_t * enc = "9jqo^BlbD-BleB1DJ+*+F(f,q\/0JhKF<GL>Cj@.4Gp$d7F!,L7@<6@)"$/;"	v	file:
-enc_size	src/llsd.h	/^	uint32_t			enc_size;$/;"	m	struct:llsd_binary_s
 encode_fn	tests/test_base16.c	/^static int (*encode_fn)(uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen);$/;"	v	file:
 encode_fn	tests/test_base64.c	/^static int (*encode_fn)(uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen);$/;"	v	file:
 encode_fn	tests/test_base85.c	/^static int (*encode_fn)(uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen);$/;"	v	file:
 encode_quartet	src/base64.c	/^static int encode_quartet( uint8_t const * in, uint32_t inlen, uint8_t * out )$/;"	f	file:
 encode_quintet	src/base85.c	/^static int encode_quintet( uint8_t const * in, uint32_t inlen, uint8_t * out )$/;"	f	file:
-encoding	src/llsd.h	/^	llsd_bin_enc_t		encoding;$/;"	m	struct:llsd_binary_s
 encoding	tests/test_base16.c	/^static llsd_bin_enc_t encoding;$/;"	v	file:
 encoding	tests/test_base64.c	/^static llsd_bin_enc_t encoding;$/;"	v	file:
 encoding	tests/test_base85.c	/^static llsd_bin_enc_t encoding;$/;"	v	file:
@@ -974,10 +988,6 @@ error_fn	cutil/src/aiofd.h	/^		int (*error_fn)( aiofd_t * const aiofd, int err, 
 error_fn	cutil/src/socket.h	/^	socket_ret_t (*error_fn)( socket_t * const s, int err, void * user_data );$/;"	m	struct:socket_ops_s
 error_fn	cutil/tests/test_aiofd.c	/^static int error_fn( aiofd_t * const aiofd, int err, void * user_data )$/;"	f	file:
 error_fn	cutil/tests/test_socket.c	/^static socket_ret_t error_fn( socket_t * const s, int err, void * user_data )$/;"	f	file:
-esc	src/llsd.h	/^	uint8_t *			esc;$/;"	m	struct:llsd_string_s
-esc	src/llsd.h	/^	uint8_t *			esc;$/;"	m	struct:llsd_uri_s
-esc_len	src/llsd.h	/^	uint32_t			esc_len;$/;"	m	struct:llsd_string_s
-esc_len	src/llsd.h	/^	uint32_t			esc_len;$/;"	m	struct:llsd_uri_s
 ev	cutil/src/events.h	/^	ev_data_t		ev;			\/* MUST BE FIRST *\/$/;"	m	struct:evt_s
 ev_data_t	cutil/src/events.h	/^} ev_data_t;$/;"	t	typeref:union:ev_data_u
 ev_data_u	cutil/src/events.h	/^typedef union ev_data_u$/;"	u
@@ -1021,125 +1031,240 @@ expected_sizes	tests/test_binary.c	/^static size_t expected_sizes[ LLSD_TYPE_COU
 expected_sizes	tests/test_notation.c	/^static size_t expected_sizes[ LLSD_TYPE_COUNT ] = $/;"	v	file:
 expected_sizes	tests/test_xml.c	/^static size_t expected_sizes[ LLSD_TYPE_COUNT ] = $/;"	v	file:
 fail_alloc	cutil/tests/test_flags.c	/^int fail_alloc = FALSE;$/;"	v
+fail_alloc	tests/test_flags.c	/^int fail_alloc = FALSE;$/;"	v
 fail_alloc_bak	cutil/src/buffer.c	/^int fail_alloc_bak = FALSE;$/;"	v
 fail_bitset_deinit	cutil/tests/test_flags.c	/^int fail_bitset_deinit = FALSE;$/;"	v
+fail_bitset_deinit	tests/test_flags.c	/^int fail_bitset_deinit = FALSE;$/;"	v
 fail_bitset_init	cutil/tests/test_flags.c	/^int fail_bitset_init = FALSE;$/;"	v
+fail_bitset_init	tests/test_flags.c	/^int fail_bitset_init = FALSE;$/;"	v
 fail_buffer_deinit	cutil/tests/test_flags.c	/^int fail_buffer_deinit = FALSE;$/;"	v
+fail_buffer_deinit	tests/test_flags.c	/^int fail_buffer_deinit = FALSE;$/;"	v
 fail_buffer_init	cutil/tests/test_flags.c	/^int fail_buffer_init = FALSE;$/;"	v
+fail_buffer_init	tests/test_flags.c	/^int fail_buffer_init = FALSE;$/;"	v
 fail_buffer_init_alloc	cutil/tests/test_flags.c	/^int fail_buffer_init_alloc = FALSE;$/;"	v
+fail_buffer_init_alloc	tests/test_flags.c	/^int fail_buffer_init_alloc = FALSE;$/;"	v
 fail_socket_initialize	cutil/tests/test_flags.c	/^int fail_socket_initialize = FALSE;$/;"	v
+fail_socket_initialize	tests/test_flags.c	/^int fail_socket_initialize = FALSE;$/;"	v
 fake_accept	cutil/tests/test_flags.c	/^int fake_accept = FALSE;$/;"	v
+fake_accept	tests/test_flags.c	/^int fake_accept = FALSE;$/;"	v
 fake_accept_ret	cutil/tests/test_flags.c	/^int fake_accept_ret = -1;$/;"	v
+fake_accept_ret	tests/test_flags.c	/^int fake_accept_ret = -1;$/;"	v
 fake_aiofd_enable_read_evt	cutil/tests/test_flags.c	/^int fake_aiofd_enable_read_evt = FALSE;$/;"	v
+fake_aiofd_enable_read_evt	tests/test_flags.c	/^int fake_aiofd_enable_read_evt = FALSE;$/;"	v
 fake_aiofd_enable_read_evt_ret	cutil/tests/test_flags.c	/^int fake_aiofd_enable_read_evt_ret = FALSE;$/;"	v
+fake_aiofd_enable_read_evt_ret	tests/test_flags.c	/^int fake_aiofd_enable_read_evt_ret = FALSE;$/;"	v
 fake_aiofd_flush	cutil/tests/test_flags.c	/^int fake_aiofd_flush = FALSE;$/;"	v
+fake_aiofd_flush	tests/test_flags.c	/^int fake_aiofd_flush = FALSE;$/;"	v
 fake_aiofd_flush_ret	cutil/tests/test_flags.c	/^int fake_aiofd_flush_ret = FALSE;$/;"	v
+fake_aiofd_flush_ret	tests/test_flags.c	/^int fake_aiofd_flush_ret = FALSE;$/;"	v
 fake_aiofd_initialize	cutil/tests/test_flags.c	/^int fake_aiofd_initialize = FALSE;$/;"	v
+fake_aiofd_initialize	tests/test_flags.c	/^int fake_aiofd_initialize = FALSE;$/;"	v
 fake_aiofd_initialize_ret	cutil/tests/test_flags.c	/^int fake_aiofd_initialize_ret = FALSE;$/;"	v
+fake_aiofd_initialize_ret	tests/test_flags.c	/^int fake_aiofd_initialize_ret = FALSE;$/;"	v
 fake_aiofd_read	cutil/tests/test_flags.c	/^int fake_aiofd_read = FALSE;$/;"	v
+fake_aiofd_read	tests/test_flags.c	/^int fake_aiofd_read = FALSE;$/;"	v
 fake_aiofd_read_ret	cutil/tests/test_flags.c	/^int fake_aiofd_read_ret = 0;$/;"	v
+fake_aiofd_read_ret	tests/test_flags.c	/^int fake_aiofd_read_ret = 0;$/;"	v
 fake_aiofd_write	cutil/tests/test_flags.c	/^int fake_aiofd_write = FALSE;$/;"	v
+fake_aiofd_write	tests/test_flags.c	/^int fake_aiofd_write = FALSE;$/;"	v
 fake_aiofd_write_common	cutil/tests/test_flags.c	/^int fake_aiofd_write_common = FALSE;$/;"	v
+fake_aiofd_write_common	tests/test_flags.c	/^int fake_aiofd_write_common = FALSE;$/;"	v
 fake_aiofd_write_common_ret	cutil/tests/test_flags.c	/^int fake_aiofd_write_common_ret = FALSE;$/;"	v
+fake_aiofd_write_common_ret	tests/test_flags.c	/^int fake_aiofd_write_common_ret = FALSE;$/;"	v
 fake_aiofd_write_ret	cutil/tests/test_flags.c	/^int fake_aiofd_write_ret = FALSE;$/;"	v
+fake_aiofd_write_ret	tests/test_flags.c	/^int fake_aiofd_write_ret = FALSE;$/;"	v
 fake_aiofd_writev	cutil/tests/test_flags.c	/^int fake_aiofd_writev = FALSE;$/;"	v
+fake_aiofd_writev	tests/test_flags.c	/^int fake_aiofd_writev = FALSE;$/;"	v
 fake_aiofd_writev_ret	cutil/tests/test_flags.c	/^int fake_aiofd_writev_ret = FALSE;$/;"	v
+fake_aiofd_writev_ret	tests/test_flags.c	/^int fake_aiofd_writev_ret = FALSE;$/;"	v
 fake_bind	cutil/tests/test_flags.c	/^int fake_bind = FALSE;$/;"	v
+fake_bind	tests/test_flags.c	/^int fake_bind = FALSE;$/;"	v
 fake_bind_ret	cutil/tests/test_flags.c	/^int fake_bind_ret = -1;$/;"	v
+fake_bind_ret	tests/test_flags.c	/^int fake_bind_ret = -1;$/;"	v
 fake_connect	cutil/tests/test_flags.c	/^int fake_connect = FALSE;$/;"	v
+fake_connect	tests/test_flags.c	/^int fake_connect = FALSE;$/;"	v
 fake_connect_ret	cutil/tests/test_flags.c	/^int fake_connect_ret = -1;$/;"	v
+fake_connect_ret	tests/test_flags.c	/^int fake_connect_ret = -1;$/;"	v
 fake_errno	cutil/tests/test_flags.c	/^int fake_errno = FALSE;$/;"	v
+fake_errno	tests/test_flags.c	/^int fake_errno = FALSE;$/;"	v
 fake_errno_value	cutil/tests/test_flags.c	/^int fake_errno_value = 0;$/;"	v
+fake_errno_value	tests/test_flags.c	/^int fake_errno_value = 0;$/;"	v
 fake_ev_default_loop	cutil/tests/test_flags.c	/^int fake_ev_default_loop = FALSE;$/;"	v
+fake_ev_default_loop	tests/test_flags.c	/^int fake_ev_default_loop = FALSE;$/;"	v
 fake_ev_default_loop_ret	cutil/tests/test_flags.c	/^void* fake_ev_default_loop_ret = NULL;$/;"	v
+fake_ev_default_loop_ret	tests/test_flags.c	/^void* fake_ev_default_loop_ret = NULL;$/;"	v
 fake_event_handler_init	cutil/tests/test_flags.c	/^int fake_event_handler_init = FALSE;$/;"	v
+fake_event_handler_init	tests/test_flags.c	/^int fake_event_handler_init = FALSE;$/;"	v
 fake_event_handler_init_count	cutil/tests/test_flags.c	/^int fake_event_handler_init_count = 0;$/;"	v
+fake_event_handler_init_count	tests/test_flags.c	/^int fake_event_handler_init_count = 0;$/;"	v
 fake_event_handler_init_ret	cutil/tests/test_flags.c	/^int fake_event_handler_init_ret = FALSE;$/;"	v
+fake_event_handler_init_ret	tests/test_flags.c	/^int fake_event_handler_init_ret = FALSE;$/;"	v
 fake_event_start_handler	cutil/tests/test_flags.c	/^int fake_event_start_handler = FALSE;$/;"	v
+fake_event_start_handler	tests/test_flags.c	/^int fake_event_start_handler = FALSE;$/;"	v
 fake_event_start_handler_ret	cutil/tests/test_flags.c	/^int fake_event_start_handler_ret = FALSE;$/;"	v
+fake_event_start_handler_ret	tests/test_flags.c	/^int fake_event_start_handler_ret = FALSE;$/;"	v
 fake_event_stop_handler	cutil/tests/test_flags.c	/^int fake_event_stop_handler = FALSE;$/;"	v
+fake_event_stop_handler	tests/test_flags.c	/^int fake_event_stop_handler = FALSE;$/;"	v
 fake_event_stop_handler_ret	cutil/tests/test_flags.c	/^int fake_event_stop_handler_ret = FALSE;$/;"	v
+fake_event_stop_handler_ret	tests/test_flags.c	/^int fake_event_stop_handler_ret = FALSE;$/;"	v
 fake_fcntl	cutil/tests/test_flags.c	/^int fake_fcntl = FALSE;$/;"	v
+fake_fcntl	tests/test_flags.c	/^int fake_fcntl = FALSE;$/;"	v
 fake_fcntl_ret	cutil/tests/test_flags.c	/^int fake_fcntl_ret = -1;$/;"	v
+fake_fcntl_ret	tests/test_flags.c	/^int fake_fcntl_ret = -1;$/;"	v
 fake_fork	cutil/tests/test_flags.c	/^int fake_fork = FALSE;$/;"	v
+fake_fork	tests/test_flags.c	/^int fake_fork = FALSE;$/;"	v
 fake_fork_ret	cutil/tests/test_flags.c	/^int fake_fork_ret = -1;$/;"	v
+fake_fork_ret	tests/test_flags.c	/^int fake_fork_ret = -1;$/;"	v
 fake_fstat	cutil/tests/test_flags.c	/^int fake_fstat = FALSE;$/;"	v
+fake_fstat	tests/test_flags.c	/^int fake_fstat = FALSE;$/;"	v
 fake_fstat_ret	cutil/tests/test_flags.c	/^int fake_fstat_ret = -1;$/;"	v
+fake_fstat_ret	tests/test_flags.c	/^int fake_fstat_ret = -1;$/;"	v
 fake_getdtablesize	cutil/tests/test_flags.c	/^int fake_getdtablesize = FALSE;$/;"	v
+fake_getdtablesize	tests/test_flags.c	/^int fake_getdtablesize = FALSE;$/;"	v
 fake_getdtablesize_ret	cutil/tests/test_flags.c	/^int fake_getdtablesize_ret = -1;$/;"	v
+fake_getdtablesize_ret	tests/test_flags.c	/^int fake_getdtablesize_ret = -1;$/;"	v
 fake_getegid	cutil/tests/test_flags.c	/^int fake_getegid = FALSE;$/;"	v
+fake_getegid	tests/test_flags.c	/^int fake_getegid = FALSE;$/;"	v
 fake_getegid_ret	cutil/tests/test_flags.c	/^int fake_getegid_ret = -1;$/;"	v
+fake_getegid_ret	tests/test_flags.c	/^int fake_getegid_ret = -1;$/;"	v
 fake_geteuid	cutil/tests/test_flags.c	/^int fake_geteuid = FALSE;$/;"	v
+fake_geteuid	tests/test_flags.c	/^int fake_geteuid = FALSE;$/;"	v
 fake_geteuid_ret	cutil/tests/test_flags.c	/^int fake_geteuid_ret = -1;$/;"	v
+fake_geteuid_ret	tests/test_flags.c	/^int fake_geteuid_ret = -1;$/;"	v
 fake_getgid	cutil/tests/test_flags.c	/^int fake_getgid = FALSE;$/;"	v
+fake_getgid	tests/test_flags.c	/^int fake_getgid = FALSE;$/;"	v
 fake_getgid_ret	cutil/tests/test_flags.c	/^int fake_getgid_ret = -1;$/;"	v
+fake_getgid_ret	tests/test_flags.c	/^int fake_getgid_ret = -1;$/;"	v
 fake_getgroups	cutil/tests/test_flags.c	/^int fake_getgroups = FALSE;$/;"	v
+fake_getgroups	tests/test_flags.c	/^int fake_getgroups = FALSE;$/;"	v
 fake_getgroups_ret	cutil/tests/test_flags.c	/^int fake_getgroups_ret = -1;$/;"	v
+fake_getgroups_ret	tests/test_flags.c	/^int fake_getgroups_ret = -1;$/;"	v
 fake_getuid	cutil/tests/test_flags.c	/^int fake_getuid = FALSE;$/;"	v
+fake_getuid	tests/test_flags.c	/^int fake_getuid = FALSE;$/;"	v
 fake_getuid_ret	cutil/tests/test_flags.c	/^int fake_getuid_ret = -1;$/;"	v
+fake_getuid_ret	tests/test_flags.c	/^int fake_getuid_ret = -1;$/;"	v
 fake_ht_deinit	cutil/tests/test_flags.c	/^int fake_ht_deinit = FALSE;$/;"	v
+fake_ht_deinit	tests/test_flags.c	/^int fake_ht_deinit = FALSE;$/;"	v
 fake_ht_deinit_ret	cutil/tests/test_flags.c	/^int fake_ht_deinit_ret = FALSE;$/;"	v
+fake_ht_deinit_ret	tests/test_flags.c	/^int fake_ht_deinit_ret = FALSE;$/;"	v
 fake_ht_find	cutil/tests/test_flags.c	/^int fake_ht_find = FALSE;$/;"	v
+fake_ht_find	tests/test_flags.c	/^int fake_ht_find = FALSE;$/;"	v
 fake_ht_find_ret	cutil/tests/test_hashtable.c	/^ht_itr_t fake_ht_find_ret;$/;"	v
+fake_ht_find_ret	tests/test_flags.c	/^ht_itr_t fake_ht_find_ret;$/;"	v
 fake_ht_grow	cutil/tests/test_flags.c	/^int fake_ht_grow = FALSE;$/;"	v
+fake_ht_grow	tests/test_flags.c	/^int fake_ht_grow = FALSE;$/;"	v
 fake_ht_grow_ret	cutil/tests/test_flags.c	/^int fake_ht_grow_ret = FALSE;$/;"	v
+fake_ht_grow_ret	tests/test_flags.c	/^int fake_ht_grow_ret = FALSE;$/;"	v
 fake_ht_init	cutil/tests/test_flags.c	/^int fake_ht_init = FALSE;$/;"	v
+fake_ht_init	tests/test_flags.c	/^int fake_ht_init = FALSE;$/;"	v
 fake_ht_init_ret	cutil/tests/test_flags.c	/^int fake_ht_init_ret = FALSE;$/;"	v
+fake_ht_init_ret	tests/test_flags.c	/^int fake_ht_init_ret = FALSE;$/;"	v
 fake_ioctl	cutil/tests/test_flags.c	/^int fake_ioctl = FALSE;$/;"	v
+fake_ioctl	tests/test_flags.c	/^int fake_ioctl = FALSE;$/;"	v
 fake_ioctl_ret	cutil/tests/test_flags.c	/^int fake_ioctl_ret = -1;$/;"	v
+fake_ioctl_ret	tests/test_flags.c	/^int fake_ioctl_ret = -1;$/;"	v
 fake_list_count	cutil/tests/test_flags.c	/^int fake_list_count = FALSE;$/;"	v
+fake_list_count	tests/test_flags.c	/^int fake_list_count = FALSE;$/;"	v
 fake_list_count_ret	cutil/tests/test_flags.c	/^int fake_list_count_ret = 0;$/;"	v
+fake_list_count_ret	tests/test_flags.c	/^int fake_list_count_ret = 0;$/;"	v
 fake_list_deinit	cutil/tests/test_flags.c	/^int fake_list_deinit = FALSE;$/;"	v
+fake_list_deinit	tests/test_flags.c	/^int fake_list_deinit = FALSE;$/;"	v
 fake_list_deinit_ret	cutil/tests/test_flags.c	/^int fake_list_deinit_ret = FALSE;$/;"	v
+fake_list_deinit_ret	tests/test_flags.c	/^int fake_list_deinit_ret = FALSE;$/;"	v
 fake_list_get	cutil/tests/test_flags.c	/^int fake_list_get = FALSE;$/;"	v
+fake_list_get	tests/test_flags.c	/^int fake_list_get = FALSE;$/;"	v
 fake_list_get_ret	cutil/tests/test_flags.c	/^void* fake_list_get_ret = NULL;$/;"	v
+fake_list_get_ret	tests/test_flags.c	/^void* fake_list_get_ret = NULL;$/;"	v
 fake_list_grow	cutil/tests/test_flags.c	/^int fake_list_grow = FALSE;$/;"	v
+fake_list_grow	tests/test_flags.c	/^int fake_list_grow = FALSE;$/;"	v
 fake_list_grow_ret	cutil/tests/test_flags.c	/^int fake_list_grow_ret = FALSE;$/;"	v
+fake_list_grow_ret	tests/test_flags.c	/^int fake_list_grow_ret = FALSE;$/;"	v
 fake_list_init	cutil/tests/test_flags.c	/^int fake_list_init = FALSE;$/;"	v
+fake_list_init	tests/test_flags.c	/^int fake_list_init = FALSE;$/;"	v
 fake_list_init_ret	cutil/tests/test_flags.c	/^int fake_list_init_ret = FALSE;$/;"	v
+fake_list_init_ret	tests/test_flags.c	/^int fake_list_init_ret = FALSE;$/;"	v
 fake_list_push	cutil/tests/test_flags.c	/^int fake_list_push = FALSE;$/;"	v
+fake_list_push	tests/test_flags.c	/^int fake_list_push = FALSE;$/;"	v
 fake_list_push_ret	cutil/tests/test_flags.c	/^int fake_list_push_ret = FALSE;$/;"	v
+fake_list_push_ret	tests/test_flags.c	/^int fake_list_push_ret = FALSE;$/;"	v
 fake_listen	cutil/tests/test_flags.c	/^int fake_listen = FALSE;$/;"	v
+fake_listen	tests/test_flags.c	/^int fake_listen = FALSE;$/;"	v
 fake_listen_ret	cutil/tests/test_flags.c	/^int fake_listen_ret = -1;$/;"	v
+fake_listen_ret	tests/test_flags.c	/^int fake_listen_ret = -1;$/;"	v
 fake_open_devnull	cutil/tests/test_flags.c	/^int fake_open_devnull = FALSE;$/;"	v
+fake_open_devnull	tests/test_flags.c	/^int fake_open_devnull = FALSE;$/;"	v
 fake_open_devnull_ret	cutil/tests/test_flags.c	/^int fake_open_devnull_ret = FALSE;$/;"	v
+fake_open_devnull_ret	tests/test_flags.c	/^int fake_open_devnull_ret = FALSE;$/;"	v
 fake_pipe	cutil/tests/test_flags.c	/^int fake_pipe = FALSE;$/;"	v
+fake_pipe	tests/test_flags.c	/^int fake_pipe = FALSE;$/;"	v
 fake_pipe_ret	cutil/tests/test_flags.c	/^int fake_pipe_ret = -1;$/;"	v
+fake_pipe_ret	tests/test_flags.c	/^int fake_pipe_ret = -1;$/;"	v
 fake_read	cutil/tests/test_flags.c	/^int fake_read = FALSE;$/;"	v
+fake_read	tests/test_flags.c	/^int fake_read = FALSE;$/;"	v
 fake_read_ret	cutil/tests/test_flags.c	/^int fake_read_ret = -1;$/;"	v
+fake_read_ret	tests/test_flags.c	/^int fake_read_ret = -1;$/;"	v
 fake_setegid	cutil/tests/test_flags.c	/^int fake_setegid = FALSE;$/;"	v
+fake_setegid	tests/test_flags.c	/^int fake_setegid = FALSE;$/;"	v
 fake_setegid_ret	cutil/tests/test_flags.c	/^int fake_setegid_ret = -1;$/;"	v
+fake_setegid_ret	tests/test_flags.c	/^int fake_setegid_ret = -1;$/;"	v
 fake_seteuid	cutil/tests/test_flags.c	/^int fake_seteuid = FALSE;$/;"	v
+fake_seteuid	tests/test_flags.c	/^int fake_seteuid = FALSE;$/;"	v
 fake_seteuid_ret	cutil/tests/test_flags.c	/^int fake_seteuid_ret = -1;$/;"	v
+fake_seteuid_ret	tests/test_flags.c	/^int fake_seteuid_ret = -1;$/;"	v
 fake_setgroups	cutil/tests/test_flags.c	/^int fake_setgroups = FALSE;$/;"	v
+fake_setgroups	tests/test_flags.c	/^int fake_setgroups = FALSE;$/;"	v
 fake_setgroups_ret	cutil/tests/test_flags.c	/^int fake_setgroups_ret = -1;$/;"	v
+fake_setgroups_ret	tests/test_flags.c	/^int fake_setgroups_ret = -1;$/;"	v
 fake_setregid	cutil/tests/test_flags.c	/^int fake_setregid = FALSE;$/;"	v
+fake_setregid	tests/test_flags.c	/^int fake_setregid = FALSE;$/;"	v
 fake_setregid_ret	cutil/tests/test_flags.c	/^int fake_setregid_ret = -1;$/;"	v
+fake_setregid_ret	tests/test_flags.c	/^int fake_setregid_ret = -1;$/;"	v
 fake_setreuid	cutil/tests/test_flags.c	/^int fake_setreuid = FALSE;$/;"	v
+fake_setreuid	tests/test_flags.c	/^int fake_setreuid = FALSE;$/;"	v
 fake_setreuid_ret	cutil/tests/test_flags.c	/^int fake_setreuid_ret = -1;$/;"	v
+fake_setreuid_ret	tests/test_flags.c	/^int fake_setreuid_ret = -1;$/;"	v
 fake_setsockopt	cutil/tests/test_flags.c	/^int fake_setsockopt = FALSE;$/;"	v
+fake_setsockopt	tests/test_flags.c	/^int fake_setsockopt = FALSE;$/;"	v
 fake_setsockopt_ret	cutil/tests/test_flags.c	/^int fake_setsockopt_ret = -1;$/;"	v
+fake_setsockopt_ret	tests/test_flags.c	/^int fake_setsockopt_ret = -1;$/;"	v
 fake_socket	cutil/tests/test_flags.c	/^int fake_socket = FALSE;$/;"	v
+fake_socket	tests/test_flags.c	/^int fake_socket = FALSE;$/;"	v
 fake_socket_bind	cutil/tests/test_flags.c	/^int fake_socket_bind = FALSE;$/;"	v
+fake_socket_bind	tests/test_flags.c	/^int fake_socket_bind = FALSE;$/;"	v
 fake_socket_bind_ret	cutil/tests/test_flags.c	/^int fake_socket_bind_ret = FALSE;$/;"	v
+fake_socket_bind_ret	tests/test_flags.c	/^int fake_socket_bind_ret = FALSE;$/;"	v
 fake_socket_bound	cutil/tests/test_flags.c	/^int fake_socket_bound = FALSE;$/;"	v
+fake_socket_bound	tests/test_flags.c	/^int fake_socket_bound = FALSE;$/;"	v
 fake_socket_bound_ret	cutil/tests/test_flags.c	/^int fake_socket_bound_ret = FALSE;$/;"	v
+fake_socket_bound_ret	tests/test_flags.c	/^int fake_socket_bound_ret = FALSE;$/;"	v
 fake_socket_connect	cutil/tests/test_flags.c	/^int fake_socket_connect = FALSE;$/;"	v
+fake_socket_connect	tests/test_flags.c	/^int fake_socket_connect = FALSE;$/;"	v
 fake_socket_connect_ret	cutil/tests/test_flags.c	/^int fake_socket_connect_ret = FALSE;$/;"	v
+fake_socket_connect_ret	tests/test_flags.c	/^int fake_socket_connect_ret = FALSE;$/;"	v
 fake_socket_connected	cutil/tests/test_flags.c	/^int fake_socket_connected = FALSE;$/;"	v
+fake_socket_connected	tests/test_flags.c	/^int fake_socket_connected = FALSE;$/;"	v
 fake_socket_connected_ret	cutil/tests/test_flags.c	/^int fake_socket_connected_ret = FALSE;$/;"	v
+fake_socket_connected_ret	tests/test_flags.c	/^int fake_socket_connected_ret = FALSE;$/;"	v
 fake_socket_errval	cutil/tests/test_flags.c	/^int fake_socket_errval = 0;$/;"	v
+fake_socket_errval	tests/test_flags.c	/^int fake_socket_errval = 0;$/;"	v
 fake_socket_get_error_ret	cutil/tests/test_flags.c	/^int fake_socket_get_error_ret = FALSE;$/;"	v
+fake_socket_get_error_ret	tests/test_flags.c	/^int fake_socket_get_error_ret = FALSE;$/;"	v
 fake_socket_getsockopt	cutil/tests/test_flags.c	/^int fake_socket_getsockopt = FALSE;$/;"	v
+fake_socket_getsockopt	tests/test_flags.c	/^int fake_socket_getsockopt = FALSE;$/;"	v
 fake_socket_lookup_host	cutil/tests/test_flags.c	/^int fake_socket_lookup_host = FALSE;$/;"	v
+fake_socket_lookup_host	tests/test_flags.c	/^int fake_socket_lookup_host = FALSE;$/;"	v
 fake_socket_lookup_host_ret	cutil/tests/test_flags.c	/^int fake_socket_lookup_host_ret = FALSE;$/;"	v
+fake_socket_lookup_host_ret	tests/test_flags.c	/^int fake_socket_lookup_host_ret = FALSE;$/;"	v
 fake_socket_ret	cutil/tests/test_flags.c	/^int fake_socket_ret = -1;$/;"	v
+fake_socket_ret	tests/test_flags.c	/^int fake_socket_ret = -1;$/;"	v
 fake_write	cutil/tests/test_flags.c	/^int fake_write = FALSE;$/;"	v
+fake_write	tests/test_flags.c	/^int fake_write = FALSE;$/;"	v
 fake_write_ret	cutil/tests/test_flags.c	/^int fake_write_ret = -1;$/;"	v
+fake_write_ret	tests/test_flags.c	/^int fake_write_ret = -1;$/;"	v
 fake_writev	cutil/tests/test_flags.c	/^int fake_writev = FALSE;$/;"	v
+fake_writev	tests/test_flags.c	/^int fake_writev = FALSE;$/;"	v
 fake_writev_ret	cutil/tests/test_flags.c	/^int fake_writev_ret = -1;$/;"	v
-false_binary	src/llsd_const.c	/^llsd_binary_t const false_binary =$/;"	v
-false_string	src/llsd_const.c	/^llsd_string_t const false_string = $/;"	v
+fake_writev_ret	tests/test_flags.c	/^int fake_writev_ret = -1;$/;"	v
 fd	cutil/src/events.h	/^		int fd;$/;"	m	struct:evt_params_u::__anon4
 filelog_fns	cutil/src/log.c	/^static cookie_io_functions_t filelog_fns =$/;"	v	file:
 filelog_writer	cutil/src/log.c	/^static ssize_t filelog_writer( void * cookie, char const * data, size_t leng )$/;"	f	file:
@@ -1149,6 +1274,8 @@ fnv_key_hash	src/llsd_util.c	/^uint_t fnv_key_hash(void const * const key)$/;"	f
 format	tests/test_binary.c	/^static llsd_serializer_t format;$/;"	v	file:
 format	tests/test_notation.c	/^static llsd_serializer_t format;$/;"	v	file:
 format	tests/test_xml.c	/^static llsd_serializer_t format;$/;"	v	file:
+fout	src/llsd_binary_serializer.c	/^	FILE * fout;$/;"	m	struct:bs_state_s	file:
+fout	src/llsd_notation_serializer.c	/^	FILE * fout;$/;"	m	struct:ns_state_s	file:
 free_head	cutil/src/list.h	/^	list_itr_t		free_head;				\/* head node of the free circular list *\/$/;"	m	struct:list_s
 free_list	cutil/src/btree.c	/^	node_t*				free_list;	\/* list of free nodes *\/$/;"	m	struct:bt_s	file:
 get_encoded_len	tests/test_base16.c	/^static uint32_t get_encoded_len( uint32_t inlen )$/;"	f	file:
@@ -1157,10 +1284,13 @@ get_encoded_len	tests/test_base85.c	/^static uint32_t get_encoded_len( uint32_t 
 get_llsd	tests/test_common.c	/^static llsd_t * get_llsd( llsd_type_t type_ )$/;"	f	file:
 get_random_array	tests/test_common.c	/^static llsd_t * get_random_array( uint32_t size )$/;"	f	file:
 get_random_bin	tests/test_common.c	/^static llsd_t* get_random_bin( void )$/;"	f	file:
+get_random_boolean	tests/test_common.c	/^static llsd_t * get_random_boolean( void )$/;"	f	file:
 get_random_date	tests/test_common.c	/^static llsd_t* get_random_date( void )$/;"	f	file:
+get_random_integer	tests/test_common.c	/^static llsd_t * get_random_integer( void )$/;"	f	file:
 get_random_llsd	tests/test_common.c	/^static llsd_t * get_random_llsd( uint32_t size, uint32_t seed )$/;"	f	file:
 get_random_llsd_type	tests/test_common.c	/^static llsd_type_t get_random_llsd_type( void )$/;"	f	file:
 get_random_map	tests/test_common.c	/^static llsd_t * get_random_map( uint32_t size )$/;"	f	file:
+get_random_real	tests/test_common.c	/^static llsd_t * get_random_real( void )$/;"	f	file:
 get_random_str	tests/test_common.c	/^static llsd_t* get_random_str( void )$/;"	f	file:
 get_random_uri	tests/test_common.c	/^static llsd_t* get_random_uri( void )$/;"	f	file:
 get_random_uuid	tests/test_common.c	/^static llsd_t* get_random_uuid( void )$/;"	f	file:
@@ -1168,10 +1298,12 @@ gid	cutil/src/privileges.h	/^	gid_t	gid;$/;"	m	struct:priv_state_s
 groups	cutil/src/privileges.h	/^	gid_t	groups[NGROUPS_MAX];$/;"	m	struct:priv_state_s
 hash_fn	cutil/tests/test_hashtable.c	/^static uint_t hash_fn( void const * const key )$/;"	f	file:
 hashtable	cutil/tests/test_all.c	/^SUITE( hashtable );$/;"	v
+hex_to_byte	src/llsd.c	/^static uint8_t hex_to_byte( uint8_t hi, uint8_t lo )$/;"	f	file:
+hex_to_byte	src/llsd_notation_parser.c	/^static uint8_t hex_to_byte( uint8_t hi, uint8_t lo )$/;"	f	file:
 hex_to_byte	src/llsd_util.c	/^static uint8_t hex_to_byte( uint8_t hi, uint8_t lo )$/;"	f	file:
 hfn	cutil/src/hashtable.h	/^	ht_hash_fn			hfn;				\/* hash function *\/$/;"	m	struct:ht_s
+hi	src/llsd.h	/^	ht_itr_t hi;$/;"	m	struct:llsd_itr_s
 host	cutil/src/socket.c	/^	int8_t*			host;			\/* host name *\/$/;"	m	struct:socket_s	file:
-ht	src/llsd.h	/^	ht_t		ht;$/;"	m	struct:llsd_map_s
 ht_clear	cutil/src/hashtable.c	/^int ht_clear( ht_t * const htable )$/;"	f
 ht_count	cutil/src/hashtable.c	/^uint_t ht_count( ht_t * const htable )$/;"	f
 ht_deinitialize	cutil/src/hashtable.c	/^int ht_deinitialize( ht_t * const htable )$/;"	f
@@ -1184,7 +1316,15 @@ ht_grow	cutil/src/hashtable.c	/^static int ht_grow( ht_t * const htable )$/;"	f	
 ht_hash_fn	cutil/src/hashtable.h	/^typedef uint_t (*ht_hash_fn)(void const * const key);$/;"	t
 ht_initialize	cutil/src/hashtable.c	/^int ht_initialize( ht_t * const htable, uint_t const initial_capacity, $/;"	f
 ht_insert	cutil/src/hashtable.c	/^int ht_insert( ht_t * const htable, void * const data )$/;"	f
+ht_itr_begin	cutil/src/hashtable.c	/^ht_itr_t ht_itr_begin( ht_t const * const htable )$/;"	f
+ht_itr_end	cutil/src/hashtable.c	/^ht_itr_t ht_itr_end( ht_t const * const htable )$/;"	f
 ht_itr_end_t	cutil/src/hashtable.c	/^ht_itr_t const ht_itr_end_t = { -1, -1 };$/;"	v
+ht_itr_next	cutil/src/hashtable.c	/^ht_itr_t ht_itr_next( ht_t const * const htable, ht_itr_t const itr )$/;"	f
+ht_itr_prev	cutil/src/hashtable.h	91;"	d
+ht_itr_rbegin	cutil/src/hashtable.c	/^ht_itr_t ht_itr_rbegin( ht_t const * const htable )$/;"	f
+ht_itr_rend	cutil/src/hashtable.h	88;"	d
+ht_itr_rnext	cutil/src/hashtable.c	/^ht_itr_t ht_itr_rnext( ht_t const * const htable, ht_itr_t const itr )$/;"	f
+ht_itr_rprev	cutil/src/hashtable.h	92;"	d
 ht_itr_s	cutil/src/hashtable.h	/^typedef struct ht_itr_s$/;"	s
 ht_itr_t	cutil/src/hashtable.h	/^} ht_itr_t;$/;"	t	typeref:struct:ht_itr_s
 ht_match_fn	cutil/src/hashtable.h	/^typedef int (*ht_match_fn)(void const * const l, void const * const r);$/;"	t
@@ -1213,6 +1353,7 @@ init_btree_suite	cutil/tests/test_btree.c	/^static int init_btree_suite( void )$
 init_buffer_suite	cutil/tests/test_buffer.c	/^static int init_buffer_suite( void )$/;"	f	file:
 init_child_suite	cutil/tests/test_child.c	/^static int init_child_suite( void )$/;"	f	file:
 init_events_suite	cutil/tests/test_events.c	/^static int init_events_suite( void )$/;"	f	file:
+init_fns	src/llsd_serializer.c	/^serializer_init_fn const init_fns[LLSD_ENC_COUNT] =$/;"	v
 init_hashtable_suite	cutil/tests/test_hashtable.c	/^static int init_hashtable_suite( void )$/;"	f	file:
 init_list_suite	cutil/tests/test_list.c	/^static int init_list_suite( void )$/;"	f	file:
 init_notation_suite	tests/test_notation.c	/^static int init_notation_suite( void )$/;"	f	file:
@@ -1223,13 +1364,14 @@ init_socket_suite	cutil/tests/test_socket.c	/^static int init_socket_suite( void
 init_xml_suite	tests/test_xml.c	/^static int init_xml_suite( void )$/;"	f	file:
 initial	cutil/src/hashtable.h	/^	uint_t				initial;			\/* initial capacity *\/$/;"	m	struct:ht_s
 insert_item	cutil/src/list.c	/^static list_itr_t insert_item( list_item_t * const items, $/;"	f	file:
-int_	src/llsd.h	/^		llsd_int_t		int_;$/;"	m	union:llsd_s::__anon1
+int_	src/llsd.c	/^		llsd_int_t		int_;$/;"	m	union:llsd_s::__anon1	file:
 int_less	cutil/tests/test_btree.c	/^static int int_less( void * l, void * r )$/;"	f	file:
 int_t	cutil/src/macros.h	/^typedef int32_t int_t;$/;"	t
 int_t	cutil/src/macros.h	/^typedef int64_t int_t;$/;"	t
 integer_	tests/test_binary.c	/^static uint8_t const integer_[] = { 'i', 0x00, 0x00, 0x00, 0x01 };$/;"	v	file:
 integer_	tests/test_notation.c	/^static uint8_t const integer_[] = "i1";$/;"	v	file:
 integer_	tests/test_xml.c	/^static uint8_t const integer_[] = "<llsd><integer>1<\/integer><\/llsd>";$/;"	v	file:
+integer_fn	src/llsd.h	/^	int (*integer_fn)( int32_t const value, void * const user_data );$/;"	m	struct:llsd_ops_s
 io	cutil/src/events.h	/^	struct ev_io		io;$/;"	m	union:ev_data_u	typeref:struct:ev_data_u::ev_io
 io_params	cutil/src/events.h	/^	} io_params;$/;"	m	union:evt_params_u	typeref:struct:evt_params_u::__anon4
 iov	cutil/src/aiofd.c	/^	int iov;$/;"	m	struct:aiofd_write_s	file:
@@ -1240,8 +1382,8 @@ itr_end	cutil/src/btree.c	/^static const bt_itr_t itr_end = NULL;$/;"	v	file:
 kcfn	cutil/src/btree.c	/^	bt_key_cmp_fn		kcfn;		\/* key compare function *\/$/;"	m	struct:bt_s	file:
 kdfn	cutil/src/btree.c	/^	bt_delete_fn		kdfn;		\/* key delete function *\/$/;"	m	struct:bt_s	file:
 key	cutil/src/btree.c	/^	void * key;					\/* key *\/$/;"	m	struct:node_s	file:
+key	src/llsd_parser.c	/^	llsd_t * key;$/;"	m	struct:parser_state_s	file:
 key_eq	src/llsd_util.c	/^int key_eq(void const * const l, void const * const r)$/;"	f
-key_esc	src/llsd.h	/^	int					key_esc: 1;$/;"	m	struct:llsd_string_s
 last_type	src/llsd_xml.c	/^	llsd_type_t last_type;$/;"	m	struct:context_s	file:
 lbarray	src/llsd_binary.c	/^static uint8_t const * const lbarray	= "[";$/;"	v	file:
 lbarray	src/llsd_notation.c	/^static uint8_t const * const lbarray	= "[";$/;"	v	file:
@@ -1272,9 +1414,8 @@ lburi	src/llsd_notation.c	/^static uint8_t const * const lburi		= "l";$/;"	v	fil
 lbuuid	src/llsd_binary.c	/^static uint8_t const * const lbuuid		= "u";$/;"	v	file:
 lbuuid	src/llsd_notation.c	/^static uint8_t const * const lbuuid		= "u";$/;"	v	file:
 left	cutil/src/btree.c	/^	struct node_s * left;		\/* left child *\/$/;"	m	struct:node_s	typeref:struct:node_s::node_s	file:
-len	src/llsd.h	/^	uint32_t			len;$/;"	m	struct:llsd_date_s
-len	src/llsd.h	/^	uint32_t			len;$/;"	m	struct:llsd_uuid_s
 len	src/llsd_xml.c	/^	size_t len;$/;"	m	struct:context_s	file:
+li	src/llsd.h	/^	list_itr_t li;$/;"	m	struct:llsd_itr_s
 limit	cutil/src/hashtable.h	/^	float				limit;				\/* load limit that will trigger resize *\/$/;"	m	struct:ht_s
 list	cutil/tests/test_all.c	/^SUITE( list );$/;"	v
 list_clear	cutil/src/list.c	/^int list_clear( list_t * const list )$/;"	f
@@ -1314,34 +1455,64 @@ list_size	cutil/src/btree.c	/^	uint_t				list_size;	\/* equal to initial capacit
 list_t	cutil/src/list.h	/^} list_t;$/;"	t	typeref:struct:list_s
 listen	cutil/src/aiofd.h	/^	int			listen;			\/* is this a bound and listening socket fd? *\/$/;"	m	struct:aiofd_s
 lists	cutil/src/hashtable.h	/^	list_t*				lists;				\/* pointer to list array *\/$/;"	m	struct:ht_s
+llsd	src/llsd_parser.c	/^	llsd_t * llsd;$/;"	m	struct:parser_state_s	file:
+llsd_add_to_container	src/llsd_parser.c	/^static int llsd_add_to_container( llsd_t * const container, llsd_t * const key, llsd_t * const value )$/;"	f	file:
+llsd_array_append	src/llsd.c	/^int llsd_array_append( llsd_t * arr, llsd_t * value )$/;"	f
 llsd_array_append	src/llsd_util.c	/^void llsd_array_append( llsd_t * arr, llsd_t * data )$/;"	f
-llsd_array_s	src/llsd.h	/^struct llsd_array_s$/;"	s
-llsd_array_t	src/llsd.h	/^typedef struct llsd_array_s		llsd_array_t;$/;"	t	typeref:struct:llsd_array_s
+llsd_array_begin_fn	src/llsd_parser.c	/^static int llsd_array_begin_fn( uint32_t const size, void * const user_data )$/;"	f	file:
+llsd_array_end_fn	src/llsd_parser.c	/^static int llsd_array_end_fn( void * const user_data )$/;"	f	file:
+llsd_array_t	src/llsd.c	/^typedef list_t			llsd_array_t;$/;"	t	file:
 llsd_as_array	src/llsd_util.c	/^llsd_array_t llsd_as_array( llsd_t * llsd )$/;"	f
+llsd_as_binary	src/llsd.c	/^int llsd_as_binary( llsd_t * llsd, uint8_t ** v, uint32_t * len )$/;"	f
 llsd_as_binary	src/llsd_util.c	/^llsd_binary_t llsd_as_binary( llsd_t * llsd )$/;"	f
 llsd_as_bool	src/llsd_util.c	/^llsd_bool_t llsd_as_bool( llsd_t * llsd )$/;"	f
 llsd_as_date	src/llsd_util.c	/^llsd_date_t llsd_as_date( llsd_t * llsd )$/;"	f
+llsd_as_double	src/llsd.c	/^int llsd_as_double( llsd_t * llsd, double * v )$/;"	f
 llsd_as_int	src/llsd_util.c	/^llsd_int_t llsd_as_int( llsd_t * llsd )$/;"	f
+llsd_as_integer	src/llsd.c	/^int llsd_as_integer( llsd_t * llsd, int32_t * v )$/;"	f
 llsd_as_map	src/llsd_util.c	/^llsd_map_t llsd_as_map( llsd_t * llsd )$/;"	f
 llsd_as_real	src/llsd_util.c	/^llsd_real_t llsd_as_real( llsd_t * llsd )$/;"	f
+llsd_as_string	src/llsd.c	/^int llsd_as_string( llsd_t * llsd, uint8_t ** v )$/;"	f
 llsd_as_string	src/llsd_util.c	/^llsd_string_t llsd_as_string( llsd_t * llsd )$/;"	f
 llsd_as_uri	src/llsd_util.c	/^llsd_uri_t llsd_as_uri( llsd_t * llsd )$/;"	f
+llsd_as_uuid	src/llsd.c	/^int llsd_as_uuid( llsd_t * llsd, uint8_t uuid[UUID_LEN] )$/;"	f
 llsd_as_uuid	src/llsd_util.c	/^llsd_uuid_t llsd_as_uuid( llsd_t * llsd )$/;"	f
 llsd_bin_enc_from_attr	src/llsd_xml.c	/^static llsd_bin_enc_t llsd_bin_enc_from_attr( char const * attr )$/;"	f	file:
 llsd_bin_enc_s	src/llsd.h	/^typedef enum llsd_bin_enc_s$/;"	g
 llsd_bin_enc_t	src/llsd.h	/^} llsd_bin_enc_t;$/;"	t	typeref:enum:llsd_bin_enc_s
-llsd_binary_s	src/llsd.h	/^struct llsd_binary_s$/;"	s
-llsd_binary_t	src/llsd.h	/^typedef struct llsd_binary_s	llsd_binary_t;$/;"	t	typeref:struct:llsd_binary_s
-llsd_bool_t	src/llsd.h	/^typedef int						llsd_bool_t;$/;"	t
-llsd_date_s	src/llsd.h	/^struct llsd_date_s$/;"	s
-llsd_date_t	src/llsd.h	/^typedef struct llsd_date_s		llsd_date_t;$/;"	t	typeref:struct:llsd_date_s
+llsd_binary_array_begin	src/llsd_binary_serializer.c	/^int llsd_binary_array_begin( uint32_t const size, void * const user_data )$/;"	f
+llsd_binary_array_end	src/llsd_binary_serializer.c	/^int llsd_binary_array_end( void * const user_data )$/;"	f
+llsd_binary_binary	src/llsd_binary_serializer.c	/^int llsd_binary_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )$/;"	f
+llsd_binary_boolean	src/llsd_binary_serializer.c	/^int llsd_binary_boolean( int const value, void * const user_data )$/;"	f
+llsd_binary_check_sig_file	src/llsd_binary_parser.c	/^int llsd_binary_check_sig_file( FILE * fin )$/;"	f
+llsd_binary_date	src/llsd_binary_serializer.c	/^int llsd_binary_date( double const value, void * const user_data )$/;"	f
+llsd_binary_fn	src/llsd_parser.c	/^static int llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it, void * const user_data )$/;"	f	file:
+llsd_binary_integer	src/llsd_binary_serializer.c	/^int llsd_binary_integer( int32_t const value, void * const user_data )$/;"	f
+llsd_binary_map_begin	src/llsd_binary_serializer.c	/^int llsd_binary_map_begin( uint32_t const size, void * const user_data )$/;"	f
+llsd_binary_map_end	src/llsd_binary_serializer.c	/^int llsd_binary_map_end( void * const user_data )$/;"	f
+llsd_binary_parse_file	src/llsd_binary_parser.c	/^int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data )$/;"	f
+llsd_binary_real	src/llsd_binary_serializer.c	/^int llsd_binary_real( double const value, void * const user_data )$/;"	f
+llsd_binary_serializer_deinit	src/llsd_binary_serializer.c	/^int llsd_binary_serializer_deinit( FILE * fout, void * user_data )$/;"	f
+llsd_binary_serializer_init	src/llsd_binary_serializer.c	/^int llsd_binary_serializer_init( FILE * fout, llsd_ops_t * const ops, int const pretty, void ** const user_data )$/;"	f
+llsd_binary_string	src/llsd_binary_serializer.c	/^int llsd_binary_string( uint8_t const * str, int const own_it, void * const user_data )$/;"	f
+llsd_binary_t	src/llsd.c	/^typedef struct iovec	llsd_binary_t;$/;"	t	typeref:struct:iovec	file:
+llsd_binary_undef	src/llsd_binary_serializer.c	/^int llsd_binary_undef( void * const user_data )$/;"	f
+llsd_binary_uri	src/llsd_binary_serializer.c	/^int llsd_binary_uri( uint8_t const * uri, int const own_it, void * const user_data )$/;"	f
+llsd_binary_uuid	src/llsd_binary_serializer.c	/^int llsd_binary_uuid( uint8_t const value[UUID_LEN], void * const user_data )$/;"	f
+llsd_bool_t	src/llsd.c	/^typedef int				llsd_bool_t;$/;"	t	file:
+llsd_boolean_fn	src/llsd_parser.c	/^static int llsd_boolean_fn( int const value, void * const user_data )$/;"	f	file:
+llsd_date_fn	src/llsd_parser.c	/^static int llsd_date_fn( double const value, void * const user_data )$/;"	f	file:
+llsd_date_t	src/llsd.c	/^typedef double			llsd_date_t;$/;"	t	file:
 llsd_decode_binary	src/llsd_util.c	/^int llsd_decode_binary( llsd_t * llsd )$/;"	f
 llsd_decoded_binary_len	src/llsd_util.c	/^static uint32_t llsd_decoded_binary_len( llsd_t * llsd )$/;"	f	file:
+llsd_deinitialize	src/llsd.c	/^static void llsd_deinitialize( llsd_t * llsd )$/;"	f	file:
 llsd_deinitialize	src/llsd_util.c	/^static void llsd_deinitialize( llsd_t * llsd )$/;"	f	file:
+llsd_delete	src/llsd.c	/^void llsd_delete( void * p )$/;"	f
 llsd_delete	src/llsd_util.c	/^void llsd_delete( void * p )$/;"	f
 llsd_destringify_date	src/llsd_util.c	/^int llsd_destringify_date( llsd_t * llsd )$/;"	f
 llsd_destringify_uuid	src/llsd_util.c	/^int llsd_destringify_uuid( llsd_t * llsd )$/;"	f
 llsd_encode_binary	src/llsd_util.c	/^int llsd_encode_binary( llsd_t * llsd, llsd_bin_enc_t encoding )$/;"	f
+llsd_equal	src/llsd.c	/^int llsd_equal( llsd_t * l, llsd_t * r )$/;"	f
 llsd_equal	src/llsd_util.c	/^int llsd_equal( llsd_t * l, llsd_t * r )$/;"	f
 llsd_equalize	src/llsd_util.c	/^static int llsd_equalize ( llsd_t * l, llsd_t * r )$/;"	f	file:
 llsd_escape_string	src/llsd_util.c	/^int llsd_escape_string( llsd_t * llsd )$/;"	f
@@ -1356,54 +1527,104 @@ llsd_format_notation_zero_copy	src/llsd_notation.c	/^size_t llsd_format_notation
 llsd_format_xml	src/llsd_xml.c	/^size_t llsd_format_xml( llsd_t * llsd, FILE * fout, int pretty )$/;"	f
 llsd_format_xml_zero_copy	src/llsd_xml.c	/^size_t llsd_format_xml_zero_copy( llsd_t * llsd, struct iovec * v, int pretty )$/;"	f
 llsd_format_zero_copy	src/llsd_util.c	/^size_t llsd_format_zero_copy( llsd_t * llsd, llsd_serializer_t fmt, struct iovec ** v, int pretty )$/;"	f
+llsd_get	src/llsd.c	/^int llsd_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key )$/;"	f
+llsd_get_bin_enc_type_string	src/llsd.c	/^int8_t const * llsd_get_bin_enc_type_string( llsd_bin_enc_t enc, llsd_serializer_t fmt )$/;"	f
 llsd_get_bin_enc_type_string	src/llsd_util.c	/^int8_t const * llsd_get_bin_enc_type_string( llsd_bin_enc_t enc, llsd_serializer_t fmt )$/;"	f
 llsd_get_binary_zero_copy_size	src/llsd_binary.c	/^size_t llsd_get_binary_zero_copy_size( llsd_t * llsd )$/;"	f
+llsd_get_count	src/llsd.c	/^int llsd_get_count( llsd_t * llsd )$/;"	f
 llsd_get_notation_zero_copy_size	src/llsd_notation.c	/^size_t llsd_get_notation_zero_copy_size( llsd_t * llsd, int pretty )$/;"	f
 llsd_get_size	src/llsd_util.c	/^int llsd_get_size( llsd_t * llsd )$/;"	f
+llsd_get_type	src/llsd.c	/^llsd_type_t llsd_get_type( llsd_t * llsd )$/;"	f
 llsd_get_type	src/llsd_util.c	/^llsd_type_t llsd_get_type( llsd_t * llsd )$/;"	f
+llsd_get_type_string	src/llsd.c	/^int8_t const * llsd_get_type_string( llsd_type_t type_ )$/;"	f
 llsd_get_type_string	src/llsd_util.c	/^int8_t const * llsd_get_type_string( llsd_type_t type_ )$/;"	f
 llsd_get_xml_zero_copy_size	src/llsd_xml.c	/^size_t llsd_get_xml_zero_copy_size( llsd_t * llsd, int pretty )$/;"	f
 llsd_get_zero_copy_size	src/llsd_util.c	/^static size_t llsd_get_zero_copy_size( llsd_t * llsd, llsd_serializer_t fmt, int pretty )$/;"	f	file:
+llsd_initialize	src/llsd.c	/^static int llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )$/;"	f	file:
 llsd_initialize	src/llsd_util.c	/^static void llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )$/;"	f	file:
-llsd_int_s	src/llsd.h	/^struct llsd_int_s$/;"	s
-llsd_int_t	src/llsd.h	/^typedef struct llsd_int_s		llsd_int_t;$/;"	t	typeref:struct:llsd_int_s
-llsd_is_array	src/llsd_util.h	49;"	d
-llsd_is_empty	src/llsd_util.h	54;"	d
-llsd_is_map	src/llsd_util.h	50;"	d
+llsd_int_t	src/llsd.c	/^typedef int32_t			llsd_int_t;$/;"	t	file:
+llsd_integer_fn	src/llsd_parser.c	/^static int llsd_integer_fn( int32_t const value, void * const user_data )$/;"	f	file:
+llsd_is_array	src/llsd.h	118;"	d
+llsd_is_empty	src/llsd.h	155;"	d
+llsd_is_empty	src/llsd_util.h	29;"	d
+llsd_is_map	src/llsd.h	119;"	d
+llsd_itr_begin	src/llsd.c	/^llsd_itr_t llsd_itr_begin( llsd_t * llsd )$/;"	f
 llsd_itr_begin	src/llsd_util.c	/^llsd_itr_t llsd_itr_begin( llsd_t * llsd )$/;"	f
+llsd_itr_end	src/llsd.c	/^llsd_itr_t llsd_itr_end( llsd_t * llsd )$/;"	f
 llsd_itr_end	src/llsd_util.c	/^llsd_itr_t llsd_itr_end( llsd_t * llsd )$/;"	f
 llsd_itr_get	src/llsd_util.c	/^int llsd_itr_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key )$/;"	f
+llsd_itr_next	src/llsd.c	/^llsd_itr_t llsd_itr_next( llsd_t * llsd, llsd_itr_t itr )$/;"	f
 llsd_itr_next	src/llsd_util.c	/^llsd_itr_t llsd_itr_next( llsd_t * llsd, llsd_itr_t itr )$/;"	f
+llsd_itr_rbegin	src/llsd.c	/^llsd_itr_t llsd_itr_rbegin( llsd_t * llsd )$/;"	f
 llsd_itr_rbegin	src/llsd_util.c	/^llsd_itr_t llsd_itr_rbegin( llsd_t * llsd )$/;"	f
-llsd_itr_rend	src/llsd_util.h	69;"	d
+llsd_itr_rend	src/llsd.h	135;"	d
+llsd_itr_rend	src/llsd_util.h	44;"	d
+llsd_itr_rnext	src/llsd.c	/^llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr )$/;"	f
 llsd_itr_rnext	src/llsd_util.c	/^llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr )$/;"	f
+llsd_itr_s	src/llsd.h	/^typedef struct llsd_itr_s {$/;"	s
+llsd_itr_t	src/llsd.h	/^} llsd_itr_t;$/;"	t	typeref:struct:llsd_itr_s
 llsd_itr_t	src/llsd_util.h	/^typedef int32_t llsd_itr_t;$/;"	t
+llsd_map_begin_fn	src/llsd_parser.c	/^static int llsd_map_begin_fn( uint32_t const size, void * const user_data )$/;"	f	file:
+llsd_map_end_fn	src/llsd_parser.c	/^static int llsd_map_end_fn( void * const user_data )$/;"	f	file:
+llsd_map_find	src/llsd.c	/^llsd_t * llsd_map_find( llsd_t * map, uint8_t const * const key )$/;"	f
 llsd_map_find	src/llsd_util.c	/^llsd_t * llsd_map_find( llsd_t * map, int8_t const * const key )$/;"	f
+llsd_map_find_llsd	src/llsd.c	/^llsd_t * llsd_map_find_llsd( llsd_t * map, llsd_t * key )$/;"	f
 llsd_map_find_llsd	src/llsd_util.c	/^llsd_t * llsd_map_find_llsd( llsd_t * map, llsd_t * key )$/;"	f
+llsd_map_insert	src/llsd.c	/^int llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * value )$/;"	f
 llsd_map_insert	src/llsd_util.c	/^void llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data )$/;"	f
-llsd_map_s	src/llsd.h	/^struct llsd_map_s$/;"	s
-llsd_map_t	src/llsd.h	/^typedef struct llsd_map_s		llsd_map_t;$/;"	t	typeref:struct:llsd_map_s
+llsd_map_t	src/llsd.c	/^typedef ht_t			llsd_map_t;$/;"	t	file:
+llsd_new	src/llsd.c	/^llsd_t * llsd_new( llsd_type_t type_, ... )$/;"	f
 llsd_new	src/llsd_util.c	/^llsd_t * llsd_new( llsd_type_t type_, ... )$/;"	f
-llsd_new_array	src/llsd_util.h	34;"	d
-llsd_new_binary	src/llsd_util.h	42;"	d
-llsd_new_boolean	src/llsd_util.h	36;"	d
-llsd_new_date	src/llsd_util.h	43;"	d
-llsd_new_empty_array	src/llsd_util.h	32;"	d
-llsd_new_empty_map	src/llsd_util.h	33;"	d
-llsd_new_integer	src/llsd_util.h	37;"	d
-llsd_new_map	src/llsd_util.h	35;"	d
-llsd_new_real	src/llsd_util.h	38;"	d
-llsd_new_string	src/llsd_util.h	40;"	d
-llsd_new_uri	src/llsd_util.h	41;"	d
-llsd_new_uuid	src/llsd_util.h	39;"	d
+llsd_new_array	src/llsd.h	111;"	d
+llsd_new_binary	src/llsd.h	109;"	d
+llsd_new_boolean	src/llsd.h	103;"	d
+llsd_new_date	src/llsd.h	110;"	d
+llsd_new_integer	src/llsd.h	104;"	d
+llsd_new_map	src/llsd.h	112;"	d
+llsd_new_real	src/llsd.h	105;"	d
+llsd_new_string	src/llsd.h	107;"	d
+llsd_new_undef	src/llsd.h	102;"	d
+llsd_new_uri	src/llsd.h	108;"	d
+llsd_new_uuid	src/llsd.h	106;"	d
+llsd_notation_array_begin	src/llsd_notation_serializer.c	/^int llsd_notation_array_begin( uint32_t const size, void * const user_data )$/;"	f
+llsd_notation_array_end	src/llsd_notation_serializer.c	/^int llsd_notation_array_end( void * const user_data )$/;"	f
 llsd_notation_bin_enc_type_strings	src/llsd.c	/^int8_t const * const llsd_notation_bin_enc_type_strings[LLSD_BIN_ENC_COUNT] =$/;"	v
+llsd_notation_binary	src/llsd_notation_serializer.c	/^int llsd_notation_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )$/;"	f
+llsd_notation_boolean	src/llsd_notation_serializer.c	/^int llsd_notation_boolean( int const value, void * const user_data )$/;"	f
+llsd_notation_check_sig_file	src/llsd_notation_parser.c	/^int llsd_notation_check_sig_file( FILE * fin )$/;"	f
+llsd_notation_date	src/llsd_notation_serializer.c	/^int llsd_notation_date( double const value, void * const user_data )$/;"	f
+llsd_notation_decode_date	src/llsd_notation_parser.c	/^static int llsd_notation_decode_date( uint8_t * data, double * real_val )$/;"	f	file:
+llsd_notation_integer	src/llsd_notation_serializer.c	/^int llsd_notation_integer( int32_t const value, void * const user_data )$/;"	f
+llsd_notation_map_begin	src/llsd_notation_serializer.c	/^int llsd_notation_map_begin( uint32_t const size, void * const user_data )$/;"	f
+llsd_notation_map_end	src/llsd_notation_serializer.c	/^int llsd_notation_map_end( void * const user_data )$/;"	f
+llsd_notation_parse_base_number	src/llsd_notation_parser.c	/^static int llsd_notation_parse_base_number( FILE * fin, llsd_bin_enc_t * enc )$/;"	f	file:
+llsd_notation_parse_boolean	src/llsd_notation_parser.c	/^static int llsd_notation_parse_boolean( FILE * fin, int * bval )$/;"	f	file:
+llsd_notation_parse_file	src/llsd_notation_parser.c	/^int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data )$/;"	f
+llsd_notation_parse_integer	src/llsd_notation_parser.c	/^static int llsd_notation_parse_integer( FILE * fin, int * ival )$/;"	f	file:
+llsd_notation_parse_paren_size	src/llsd_notation_parser.c	/^static int llsd_notation_parse_paren_size( FILE * fin, uint32_t * len )$/;"	f	file:
+llsd_notation_parse_quoted	src/llsd_notation_parser.c	/^static int llsd_notation_parse_quoted( FILE * fin, uint8_t ** buffer, uint32_t * len )$/;"	f	file:
+llsd_notation_parse_real	src/llsd_notation_parser.c	/^static int llsd_notation_parse_real( FILE * fin, double * dval )$/;"	f	file:
+llsd_notation_parse_uuid	src/llsd_notation_parser.c	/^static int llsd_notation_parse_uuid( FILE * fin, uint8_t uuid[UUID_LEN] )$/;"	f	file:
+llsd_notation_real	src/llsd_notation_serializer.c	/^int llsd_notation_real( double const value, void * const user_data )$/;"	f
+llsd_notation_serializer_deinit	src/llsd_notation_serializer.c	/^int llsd_notation_serializer_deinit( FILE * fout, void * user_data )$/;"	f
+llsd_notation_serializer_init	src/llsd_notation_serializer.c	/^int llsd_notation_serializer_init( FILE * fout, llsd_ops_t * const ops, int const pretty, void ** const user_data )$/;"	f
+llsd_notation_string	src/llsd_notation_serializer.c	/^int llsd_notation_string( uint8_t const * str, int const own_it, void * const user_data )$/;"	f
+llsd_notation_undef	src/llsd_notation_serializer.c	/^int llsd_notation_undef( void * const user_data )$/;"	f
+llsd_notation_uri	src/llsd_notation_serializer.c	/^int llsd_notation_uri( uint8_t const * uri, int const own_it, void * const user_data )$/;"	f
+llsd_notation_uuid	src/llsd_notation_serializer.c	/^int llsd_notation_uuid( uint8_t const value[UUID_LEN], void * const user_data )$/;"	f
+llsd_ops_s	src/llsd.h	/^typedef struct llsd_ops_s$/;"	s
+llsd_ops_t	src/llsd.h	/^} llsd_ops_t;$/;"	t	typeref:struct:llsd_ops_s
+llsd_pair_delete	src/llsd.c	/^static void llsd_pair_delete(void * value)$/;"	f	file:
+llsd_pair_eq	src/llsd.c	/^static int llsd_pair_eq(void const * const l, void const * const r)$/;"	f	file:
+llsd_pair_hash	src/llsd.c	/^static uint32_t llsd_pair_hash( void const * const data )$/;"	f	file:
 llsd_parse	src/llsd_util.c	/^llsd_t * llsd_parse( FILE *fin )$/;"	f
 llsd_parse_binary	src/llsd_binary.c	/^llsd_t * llsd_parse_binary( FILE * fin )$/;"	f
+llsd_parse_from_file	src/llsd_parser.c	/^llsd_t * llsd_parse_from_file( FILE * fin )$/;"	f
 llsd_parse_notation	src/llsd_notation.c	/^llsd_t * llsd_parse_notation( FILE * fin )$/;"	f
 llsd_parse_xml	src/llsd_xml.c	/^llsd_t * llsd_parse_xml( FILE * fin )$/;"	f
 llsd_read_until	src/llsd_notation.c	/^static int llsd_read_until( uint8_t ** out, uint32_t * out_size, uint8_t delim, FILE * fin )$/;"	f	file:
-llsd_real_s	src/llsd.h	/^struct llsd_real_s$/;"	s
-llsd_real_t	src/llsd.h	/^typedef struct llsd_real_s		llsd_real_t;$/;"	t	typeref:struct:llsd_real_s
+llsd_real_fn	src/llsd_parser.c	/^static int llsd_real_fn( double const value, void * const user_data )$/;"	f	file:
+llsd_real_t	src/llsd.c	/^typedef double			llsd_real_t;$/;"	t	file:
 llsd_reserve_array	src/llsd_binary.c	/^static llsd_t * llsd_reserve_array( uint32_t size )$/;"	f	file:
 llsd_reserve_array	src/llsd_notation.c	/^static llsd_t * llsd_reserve_array( uint32_t size )$/;"	f	file:
 llsd_reserve_binary	src/llsd_binary.c	/^static llsd_t * llsd_reserve_binary( uint32_t size )$/;"	f	file:
@@ -1416,27 +1637,31 @@ llsd_reserve_string	src/llsd_binary.c	/^static llsd_t * llsd_reserve_string( uin
 llsd_reserve_string	src/llsd_notation.c	/^static llsd_t * llsd_reserve_string( int escaped, uint32_t size )$/;"	f	file:
 llsd_reserve_uri	src/llsd_binary.c	/^static llsd_t * llsd_reserve_uri( uint32_t size )$/;"	f	file:
 llsd_reserve_uri	src/llsd_notation.c	/^static llsd_t * llsd_reserve_uri( uint32_t size )$/;"	f	file:
-llsd_s	src/llsd.h	/^typedef struct llsd_s$/;"	s
+llsd_s	src/llsd.c	/^typedef struct llsd_s$/;"	s	file:
+llsd_serialize	src/llsd_serializer.c	/^static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const ops, void * user_data )$/;"	f	file:
+llsd_serialize_to_file	src/llsd_serializer.c	/^int llsd_serialize_to_file( llsd_t * const llsd, FILE * fout, llsd_serializer_t const fmt, int const pretty )$/;"	f
 llsd_serializer_s	src/llsd.h	/^typedef enum llsd_serializer_s$/;"	g
 llsd_serializer_t	src/llsd.h	/^} llsd_serializer_t;$/;"	t	typeref:enum:llsd_serializer_s
 llsd_string_eq	src/llsd_util.c	/^static int llsd_string_eq( llsd_t * l, llsd_t * r )$/;"	f	file:
-llsd_string_s	src/llsd.h	/^struct llsd_string_s$/;"	s
-llsd_string_t	src/llsd.h	/^typedef struct llsd_string_s	llsd_string_t;$/;"	t	typeref:struct:llsd_string_s
+llsd_string_fn	src/llsd_parser.c	/^static int llsd_string_fn( uint8_t const * str, int own_it, void * const user_data )$/;"	f	file:
+llsd_string_t	src/llsd.c	/^typedef uint8_t *		llsd_string_t;$/;"	t	file:
 llsd_stringify_date	src/llsd_util.c	/^int llsd_stringify_date( llsd_t * llsd )$/;"	f
 llsd_stringify_uuid	src/llsd_util.c	/^int llsd_stringify_uuid( llsd_t * llsd )$/;"	f
-llsd_t	src/llsd.h	/^} llsd_t;$/;"	t	typeref:struct:llsd_s
+llsd_t	src/llsd.c	/^} llsd_t;$/;"	t	typeref:struct:llsd_s	file:
+llsd_t	src/llsd.h	/^typedef struct llsd_s llsd_t;$/;"	t	typeref:struct:llsd_s
 llsd_type_e	src/llsd.h	/^typedef enum llsd_type_e$/;"	g
 llsd_type_from_tag	src/llsd_xml.c	/^static llsd_type_t llsd_type_from_tag( char const * tag )$/;"	f	file:
 llsd_type_strings	src/llsd.c	/^int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT] =$/;"	v
 llsd_type_t	src/llsd.h	/^} llsd_type_t;$/;"	t	typeref:enum:llsd_type_e
+llsd_undef_fn	src/llsd_parser.c	/^static int llsd_undef_fn( void * const user_data )$/;"	f	file:
 llsd_unescape_string	src/llsd_util.c	/^int llsd_unescape_string( llsd_t * llsd )$/;"	f
 llsd_unescape_uri	src/llsd_util.c	/^int llsd_unescape_uri( llsd_t * llsd )$/;"	f
 llsd_unescaped_string_len	src/llsd_util.c	/^static uint32_t llsd_unescaped_string_len( llsd_t * llsd )$/;"	f	file:
 llsd_uri_eq	src/llsd_util.c	/^static int llsd_uri_eq( llsd_t * l, llsd_t * r )$/;"	f	file:
-llsd_uri_s	src/llsd.h	/^struct llsd_uri_s$/;"	s
-llsd_uri_t	src/llsd.h	/^typedef struct llsd_uri_s		llsd_uri_t;$/;"	t	typeref:struct:llsd_uri_s
-llsd_uuid_s	src/llsd.h	/^struct llsd_uuid_s$/;"	s
-llsd_uuid_t	src/llsd.h	/^typedef struct llsd_uuid_s		llsd_uuid_t;$/;"	t	typeref:struct:llsd_uuid_s
+llsd_uri_fn	src/llsd_parser.c	/^static int llsd_uri_fn( uint8_t const * uri, int own_it, void * const user_data )$/;"	f	file:
+llsd_uri_t	src/llsd.c	/^typedef uint8_t *		llsd_uri_t;$/;"	t	file:
+llsd_uuid_fn	src/llsd_parser.c	/^static int llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )$/;"	f	file:
+llsd_uuid_t	src/llsd.c	/^typedef uint8_t			llsd_uuid_t[UUID_LEN];$/;"	t	file:
 llsd_write_notation_end_tag	src/llsd_notation.c	/^static size_t llsd_write_notation_end_tag( llsd_t * llsd, FILE * fout, int pretty )$/;"	f	file:
 llsd_write_notation_start_tag	src/llsd_notation.c	/^static size_t llsd_write_notation_start_tag( llsd_t * llsd, FILE * fout, int pretty )$/;"	f	file:
 llsd_write_xml_end_tag	src/llsd_xml.c	/^static size_t llsd_write_xml_end_tag( llsd_type_t t, FILE * fout, int pretty )$/;"	f	file:
@@ -1461,10 +1686,12 @@ lxstartlen	src/llsd_xml.c	/^static uint32_t lxstartlen[LLSD_TYPE_COUNT] =$/;"	v	
 lxtabs	src/llsd_xml.c	/^static uint8_t const * const lxtabs		= "\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t";$/;"	v	file:
 main	cutil/tests/test_all.c	/^int main()$/;"	f
 main	tests/test_all.c	/^int main()$/;"	f
-map_	src/llsd.h	/^		llsd_map_t		map_;$/;"	m	union:llsd_s::__anon1
+map_	src/llsd.c	/^		llsd_map_t		map_;$/;"	m	union:llsd_s::__anon1	file:
 map_	tests/test_binary.c	/^static uint8_t const map_[] = { '{', 0x00, 0x00, 0x00, 0x00, '}' };$/;"	v	file:
 map_	tests/test_notation.c	/^static uint8_t const map_[] = "{}";$/;"	v	file:
 map_	tests/test_xml.c	/^static uint8_t const map_[] = "<llsd><map \/><\/llsd>";$/;"	v	file:
+map_begin_fn	src/llsd.h	/^	int (*map_begin_fn)( uint32_t const size, void * const user_data );$/;"	m	struct:llsd_ops_s
+map_end_fn	src/llsd.h	/^	int (*map_end_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
 match_fn	cutil/tests/test_hashtable.c	/^static int match_fn( void const * const l, void const * const r )$/;"	f	file:
 max	cutil/src/btree.c	34;"	d	file:
 mem_len_cmp	src/llsd_util.c	/^static int mem_len_cmp( uint8_t * l, uint32_t llen, uint8_t * r, uint32_t rlen )$/;"	f	file:
@@ -1478,13 +1705,12 @@ node_list	cutil/src/btree.c	/^	node_t**			node_list;	\/* memory for the nodes *\
 node_s	cutil/src/btree.c	/^typedef struct node_s$/;"	s	file:
 node_t	cutil/src/btree.c	/^} node_t;$/;"	t	typeref:struct:node_s	file:
 noop	cutil/src/log.c	/^static int noop( void ) { return 0; }$/;"	f	file:
-notation	tests/test_all.c	/^SUITE( notation );$/;"	v
-notation_header	src/llsd_util.c	/^static uint8_t const * const notation_header = "<?llsd\/notation?>\\n";$/;"	v	file:
+notation_header	src/llsd_notation_parser.c	/^static uint8_t const * const notation_header = "<?llsd\/notation?>\\n";$/;"	v	file:
+notation_header	src/llsd_notation_serializer.c	/^static uint8_t const * const notation_header = "<?llsd\/notation?>\\n";$/;"	v	file:
+ns_state_s	src/llsd_notation_serializer.c	/^typedef struct ns_state_s$/;"	s	file:
+ns_state_t	src/llsd_notation_serializer.c	/^} ns_state_t;$/;"	t	typeref:struct:ns_state_s	file:
 num_bits	cutil/src/bitset.h	/^	size_t num_bits;$/;"	m	struct:bitset_s
 num_lists	cutil/src/btree.c	/^	uint_t				num_lists;	\/* number of blocks allocated *\/$/;"	m	struct:bt_s	file:
-one_data	src/llsd_const.c	/^static uint8_t one_data[] = { '1' };$/;"	v	file:
-one_int	src/llsd_const.c	/^llsd_int_t const one_int =$/;"	v
-one_real	src/llsd_const.c	/^llsd_real_t const one_real =$/;"	v
 open_devnull	cutil/src/sanitize.c	/^static int open_devnull( int fd )$/;"	f	file:
 ops	cutil/src/aiofd.h	/^	}			ops;$/;"	m	struct:aiofd_s	typeref:struct:aiofd_s::aiofd_ops_s
 ops	cutil/src/child.c	/^	child_ops_t		ops;			\/* child proces callbacks *\/$/;"	m	struct:child_process_s	file:
@@ -1498,6 +1724,8 @@ pair_second	cutil/src/pair.c	/^void * pair_second( pair_t const * const pair )$/
 pair_t	cutil/src/pair.h	/^typedef struct pair_s pair_t;$/;"	t	typeref:struct:pair_s
 params	src/llsd_xml.c	/^	array_t * params;$/;"	m	struct:context_s	file:
 parent	cutil/src/btree.c	/^	struct node_s * parent;		\/* parent pointer *\/$/;"	m	struct:node_s	typeref:struct:node_s::node_s	file:
+parser_state_s	src/llsd_parser.c	/^typedef struct parser_state_s$/;"	s	file:
+parser_state_t	src/llsd_parser.c	/^} parser_state_t;$/;"	t	typeref:struct:parser_state_s	file:
 pid	cutil/src/child.c	/^	pid_t			pid;			\/* the pid of the child process *\/$/;"	m	struct:child_process_s	file:
 pid	cutil/src/daemon.c	/^pid_t pid, sid;$/;"	v
 pid	cutil/src/events.h	/^		int pid;	\/* pid to watch *\/$/;"	m	struct:evt_params_u::__anon3
@@ -1512,7 +1740,6 @@ priv_state_s	cutil/src/privileges.h	/^typedef struct priv_state_s$/;"	s
 priv_state_t	cutil/src/privileges.h	/^} priv_state_t;$/;"	t	typeref:struct:priv_state_s
 privileges	cutil/tests/test_all.c	/^SUITE( privileges );$/;"	v
 r	cutil/src/aiofd.c	/^	int r, w, e;$/;"	m	struct:cb_count_s	file:
-raw	src/llsd.h	/^	int					raw: 1;$/;"	m	struct:llsd_string_s
 read_callback_fn	cutil/src/aiofd.c	/^static int read_callback_fn( aiofd_t * const aiofd, size_t nread, void * user_data )$/;"	f	file:
 read_callback_ret	cutil/src/aiofd.c	/^static int read_callback_ret = TRUE;$/;"	v	file:
 read_fn	cutil/src/aiofd.h	/^		int (*read_fn)( aiofd_t * const aiofd, size_t nread, void * user_data );$/;"	m	struct:aiofd_s::aiofd_ops_s
@@ -1522,12 +1749,14 @@ read_fn	cutil/tests/test_aiofd.c	/^static int read_fn( aiofd_t * const aiofd, si
 read_fn	cutil/tests/test_child.c	/^static int32_t read_fn( child_process_t * const cp, size_t nread, void * user_data )$/;"	f	file:
 read_fn	cutil/tests/test_socket.c	/^static int32_t read_fn( socket_t * const s, size_t nread, void * user_data )$/;"	f	file:
 read_pid_fn	cutil/tests/test_child.c	/^static int32_t read_pid_fn( child_process_t * const cp, size_t nread, void * user_data )$/;"	f	file:
-real_	src/llsd.h	/^		llsd_real_t		real_;$/;"	m	union:llsd_s::__anon1
+real_	src/llsd.c	/^		llsd_real_t		real_;$/;"	m	union:llsd_s::__anon1	file:
 real_	tests/test_binary.c	/^static uint8_t const real_[] = { 'r', 0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };$/;"	v	file:
 real_	tests/test_notation.c	/^static uint8_t const real_[] = "r1.000000";$/;"	v	file:
 real_	tests/test_xml.c	/^static uint8_t const real_[] = "<llsd><real>1.000000<\/real><\/llsd>";$/;"	v	file:
+real_fn	src/llsd.h	/^	int (*real_fn)( double const value, void * const user_data );$/;"	m	struct:llsd_ops_s
 remove_item	cutil/src/list.c	/^static list_itr_t remove_item( list_item_t * const items, list_itr_t const itr )$/;"	f	file:
 reset_test_flags	cutil/tests/test_flags.c	/^void reset_test_flags( void )$/;"	f
+reset_test_flags	tests/test_flags.c	/^void reset_test_flags( void )$/;"	f
 restore_privileges	cutil/src/privileges.c	/^int restore_privileges( priv_state_t const * const orig )$/;"	f
 result	src/llsd_xml.c	/^	llsd_t * result;$/;"	m	struct:context_s	file:
 revt	cutil/src/aiofd.h	/^	evt_t		revt;			\/* read event *\/$/;"	m	struct:aiofd_s
@@ -1540,6 +1769,8 @@ sanitize	cutil/tests/test_all.c	/^SUITE( sanitize );$/;"	v
 sanitize_files	cutil/src/sanitize.c	/^int sanitize_files( int keep[], int nfds )$/;"	f
 second	cutil/src/pair.c	/^	void * second;$/;"	m	struct:pair_s	file:
 second	cutil/tests/test_pair.c	/^int8_t const * const second = "second";$/;"	v
+serializer_deinit_fn	src/llsd_serializer.h	/^typedef int (*serializer_deinit_fn)( FILE *, void * );$/;"	t
+serializer_init_fn	src/llsd_serializer.h	/^typedef int (*serializer_init_fn)( FILE *, llsd_ops_t * const, int const, void ** const );$/;"	t
 sid	cutil/src/daemon.c	/^pid_t pid, sid;$/;"	v
 sig	cutil/src/events.h	/^	struct ev_signal	sig;$/;"	m	union:ev_data_u	typeref:struct:ev_data_u::ev_signal
 sigchld	cutil/src/child.c	/^	evt_t			sigchld;		\/* the SIGCHILD signal event handler *\/$/;"	m	struct:child_process_s	file:
@@ -1548,7 +1779,7 @@ signal_params	cutil/src/events.h	/^	} signal_params;$/;"	m	union:evt_params_u	ty
 signum	cutil/src/events.h	/^		int signum;$/;"	m	struct:evt_params_u::__anon2
 size	cutil/src/aiofd.c	/^	size_t size;$/;"	m	struct:aiofd_write_s	file:
 size	cutil/src/btree.c	/^	uint_t				size;		\/* number of nodes in the tree *\/$/;"	m	struct:bt_s	file:
-size	cutil/src/hashtable.h	/^	uint_t				size;;				\/* the size of the list array *\/$/;"	m	struct:ht_s
+size	cutil/src/hashtable.h	/^	uint_t				size;				\/* the size of the list array *\/$/;"	m	struct:ht_s
 size	cutil/src/list.h	/^	uint_t			size;					\/* total number of allocated slots in list *\/$/;"	m	struct:list_s
 size	cutil/tests/test_buffer.c	/^size_t const size = 5;$/;"	v
 sock_state_s	cutil/tests/test_socket.c	/^typedef struct sock_state_s$/;"	s	file:
@@ -1590,14 +1821,11 @@ socket_write	cutil/src/socket.c	/^socket_ret_t socket_write( socket_t * const s,
 socket_writev	cutil/src/socket.c	/^socket_ret_t socket_writev( socket_t * const s,$/;"	f
 start_logging	cutil/src/log.c	/^log_t * start_logging( log_type_t type, int8_t const * const param, int append )$/;"	f
 stop_logging	cutil/src/log.c	/^void stop_logging( log_t * log )$/;"	f
-str	src/llsd.h	/^	uint8_t *			str;$/;"	m	struct:llsd_string_s
-str	src/llsd.h	/^	uint8_t *			str;$/;"	m	struct:llsd_uuid_s
-str	src/llsd.h	/^	uint8_t*			str;$/;"	m	struct:llsd_date_s
-str_len	src/llsd.h	/^	uint32_t			str_len;$/;"	m	struct:llsd_string_s
-string_	src/llsd.h	/^		llsd_string_t	string_;$/;"	m	union:llsd_s::__anon1
+string_	src/llsd.c	/^		llsd_string_t	string_;$/;"	m	union:llsd_s::__anon1	file:
 string_	tests/test_binary.c	/^static uint8_t const string_[] = { 's', 0x00, 0x00, 0x00, 0x0c, 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '!' };$/;"	v	file:
 string_	tests/test_notation.c	/^static uint8_t const string_[] = "\\"Hello World!\\"";$/;"	v	file:
 string_	tests/test_xml.c	/^static uint8_t const string_[] = "<llsd><string>Hello World!<\/string><\/llsd>";$/;"	v	file:
+string_fn	src/llsd.h	/^	int (*string_fn)( uint8_t const * str, int const own_it, void * const user_data );$/;"	m	struct:llsd_ops_s
 strnlen	src/llsd_util.c	/^uint32_t strnlen( uint8_t const * const s, uint32_t const n )$/;"	f
 syslog_fns	cutil/src/log.c	/^static cookie_io_functions_t syslog_fns =$/;"	v	file:
 syslog_writer	cutil/src/log.c	/^static ssize_t syslog_writer( void * cookie, char const * data, size_t leng )$/;"	f	file:
@@ -1723,6 +1951,7 @@ test_hashtable_clear	cutil/tests/test_hashtable.c	/^static void test_hashtable_c
 test_hashtable_count	cutil/tests/test_hashtable.c	/^static void test_hashtable_count( void )$/;"	f	file:
 test_hashtable_deinit_prereqs	cutil/tests/test_hashtable.c	/^static void test_hashtable_deinit_prereqs( void )$/;"	f	file:
 test_hashtable_delete_null	cutil/tests/test_hashtable.c	/^static void test_hashtable_delete_null( void )$/;"	f	file:
+test_hashtable_empty_iterator	cutil/tests/test_hashtable.c	/^static void test_hashtable_empty_iterator( void )$/;"	f	file:
 test_hashtable_fail_alloc	cutil/tests/test_hashtable.c	/^static void test_hashtable_fail_alloc( void )$/;"	f	file:
 test_hashtable_fail_init	cutil/tests/test_hashtable.c	/^static void test_hashtable_fail_init( void )$/;"	f	file:
 test_hashtable_find	cutil/tests/test_hashtable.c	/^static void test_hashtable_find( void )$/;"	f	file:
@@ -1790,7 +2019,6 @@ test_privileges_restore_failures	cutil/tests/test_privileges.c	/^static void tes
 test_privileges_restore_root	cutil/tests/test_privileges.c	/^static void test_privileges_restore_root( void )$/;"	f	file:
 test_privileges_temp_drop	cutil/tests/test_privileges.c	/^static void test_privileges_temp_drop( void )$/;"	f	file:
 test_random_serialize	tests/test_common.c	/^static void test_random_serialize( void )$/;"	f	file:
-test_random_serialize_zero_copy	tests/test_common.c	/^static void test_random_serialize_zero_copy( void )$/;"	f	file:
 test_read_fn	cutil/src/child.c	/^static int32_t test_read_fn( child_process_t * const cp, size_t nread, void * user_data )$/;"	f	file:
 test_sanitize_closed_std_descriptors	cutil/tests/test_sanitize.c	/^static void test_sanitize_closed_std_descriptors( void )$/;"	f	file:
 test_sanitize_environment	cutil/tests/test_sanitize.c	/^static void test_sanitize_environment( void )$/;"	f	file:
@@ -1831,11 +2059,9 @@ tmpf	tests/test_xml.c	/^static FILE* tmpf;$/;"	v	file:
 to_idx	src/base64.c	/^static uint8_t to_idx( uint8_t ch )$/;"	f	file:
 trace	cutil/src/events.h	/^		int trace;	\/* 0 == only signal upon termination, 1 == also signal when stopped\/continued *\/$/;"	m	struct:evt_params_u::__anon3
 tree	cutil/src/btree.c	/^	node_t*				tree;		\/* pointer to btree root *\/$/;"	m	struct:bt_s	file:
-true_binary	src/llsd_const.c	/^llsd_binary_t const true_binary =$/;"	v
-true_string	src/llsd_const.c	/^llsd_string_t const true_string = $/;"	v
 type	cutil/src/log.h	/^	log_type_t type;$/;"	m	struct:log_s
 type	cutil/src/socket.c	/^	socket_type_t	type;			\/* type of socket *\/$/;"	m	struct:socket_s	file:
-type_	src/llsd.h	/^	llsd_type_t			type_;$/;"	m	struct:llsd_s
+type_	src/llsd.c	/^	llsd_type_t			type_;$/;"	m	struct:llsd_s	file:
 types	cutil/src/events.h	/^		evt_io_type_t types;$/;"	m	struct:evt_params_u::__anon4
 uid	cutil/src/privileges.h	/^	uid_t	uid;$/;"	m	struct:priv_state_s
 uint_t	cutil/src/macros.h	/^typedef uint32_t uint_t;$/;"	t
@@ -1843,26 +2069,23 @@ uint_t	cutil/src/macros.h	/^typedef uint64_t uint_t;$/;"	t
 undef_	tests/test_binary.c	/^static uint8_t const undef_[] = { '!' };$/;"	v	file:
 undef_	tests/test_notation.c	/^static uint8_t const undef_[] = "!";$/;"	v	file:
 undef_	tests/test_xml.c	/^static uint8_t const undef_[] = "<llsd><undef \/><\/llsd>";$/;"	v	file:
-undefined	src/llsd_const.c	/^llsd_t const undefined =$/;"	v
-uri	src/llsd.h	/^	uint8_t *			uri;$/;"	m	struct:llsd_uri_s
-uri_	src/llsd.h	/^		llsd_uri_t		uri_;$/;"	m	union:llsd_s::__anon1
+undef_fn	src/llsd.h	/^	int (*undef_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
+uri_	src/llsd.c	/^		llsd_uri_t		uri_;$/;"	m	union:llsd_s::__anon1	file:
 uri_	tests/test_binary.c	/^static uint8_t const uri_[] = { 'l', 0x00, 0x00, 0x00, 0x16, 'h', 't', 't', 'p', ':', '\/', '\/', 'w', 'w', 'w', '.', 'i', 'x', 'q', 'u', 'i', 'c', 'k', '.', 'c', 'o', 'm' };$/;"	v	file:
 uri_	tests/test_notation.c	/^static uint8_t const uri_[] = "l\\"http:\/\/www.ixquick.com\\"";$/;"	v	file:
 uri_	tests/test_xml.c	/^static uint8_t const uri_[] = "<llsd><uri>http:\/\/www.ixquick.com<\/uri><\/llsd>";$/;"	v	file:
-uri_len	src/llsd.h	/^	uint32_t			uri_len;$/;"	m	struct:llsd_uri_s
-use_dval	src/llsd.h	/^	int					use_dval: 1;$/;"	m	struct:llsd_date_s
+uri_fn	src/llsd.h	/^	int (*uri_fn)( uint8_t const * uri, int const own_it, void * const user_data );$/;"	m	struct:llsd_ops_s
 used	cutil/src/list.c	/^	int_t	used;	\/* bool to mark used nodes *\/$/;"	m	struct:list_item_s	file:
 used_head	cutil/src/list.h	/^	list_itr_t		used_head;				\/* head node of the used circular list *\/$/;"	m	struct:list_s
 user_data	cutil/src/aiofd.h	/^	void *		user_data;		\/* context to pass to callbacks *\/$/;"	m	struct:aiofd_s
 user_data	cutil/src/child.c	/^	void *			user_data;		\/* passed to ops callbacks *\/$/;"	m	struct:child_process_s	file:
 user_data	cutil/src/events.h	/^	void *			user_data;$/;"	m	struct:evt_s
 user_data	cutil/src/socket.c	/^	void *			user_data;		\/* passed to ops callbacks *\/$/;"	m	struct:socket_s	file:
-uuid_	src/llsd.h	/^		llsd_uuid_t		uuid_;$/;"	m	union:llsd_s::__anon1
+uuid_	src/llsd.c	/^		llsd_uuid_t		uuid_;$/;"	m	union:llsd_s::__anon1	file:
 uuid_	tests/test_binary.c	/^static uint8_t const uuid_[] = { 'u', 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };$/;"	v	file:
 uuid_	tests/test_notation.c	/^static uint8_t const uuid_[] = "u01020304-0506-0708-0900-010203040506";$/;"	v	file:
 uuid_	tests/test_xml.c	/^static uint8_t const uuid_[] = "<llsd><uuid>01020304-0506-0708-0900-010203040506<\/uuid><\/llsd>";$/;"	v	file:
-v	src/llsd.h	/^	double				v;$/;"	m	struct:llsd_real_s
-v	src/llsd.h	/^	int32_t				v;$/;"	m	struct:llsd_int_s
+uuid_fn	src/llsd.h	/^	int (*uuid_fn)( uint8_t const value[UUID_LEN], void * const user_data );$/;"	m	struct:llsd_ops_s
 val	cutil/src/btree.c	/^	void * val;					\/* value *\/$/;"	m	struct:node_s	file:
 vdfn	cutil/src/btree.c	/^	bt_delete_fn		vdfn;		\/* value delete function *\/$/;"	m	struct:bt_s	file:
 w	cutil/src/aiofd.c	/^	int r, w, e;$/;"	m	struct:cb_count_s	file:
@@ -1893,7 +2116,6 @@ x_server_disconnect_fn	cutil/tests/test_socket.c	/^static socket_ret_t x_server_
 x_server_error_fn	cutil/tests/test_socket.c	/^static socket_ret_t x_server_error_fn( socket_t * const s, int err, void * user_data )$/;"	f	file:
 x_server_read_fn	cutil/tests/test_socket.c	/^static int32_t x_server_read_fn( socket_t * const s, size_t nread, void * user_data )$/;"	f	file:
 x_server_write_fn	cutil/tests/test_socket.c	/^static int32_t x_server_write_fn( socket_t * const s, uint8_t const * const buffer, void * user_data )$/;"	f	file:
-xml	tests/test_all.c	/^SUITE( xml );$/;"	v
 xml_footer	src/llsd_util.c	/^static uint8_t const * const xml_footer = "<\/llsd>\\n";$/;"	v	file:
 xml_header	src/llsd_util.c	/^static uint8_t const * const xml_header = "<llsd>\\n";$/;"	v	file:
 xml_signature	src/llsd_util.c	/^static uint8_t const * const xml_signature = "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>\\n";$/;"	v	file:
@@ -1903,7 +2125,3 @@ y_enc	tests/test_base85.c	/^static uint8_t const * y_enc = "y";$/;"	v	file:
 z_data	tests/test_base85.c	/^static uint8_t const z_data[] = { 0x00, 0x00, 0x00, 0x00 };$/;"	v	file:
 z_data_len	tests/test_base85.c	/^static uint32_t const z_data_len = 4;$/;"	v	file:
 z_enc	tests/test_base85.c	/^static uint8_t const * z_enc = "z";$/;"	v	file:
-zero_data	src/llsd_const.c	/^static uint8_t zero_data [] = { '0' };$/;"	v	file:
-zero_int	src/llsd_const.c	/^llsd_int_t const zero_int =$/;"	v
-zero_real	src/llsd_const.c	/^llsd_real_t const zero_real =$/;"	v
-zero_uuid	src/llsd_const.c	/^llsd_uuid_t const zero_uuid = $/;"	v

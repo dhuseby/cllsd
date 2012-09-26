@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - cutil test coverage - cllsd/src/llsd_binary_parser.c</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">cllsd/src</a> - llsd_binary_parser.c<span style="font-size: 80%;"> (source / <a href="llsd_binary_parser.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">cutil test coverage</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">71</td>
+            <td class="headerCovTableEntry">79</td>
+            <td class="headerCovTableEntryMed">89.9 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-09-26</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">51</td>
+            <td class="headerCovTableEntry">91</td>
+            <td class="headerCovTableEntryLo">56.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : /*</a>
+<span class="lineNum">       2 </span>                :            :  * This program is free software; you can redistribute it and/or
+<span class="lineNum">       3 </span>                :            :  * modify it under the terms of the GNU Lesser General Public
+<span class="lineNum">       4 </span>                :            :  * License as published by the Free Software Foundation; either
+<span class="lineNum">       5 </span>                :            :  * version 2.1 of the License, or (at your option) any later version.
+<span class="lineNum">       6 </span>                :            :  * 
+<span class="lineNum">       7 </span>                :            :  * This program is distributed in the hope that it will be useful,
+<span class="lineNum">       8 </span>                :            :  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">       9 </span>                :            :  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<span class="lineNum">      10 </span>                :            :  * Lesser General Public License for more details.
+<span class="lineNum">      11 </span>                :            :  * 
+<span class="lineNum">      12 </span>                :            :  * You should have received a copy of the GNU Lesser General Public
+<span class="lineNum">      13 </span>                :            :  * License along with main.c; if not, write to the Free Software
+<span class="lineNum">      14 </span>                :            :  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
+<span class="lineNum">      15 </span>                :            :  */
+<span class="lineNum">      16 </span>                :            : 
+<span class="lineNum">      17 </span>                :            : #include &quot;llsd.h&quot;
+<span class="lineNum">      18 </span>                :            : #include &quot;llsd_binary_parser.h&quot;
+<span class="lineNum">      19 </span>                :            : 
+<span class="lineNum">      20 </span>                :            : #define BINARY_SIG_LEN (18)
+<a name="21"><span class="lineNum">      21 </span>                :            : static uint8_t const * const binary_header = &quot;&lt;? LLSD/Binary ?&gt;\n&quot;;</a>
+<span class="lineNum">      22 </span>                :            : 
+<span class="lineNum">      23 </span>                :<span class="lineCov">         12 : int llsd_binary_check_sig_file( FILE * fin )</span>
+<span class="lineNum">      24 </span>                :            : {
+<span class="lineNum">      25 </span>                :            :     size_t ret;
+<span class="lineNum">      26 </span>                :            :     uint8_t sig[BINARY_SIG_LEN];
+<span class="lineNum">      27 </span>                :            : 
+<span class="lineNum">      28 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">         12 :     CHECK_PTR_RET( fin, FALSE );</span>
+<span class="lineNum">      29 </span>                :            : 
+<span class="lineNum">      30 </span>                :            :     /* read the signature */
+<span class="lineNum">      31 </span>                :<span class="lineCov">         12 :     ret = fread( sig, sizeof(uint8_t), BINARY_SIG_LEN, fin );</span>
+<span class="lineNum">      32 </span>                :            : 
+<span class="lineNum">      33 </span>                :            :     /* rewind the file */
+<span class="lineNum">      34 </span>                :<span class="lineCov">         12 :     rewind( fin );</span>
+<span class="lineNum">      35 </span>                :            : 
+<span class="lineNum">      36 </span>                :            :     /* if it matches the signature, return TRUE, otherwise FALSE */
+<span class="lineNum">      37 </span>                :<span class="lineCov">         12 :     return ( memcmp( sig, binary_header, BINARY_SIG_LEN ) == 0 );</span>
+<a name="38"><span class="lineNum">      38 </span>                :            : }</a>
+<span class="lineNum">      39 </span>                :            : 
+<span class="lineNum">      40 </span>                :<span class="lineCov">         12 : int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data )</span>
+<span class="lineNum">      41 </span>                :            : {
+<span class="lineNum">      42 </span>                :            :     size_t ret;
+<span class="lineNum">      43 </span>                :            :     uint8_t p;
+<span class="lineNum">      44 </span>                :            :     uint8_t uuid[UUID_LEN];
+<span class="lineNum">      45 </span>                :            :     uint8_t * buffer;
+<span class="lineNum">      46 </span>                :            :     uint32_t be_int;
+<span class="lineNum">      47 </span>                :            :     uint64_t be_real;
+<span class="lineNum">      48 </span>                :            : 
+<span class="lineNum">      49 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">         12 :     CHECK_PTR_RET( fin, FALSE );</span>
+<span class="lineNum">      50 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>]:<span class="lineCov">         12 :     CHECK_PTR_RET( ops, FALSE );</span>
+<span class="lineNum">      51 </span>                :            : 
+<span class="lineNum">      52 </span>                :            :     /* seek past signature */
+<span class="lineNum">      53 </span>                :<span class="lineCov">         12 :     fseek( fin, BINARY_SIG_LEN, SEEK_SET );</span>
+<span class="lineNum">      54 </span>                :            : 
+<span class="lineNum">      55 </span>        [<span class="branchCov" title="Branch 1 was taken 29 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span>]:<span class="lineCov">         29 :     while( !feof( fin ) )</span>
+<span class="lineNum">      56 </span>                :            :     {
+<span class="lineNum">      57 </span>                :            :         /* read the type marker */
+<span class="lineNum">      58 </span>                :<span class="lineCov">         29 :         ret = fread( &amp;p, sizeof(uint8_t), 1, fin );</span>
+<span class="lineNum">      59 </span>        [<span class="branchCov" title="Branch 1 was taken 12 times"> + </span><span class="branchCov" title="Branch 2 was taken 17 times"> + </span>]:<span class="lineCov">         29 :         if ( feof( fin ) )</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">         12 :             return TRUE;</span>
+<span class="lineNum">      61 </span>                :            : 
+<span class="lineNum">      62 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         17 :         CHECK_RET( ret == 1, FALSE );</span>
+<span class="lineNum">      63 </span>                :            : 
+<span class="lineNum">      64 </span>  [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span> :<span class="lineCov">         17 :         switch( p )</span>
+<span class="lineNum">         </span><span class="branchCov" title="Branch 4 was taken 1 time"> + </span><span class="branchCov" title="Branch 5 was taken 1 time"> + </span><span class="branchCov" title="Branch 6 was taken 1 time"> + </span><span class="branchCov" title="Branch 7 was taken 3 times"> + </span><span class="branchCov" title="Branch 8 was taken 1 time"> + </span> 
+<span class="lineNum">         </span><span class="branchCov" title="Branch 9 was taken 1 time"> + </span><span class="branchCov" title="Branch 10 was taken 1 time"> + </span><span class="branchCov" title="Branch 11 was taken 1 time"> + </span><span class="branchCov" title="Branch 12 was taken 2 times"> + </span><span class="branchCov" title="Branch 13 was taken 2 times"> + </span> 
+<span class="lineNum">         </span>            <span class="branchNoCov" title="Branch 14 was not taken"> - </span>]
+<span class="lineNum">      65 </span>                :            :         {
+<span class="lineNum">      66 </span>                :            : 
+<span class="lineNum">      67 </span>                :            :             case '!':
+<span class="lineNum">      68 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( (*(ops-&gt;undef_fn))( user_data ), FALSE );</span>
+<span class="lineNum">      69 </span>                :<span class="lineCov">          1 :                 break;</span>
+<span class="lineNum">      70 </span>                :            : 
+<span class="lineNum">      71 </span>                :            :             case '1':
+<span class="lineNum">      72 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( (*(ops-&gt;boolean_fn))( TRUE, user_data ), FALSE );</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">          1 :                 break;</span>
+<span class="lineNum">      74 </span>                :            : 
+<span class="lineNum">      75 </span>                :            :             case '0':
+<span class="lineNum">      76 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 CHECK_RET( (*(ops-&gt;boolean_fn))( FALSE, user_data ), FALSE );</span>
+<span class="lineNum">      77 </span>                :<span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">      78 </span>                :            : 
+<span class="lineNum">      79 </span>                :            :             case 'i':
+<span class="lineNum">      80 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( fread( &amp;be_int, sizeof(uint32_t), 1, fin ) == 1, FALSE );</span>
+<span class="lineNum">      81 </span>        [<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( (*(ops-&gt;integer_fn))( ntohl( be_int ), user_data ), FALSE );</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">          1 :                 break;</span>
+<span class="lineNum">      83 </span>                :            : 
+<span class="lineNum">      84 </span>                :            :             case 'r':
+<span class="lineNum">      85 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( fread( &amp;be_real, sizeof(uint64_t), 1, fin ) == 1, FALSE );</span>
+<span class="lineNum">      86 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( (*(ops-&gt;real_fn))( (double)be64toh( be_real ), user_data ), FALSE );</span>
+<span class="lineNum">      87 </span>                :<span class="lineCov">          1 :                 break;</span>
+<span class="lineNum">      88 </span>                :            : 
+<span class="lineNum">      89 </span>                :            :             case 'u':
+<span class="lineNum">      90 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( fread( uuid, sizeof(uint8_t), UUID_LEN, fin ) == UUID_LEN, FALSE );</span>
+<span class="lineNum">      91 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( (*(ops-&gt;uuid_fn))( uuid, user_data ), FALSE );</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">          1 :                 break;</span>
+<span class="lineNum">      93 </span>                :            : 
+<span class="lineNum">      94 </span>                :            :             case 'b':
+<span class="lineNum">      95 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( fread( &amp;be_int, sizeof(uint32_t), 1, fin ) == 1, FALSE );</span>
+<span class="lineNum">      96 </span>                :<span class="lineCov">          1 :                 be_int = ntohl( be_int );</span>
+<span class="lineNum">      97 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          1 :                 buffer = CALLOC( be_int, sizeof(uint8_t) );</span>
+<span class="lineNum">      98 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_PTR_RET( buffer, FALSE );</span>
+<span class="lineNum">      99 </span>                :<span class="lineCov">          1 :                 ret = fread( buffer, sizeof(uint8_t), be_int, fin );</span>
+<span class="lineNum">     100 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 if ( ret != be_int )</span>
+<span class="lineNum">     101 </span>                :            :                 {
+<span class="lineNum">     102 </span>                :<span class="lineNoCov">          0 :                     FREE( buffer );</span>
+<span class="lineNum">     103 </span>                :<span class="lineNoCov">          0 :                     return FALSE;</span>
+<span class="lineNum">     104 </span>                :            :                 }
+<span class="lineNum">     105 </span>                :<span class="lineCov">          1 :                 buffer = NULL;</span>
+<span class="lineNum">     106 </span>                :            :                 /* tell it to take ownership of the memory */
+<span class="lineNum">     107 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( (*(ops-&gt;binary_fn))( buffer, be_int, TRUE, user_data ), FALSE );</span>
+<span class="lineNum">     108 </span>                :<span class="lineCov">          1 :                 break;</span>
+<span class="lineNum">     109 </span>                :            : 
+<span class="lineNum">     110 </span>                :            :             case 's':
+<span class="lineNum">     111 </span>                :            :                 /* in the binary format, strings are the raw byte values */
+<span class="lineNum">     112 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 3 times"> + </span>]:<span class="lineCov">          3 :                 CHECK_RET( fread( &amp;be_int, sizeof(uint32_t), 1, fin ) == 1, FALSE );</span>
+<span class="lineNum">     113 </span>                :<span class="lineCov">          3 :                 be_int = ntohl( be_int );</span>
+<span class="lineNum">     114 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          3 :                 buffer = CALLOC( be_int + 1, sizeof(uint8_t) ); /* add a null byte at the end */</span>
+<span class="lineNum">     115 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          3 :                 CHECK_PTR_RET( buffer, FALSE );</span>
+<span class="lineNum">     116 </span>                :<span class="lineCov">          3 :                 ret = fread( buffer, sizeof(uint8_t), be_int, fin );</span>
+<span class="lineNum">     117 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          3 :                 if ( ret != be_int )</span>
+<span class="lineNum">     118 </span>                :            :                 {
+<span class="lineNum">     119 </span>                :<span class="lineNoCov">          0 :                     FREE( buffer );</span>
+<span class="lineNum">     120 </span>                :<span class="lineNoCov">          0 :                     return FALSE;</span>
+<span class="lineNum">     121 </span>                :            :                 }
+<span class="lineNum">     122 </span>                :<span class="lineCov">          3 :                 buffer = NULL;</span>
+<span class="lineNum">     123 </span>                :            :                 /* tell it to take ownership of the memory */
+<span class="lineNum">     124 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 3 times"> + </span>]:<span class="lineCov">          3 :                 CHECK_RET( (*(ops-&gt;string_fn))( buffer, TRUE, user_data ), FALSE );</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">          3 :                 break;</span>
+<span class="lineNum">     126 </span>                :            : 
+<span class="lineNum">     127 </span>                :            :             case 'l':
+<span class="lineNum">     128 </span>                :            :                 /* in the binary format, uri's are the raw byte values */
+<span class="lineNum">     129 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( fread( &amp;be_int, sizeof(uint32_t), 1, fin ) == 1, FALSE );</span>
+<span class="lineNum">     130 </span>                :<span class="lineCov">          1 :                 be_int = ntohl( be_int );</span>
+<span class="lineNum">     131 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          1 :                 buffer = CALLOC( be_int + 1, sizeof(uint8_t) ); /* add a null byte at the end */</span>
+<span class="lineNum">     132 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_PTR_RET( buffer, FALSE );</span>
+<span class="lineNum">     133 </span>                :<span class="lineCov">          1 :                 ret = fread( buffer, sizeof(uint8_t), be_int, fin );</span>
+<span class="lineNum">     134 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 if ( ret != be_int )</span>
+<span class="lineNum">     135 </span>                :            :                 {
+<span class="lineNum">     136 </span>                :<span class="lineNoCov">          0 :                     FREE( buffer );</span>
+<span class="lineNum">     137 </span>                :<span class="lineNoCov">          0 :                     return FALSE;</span>
+<span class="lineNum">     138 </span>                :            :                 }
+<span class="lineNum">     139 </span>                :<span class="lineCov">          1 :                 buffer = NULL;</span>
+<span class="lineNum">     140 </span>                :            :                 /* tell it to take ownership of the memory */
+<span class="lineNum">     141 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( (*(ops-&gt;uri_fn))( buffer, TRUE, user_data ), FALSE );</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">          1 :                 break;</span>
+<span class="lineNum">     143 </span>                :            : 
+<span class="lineNum">     144 </span>                :            :             case 'd':
+<span class="lineNum">     145 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( fread( &amp;be_real, sizeof(double), 1, fin ) == 1, FALSE );</span>
+<span class="lineNum">     146 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( (*(ops-&gt;date_fn))( (double)be64toh( be_real ), user_data ), FALSE );</span>
+<span class="lineNum">     147 </span>                :<span class="lineCov">          1 :                 break;</span>
+<span class="lineNum">     148 </span>                :            : 
+<span class="lineNum">     149 </span>                :            :             case '[':
+<span class="lineNum">     150 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( fread( &amp;be_int, sizeof(uint32_t), 1, fin ) == 1, FALSE );</span>
+<span class="lineNum">     151 </span>                :<span class="lineCov">          1 :                 be_int = ntohl( be_int );</span>
+<span class="lineNum">     152 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( (*(ops-&gt;array_begin_fn))( be_int, user_data ), FALSE );</span>
+<span class="lineNum">     153 </span>                :<span class="lineCov">          1 :                 break;</span>
+<span class="lineNum">     154 </span>                :            : 
+<span class="lineNum">     155 </span>                :            :             case ']':
+<span class="lineNum">     156 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1 time"> + </span>]:<span class="lineCov">          1 :                 CHECK_RET( (*(ops-&gt;array_end_fn))( user_data ), FALSE );</span>
+<span class="lineNum">     157 </span>                :<span class="lineCov">          1 :                 break;</span>
+<span class="lineNum">     158 </span>                :            :             
+<span class="lineNum">     159 </span>                :            :             case '{':
+<span class="lineNum">     160 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">          2 :                 CHECK_RET( fread( &amp;be_int, sizeof(uint32_t), 1, fin ) == 1, FALSE );</span>
+<span class="lineNum">     161 </span>                :<span class="lineCov">          2 :                 be_int = ntohl( be_int );</span>
+<span class="lineNum">     162 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">          2 :                 CHECK_RET( (*(ops-&gt;map_begin_fn))( be_int, user_data ), FALSE );</span>
+<span class="lineNum">     163 </span>                :<span class="lineCov">          2 :                 break;</span>
+<span class="lineNum">     164 </span>                :            : 
+<span class="lineNum">     165 </span>                :            :             case '}':
+<span class="lineNum">     166 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">          2 :                 CHECK_RET( (*(ops-&gt;map_end_fn))( user_data ), FALSE );</span>
+<span class="lineNum">     167 </span>                :<span class="lineCov">          2 :                 break;</span>
+<span class="lineNum">     168 </span>                :            :         }
+<span class="lineNum">     169 </span>                :            :     }
+<span class="lineNum">     170 </span>                :            : 
+<span class="lineNum">     171 </span>                :<span class="lineCov">         12 :     return TRUE;</span>
+<span class="lineNum">     172 </span>                :            : }
+<span class="lineNum">     173 </span>                :            : 
+<span class="lineNum">     174 </span>                :            : 
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

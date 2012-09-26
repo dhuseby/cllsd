@@ -16,6 +16,7 @@
 
 #include <time.h>
 
+#include "llsd.h"
 #include "llsd_notation_parser.h"
 
 #define NOTATION_SIG_LEN (18)
@@ -257,7 +258,7 @@ static int llsd_notation_decode_date( uint8_t * data, double * real_val )
 	return TRUE;
 }
 
-int llsd_notation_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * const user_data )
+int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data )
 {
 	uint8_t p;
 	size_t ret;
@@ -346,8 +347,7 @@ int llsd_notation_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * 
 					/* it is a base encoding number */
 					CHECK_RET( llsd_notation_parse_base_number( fin, &encoding ), FALSE );
 					CHECK_RET( (encoding >= LLSD_BASE16) && (encoding <= LLSD_BASE85), FALSE );
-					CHECK_RET( fread( &p, sizeof(uint8_t), 1, fin ) == 1, FALSE );
-					CHECK_RET( llsd_parse_quoted( fin, &encoded, &enc_len ), FALSE );
+					CHECK_RET( llsd_notation_parse_quoted( fin, &encoded, &enc_len ), FALSE );
 					switch( encoding )
 					{
 						case LLSD_BASE16:
@@ -396,9 +396,11 @@ int llsd_notation_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * 
 							}
 							break;
 					}
+					FREE( encoded );
 				}
-				
-				CHECK_RET( (*(ops->binary_fn))( buffer, len, user_data ), FALSE );
+			
+				/* tell it to take ownership of the memory */
+				CHECK_RET( (*(ops->binary_fn))( buffer, len, TRUE, user_data ), FALSE );
 				break;
 
 			case '\'':
@@ -418,18 +420,22 @@ int llsd_notation_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * 
 
 				/* read the quoted string */
 				CHECK_RET( llsd_notation_parse_quoted( fin, &buffer, &len ), FALSE );
-				
-				CHECK_RET( (*(ops->string_fn))( buffer, user_data ), FALSE );
+			
+				/* tell it to take ownership of the memory */
+				CHECK_RET( (*(ops->string_fn))( buffer, TRUE, user_data ), FALSE );
 				break;
 
 			case 'l':
 				CHECK_RET( llsd_notation_parse_quoted( fin, &encoded, &enc_len ), FALSE );
+#if 0
 				if ( !llsd_unescape_uri( encoded, enc_len, &buffer, &len ) )
 				{
 					FREE( encoded );
 					return FALSE;
 				}
-				CHECK_RET( (*(ops->uri_fn))( buffer, user_data ), FALSE );
+#endif
+				/* tell it to take ownership of the memory */
+				CHECK_RET( (*(ops->uri_fn))( encoded, TRUE, user_data ), FALSE );
 				break;
 
 			case 'd':

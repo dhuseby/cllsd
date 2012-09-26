@@ -17,10 +17,11 @@
 #ifndef LLSD_NOTATION_PARSER_H
 #define LLSD_NOTATION_PARSER_H
 
+#include "llsd.h"
 #include "llsd_parser.h"
 
 int llsd_notation_check_sig_file( FILE * fin );
-int llsd_notation_parse_file( FILE * fin, llsd_parser_ops_t * const ops, void * const user_data );
+int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data );
 
 #endif/*LLSD_NOTATION_PARSER_H*/
 

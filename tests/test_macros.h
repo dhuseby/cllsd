@@ -14,13 +14,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef LLSD_BINARY_PARSER_H
-#define LLSD_BINARY_PARSER_H
+#ifndef __TEST_MACROS_H__
+#define __TEST_MACROS_H__
 
-#include "llsd_parser.h"
+#define SUITE(x) extern CU_pSuite add_##x##_test_suite(); CU_pSuite x##_test_suite;
+#define ADD_SUITE(x) x##_test_suite = add_##x##_test_suite();
+#define ADD_TEST(x,y) CHECK_PTR_RET( CU_add_test( pSuite, x, y ), NULL );
 
-int llsd_binary_check_sig_file( FILE * fin );
-int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data );
-
-#endif/*LLSD_BINARY_PARSER_H*/
+#endif/*__TEST_MACROS_H__*/
 

@@ -28,11 +28,9 @@
 #include <cutil/macros.h>
 
 #include <llsd.h>
-#include <llsd_const.h>
-#include <llsd_util.h>
-#include <llsd_xml.h>
 
 /* offset of first by after header */
+#define NOTATION_SIG_LEN (18)
 static size_t const data_offset = NOTATION_SIG_LEN;
 
 /* expected values */

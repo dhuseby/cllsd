@@ -47,6 +47,7 @@ typedef enum llsd_type_e
 	LLSD_LLSD /* type of LLSD tag in XML */
 
 } llsd_type_t;
+#define IS_VALID_LLSD_TYPE( x ) ((x >= LLSD_TYPE_FIRST) && (x < LLSD_TYPE_LAST))
 
 extern int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT];
 
@@ -58,12 +59,14 @@ typedef enum llsd_serializer_s
 	LLSD_ENC_XML,
 	LLSD_ENC_BINARY,
 	LLSD_ENC_NOTATION,
+	LLSD_ENC_JSON,
 
 	LLSD_ENC_LAST,
 	LLSD_ENC_FIRST = LLSD_ENC_XML,
 	LLSD_ENC_COUNT = LLSD_ENC_LAST - LLSD_ENC_FIRST
 
 } llsd_serializer_t;
+#define IS_VALID_SERIALIZER( x ) ((x >= LLSD_ENC_FIRST) && (x < LLSD_ENC_LAST))
 
 typedef enum llsd_bin_enc_s
 {
@@ -79,6 +82,7 @@ typedef enum llsd_bin_enc_s
 	LLSD_RAW	/* used for some special cases */
 
 } llsd_bin_enc_t;
+#define IS_VALID_BINARY_ENCODING( x ) ((x >= LLSD_BIN_ENC_FIRST) && (x < LLSD_BIN_ENC_LAST))
 
 extern int8_t const * const llsd_xml_bin_enc_type_strings[LLSD_BIN_ENC_COUNT];
 extern int8_t const * const llsd_notation_bin_enc_type_strings[LLSD_BIN_ENC_COUNT];
@@ -100,9 +104,9 @@ void llsd_delete( void * p );
 #define llsd_new_integer( val ) llsd_new ( LLSD_INTEGER, val )
 #define llsd_new_real( val ) llsd_new ( LLSD_REAL, val )
 #define llsd_new_uuid( bits ) llsd_new ( LLSD_UUID, bits )
-#define llsd_new_string( s ) llsd_new( LLSD_STRING, s )
-#define llsd_new_uri( s ) llsd_new( LLSD_URI, s )
-#define llsd_new_binary( p, len ) llsd_new( LLSD_BINARY, p, len )
+#define llsd_new_string( s, o ) llsd_new( LLSD_STRING, s, o )
+#define llsd_new_uri( s, o ) llsd_new( LLSD_URI, s, o )
+#define llsd_new_binary( p, len, o ) llsd_new( LLSD_BINARY, p, len, o )
 #define llsd_new_date( d ) llsd_new( LLSD_DATE, d )
 #define llsd_new_array() llsd_new( LLSD_ARRAY )
 #define llsd_new_map() llsd_new( LLSD_MAP )
@@ -114,12 +118,60 @@ int8_t const * llsd_get_bin_enc_type_string( llsd_bin_enc_t enc, llsd_serializer
 #define llsd_is_array(x) (llsd_get_type(x) == LLSD_ARRAY)
 #define llsd_is_map(x) (llsd_get_type(x) == LLSD_MAP)
 
-/* append to containers */
+/* container interface */
+typedef struct llsd_itr_s {
+	list_itr_t li;
+	ht_itr_t hi;
+} llsd_itr_t;
+
+#define LLSD_ITR_EQ( i, j ) ((i.li == j.li) && ITR_EQ(i.hi,j.hi))
+
 int llsd_array_append( llsd_t * arr, llsd_t * data );
 int llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data );
 
+llsd_itr_t llsd_itr_begin( llsd_t * llsd );
+llsd_itr_t llsd_itr_end( llsd_t * llsd );
+llsd_itr_t llsd_itr_rbegin( llsd_t * llsd );
+#define llsd_itr_rend(x) llsd_itr_end(x)
+llsd_itr_t llsd_itr_next( llsd_t * llsd, llsd_itr_t itr );
+llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr );
+
+int llsd_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key );
+llsd_t * llsd_map_find_llsd( llsd_t * map, llsd_t * key );
+llsd_t * llsd_map_find( llsd_t * map, uint8_t const * const key );
+
+/* conversion interface */
+int llsd_as_integer( llsd_t * llsd, int32_t * v );
+int llsd_as_double( llsd_t * llsd, double * v );
+int llsd_as_uuid( llsd_t * llsd, uint8_t uuid[UUID_LEN] );
+int llsd_as_string( llsd_t * llsd, uint8_t ** v );
+int llsd_as_binary( llsd_t * llsd, uint8_t ** v, uint32_t * len );
+
 /* compare two llsd items */
 int llsd_equal( llsd_t * l, llsd_t * r );
+
+/* get the count of the cotainer types */
+int llsd_get_count( llsd_t * llsd );
+#define llsd_is_empty(x) (llsd_get_count(x) == 0)
+
+/* callback functions used for parsing/serializing */
+typedef struct llsd_ops_s
+{
+	int (*undef_fn)( void * const user_data );
+	int (*boolean_fn)( int const value, void * const user_data );
+	int (*integer_fn)( int32_t const value, void * const user_data );
+	int (*real_fn)( double const value, void * const user_data );
+	int (*uuid_fn)( uint8_t const value[UUID_LEN], void * const user_data );
+	int (*string_fn)( uint8_t const * str, int const own_it, void * const user_data );
+	int (*date_fn)( double const value, void * const user_data );
+	int (*uri_fn)( uint8_t const * uri, int const own_it, void * const user_data );
+	int (*binary_fn)( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data );
+	int (*array_begin_fn)( uint32_t const size, void * const user_data );
+	int (*array_end_fn)( void * const user_data );
+	int (*map_begin_fn)( uint32_t const size, void * const user_data );
+	int (*map_end_fn)( void * const user_data );
+
+} llsd_ops_t;
 
 #endif /*LLSD_H*/
 

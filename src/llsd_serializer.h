@@ -14,13 +14,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef LLSD_BINARY_PARSER_H
-#define LLSD_BINARY_PARSER_H
+#ifndef LLSD_SERIALIZER_H
+#define LLSD_SERIALIZER_H
 
-#include "llsd_parser.h"
+#include <stdint.h>
 
-int llsd_binary_check_sig_file( FILE * fin );
-int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data );
+#include "llsd.h"
 
-#endif/*LLSD_BINARY_PARSER_H*/
+typedef int (*serializer_init_fn)( FILE *, llsd_ops_t * const, int const, void ** const );
+typedef int (*serializer_deinit_fn)( FILE *, void * );
+
+int llsd_serialize_to_file( llsd_t * const llsd, FILE * fout, llsd_serializer_t const fmt, int const pretty );
+
+#endif/*LLSD_SERIALIZER_H*/
 

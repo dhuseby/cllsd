@@ -43,7 +43,8 @@ static llsd_t* get_random_str( void )
 		/*str[i] = (rand() % 26) + 'a';*/
 	}
 	str[len] = '\0';
-	return llsd_new_string( str );
+	/* tell it to copy the string into the LLSD */
+	return llsd_new_string( str, FALSE );
 }
 
 static llsd_t* get_random_uri( void )
@@ -59,7 +60,8 @@ static llsd_t* get_random_uri( void )
 		/*uri[i] = (rand() % 26) + 'a';*/
 	}
 	uri[len] = '\0';
-	return llsd_new_uri( uri );
+	/* tell it to copy the uri into the LLSD */
+	return llsd_new_uri( uri, FALSE );
 }
 
 static llsd_t* get_random_bin( void )
@@ -70,7 +72,7 @@ static llsd_t* get_random_bin( void )
 
 	if ( len == 0 )
 	{
-		return llsd_new_binary( NULL, 0 );	
+		return llsd_new_binary( NULL, 0, FALSE );	
 	}
 
 	for ( i = 0; i < len; i++ )
@@ -78,7 +80,8 @@ static llsd_t* get_random_bin( void )
 		/* get a random byte*/
 		bin[i] = (uint8_t)(rand() % 256);
 	}
-	return llsd_new_binary( bin, len );
+	/* tell it to copy the binary into the LLSD */
+	return llsd_new_binary( bin, len, FALSE );
 }
 
 static llsd_t* get_random_uuid( void )
@@ -326,11 +329,8 @@ static llsd_t * get_llsd( llsd_type_t type_ )
 			break;
 
 		case LLSD_REAL:
-			llsd = llsd_new( type_, 1.0 );
-			break;
-
 		case LLSD_DATE:
-			llsd = llsd_new_date( 1.0 );
+			llsd = llsd_new( type_, 1.0 );
 			break;
 
 		case LLSD_UUID:
@@ -338,15 +338,15 @@ static llsd_t * get_llsd( llsd_type_t type_ )
 			break;
 
 		case LLSD_STRING:
-			llsd = llsd_new_string( teststr );
+			llsd = llsd_new_string( teststr, FALSE );
 			break;
 
 		case LLSD_URI:
-			llsd = llsd_new_uri( testurl );
+			llsd = llsd_new_uri( testurl, FALSE );
 			break;
 
 		case LLSD_BINARY:
-			llsd = llsd_new_binary( testbits, UUID_LEN );
+			llsd = llsd_new_binary( testbits, UUID_LEN, FALSE );
 			break;
 
 		case LLSD_ARRAY:
@@ -385,13 +385,11 @@ static void test_newdel( void )
 	}
 }
 
-#if 0
 #define BUF_SIZE (4096)
 static void test_serialization( void )
 {
 	llsd_t* llsd;
 	llsd_type_t type_;
-	size_t s = 0;
 	long floc = 0;
 	long nmemb = 0;
 	uint8_t * buf = NULL;
@@ -408,7 +406,7 @@ static void test_serialization( void )
 		CU_ASSERT( type_ == llsd_get_type( llsd ) );
 
 		/* serialize it to the file */
-		s = llsd_format( llsd, format, tmpf, FALSE );
+		CU_ASSERT_TRUE( llsd_serialize_to_file( llsd, tmpf, format, FALSE ) );
 
 		/* get the location */
 		floc = ftell( tmpf );
@@ -432,28 +430,26 @@ static void test_serialization( void )
 		/* reset the read location again */
 		fseek( tmpf, 0, SEEK_SET );
 
-		/*CU_ASSERT_EQUAL( heap_size, get_heap_size() );*/
-
 		/* check that the correct number of bytes were written */
-		if ( expected_sizes[type_] != (s - data_offset) )
+		if ( expected_sizes[type_] != (nmemb - data_offset) )
 		{
 #if defined(PORTABLE_64_BIT)
-			WARN("type: %s, expected: %ld, actual: %ld\n", llsd_get_type_string( type_ ), expected_sizes[type_], (s - data_offset) ); 
+			WARN("type: %s, expected: %ld, actual: %ld\n", llsd_get_type_string( type_ ), expected_sizes[type_], (nmemb - data_offset) ); 
 #else
-			WARN("type: %s, expected: %d, actual: %d\n", llsd_get_type_string( type_ ), expected_sizes[type_], (s - data_offset) ); 
+			WARN("type: %s, expected: %d, actual: %lu\n", llsd_get_type_string( type_ ), expected_sizes[type_], (nmemb - data_offset) ); 
 #endif
 			CU_FAIL();
 		}
 
 		/* check that the expected data was written */
-		if ( 0 != memcmp( &(buf[data_offset]), expected_data[ type_ ], (s - data_offset) ) )
+		if ( 0 != memcmp( &(buf[data_offset]), expected_data[ type_ ], (nmemb - data_offset) ) )
 		{
 			WARN("type: %s failed memcmp\n", llsd_get_type_string( type_ ) );
 			CU_FAIL("memcmp");
 		}
 
 		/* try to deserialize the llsd */
-		llsd = llsd_parse( tmpf );
+		llsd = llsd_parse_from_file( tmpf );
 		CU_ASSERT_PTR_NOT_NULL_FATAL( llsd );
 
 		/* check the type */
@@ -466,9 +462,6 @@ static void test_serialization( void )
 		llsd = NULL;
 		FREE( buf );
 		buf = NULL;
-		s = 0;
-
-		/*CU_ASSERT_EQUAL( heap_size, get_heap_size() );*/
 	}
 
 	FREE(buf);
@@ -483,9 +476,6 @@ static void test_random_serialize( void )
 	FILE* fin = NULL;
 	FILE* fout = NULL;
 
-	/* get the initial heap size */
-	/*size_t heap_size = get_heap_size();*/
-
 	/* generate a repeatable, random llsd object */
 	llsd_out = get_random_llsd( size, seed );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_out );
@@ -493,14 +483,14 @@ static void test_random_serialize( void )
 	tmpf = fopen( "test.llsd", "w+b" );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
-	llsd_format( llsd_out, format, tmpf, FALSE );
+	CU_ASSERT_TRUE( llsd_serialize_to_file( llsd_out, tmpf, format, FALSE ) );
 	fclose( tmpf );
 	tmpf = NULL;
 
 	tmpf = fopen( "test.llsd", "r+b" );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
-	llsd_in = llsd_parse( tmpf );
+	llsd_in = llsd_parse_from_file( tmpf );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_in );
 	fclose( tmpf );
 	tmpf = NULL;
@@ -512,10 +502,9 @@ static void test_random_serialize( void )
 	llsd_out = NULL;
 	llsd_delete( llsd_in );
 	llsd_in = NULL;
-
-	/*CU_ASSERT_EQUAL( heap_size, get_heap_size() );*/
 }
 
+#if 0
 static void test_random_serialize_zero_copy( void )
 {
 	ssize_t ret;
@@ -586,9 +575,9 @@ static void test_random_serialize_zero_copy( void )
 static CU_pSuite add_tests( CU_pSuite pSuite )
 {
 	CHECK_PTR_RET( CU_add_test( pSuite, "new/delete of all types", test_newdel), NULL );
-#if 0
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of all types", test_serialization), NULL );
 	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd", test_random_serialize), NULL );
+#if 0
 	CHECK_PTR_RET( CU_add_test( pSuite, "zero copy serialization of random llsd", test_random_serialize_zero_copy), NULL );
 	if ( format != LLSD_ENC_XML )
 		CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd zero copy", test_random_serialize_zero_copy), NULL );
