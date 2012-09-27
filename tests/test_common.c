@@ -19,30 +19,31 @@
  * deserializer functions are specified when the suites are initialized.
  */
 
-#include <stdio.h>
-#include <errno.h>
-
 extern FILE* tmpf;
 extern llsd_serializer_t format;
+
+static int indent = 0;
 
 static llsd_type_t get_random_llsd_type( void )
 {
 	return (llsd_type_t)(rand() % LLSD_TYPE_COUNT);
 }
 
-static llsd_t* get_random_str( void )
+static llsd_t* get_random_str( int zero )
 {
 	static uint8_t str[1024];
 	int i;
 	int len = (rand() % 128);
+	if ( !zero && !len )
+		len++;
 
 	for ( i = 0; i < len; i++ )
 	{
 		/* get a random, printable ascii character */
 		str[i] = (32 + (rand() % 94));
-		/*str[i] = (rand() % 26) + 'a';*/
 	}
 	str[len] = '\0';
+	DEBUG( "%*sSTRING %s\n", indent, " ", str );
 	/* tell it to copy the string into the LLSD */
 	return llsd_new_string( str, FALSE );
 }
@@ -60,6 +61,7 @@ static llsd_t* get_random_uri( void )
 		/*uri[i] = (rand() % 26) + 'a';*/
 	}
 	uri[len] = '\0';
+	DEBUG( "%*sURI %s\n", indent, " ", uri );
 	/* tell it to copy the uri into the LLSD */
 	return llsd_new_uri( uri, FALSE );
 }
@@ -80,6 +82,7 @@ static llsd_t* get_random_bin( void )
 		/* get a random byte*/
 		bin[i] = (uint8_t)(rand() % 256);
 	}
+	DEBUG( "%*sBINARY %d\n", indent, " ", len );
 	/* tell it to copy the binary into the LLSD */
 	return llsd_new_binary( bin, len, FALSE );
 }
@@ -94,27 +97,40 @@ static llsd_t* get_random_uuid( void )
 		/* get a random byte*/
 		bits[i] = (uint8_t)(rand() % 256);
 	}
+	DEBUG( "%*sUUID %02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x\n", indent, " ", bits[0], bits[1], bits[2], bits[3], bits[4], bits[5], bits[6], bits[7], bits[8], bits[9], bits[10], bits[11], bits[12], bits[13], bits[14], bits[15] );
 	return llsd_new_uuid( bits );
 }
 
 static llsd_t * get_random_boolean( void )
 {
-	return llsd_new_boolean( rand() % 2 );
+	int b = rand() % 2;
+	DEBUG( "%*sBOOLEAN %s\n", indent, " ", ( b ? "true" : "false" ) );
+	return llsd_new_boolean( b );
 }
 
 static llsd_t * get_random_integer( void )
 {
-	return llsd_new_integer( rand() );
+	int i = rand();
+	DEBUG( "%*sINTEGER %d\n", indent, " ", i );
+	return llsd_new_integer( i );
 }
 
 static llsd_t * get_random_real( void )
 {
-	return llsd_new_real( 1.0 * rand() );
+	double d = 1.0 * rand();
+	DEBUG( "%*sREAL %lf\n", indent, " ", d );
+	return llsd_new_real( d );
 }
 
 static llsd_t* get_random_date( void )
 {
-	return llsd_new_date( (1.0 * rand()) );
+	double d = 1.0 * rand();
+	double int_time = floor( d );
+	time_t seconds = (time_t)int_time;
+	int32_t useconds = (int32_t)( ( d - int_time) * 1000000.0 );
+	struct tm parts = *gmtime(&seconds);
+	DEBUG( "%*sDATE %04d-%02d-%02dT%02d:%02d:%02d.%03dZ\n", indent, " ", parts.tm_year + 1900, parts.tm_mon + 1, parts.tm_mday, parts.tm_hour, parts.tm_min, parts.tm_sec, ((useconds != 0) ? (int32_t)(useconds / 1000.f + 0.5f) : 0) );
+	return llsd_new_date( d );
 }
 
 /* forward declaration */
@@ -128,6 +144,9 @@ static llsd_t * get_random_array( uint32_t size )
 
 	/* create the array */
 	llsd_t * arr = llsd_new_array();
+	
+	DEBUG( "%*s[[\n", indent, " " );
+	indent += 4;
 
 	/* now populate it with random data */
 	while( total < size )
@@ -157,7 +176,7 @@ static llsd_t * get_random_array( uint32_t size )
 				total++;
 				break;
 			case LLSD_STRING:
-				llsd_array_append( arr, get_random_str() );
+				llsd_array_append( arr, get_random_str( TRUE ) );
 				total++;
 				break;
 			case LLSD_DATE:
@@ -198,6 +217,9 @@ static llsd_t * get_random_array( uint32_t size )
 			break;
 		}
 	}
+	
+	indent -= 4;
+	DEBUG( "%*s]]\n", indent, " " );
 
 	return arr;
 }
@@ -213,6 +235,9 @@ static llsd_t * get_random_map( uint32_t size )
 	/* create the map */
 	map = llsd_new_map();
 
+	DEBUG( "%*s{{\n", indent, " " );
+	indent += 4;
+
 	/* now populate it with random data */
 	while( total < size )
 	{
@@ -220,7 +245,7 @@ static llsd_t * get_random_map( uint32_t size )
 		type_ = get_random_llsd_type();
 
 		/* get a random key */
-		key = get_random_str();
+		key = get_random_str( FALSE );
 
 		switch( type_ )
 		{
@@ -245,7 +270,7 @@ static llsd_t * get_random_map( uint32_t size )
 				total++;
 				break;
 			case LLSD_STRING:
-				llsd_map_insert( map, key, get_random_str() );
+				llsd_map_insert( map, key, get_random_str( TRUE ) );
 				total++;
 				break;
 			case LLSD_DATE:
@@ -285,17 +310,23 @@ static llsd_t * get_random_map( uint32_t size )
 				}
 				break;
 		}
+		DEBUG( "%*s----------\n", indent, " " );
 	}
+	indent -= 4;
+	DEBUG( "%*s}}\n", indent, " " );
+
 	return map;
 }
 
 static llsd_t * get_random_llsd( uint32_t size, uint32_t seed )
 {
 	llsd_t * llsd;
+	indent = 0;
 
 	/* set the seed */
 	srand( seed );
 
+	DEBUG( "\n" );
 	if ( rand() % 2 )
 	{
 		return get_random_map( size );
@@ -449,7 +480,7 @@ static void test_serialization( void )
 		}
 
 		/* try to deserialize the llsd */
-		llsd = llsd_parse_from_file( tmpf );
+		llsd = (llsd_t*)llsd_parse_from_file( tmpf );
 		CU_ASSERT_PTR_NOT_NULL_FATAL( llsd );
 
 		/* check the type */
@@ -490,7 +521,7 @@ static void test_random_serialize( void )
 	tmpf = fopen( "test.llsd", "r+b" );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
-	llsd_in = llsd_parse_from_file( tmpf );
+	llsd_in = (llsd_t*)llsd_parse_from_file( tmpf );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_in );
 	fclose( tmpf );
 	tmpf = NULL;

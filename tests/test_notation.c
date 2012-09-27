@@ -24,6 +24,7 @@
 
 #include <CUnit/Basic.h>
 
+#define DEBUG_ON
 #include <cutil/debug.h>
 #include <cutil/macros.h>
 

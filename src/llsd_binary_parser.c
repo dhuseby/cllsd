@@ -14,6 +14,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
+#define DEBUG_ON
+#include <cutil/debug.h>
+#include <cutil/macros.h>
+
 #include "llsd.h"
 #include "llsd_binary_parser.h"
 
@@ -165,6 +169,10 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 			case '}':
 				CHECK_RET( (*(ops->map_end_fn))( user_data ), FALSE );
 				break;
+
+			default:
+				DEBUG("invalid type byte: %c\n", p );
+				return FALSE;
 		}
 	}
 

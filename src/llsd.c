@@ -20,6 +20,7 @@
 #include <math.h>
 #include <time.h>
 
+#define DEBUG_ON
 #include <cutil/debug.h>
 #include <cutil/macros.h>
 #include <cutil/pair.h>
@@ -421,18 +422,16 @@ int llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * value )
 llsd_itr_t llsd_itr_begin( llsd_t * llsd )
 {
 	llsd_itr_t itr;
+	CHECK_PTR_RET( llsd, itr );
 	itr.li = list_itr_end( &llsd->array_ );
 	itr.hi = ht_itr_end( &llsd->map_ );
-	CHECK_PTR_RET( llsd, itr );
 
 	switch ( llsd_get_type( llsd ) )
 	{
 		case LLSD_ARRAY:
 			itr.li = list_itr_begin( &llsd->array_ );
-			itr.hi = ht_itr_end( &llsd->map_ );
 			break;
 		case LLSD_MAP:
-			itr.li = list_itr_end( &llsd->array_ );
 			itr.hi = ht_itr_begin( &llsd->map_ );
 			break;
 	}
@@ -441,27 +440,30 @@ llsd_itr_t llsd_itr_begin( llsd_t * llsd )
 
 llsd_itr_t llsd_itr_end( llsd_t * llsd )
 {
-	llsd_itr_t itr;
-	itr.li = list_itr_end( &llsd->array_ );
-	itr.hi = ht_itr_end( &llsd->map_ );
+	llsd_itr_t itr = 
+		(llsd_itr_t){ 
+			.li = -1, 
+			.hi = (ht_itr_t){ 
+				.idx = -1, 
+				.itr = -1 
+			}
+		};
 	return itr;
 }
 
 llsd_itr_t llsd_itr_rbegin( llsd_t * llsd )
 {
 	llsd_itr_t itr;
-	itr.li = list_itr_end( &llsd->array_ );
-	itr.hi = ht_itr_end( &llsd->map_ );
 	CHECK_PTR_RET( llsd, itr );
+	itr.li = list_itr_rend( &llsd->array_ );
+	itr.hi = ht_itr_rend( &llsd->map_ );
 	
 	switch ( llsd_get_type( llsd ) )
 	{
 		case LLSD_ARRAY:
 			itr.li = list_itr_rbegin( &llsd->array_ );
-			itr.hi = ht_itr_rend( &llsd->map_ );
 			break;
 		case LLSD_MAP:
-			itr.li = list_itr_rend( &llsd->array_ );
 			itr.hi = ht_itr_rbegin( &llsd->map_ );
 			break;
 	}
@@ -470,9 +472,7 @@ llsd_itr_t llsd_itr_rbegin( llsd_t * llsd )
 
 llsd_itr_t llsd_itr_next( llsd_t * llsd, llsd_itr_t itr )
 {
-	llsd_itr_t ret;
-	ret.li = list_itr_end( &llsd->array_ );
-	ret.hi = ht_itr_end( &llsd->map_ );
+	llsd_itr_t ret = itr;
 	CHECK_PTR_RET( llsd, ret );
 
 	switch ( llsd_get_type( llsd ) )
@@ -489,9 +489,7 @@ llsd_itr_t llsd_itr_next( llsd_t * llsd, llsd_itr_t itr )
 
 llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr )
 {
-	llsd_itr_t ret;
-	ret.li = list_itr_end( &llsd->array_ );
-	ret.hi = ht_itr_end( &llsd->map_ );
+	llsd_itr_t ret = itr;
 	CHECK_PTR_RET( llsd, ret );
 
 	switch ( llsd_get_type( llsd ) )
