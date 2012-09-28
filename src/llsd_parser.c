@@ -498,7 +498,9 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 
 	/* create the container stack */
 	state.container_stack = list_new( 0, &llsd_delete );
-
+	CHECK_PTR_RET( state.container_stack, NULL );
+	ok = TRUE;
+#if 0
 	if ( llsd_binary_check_sig_file( fin ) )
 	{
 		ok = llsd_binary_parse_file( fin, &ops, &state );
@@ -507,7 +509,6 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 	{
 		ok = llsd_notation_parse_file( fin, &ops, &state );
 	}
-#if 0
 	else if ( llsd_xml_check_sig_file( fin ) )
 	{
 		ok = llsd_xml_parse_file( fin, &ops, &state );
@@ -516,18 +517,15 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 	{
 		ok = llsd_json_parse_file( fin, &ops, &state );
 	}
-#endif
 
 	/* make sure we had a complete parse */
 	if ( list_count( state.container_stack ) > 0 )
 	{
 		ok = FALSE;
 	}
+#endif
 
-	if ( state.container_stack != NULL )
-	{
-		list_delete( state.container_stack );
-	}
+	list_delete( state.container_stack );
 
 	if ( !ok )
 	{

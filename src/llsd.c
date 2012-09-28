@@ -229,11 +229,11 @@ static int llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			break;
 
 		case LLSD_ARRAY:
-			list_initialize( &(llsd->array_), 0, &llsd_delete );
+			CHECK_RET( list_initialize( &(llsd->array_), 0, &llsd_delete ), FALSE );
 			break;
 
 		case LLSD_MAP:
-			ht_initialize( &(llsd->map_), 0, &llsd_pair_hash, &llsd_pair_eq, &llsd_pair_delete );
+			CHECK_RET( ht_initialize( &(llsd->map_), 0, &llsd_pair_hash, &llsd_pair_eq, &llsd_pair_delete ), FALSE );
 			break;
 	}
 	return TRUE;
