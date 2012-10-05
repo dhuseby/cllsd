@@ -143,7 +143,7 @@ static llsd_t * get_random_array( uint32_t size )
 	llsd_type_t type_;
 
 	/* create the array */
-	llsd_t * arr = llsd_new_array();
+	llsd_t * arr = llsd_new_array( 0 );
 	
 	DEBUG( "%*s[[\n", indent, " " );
 	indent += 4;
@@ -233,7 +233,7 @@ static llsd_t * get_random_map( uint32_t size )
 	llsd_t * key;
 
 	/* create the map */
-	map = llsd_new_map();
+	map = llsd_new_map( 0 );
 
 	DEBUG( "%*s{{\n", indent, " " );
 	indent += 4;
@@ -381,11 +381,11 @@ static llsd_t * get_llsd( llsd_type_t type_ )
 			break;
 
 		case LLSD_ARRAY:
-			llsd = llsd_new_array();
+			llsd = llsd_new_array( 0 );
 			break;
 
 		case LLSD_MAP:
-			llsd = llsd_new_map();
+			llsd = llsd_new_map( 0 );
 			break;
 	}
 
@@ -481,6 +481,10 @@ static void test_serialization( void )
 
 		/* try to deserialize the llsd */
 		llsd = (llsd_t*)llsd_parse_from_file( tmpf );
+		if ( !llsd )
+		{
+			WARN( "failed to parse type: %s\n", llsd_get_type_string( type_ ) );
+		}
 		CU_ASSERT_PTR_NOT_NULL_FATAL( llsd );
 
 		/* check the type */

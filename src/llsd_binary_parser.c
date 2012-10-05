@@ -106,9 +106,9 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 					FREE( buffer );
 					return FALSE;
 				}
-				buffer = NULL;
 				/* tell it to take ownership of the memory */
 				CHECK_RET( (*(ops->binary_fn))( buffer, be_int, TRUE, user_data ), FALSE );
+				buffer = NULL;
 				break;
 
 			case 's':
@@ -123,9 +123,9 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 					FREE( buffer );
 					return FALSE;
 				}
-				buffer = NULL;
 				/* tell it to take ownership of the memory */
 				CHECK_RET( (*(ops->string_fn))( buffer, TRUE, user_data ), FALSE );
+				buffer = NULL;
 				break;
 
 			case 'l':
@@ -140,9 +140,9 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 					FREE( buffer );
 					return FALSE;
 				}
-				buffer = NULL;
 				/* tell it to take ownership of the memory */
 				CHECK_RET( (*(ops->uri_fn))( buffer, TRUE, user_data ), FALSE );
+				buffer = NULL;
 				break;
 
 			case 'd':
@@ -175,7 +175,6 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 				return FALSE;
 		}
 	}
-
 	return TRUE;
 }
 

@@ -108,8 +108,8 @@ void llsd_delete( void * p );
 #define llsd_new_uri( s, o ) llsd_new( LLSD_URI, s, o )
 #define llsd_new_binary( p, len, o ) llsd_new( LLSD_BINARY, p, len, o )
 #define llsd_new_date( d ) llsd_new( LLSD_DATE, d )
-#define llsd_new_array() llsd_new( LLSD_ARRAY )
-#define llsd_new_map() llsd_new( LLSD_MAP )
+#define llsd_new_array( s ) llsd_new( LLSD_ARRAY, s )
+#define llsd_new_map( s ) llsd_new( LLSD_MAP, s )
 
 /* get the type of the particular object */
 llsd_type_t llsd_get_type( llsd_t * llsd );
@@ -127,7 +127,9 @@ typedef struct llsd_itr_s {
 #define LLSD_ITR_EQ( i, j ) ((i.li == j.li) && ITR_EQ(i.hi,j.hi))
 
 int llsd_array_append( llsd_t * arr, llsd_t * data );
+int llsd_array_unappend( llsd_t * arr );
 int llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data );
+int llsd_map_remove( llsd_t * map, llsd_t * key );
 
 llsd_itr_t llsd_itr_begin( llsd_t * llsd );
 llsd_itr_t llsd_itr_end( llsd_t * llsd );

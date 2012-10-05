@@ -112,8 +112,8 @@ static int llsd_pair_eq(void const * const l, void const * const r)
 {
 	pair_t * left = (pair_t*)l;
 	pair_t * right = (pair_t*)r;
-	llsd_t * lval = pair_second( left );
-	llsd_t * rval = pair_second( right );
+	llsd_t * lval = pair_first( left );
+	llsd_t * rval = pair_first( right );
 	return llsd_equal( lval, rval );
 }
 
@@ -229,11 +229,17 @@ static int llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			break;
 
 		case LLSD_ARRAY:
-			CHECK_RET( list_initialize( &(llsd->array_), 0, &llsd_delete ), FALSE );
+			va_start( args, type_ );
+			len = va_arg( args, uint32_t );
+			va_end( args );
+			CHECK_RET( list_initialize( &(llsd->array_), len, &llsd_delete ), FALSE );
 			break;
 
 		case LLSD_MAP:
-			CHECK_RET( ht_initialize( &(llsd->map_), 0, &llsd_pair_hash, &llsd_pair_eq, &llsd_pair_delete ), FALSE );
+			va_start( args, type_ );
+			len = va_arg( args, uint32_t );
+			va_end( args );
+			CHECK_RET( ht_initialize( &(llsd->map_), len, &llsd_pair_hash, &llsd_pair_eq, &llsd_pair_delete ), FALSE );
 			break;
 	}
 	return TRUE;
@@ -307,7 +313,10 @@ llsd_t * llsd_new( llsd_type_t type_, ... )
 
 		case LLSD_ARRAY:
 		case LLSD_MAP:
-			if ( !llsd_initialize( llsd, type_ ) )
+			va_start( args, type_ );
+			a4 = va_arg( args, uint32_t ); /* initial capacity */
+			va_end( args );
+			if ( !llsd_initialize( llsd, type_, a4 ) )
 				goto fail_llsd_new;
 			break;
 	}
@@ -401,6 +410,13 @@ int llsd_array_append( llsd_t * arr, llsd_t * value )
 	list_push_tail( &(arr->array_), (void*)value );
 }
 
+int llsd_array_unappend( llsd_t * arr )
+{
+	CHECK_PTR_RET( arr, FALSE );
+	CHECK_RET( llsd_get_type( arr ) == LLSD_ARRAY, FALSE );
+	list_pop_tail( &(arr->array_) );
+}
+
 int llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * value )
 {
 	pair_t * p = NULL;
@@ -417,6 +433,37 @@ int llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * value )
 		return FALSE;
 	}
 	return TRUE;
+}
+
+int llsd_map_remove( llsd_t * map, llsd_t * key )
+{
+	int ret = FALSE;
+	pair_t * p = NULL;
+	ht_itr_t itr;
+	CHECK_PTR_RET( map, FALSE );
+	CHECK_PTR_RET( key, FALSE );
+	CHECK_RET( llsd_get_type(map) == LLSD_MAP, FALSE );
+	CHECK_RET( llsd_get_type(key) == LLSD_STRING, FALSE );
+
+	p = pair_new( key, NULL );
+	CHECK_PTR_RET( p, FALSE );
+	itr = ht_find( &map->map_, (void*)p );
+	pair_delete( p );
+	CHECK_RET( !ITR_EQ( itr, ht_itr_end( &map->map_ ) ), FALSE );
+
+	/* get the pair object */
+	p = ht_get( &map->map_, itr );
+	CHECK_PTR_RET( p, FALSE );
+
+	/* remove the pair from the map */
+	ret = ht_remove( &map->map_, itr );
+
+	/* now delete the two parts of the pair and the pair itself */
+	llsd_delete( pair_first( p ) );
+	llsd_delete( pair_second( p ) );
+	pair_delete( p );
+
+	return ret;
 }
 
 llsd_itr_t llsd_itr_begin( llsd_t * llsd )
