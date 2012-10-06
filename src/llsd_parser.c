@@ -48,6 +48,29 @@ static int llsd_add_to_container( llsd_t * const container, llsd_t * const key, 
 	return TRUE;
 }
 
+static int llsd_remove_from_container( llsd_t * container, llsd_t * const key )
+{
+	CHECK_PTR_RET( container, FALSE );
+	if ( llsd_get_type( container ) == LLSD_MAP )
+	{
+		CHECK_PTR_RET( key, FALSE );
+		if ( !llsd_map_remove( container, key ) )
+		{
+			DEBUG( "failed to clean up bad state!\n" );
+			return FALSE;
+		}
+	}
+	else
+	{
+		if ( !llsd_array_unappend( container ) )
+		{
+			DEBUG( "failed to clean up bad state!\n" );
+			return FALSE;
+		}
+	}
+	return TRUE;
+}
+
 static int llsd_update_parser_state( void * const user_data, llsd_t * const v )
 {
 	llsd_t * container = NULL;
@@ -58,47 +81,73 @@ static int llsd_update_parser_state( void * const user_data, llsd_t * const v )
 	/* try to get the current container */
 	container = list_get_head( state->container_stack );
 
-	/* if there isn't a container, set the llsd to the literal */
-	if ( container == NULL )
+	switch( llsd_get_type( v ) )
 	{
-		CHECK_RET( state->llsd == NULL, FALSE );
-		state->llsd = v;
-		return TRUE;
-	}
+		case LLSD_ARRAY:
+		case LLSD_MAP:
+			/* for containers */
 
-	/* add the value to the container */
-	if ( !llsd_add_to_container( container, state->key, v ) )
-	{
-		llsd_delete( v );
-		return FALSE;
-	}
-
-	/* if the value is a map or array, it becomes the top of the container stack */
-	if ( (llsd_get_type( v ) == LLSD_MAP) || (llsd_get_type( v ) == LLSD_ARRAY) )
-	{
-		if ( !list_push_head( state->container_stack, v ) )
-		{
-			if ( llsd_get_type( v ) == LLSD_MAP )
+			/* if there is a container, add this container to it */
+			if ( container != NULL )
 			{
-				if ( !llsd_map_remove( container, v ) )
+				/* add the value to the container */
+				if ( !llsd_add_to_container( container, state->key, v ) )
 				{
-					DEBUG( "failed to clean up bad state!\n" );
+					llsd_delete( v );
+					return FALSE;
 				}
 			}
-			else
+
+			/* now push this container on the container stack */
+			if ( !list_push_head( state->container_stack, v ) )
 			{
-				if ( !llsd_array_unappend( container ) )
+				CHECK_RET( llsd_remove_from_container( container, state->key ), FALSE );
+				llsd_delete( v );	/* delete the value we couldn't store */
+				/* if there was a key, delete it */
+				if ( state->key != NULL )
 				{
-					DEBUG( "failed to clean up bad state!\n" );
+					llsd_delete( state->key );
 				}
+				state->key = NULL;	/* clear out the key pointer */
+				return FALSE;
 			}
-			llsd_delete( v );
+			break;
+		
+		default:
+			/* for non-containers */
+
+			/* if there isn't a container, set the llsd to the literal */
+			if ( container == NULL )
+			{
+				CHECK_RET( state->llsd == NULL, FALSE );
+				state->llsd = v;
+				return TRUE;
+			}
+			else if ( (llsd_get_type( container ) == LLSD_MAP) && 
+					  (llsd_get_type( v ) == LLSD_STRING) &&
+					  (state->key == NULL) )
+			{
+				/* the current container is a map, the value we're adding is a
+				 * string and we don't have a key in the state yet.  this string
+				 * must be a key in a key-value pair. */
+				state->key = v;
+				return TRUE;
+			}
+
+			/* add the value to the container */
+			if ( !llsd_add_to_container( container, state->key, v ) )
+			{
+				llsd_delete( v );
+				if ( state->key != NULL )
+				{
+					llsd_delete( state->key );
+				}
+				state->key = NULL;
+				return FALSE;
+			}
 			state->key = NULL;
-			return FALSE;
-		}
+			break;
 	}
-	
-	state->key = NULL;
 	return TRUE;
 }
 

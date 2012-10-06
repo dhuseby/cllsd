@@ -1672,6 +1672,7 @@ DA:35,11
 DA:38,11
 DA:41,11
 DA:44,11
+DA:47,11
 DA:53,11
 DA:54,11
 DA:57,11
@@ -1747,8 +1748,8 @@ DA:171,0
 DA:174,0
 DA:175,0
 DA:178,11
-LF:81
-LH:68
+LF:82
+LH:69
 end_of_record
 TN:
 SF:/home/huseby/Projects/cllsd/src/llsd_binary_serializer.c

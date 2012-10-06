@@ -44,7 +44,7 @@ int llsd_binary_check_sig_file( FILE * fin )
 int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data )
 {
 	size_t ret;
-	uint8_t p;
+	uint8_t p = '\0';
 	uint8_t uuid[UUID_LEN];
 	uint8_t * buffer;
 	uint32_t be_int;

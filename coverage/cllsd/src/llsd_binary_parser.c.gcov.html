@@ -31,13 +31,13 @@
             <td class="headerValue">cutil test coverage</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">68</td>
-            <td class="headerCovTableEntry">81</td>
-            <td class="headerCovTableEntryMed">84.0 %</td>
+            <td class="headerCovTableEntry">69</td>
+            <td class="headerCovTableEntry">82</td>
+            <td class="headerCovTableEntryMed">84.1 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-10-05</td>
+            <td class="headerValue">2012-10-06</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -115,7 +115,7 @@
 <span class="lineNum">      44 </span>                :<span class="lineCov">         11 : int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data )</span>
 <span class="lineNum">      45 </span>                :            : {
 <span class="lineNum">      46 </span>                :            :     size_t ret;
-<span class="lineNum">      47 </span>                :            :     uint8_t p;
+<span class="lineNum">      47 </span>                :<span class="lineCov">         11 :     uint8_t p = '\0';</span>
 <span class="lineNum">      48 </span>                :            :     uint8_t uuid[UUID_LEN];
 <span class="lineNum">      49 </span>                :            :     uint8_t * buffer;
 <span class="lineNum">      50 </span>                :            :     uint32_t be_int;
