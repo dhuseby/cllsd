@@ -504,39 +504,46 @@ static void test_serialization( void )
 
 static void test_random_serialize( void )
 {
-	const uint32_t seed = 0xDEADBEEF;
-	const uint32_t size = 16384;
+	int i;
+	uint32_t const seed = 0xDEADBEEF;
+	uint32_t size = 1;
 	llsd_t * llsd_out = NULL;
 	llsd_t * llsd_in = NULL;
 	FILE* fin = NULL;
 	FILE* fout = NULL;
 
-	/* generate a repeatable, random llsd object */
-	llsd_out = get_random_llsd( size, seed );
-	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_out );
+	for ( i = 0; i < 16; i++ )
+	{
+		/* generate a repeatable, random llsd object */
+		llsd_out = get_random_llsd( size, seed );
+		CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_out );
 
-	tmpf = fopen( "test.llsd", "w+b" );
-	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
+		tmpf = fopen( "test.llsd", "w+b" );
+		CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
-	CU_ASSERT_TRUE( llsd_serialize_to_file( llsd_out, tmpf, format, FALSE ) );
-	fclose( tmpf );
-	tmpf = NULL;
+		CU_ASSERT_TRUE( llsd_serialize_to_file( llsd_out, tmpf, format, FALSE ) );
+		fclose( tmpf );
+		tmpf = NULL;
 
-	tmpf = fopen( "test.llsd", "r+b" );
-	CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
+		tmpf = fopen( "test.llsd", "r+b" );
+		CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
-	llsd_in = (llsd_t*)llsd_parse_from_file( tmpf );
-	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_in );
-	fclose( tmpf );
-	tmpf = NULL;
+		llsd_in = (llsd_t*)llsd_parse_from_file( tmpf );
+		CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_in );
+		fclose( tmpf );
+		tmpf = NULL;
 
-	/* make sure the two llsd structures are equivilent */
-	CU_ASSERT_FATAL( llsd_equal( llsd_out, llsd_in ) );
+		/* make sure the two llsd structures are equivilent */
+		CU_ASSERT_FATAL( llsd_equal( llsd_out, llsd_in ) );
 
-	llsd_delete( llsd_out );
-	llsd_out = NULL;
-	llsd_delete( llsd_in );
-	llsd_in = NULL;
+		llsd_delete( llsd_out );
+		llsd_out = NULL;
+		llsd_delete( llsd_in );
+		llsd_in = NULL;
+		WARN("size %u worked!\n", size );
+		/* double the size */
+		size <<= 1;
+	}
 }
 
 #if 0

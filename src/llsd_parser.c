@@ -60,29 +60,6 @@ static int llsd_add_to_container( llsd_t * const container, llsd_t * const key, 
 	return TRUE;
 }
 
-static int llsd_remove_from_container( llsd_t * container, llsd_t * const key )
-{
-	CHECK_PTR_RET( container, FALSE );
-	if ( llsd_get_type( container ) == LLSD_MAP )
-	{
-		CHECK_PTR_RET( key, FALSE );
-		if ( !llsd_map_remove( container, key ) )
-		{
-			DEBUG( "failed to clean up bad state!\n" );
-			return FALSE;
-		}
-	}
-	else
-	{
-		if ( !llsd_array_unappend( container ) )
-		{
-			DEBUG( "failed to clean up bad state!\n" );
-			return FALSE;
-		}
-	}
-	return TRUE;
-}
-
 static int llsd_update_parser_state( void * const user_data, llsd_t * const v )
 {
 	llsd_t * container = NULL;
@@ -97,7 +74,8 @@ static int llsd_update_parser_state( void * const user_data, llsd_t * const v )
 			 * v is map		=> PARSER_MAP_CONTAINER
 			 * v is other	=> PARSER_DONE */
 
-			CHECK_RET( list_count( state->container_stack ) == 0, FALSE );
+			if ( list_count( state->container_stack ) != 0 )
+				goto parser_error;
 
 			/* handle containers */
 			if ( (llsd_get_type( v ) == LLSD_ARRAY) || (llsd_get_type( v ) == LLSD_MAP) )
@@ -106,8 +84,10 @@ static int llsd_update_parser_state( void * const user_data, llsd_t * const v )
 				if ( !list_push_head( state->container_stack, v ) )
 				{
 					llsd_delete( v );
-					return FALSE;
+					goto parser_error;
 				}
+
+				/* we cleanly made the state transition so update the state value */
 				state->step = (llsd_get_type( v ) == LLSD_ARRAY) ? 
 								PARSER_ARRAY_CONTAINER :
 								PARSER_MAP_CONTAINER;
@@ -130,18 +110,21 @@ static int llsd_update_parser_state( void * const user_data, llsd_t * const v )
 			 * v is map		=> PARSER_MAP_CONTAINER
 			 * v is other	=> PARSER_ARRAY_CONTAINER */
 
-			CHECK_RET( list_count( state->container_stack ) > 0, FALSE );
+			if ( list_count( state->container_stack ) == 0 )
+				goto parser_error;
 
 			/* get the current container */
 			container = list_get_head( state->container_stack );
-			CHECK_PTR_RET( container, FALSE );
-			CHECK_RET( llsd_get_type( container ) == LLSD_ARRAY, FALSE );
+			if ( container == NULL )
+				goto parser_error;
+			if ( llsd_get_type( container ) != LLSD_ARRAY )
+				goto parser_error;
 
 			/* add v to the array */
 			if ( !llsd_add_to_container( container, NULL, v ) )
 			{
 				llsd_delete( v );
-				return FALSE;
+				goto parser_error;
 			}
 
 			/* push containers */
@@ -151,7 +134,7 @@ static int llsd_update_parser_state( void * const user_data, llsd_t * const v )
 				if ( !list_push_head( state->container_stack, v ) )
 				{
 					llsd_delete( v );
-					return FALSE;
+					goto parser_error;
 				}
 				state->step = (llsd_get_type( v ) == LLSD_ARRAY) ? 
 								PARSER_ARRAY_CONTAINER :
@@ -163,42 +146,49 @@ static int llsd_update_parser_state( void * const user_data, llsd_t * const v )
 			/* v is string	=> PARSER_MAP_HAVE_KEY
 			 * v is other	=> PARSER_ERROR */
 
-			CHECK_RET( list_count( state->container_stack ) > 0, FALSE );
+			if ( list_count( state->container_stack ) == 0 )
+				goto parser_error;
 
 			/* get the current container */
 			container = list_get_head( state->container_stack );
-			CHECK_PTR_RET( container, FALSE );
-			CHECK_RET( llsd_get_type( container ) == LLSD_MAP, FALSE );
+			if ( container == NULL )
+				goto parser_error;
+			if ( llsd_get_type( container ) != LLSD_MAP )
+				goto parser_error;
+			if ( llsd_get_type( v ) != LLSD_STRING )
+				goto parser_error;
 
-			if ( llsd_get_type( v ) == LLSD_STRING )
-			{
-				state->key = v;
-				state->step = LLSD_MAP_HAVE_KEY;
-				return TRUE;
-			}
-			return FALSE;
+			/* store the key, move to the second part of the map state */
+			state->key = v;
+			state->step = PARSER_MAP_HAVE_KEY;
+			break;
 
 		case PARSER_MAP_HAVE_KEY:
 			/* v is array	=> PARSER_ARRAY_CONTAINER
 			 * v is map		=> PARSER_MAP_CONTAINER
 			 * v is other	=> PARSER_MAP_CONTAINER */
 
-			CHECK_RET( list_count( state->container_stack ) > 0, FALSE );
+			if ( list_count( state->container_stack ) == 0 )
+				goto parser_error;
 
 			/* get the current container */
 			container = list_get_head( state->container_stack );
-			CHECK_PTR_RET( container, FALSE );
-			CHECK_RET( llsd_get_type( container ) == LLSD_MAP, FALSE );
+			if ( container == NULL )
+				goto parser_error;
+			if ( llsd_get_type( container ) != LLSD_MAP )
+				goto parser_error;
 
 			/* make sure we have a string key */
-			CHECK_PTR_RET( state->key, FALSE );
-			CHECK_RET( llsd_get_type( state->key ) == LLSD_STRING, FALSE );
+			if ( state->key == NULL )
+				goto parser_error;
+			if ( llsd_get_type( state->key ) != LLSD_STRING )
+				goto parser_error;
 
 			/* add v to the map */
 			if ( !llsd_add_to_container( container, state->key, v ) )
 			{
 				llsd_delete( v );
-				return FALSE;
+				goto parser_error;
 			}
 
 			/* drop our reference to the key */
@@ -211,7 +201,7 @@ static int llsd_update_parser_state( void * const user_data, llsd_t * const v )
 				if ( !list_push_head( state->container_stack, v ) )
 				{
 					llsd_delete( v );
-					return FALSE;
+					goto parser_error;
 				}
 				state->step = (llsd_get_type( v ) == LLSD_ARRAY) ? 
 								PARSER_ARRAY_CONTAINER :
@@ -219,89 +209,22 @@ static int llsd_update_parser_state( void * const user_data, llsd_t * const v )
 			}
 			else
 			{
+				/* we're still in the map container state */
 				state->step = PARSER_MAP_CONTAINER;
 			}
 			break;
 
+		/* should never call this function when in DONE/ERROR state */
 		case PARSER_DONE:
-			break;
-
 		case PARSER_ERROR:
-			break;
+			goto parser_error;
 	}
 
-
-	/* try to get the current container */
-	container = list_get_head( state->container_stack );
-
-	switch( llsd_get_type( v ) )
-	{
-		case LLSD_ARRAY:
-		case LLSD_MAP:
-			/* for containers */
-
-			/* if there is a container, add this container to it */
-			if ( container != NULL )
-			{
-				/* add the value to the container */
-				if ( !llsd_add_to_container( container, state->key, v ) )
-				{
-					llsd_delete( v );
-					return FALSE;
-				}
-			}
-
-			/* now push this container on the container stack */
-			if ( !list_push_head( state->container_stack, v ) )
-			{
-				CHECK_RET( llsd_remove_from_container( container, state->key ), FALSE );
-				llsd_delete( v );	/* delete the value we couldn't store */
-				/* if there was a key, delete it */
-				if ( state->key != NULL )
-				{
-					llsd_delete( state->key );
-				}
-				state->key = NULL;	/* clear out the key pointer */
-				return FALSE;
-			}
-			break;
-		
-		default:
-			/* for non-containers */
-
-			/* if there isn't a container, set the llsd to the literal */
-			if ( container == NULL )
-			{
-				CHECK_RET( state->llsd == NULL, FALSE );
-				state->llsd = v;
-				return TRUE;
-			}
-			else if ( (llsd_get_type( container ) == LLSD_MAP) && 
-					  (llsd_get_type( v ) == LLSD_STRING) &&
-					  (state->key == NULL) )
-			{
-				/* the current container is a map, the value we're adding is a
-				 * string and we don't have a key in the state yet.  this string
-				 * must be a key in a key-value pair. */
-				state->key = v;
-				return TRUE;
-			}
-
-			/* add the value to the container */
-			if ( !llsd_add_to_container( container, state->key, v ) )
-			{
-				llsd_delete( v );
-				if ( state->key != NULL )
-				{
-					llsd_delete( state->key );
-				}
-				state->key = NULL;
-				return FALSE;
-			}
-			state->key = NULL;
-			break;
-	}
 	return TRUE;
+
+parser_error:
+	state->step = PARSER_ERROR;
+	return FALSE;
 }
 
 static int llsd_undef_fn( void * const user_data )
@@ -422,24 +345,40 @@ static int llsd_array_end_fn( void * const user_data )
 
 	/* try to get the current container */
 	container = list_get_head( state->container_stack );
-
-	CHECK_PTR_RET( container, FALSE );
-	CHECK_RET( llsd_get_type( container ) == LLSD_ARRAY, FALSE );
+	if ( container == NULL )
+		goto parser_error_array_end;
+	if ( llsd_get_type( container ) != LLSD_ARRAY )
+		goto parser_error_array_end;
 
 	/* remove the container from the top of the stack */
 	if ( !list_pop_head( state->container_stack ) )
-	{
-		DEBUG( "failed to unwind container stack\n" );
-	}
+		goto parser_error_array_end;
 
 	/* if the container stack is now empty, set the array as the llsd value
 	 * and return */
 	if ( list_count( state->container_stack ) == 0 )
 	{
+		state->step = PARSER_DONE;
 		state->llsd = container;
+	}
+	else
+	{
+		/* try to get the new current container */
+		container = list_get_head( state->container_stack );
+		if ( container == NULL )
+			goto parser_error_array_end;
+
+		/* we cleanly made the state transition so update the state value */
+		state->step = (llsd_get_type( container ) == LLSD_ARRAY) ? 
+						PARSER_ARRAY_CONTAINER :
+						PARSER_MAP_CONTAINER;
 	}
 
 	return TRUE;
+
+parser_error_array_end:
+	state->step = PARSER_ERROR;
+	return FALSE;
 }
 
 static int llsd_map_begin_fn( uint32_t const size, void * const user_data )
@@ -461,24 +400,40 @@ static int llsd_map_end_fn( void * const user_data )
 
 	/* try to get the current container */
 	container = list_get_head( state->container_stack );
-
-	CHECK_PTR_RET( container, FALSE );
-	CHECK_RET( llsd_get_type( container ) == LLSD_MAP, FALSE );
+	if ( container == NULL )
+		goto parser_error_map_end;
+	if ( llsd_get_type( container ) != LLSD_MAP )
+		goto parser_error_map_end;
 
 	/* remove the container from the stack */
 	if ( !list_pop_head( state->container_stack ) )
-	{
-		DEBUG( "failed to unwind container stack\n" );
-	}
+		goto parser_error_map_end;
 
 	/* if the container stack is now empty, set the array as the llsd value
 	 * and return */
 	if ( list_count( state->container_stack ) == 0 )
 	{
+		state->step = PARSER_DONE;
 		state->llsd = container;
+	}
+	else
+	{
+		/* try to get the new current container */
+		container = list_get_head( state->container_stack );
+		if ( container == NULL )
+			goto parser_error_map_end;
+
+		/* we cleanly made the state transition so update the state value */
+		state->step = (llsd_get_type( container ) == LLSD_ARRAY) ? 
+						PARSER_ARRAY_CONTAINER :
+						PARSER_MAP_CONTAINER;
 	}
 
 	return TRUE;
+
+parser_error_map_end:
+	state->step = PARSER_ERROR;
+	return FALSE;
 }
 
 
