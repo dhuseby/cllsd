@@ -36,8 +36,8 @@ SUITE( base16 );
 SUITE( base64 );
 SUITE( base85 );
 SUITE( binary );
-#if 0
 SUITE( notation );
+#if 0
 SUITE( xml );
 #endif
 
@@ -52,8 +52,8 @@ int main()
 	ADD_SUITE( base64 );
 	ADD_SUITE( base85 );
 	ADD_SUITE( binary );
-#if 0
 	ADD_SUITE( notation );
+#if 0
 	ADD_SUITE( xml );
 #endif
 

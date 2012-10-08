@@ -427,7 +427,7 @@ static void test_serialization( void )
 
 	for ( type_ = LLSD_TYPE_FIRST; type_ < LLSD_TYPE_LAST; type_++ )
 	{
-		tmpf = tmpfile();
+		tmpf = fopen( "test.llsd", "w+b" );
 		CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
 		/* construct the llsd */
@@ -457,9 +457,8 @@ static void test_serialization( void )
 		/* delete the llsd */
 		llsd_delete( llsd );
 		llsd = NULL;
-
-		/* reset the read location again */
-		fseek( tmpf, 0, SEEK_SET );
+		fclose( tmpf );
+		tmpf = NULL;
 
 		/* check that the correct number of bytes were written */
 		if ( expected_sizes[type_] != (nmemb - data_offset) )
@@ -478,6 +477,10 @@ static void test_serialization( void )
 			WARN("type: %s failed memcmp\n", llsd_get_type_string( type_ ) );
 			CU_FAIL("memcmp");
 		}
+
+		/* open the temp file */
+		tmpf = fopen( "test.llsd", "r+b" );
+		CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
 		/* try to deserialize the llsd */
 		llsd = (llsd_t*)llsd_parse_from_file( tmpf );
@@ -512,7 +515,7 @@ static void test_random_serialize( void )
 	FILE* fin = NULL;
 	FILE* fout = NULL;
 
-	for ( i = 0; i < 16; i++ )
+	for ( i = 0; i < 17; i++ )
 	{
 		/* generate a repeatable, random llsd object */
 		llsd_out = get_random_llsd( size, seed );
@@ -540,7 +543,8 @@ static void test_random_serialize( void )
 		llsd_out = NULL;
 		llsd_delete( llsd_in );
 		llsd_in = NULL;
-		WARN("size %u worked!\n", size );
+		fprintf( stderr, "%u ", size );
+		fflush( stderr );
 		/* double the size */
 		size <<= 1;
 	}

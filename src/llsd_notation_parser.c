@@ -278,10 +278,14 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 	/* seek past signature */
 	fseek( fin, NOTATION_SIG_LEN, SEEK_SET );
 
-	while( !feof( fin ) )
+	while( TRUE )
 	{
 		/* read the type marker */
-		CHECK_RET( fread( &p, sizeof(uint8_t), 1, fin ) == 1, FALSE );
+		ret = fread( &p, sizeof(uint8_t), 1, fin );
+		if ( feof( fin ) )
+			return TRUE;
+
+		CHECK_RET( ret == 1, FALSE );
 
 		switch( p )
 		{

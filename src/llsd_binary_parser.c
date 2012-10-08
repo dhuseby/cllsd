@@ -56,7 +56,7 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 	/* seek past signature */
 	fseek( fin, BINARY_SIG_LEN, SEEK_SET );
 
-	while( !feof( fin ) )
+	while( TRUE )
 	{
 		/* read the type marker */
 		ret = fread( &p, sizeof(uint8_t), 1, fin );
@@ -87,7 +87,8 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 
 			case 'r':
 				CHECK_RET( fread( &be_real, sizeof(uint64_t), 1, fin ) == 1, FALSE );
-				CHECK_RET( (*(ops->real_fn))( (double)be64toh( be_real ), user_data ), FALSE );
+				be_real = be64toh( be_real );
+				CHECK_RET( (*(ops->real_fn))( *((double*)&be_real), user_data ), FALSE );
 				break;
 
 			case 'u':
@@ -147,7 +148,8 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 
 			case 'd':
 				CHECK_RET( fread( &be_real, sizeof(double), 1, fin ) == 1, FALSE );
-				CHECK_RET( (*(ops->date_fn))( (double)be64toh( be_real ), user_data ), FALSE );
+				be_real = be64toh( be_real );
+				CHECK_RET( (*(ops->date_fn))( *((double*)&be_real), user_data ), FALSE );
 				break;
 
 			case '[':

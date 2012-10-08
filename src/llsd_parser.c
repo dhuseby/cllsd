@@ -337,50 +337,6 @@ static int llsd_array_begin_fn( uint32_t const size, void * const user_data )
 	return llsd_update_parser_state( user_data, v );
 }
 
-static int llsd_array_end_fn( void * const user_data )
-{
-	llsd_t * container = NULL;
-	parser_state_t * state = (parser_state_t*)user_data;
-	CHECK_PTR_RET( state, FALSE );
-
-	/* try to get the current container */
-	container = list_get_head( state->container_stack );
-	if ( container == NULL )
-		goto parser_error_array_end;
-	if ( llsd_get_type( container ) != LLSD_ARRAY )
-		goto parser_error_array_end;
-
-	/* remove the container from the top of the stack */
-	if ( !list_pop_head( state->container_stack ) )
-		goto parser_error_array_end;
-
-	/* if the container stack is now empty, set the array as the llsd value
-	 * and return */
-	if ( list_count( state->container_stack ) == 0 )
-	{
-		state->step = PARSER_DONE;
-		state->llsd = container;
-	}
-	else
-	{
-		/* try to get the new current container */
-		container = list_get_head( state->container_stack );
-		if ( container == NULL )
-			goto parser_error_array_end;
-
-		/* we cleanly made the state transition so update the state value */
-		state->step = (llsd_get_type( container ) == LLSD_ARRAY) ? 
-						PARSER_ARRAY_CONTAINER :
-						PARSER_MAP_CONTAINER;
-	}
-
-	return TRUE;
-
-parser_error_array_end:
-	state->step = PARSER_ERROR;
-	return FALSE;
-}
-
 static int llsd_map_begin_fn( uint32_t const size, void * const user_data )
 {
 	llsd_t * v = NULL;
@@ -392,22 +348,30 @@ static int llsd_map_begin_fn( uint32_t const size, void * const user_data )
 	return llsd_update_parser_state( user_data, v );
 }
 
-static int llsd_map_end_fn( void * const user_data )
+static int llsd_container_end_fn( void * const user_data )
 {
+	uint32_t count;
 	llsd_t * container = NULL;
 	parser_state_t * state = (parser_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 
+	/* make sure there is a container on the stack */
+	if ( list_count( state->container_stack ) == 0 )
+		goto parser_error_container_end;
+
 	/* try to get the current container */
 	container = list_get_head( state->container_stack );
 	if ( container == NULL )
-		goto parser_error_map_end;
-	if ( llsd_get_type( container ) != LLSD_MAP )
-		goto parser_error_map_end;
+		goto parser_error_container_end;
+	if ( (llsd_get_type( container ) != LLSD_MAP) && 
+		 (llsd_get_type( container ) != LLSD_ARRAY) )
+		goto parser_error_container_end;
 
-	/* remove the container from the stack */
-	if ( !list_pop_head( state->container_stack ) )
-		goto parser_error_map_end;
+	/* remove the container from the top of the stack */
+	count = list_count( state->container_stack );
+	list_pop_head( state->container_stack );
+	if ( list_count( state->container_stack ) != (count - 1) )
+		goto parser_error_container_end;
 
 	/* if the container stack is now empty, set the array as the llsd value
 	 * and return */
@@ -421,7 +385,7 @@ static int llsd_map_end_fn( void * const user_data )
 		/* try to get the new current container */
 		container = list_get_head( state->container_stack );
 		if ( container == NULL )
-			goto parser_error_map_end;
+			goto parser_error_container_end;
 
 		/* we cleanly made the state transition so update the state value */
 		state->step = (llsd_get_type( container ) == LLSD_ARRAY) ? 
@@ -431,7 +395,7 @@ static int llsd_map_end_fn( void * const user_data )
 
 	return TRUE;
 
-parser_error_map_end:
+parser_error_container_end:
 	state->step = PARSER_ERROR;
 	return FALSE;
 }
@@ -453,9 +417,9 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 		&llsd_uri_fn,
 		&llsd_binary_fn,
 		&llsd_array_begin_fn,
-		&llsd_array_end_fn,
+		&llsd_container_end_fn,
 		&llsd_map_begin_fn,
-		&llsd_map_end_fn
+		&llsd_container_end_fn
 	};
 
 	CHECK_PTR_RET( fin, NULL );
@@ -470,11 +434,11 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 	{
 		ok = llsd_binary_parse_file( fin, &ops, &state );
 	}
-#if 0
 	else if ( llsd_notation_check_sig_file( fin ) )
 	{
 		ok = llsd_notation_parse_file( fin, &ops, &state );
 	}
+#if 0
 	else if ( llsd_xml_check_sig_file( fin ) )
 	{
 		ok = llsd_xml_parse_file( fin, &ops, &state );
