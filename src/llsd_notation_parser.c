@@ -39,24 +39,18 @@ int llsd_notation_check_sig_file( FILE * fin )
 	return ( memcmp( sig, notation_header, NOTATION_SIG_LEN ) == 0 );
 }
 
-static int llsd_notation_parse_boolean( FILE * fin, int * bval )
+static int llsd_notation_consume_boolean( FILE * fin, int bval )
 {
 	uint8_t p;
-	long offset = -1;
+	long offset;
 	CHECK_PTR_RET( fin, FALSE );
-	CHECK_PTR_RET( bval, FALSE );
 
-	CHECK_RET( fread( &p, sizeof(uint8_t), 1, fin ) == 1, FALSE );
-	(*bval) = FALSE;
-	if ( (p == 't') || (p == 'T') || (p == '1') )
-		(*bval) = TRUE;
-
-	CHECK_RET( fread( &p, sizeof(uint8_t), 1, fin ) == 1, FALSE );
-	if ( isalpha( p ) )
-		offset = ((*bval) ? 3 : 4 );
-
-	/* move to where we need to be for the rest of the parse */
-	fseek( fin, offset, SEEK_CUR );
+	if ( (fread( &p, sizeof(uint8_t), 1, fin ) == 1) && isalpha(p) )
+	{
+		offset = (bval ? 2 : 3 );
+		/* move to where we need to be for the rest of the parse */
+		fseek( fin, offset, SEEK_CUR );
+	}
 
 	return TRUE;
 }
@@ -109,12 +103,12 @@ static int llsd_notation_parse_uuid( FILE * fin, uint8_t uuid[UUID_LEN] )
 	CHECK_RET( fread( buf, sizeof(uint8_t), UUID_STR_LEN, fin ) == UUID_STR_LEN, FALSE );
 
 	/* check for 8-4-4-4-12 */
-	for ( i = 0; i < 36; i++ )
+	for ( i = 0; i < UUID_STR_LEN; i++ )
 	{
-		if ( ( (i >= 0) && (i < 8) ) &&		/* 8 */
-			 ( (i >= 9) && (i < 13) ) &&	/* 4 */
-			 ( (i >= 14) && (i < 18) ) &&	/* 4 */
-			 ( (i >= 19) && (i < 23) ) &&	/* 4 */
+		if ( ( (i >=  0) && (i <  8) ) ||	/* 8 */
+			 ( (i >=  9) && (i < 13) ) ||	/* 4 */
+			 ( (i >= 14) && (i < 18) ) ||	/* 4 */
+			 ( (i >= 19) && (i < 23) ) ||	/* 4 */
 			 ( (i >= 24) && (i < 36) ) )	/* 12 */
 		{
 			if ( !isxdigit( buf[i] ) )
@@ -175,22 +169,49 @@ static int llsd_notation_parse_base_number( FILE * fin, llsd_bin_enc_t * enc )
 	switch ( p[0] )
 	{
 		case '1':
-			(*enc) == LLSD_BASE16;
+			(*enc) = LLSD_BASE16;
 			break;
 		case '6':
-			(*enc) == LLSD_BASE64;
+			(*enc) = LLSD_BASE64;
 			break;
 		case '8':
-			(*enc) == LLSD_BASE85;
+			(*enc) = LLSD_BASE85;
 			break;
 	}
 
 	return TRUE;
 }
 
-static int llsd_notation_parse_quoted( FILE * fin, uint8_t ** buffer, uint32_t * len )
+static int llsd_notation_parse_raw( FILE * fin, uint8_t ** buffer, uint32_t len, int str )
 {
-	uint8_t p;
+	uint8_t c;
+	CHECK_PTR_RET( fin, FALSE );
+	CHECK_PTR_RET( buffer, FALSE );
+	(*buffer) = NULL;
+
+	/* read first double quote */
+	CHECK_RET( fread( &c, sizeof(uint8_t), 1, fin ) == 1, FALSE );
+	CHECK_RET( c == '\"', FALSE );
+
+	if ( len > 0 )
+	{
+		/* add 1 for null termination on strings */
+		(*buffer) = CALLOC( len + (str ? 1 : 0), sizeof(uint8_t) );
+		CHECK_PTR_RET( (*buffer), FALSE );
+
+		/* read the raw data */
+		CHECK_RET( fread( (*buffer), sizeof(uint8_t), len, fin ) == len, FALSE );
+	}
+
+	/* read second double quote */
+	CHECK_RET( fread( &c, sizeof(uint8_t), 1, fin ) == 1, FALSE );
+	CHECK_RET( c == '\"', FALSE );
+
+	return TRUE;
+}
+
+static int llsd_notation_parse_quoted( FILE * fin, uint8_t ** buffer, uint32_t * len, uint8_t quote )
+{
 	int i;
 	int done = FALSE;
 	static uint8_t buf[1024];
@@ -200,9 +221,6 @@ static int llsd_notation_parse_quoted( FILE * fin, uint8_t ** buffer, uint32_t *
 
 	(*len) = 0;
 
-	/* read the quote character */
-	CHECK_RET( fread( &p, sizeof(uint8_t), 1, fin) == 1, FALSE );
-
 	while( !done )
 	{
 		for ( i = 0; (i < 1024) && (!done); i++ )
@@ -210,7 +228,7 @@ static int llsd_notation_parse_quoted( FILE * fin, uint8_t ** buffer, uint32_t *
 			CHECK_RET( fread( &buf[i], sizeof(uint8_t), 1, fin ) == 1, FALSE );
 
 			/* check for an unescaped matching quote character */
-			if ( (buf[i] == p) && (i > 0) && (buf[i-1] != '\\') )
+			if ( (buf[i] == quote) && (i > 0) && (buf[i-1] != '\\') )
 				done = TRUE;
 		}
 
@@ -219,8 +237,8 @@ static int llsd_notation_parse_quoted( FILE * fin, uint8_t ** buffer, uint32_t *
 		CHECK_PTR_RET( (*buffer), FALSE );
 
 		/* copy the data over */
-		MEMCPY( &((*buffer)[(*len)]), buf, i + (done ? 1 : 0) );
-		(*len) += i;
+		MEMCPY( &((*buffer)[(*len)]), buf, i - (done ? 1 : 0) );
+		(*len) += (i - (done ? 1 : 0));
 
 		/* null terminate */
 		if ( done )
@@ -230,18 +248,20 @@ static int llsd_notation_parse_quoted( FILE * fin, uint8_t ** buffer, uint32_t *
 	return TRUE;
 }
 
+/* timezone value gets set to the number of seconds offset from GMT for local time */
+extern long timezone;
+
 static int llsd_notation_decode_date( uint8_t * data, double * real_val )
 {
 	int useconds;
 	struct tm parts;
-	time_t mktimeEpoch;
 	double seconds;
+	uint32_t tmp = 0;
 
 	CHECK_PTR_RET( data, FALSE );
 	CHECK_PTR_RET( real_val, FALSE );
 
 	MEMSET( &parts, 0, sizeof(struct tm) );
-	mktimeEpoch = mktime(&parts);
 
 	CHECK_RET( sscanf( data, "%04d-%02d-%02dT%02d:%02d:%02d.%03dZ", &parts.tm_year, &parts.tm_mon, &parts.tm_mday, &parts.tm_hour, &parts.tm_min, &parts.tm_sec, &useconds ) == 7, FALSE );
 
@@ -250,7 +270,13 @@ static int llsd_notation_decode_date( uint8_t * data, double * real_val )
 	parts.tm_mon -= 1;
 
 	/* convert to seconds */
-	(*real_val) = (double)(mktime(&parts) - mktimeEpoch);
+	tmp = mktime(&parts);
+	
+	/* correct for localtime variation */
+	tmp -= timezone;
+
+	/* convert to double */
+	(*real_val) = (double)tmp;
 
 	/* add in the miliseconds */
 	(*real_val) += ((double)useconds * 1000.0);
@@ -266,11 +292,11 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 	int32_t int_val;
 	double real_val;
 	uint8_t uuid[UUID_LEN];
-	uint8_t * buffer;
-	uint8_t * encoded;
+	uint8_t * buffer = NULL;
+	uint8_t * encoded = NULL;
 	uint32_t len;
 	uint32_t enc_len;
-	llsd_bin_enc_t encoding;
+	llsd_bin_enc_t encoding = 0;
 
 	CHECK_PTR_RET( fin, FALSE );
 	CHECK_PTR_RET( ops, FALSE );
@@ -295,14 +321,23 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 				break;
 
 			case '1':
+				CHECK_RET( (*(ops->boolean_fn))( TRUE, user_data ), FALSE );
+				break;
+
 			case '0':
+				CHECK_RET( (*(ops->boolean_fn))( FALSE, user_data ), FALSE );
+				break;
+
 			case 't':
-			case 'f':
 			case 'T':
+				CHECK_RET( llsd_notation_consume_boolean( fin, TRUE ), FALSE );
+				CHECK_RET( (*(ops->boolean_fn))( TRUE, user_data ), FALSE );
+				break;
+
+			case 'f':
 			case 'F':
-				CHECK_RET( fseek( fin, -1, SEEK_CUR ) == 0, FALSE );
-				CHECK_RET( llsd_notation_parse_boolean( fin, &bool_val ), FALSE );
-				CHECK_RET( (*(ops->boolean_fn))( bool_val, user_data ), FALSE );
+				CHECK_RET( llsd_notation_consume_boolean( fin, FALSE ), FALSE );
+				CHECK_RET( (*(ops->boolean_fn))( FALSE, user_data ), FALSE );
 				break;
 
 			case 'i':
@@ -328,30 +363,22 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 					/* it is a binary size in parenthesis */
 					CHECK_RET( llsd_notation_parse_paren_size( fin, &len ), FALSE );
 
-					/* allocate buffer and read the raw data as binary */
-					buffer = CALLOC( len, sizeof(uint8_t) );
-					CHECK_PTR_RET( buffer, FALSE );
-					ret = fread( buffer, sizeof(uint8_t), len, fin );
-					if ( ret != len )
-					{
-						FREE( buffer );
-						return FALSE;
-					}
-
-					/* read the trailing double quote */
-					ret = fread( &p, sizeof(uint8_t), 1, fin );
-					if ( (ret != 1) || (p != '\"') )
-					{
-						FREE( buffer );
-						return FALSE;
-					}
+					/* grab the binary data */
+					CHECK_RET( llsd_notation_parse_raw( fin, &buffer, len, FALSE ), FALSE );
 				}
 				else
 				{
 					/* it is a base encoding number */
 					CHECK_RET( llsd_notation_parse_base_number( fin, &encoding ), FALSE );
 					CHECK_RET( (encoding >= LLSD_BASE16) && (encoding <= LLSD_BASE85), FALSE );
-					CHECK_RET( llsd_notation_parse_quoted( fin, &encoded, &enc_len ), FALSE );
+				
+					/* read the quote character */
+					CHECK_RET( fread( &p, sizeof(uint8_t), 1, fin ) == 1, FALSE );
+					
+					/* read the quoted string */
+					CHECK_RET( llsd_notation_parse_quoted( fin, &encoded, &enc_len, p ), FALSE );
+
+					/* decode the binary */
 					switch( encoding )
 					{
 						case LLSD_BASE16:
@@ -401,36 +428,41 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 							break;
 					}
 					FREE( encoded );
+					encoded = NULL;
 				}
 			
 				/* tell it to take ownership of the memory */
 				CHECK_RET( (*(ops->binary_fn))( buffer, len, TRUE, user_data ), FALSE );
+				buffer = NULL;
 				break;
 
 			case '\'':
 			case '\"':
-			case 's':
-				if ( p == 's' )
-				{
-					/* it is a string size in parenthesis */
-					CHECK_RET( llsd_notation_parse_paren_size( fin, &enc_len ), FALSE );
-				}
-				else
-				{
-					/* put the quote mark back into the stream so that it can be parsed
-					 * as part of the parse quoted call that follows */
-					CHECK_RET( fseek( fin, -1, SEEK_CUR ) == 0, FALSE );
-				}
-
 				/* read the quoted string */
-				CHECK_RET( llsd_notation_parse_quoted( fin, &buffer, &len ), FALSE );
+				CHECK_RET( llsd_notation_parse_quoted( fin, &buffer, &len, p ), FALSE );
 			
 				/* tell it to take ownership of the memory */
 				CHECK_RET( (*(ops->string_fn))( buffer, TRUE, user_data ), FALSE );
+				buffer = NULL;
 				break;
 
+			case 's':
+				/* it is a string size in parenthesis */
+				CHECK_RET( llsd_notation_parse_paren_size( fin, &len ), FALSE );
+
+				/* read the raw string, add 1 so that it is null terminated */
+				CHECK_RET( llsd_notation_parse_raw( fin, &buffer, len, TRUE ), FALSE );
+
+				/* tell it to take ownership of the memory */
+				CHECK_RET( (*(ops->string_fn))( buffer, TRUE, user_data ), FALSE );
+				buffer = NULL;
+				break;
 			case 'l':
-				CHECK_RET( llsd_notation_parse_quoted( fin, &encoded, &enc_len ), FALSE );
+				/* read the quote character */
+				CHECK_RET( fread( &p, sizeof(uint8_t), 1, fin ) == 1, FALSE );
+
+				/* read the uri */
+				CHECK_RET( llsd_notation_parse_quoted( fin, &encoded, &enc_len, '\"' ), FALSE );
 #if 0
 				if ( !llsd_unescape_uri( encoded, enc_len, &buffer, &len ) )
 				{
@@ -440,15 +472,25 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 #endif
 				/* tell it to take ownership of the memory */
 				CHECK_RET( (*(ops->uri_fn))( encoded, TRUE, user_data ), FALSE );
+				encoded = NULL;
 				break;
 
 			case 'd':
-				CHECK_RET( llsd_notation_parse_quoted( fin, &encoded, &enc_len ), FALSE );
+				/* read the quote character */
+				CHECK_RET( fread( &p, sizeof(uint8_t), 1, fin ) == 1, FALSE );
+
+				/* read in the quoted string */
+				CHECK_RET( llsd_notation_parse_quoted( fin, &encoded, &enc_len, '\"' ), FALSE );
+
 				if ( !llsd_notation_decode_date( encoded, &real_val ) )
 				{
 					FREE( encoded );
 					return FALSE;
 				}
+
+				FREE( encoded );
+				encoded = NULL;
+
 				CHECK_RET( (*(ops->date_fn))( real_val, user_data ), FALSE );
 				break;
 
@@ -474,6 +516,7 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 			case '\r':
 			case '\n':
 			case ',':
+			case ':':
 				break;
 		}
 	}

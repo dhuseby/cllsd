@@ -38,10 +38,10 @@ static size_t expected_sizes[ LLSD_TYPE_COUNT ] =
 {
 	1,		/* LLSD_UNDEF	*/
 	1,		/* LLSD_BOOLEAN */
-	1,		/* LLSD_INTEGER */
+	2,		/* LLSD_INTEGER */
 	9,		/* LLSD_REAL	*/
 	37,		/* LLSD_UUID	*/
-	14,		/* LLSD_STRING	*/
+	19,		/* LLSD_STRING	*/
 	27,		/* LLSD_DATE	*/
 	25,		/* LLSD_URI		*/
 	29,		/* LLSD_BINARY	*/
@@ -50,11 +50,11 @@ static size_t expected_sizes[ LLSD_TYPE_COUNT ] =
 };
 
 static uint8_t const undef_[] = "!";
-static uint8_t const boolean_[] = "T";
+static uint8_t const boolean_[] = "1";
 static uint8_t const integer_[] = "i1";
 static uint8_t const real_[] = "r1.000000";
 static uint8_t const uuid_[] = "u01020304-0506-0708-0900-010203040506";
-static uint8_t const string_[] = "\"Hello World!\"";
+static uint8_t const string_[] = "s(12)\"Hello World!\"";
 static uint8_t const date_[] = "d\"1970-01-01T00:00:01.000Z\"";
 static uint8_t const uri_[] = "l\"http://www.ixquick.com\"";
 static uint8_t const binary_[] = "b64\"AQIDBAUGBwgJAAECAwQFBg==\"";

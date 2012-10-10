@@ -1006,7 +1006,12 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 				CHECK_RET( (lk == NULL) && (rk == NULL), FALSE );
 
 				/* recursively check equality */
-				ret &= llsd_equal( lv, rv );
+				if ( !llsd_equal( lv, rv ) )
+				{
+					WARN( "%s != %s\n", llsd_get_type_string( llsd_get_type( lv ) ), llsd_get_type_string( llsd_get_type( rv ) ) );
+					llsd_equal( lv, rv );
+					ret = FALSE;
+				}
 			}
 			return ret;
 		case LLSD_MAP:
@@ -1023,7 +1028,12 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 				rv = llsd_map_find_llsd( r, lk );
 
 				/* now recurse */
-				ret &= llsd_equal( lv, rv );
+				if ( !llsd_equal( lv, rv ) )
+				{
+					WARN( "%s != %s\n", llsd_get_type_string( llsd_get_type( lv ) ), llsd_get_type_string( llsd_get_type( rv ) ) );
+					llsd_equal( lv, rv );
+					ret = FALSE;
+				}
 			}
 			return ret;
 	}

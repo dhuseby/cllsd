@@ -65,8 +65,9 @@ int llsd_notation_boolean( int const value, void * const user_data )
 	CHECK_PTR_RET( state, FALSE );
 	s = (cont_state_t)list_get_head( state->container_stack );
 	CHECK_RET( s != MAP_KEY, FALSE );
-	
-	CHECK_RET( fwrite( (value ? "T" : "F"), sizeof(uint8_t), 1, state->fout ) == 1, FALSE );
+
+	/* NOTE: we use 1 and 0 because the parser is a tiny bit faster */
+	CHECK_RET( fwrite( (value ? "1" : "0"), sizeof(uint8_t), 1, state->fout ) == 1, FALSE );
 
 	if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )
 		CHECK_RET( COMMA( state->fout ) == 1, FALSE );
@@ -81,7 +82,7 @@ int llsd_notation_integer( int32_t const value, void * const user_data )
 	s = (cont_state_t)list_get_head( state->container_stack );
 	CHECK_RET( s != MAP_KEY, FALSE );
 
-	CHECK_RET( fprintf( state->fout, "i%d", value ) > 2, FALSE );
+	CHECK_RET( fprintf( state->fout, "i%d", value ) >= 2, FALSE );
 
 	if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )
 		CHECK_RET( COMMA( state->fout ) == 1, FALSE );
@@ -96,7 +97,7 @@ int llsd_notation_real( double const value, void * const user_data )
 	s = (cont_state_t)list_get_head( state->container_stack );
 	CHECK_RET( s != MAP_KEY, FALSE );
 
-	CHECK_RET( fprintf( state->fout, "r%-10F", value ) > 2, FALSE );
+	CHECK_RET( fprintf( state->fout, "r%F", value ) > 2, FALSE );
 
 	if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )
 		CHECK_RET( COMMA( state->fout ) == 1, FALSE );
@@ -134,6 +135,7 @@ int llsd_notation_string( uint8_t const * str, int const own_it, void * const us
 	s = (cont_state_t)list_get_head( state->container_stack );
 	CHECK_PTR_RET( str, FALSE );
 
+	/* use raw string format because the parser is a little faster */
 	fprintf( state->fout, "s(%d)\"%s\"", strlen(str), str );
 
 	if ( s == MAP_KEY )
@@ -207,10 +209,13 @@ int llsd_notation_binary( uint8_t const * data, uint32_t const len, int const ow
 	if ( len > 0 )
 	{
 		CHECK_PTR_RET( data, FALSE );
-		buf = CALLOC( BASE64_LENGTH( len ), sizeof(uint8_t) );
+		outlen = BASE64_LENGTH( len );
+		buf = CALLOC( outlen, sizeof(uint8_t) );
 		CHECK_PTR_RET( buf, FALSE );
 		CHECK_RET( base64_encode( data, len, buf, &outlen ), FALSE );
+		CHECK_RET( fwrite( "b64\"", sizeof(uint8_t), 4, state->fout ) == 4, FALSE );
 		CHECK_RET( fwrite( buf, sizeof(uint8_t), outlen, state->fout ) == outlen, FALSE );
+		CHECK_RET( fwrite( "\"", sizeof(uint8_t), 1, state->fout ) == 1, FALSE );
 	}
 	else
 	{
