@@ -76,7 +76,7 @@ static uint8_t to_idx( uint8_t ch )
 	return 0;
 }
 
-static int decode_quartet( uint8_t const * in, uint32_t inlen, uint8_t * out )
+static int decode_quartet( uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen )
 {
 	int i = 0;
 	int o = 0;
@@ -89,13 +89,22 @@ static int decode_quartet( uint8_t const * in, uint32_t inlen, uint8_t * out )
 	CHECK_RET( in_range( in[i+3] ), FALSE );
 
 	/* decode four base64 characters into three bytes */
-	out[o++] = ( (to_idx(in[i]) << 2) | ((to_idx(in[i+1]) & 0x30) >> 4) );
-	out[o++] = ((to_idx(in[i+1]) & 0x0f) << 4);
+	out[o] = ( (to_idx(in[i]) << 2) | ((to_idx(in[i+1]) & 0x30) >> 4) );
 	if ( in[i+2] != '=')
-		out[o-1] |= ((to_idx(in[i+2]) & 0x3c) >> 2);
-	out[o++] = ((to_idx(in[i+2]) & 0x03) << 6);
+	{
+		o++;
+		out[o] = ((to_idx(in[i+1]) & 0x0f) << 4);
+		out[o] |= ((to_idx(in[i+2]) & 0x3c) >> 2);
+	}
 	if ( in[i+3] != '=')
-		out[o-1] |= (to_idx(in[i+3]) & 0x3f);
+	{
+		o++;
+		out[o] = ((to_idx(in[i+2]) & 0x03) << 6);
+		out[o] |= (to_idx(in[i+3]) & 0x3f);
+	}
+
+	if ( outlen != NULL )
+		(*outlen) = (o + 1);
 
 	return TRUE;
 }
@@ -139,6 +148,7 @@ int base64_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t *
 	int ret;
 	int i = 0;
 	int o = 0;
+	uint32_t olen = 0;
 
 	CHECK_PTR_RET( in, FALSE );
 	CHECK_RET( inlen > 0, FALSE );
@@ -148,18 +158,16 @@ int base64_decode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t *
 
 	while ( i < inlen )
 	{
-		if ( (o + 3) > (*outlen) )
-			break;
-
-		ret = decode_quartet( &(in[i]), 4, &(out[o]) );
+		ret = decode_quartet( &(in[i]), 4, &(out[o]), &olen );
 		CHECK_RET( ret != -1, FALSE );
 
 		/* move the indexes */
 		i += 4;
-		o += 3;
+		o += olen;
 	}
 
-	(*outlen) = o;
+	if ( outlen != NULL )
+		(*outlen) = o;
 
 	return TRUE;
 }
@@ -169,7 +177,7 @@ uint32_t base64_decoded_len( uint8_t const * in, uint32_t inlen )
 	uint32_t len = 0;
 	CHECK_PTR_RET( in, 0 );
 	
-	len = 3 * (inlen / 4) + 2;
+	len = 3 * (inlen / 4);
 	if ( in[ inlen - 1 ] == '=' )
 		len--;
 	if ( in[ inlen - 2 ] == '=' )

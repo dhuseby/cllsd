@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">114</td>
+            <td class="headerCovTableEntry">117</td>
             <td class="headerCovTableEntry">186</td>
-            <td class="headerCovTableEntryLo">61.3 %</td>
+            <td class="headerCovTableEntryLo">62.9 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -114,266 +114,266 @@
 <span class="lineNum">      43 </span>                :            : #define COLON(x) WRITE_CHAR(&quot;:&quot;,x)
 <a name="44"><span class="lineNum">      44 </span>                :            : #define NL(x) WRITE_CHAR(&quot;\n&quot;,x)</a>
 <span class="lineNum">      45 </span>                :            : 
-<span class="lineNum">      46 </span>                :<span class="lineCov">          9 : int llsd_notation_undef( void * const user_data )</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">         30 : int llsd_notation_undef( void * const user_data )</span>
 <span class="lineNum">      47 </span>                :            : {
 <span class="lineNum">      48 </span>                :            :     cont_state_t s;
-<span class="lineNum">      49 </span>                :<span class="lineCov">          9 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">      50 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">          9 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">      51 </span>                :<span class="lineCov">          9 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">      52 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">          9 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
+<span class="lineNum">      49 </span>                :<span class="lineCov">         30 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">      50 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">         30 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">      51 </span>                :<span class="lineCov">         30 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">      52 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">         30 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
 <span class="lineNum">      53 </span>                :            : 
-<span class="lineNum">      54 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 9 times"> + </span>]:<span class="lineCov">          9 :     CHECK_RET( fwrite( &quot;!&quot;, sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">      54 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 30 times"> + </span>]:<span class="lineCov">         30 :     CHECK_RET( fwrite( &quot;!&quot;, sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
 <span class="lineNum">      55 </span>                :            :     
-<span class="lineNum">      56 </span>[<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>][<span class="branchCov" title="Branch 2 was taken 7 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">          9 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
-<span class="lineNum">      57 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 8 times"> + </span>]:<span class="lineCov">          8 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
-<span class="lineNum">      58 </span>                :<span class="lineCov">          9 :     return TRUE;</span>
+<span class="lineNum">      56 </span>[<span class="branchCov" title="Branch 0 was taken 21 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 20 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">         30 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
+<span class="lineNum">      57 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 29 times"> + </span>]:<span class="lineCov">         29 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">         30 :     return TRUE;</span>
 <a name="59"><span class="lineNum">      59 </span>                :            : }</a>
 <span class="lineNum">      60 </span>                :            : 
-<span class="lineNum">      61 </span>                :<span class="lineCov">         13 : int llsd_notation_boolean( int const value, void * const user_data )</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">         38 : int llsd_notation_boolean( int const value, void * const user_data )</span>
 <span class="lineNum">      62 </span>                :            : {
 <span class="lineNum">      63 </span>                :            :     cont_state_t s;
-<span class="lineNum">      64 </span>                :<span class="lineCov">         13 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">      65 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13 times"> + </span>]:<span class="lineCov">         13 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">      66 </span>                :<span class="lineCov">         13 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">      67 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13 times"> + </span>]:<span class="lineCov">         13 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">         38 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">      65 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 38 times"> + </span>]:<span class="lineCov">         38 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">      66 </span>                :<span class="lineCov">         38 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">      67 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 38 times"> + </span>]:<span class="lineCov">         38 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
 <span class="lineNum">      68 </span>                :            : 
 <span class="lineNum">      69 </span>                :            :     /* NOTE: we use 1 and 0 because the parser is a tiny bit faster */
-<span class="lineNum">      70 </span>[<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 13 times"> + </span>]:<span class="lineCov">         13 :     CHECK_RET( fwrite( (value ? &quot;1&quot; : &quot;0&quot;), sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">      70 </span>[<span class="branchCov" title="Branch 0 was taken 16 times"> + </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>][<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 38 times"> + </span>]:<span class="lineCov">         38 :     CHECK_RET( fwrite( (value ? &quot;1&quot; : &quot;0&quot;), sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
 <span class="lineNum">      71 </span>                :            : 
-<span class="lineNum">      72 </span>[<span class="branchCov" title="Branch 0 was taken 11 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 10 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">         13 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
-<span class="lineNum">      73 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 12 times"> + </span>]:<span class="lineCov">         12 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
-<span class="lineNum">      74 </span>                :<span class="lineCov">         13 :     return TRUE;</span>
+<span class="lineNum">      72 </span>[<span class="branchCov" title="Branch 0 was taken 23 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 22 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">         38 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
+<span class="lineNum">      73 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 37 times"> + </span>]:<span class="lineCov">         37 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">         38 :     return TRUE;</span>
 <a name="75"><span class="lineNum">      75 </span>                :            : }</a>
 <span class="lineNum">      76 </span>                :            : 
-<span class="lineNum">      77 </span>                :<span class="lineCov">          7 : int llsd_notation_integer( int32_t const value, void * const user_data )</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">         33 : int llsd_notation_integer( int32_t const value, void * const user_data )</span>
 <span class="lineNum">      78 </span>                :            : {
 <span class="lineNum">      79 </span>                :            :     cont_state_t s;
-<span class="lineNum">      80 </span>                :<span class="lineCov">          7 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">      81 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">          7 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">      82 </span>                :<span class="lineCov">          7 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">      83 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">          7 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">         33 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">      81 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 33 times"> + </span>]:<span class="lineCov">         33 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">         33 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">      83 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 33 times"> + </span>]:<span class="lineCov">         33 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
 <span class="lineNum">      84 </span>                :            : 
-<span class="lineNum">      85 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 7 times"> + </span>]:<span class="lineCov">          7 :     CHECK_RET( fprintf( state-&gt;fout, &quot;i%d&quot;, value ) &gt;= 2, FALSE );</span>
+<span class="lineNum">      85 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 33 times"> + </span>]:<span class="lineCov">         33 :     CHECK_RET( fprintf( state-&gt;fout, &quot;i%d&quot;, value ) &gt;= 2, FALSE );</span>
 <span class="lineNum">      86 </span>                :            : 
-<span class="lineNum">      87 </span>[<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>][<span class="branchCov" title="Branch 2 was taken 5 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">          7 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
-<span class="lineNum">      88 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
-<span class="lineNum">      89 </span>                :<span class="lineCov">          7 :     return TRUE;</span>
+<span class="lineNum">      87 </span>[<span class="branchCov" title="Branch 0 was taken 21 times"> + </span><span class="branchCov" title="Branch 1 was taken 12 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 20 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">         33 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
+<span class="lineNum">      88 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 32 times"> + </span>]:<span class="lineCov">         32 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">      89 </span>                :<span class="lineCov">         33 :     return TRUE;</span>
 <a name="90"><span class="lineNum">      90 </span>                :            : }</a>
 <span class="lineNum">      91 </span>                :            : 
-<span class="lineNum">      92 </span>                :<span class="lineCov">          3 : int llsd_notation_real( double const value, void * const user_data )</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">         29 : int llsd_notation_real( double const value, void * const user_data )</span>
 <span class="lineNum">      93 </span>                :            : {
 <span class="lineNum">      94 </span>                :            :     cont_state_t s;
-<span class="lineNum">      95 </span>                :<span class="lineCov">          3 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">      96 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          3 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">      97 </span>                :<span class="lineCov">          3 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">      98 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          3 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
+<span class="lineNum">      95 </span>                :<span class="lineCov">         29 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">      96 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 29 times"> + </span>]:<span class="lineCov">         29 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">      97 </span>                :<span class="lineCov">         29 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">      98 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 29 times"> + </span>]:<span class="lineCov">         29 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
 <span class="lineNum">      99 </span>                :            : 
-<span class="lineNum">     100 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 3 times"> + </span>]:<span class="lineCov">          3 :     CHECK_RET( fprintf( state-&gt;fout, &quot;r%F&quot;, value ) &gt; 2, FALSE );</span>
+<span class="lineNum">     100 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 29 times"> + </span>]:<span class="lineCov">         29 :     CHECK_RET( fprintf( state-&gt;fout, &quot;r%F&quot;, value ) &gt; 2, FALSE );</span>
 <span class="lineNum">     101 </span>                :            : 
-<span class="lineNum">     102 </span>[<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>][<span class="branchCov" title="Branch 2 was taken 1 time"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">          3 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
-<span class="lineNum">     103 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
-<span class="lineNum">     104 </span>                :<span class="lineCov">          3 :     return TRUE;</span>
+<span class="lineNum">     102 </span>[<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 11 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 17 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">         29 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
+<span class="lineNum">     103 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     104 </span>                :<span class="lineCov">         29 :     return TRUE;</span>
 <a name="105"><span class="lineNum">     105 </span>                :            : }</a>
 <span class="lineNum">     106 </span>                :            : 
-<span class="lineNum">     107 </span>                :<span class="lineCov">          3 : int llsd_notation_uuid( uint8_t const value[UUID_LEN], void * const user_data )</span>
+<span class="lineNum">     107 </span>                :<span class="lineCov">         19 : int llsd_notation_uuid( uint8_t const value[UUID_LEN], void * const user_data )</span>
 <span class="lineNum">     108 </span>                :            : {
 <span class="lineNum">     109 </span>                :            :     cont_state_t s;
-<span class="lineNum">     110 </span>                :<span class="lineCov">          3 :     int ret = 0;</span>
-<span class="lineNum">     111 </span>                :<span class="lineCov">          3 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">     112 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          3 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">     113 </span>                :<span class="lineCov">          3 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">     114 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          3 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
+<span class="lineNum">     110 </span>                :<span class="lineCov">         19 :     int ret = 0;</span>
+<span class="lineNum">     111 </span>                :<span class="lineCov">         19 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">     112 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">         19 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">     113 </span>                :<span class="lineCov">         19 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">     114 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">         19 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
 <span class="lineNum">     115 </span>                :            : 
-<span class="lineNum">     116 </span>                :<span class="lineCov">          3 :     ret = fprintf( state-&gt;fout, </span>
+<span class="lineNum">     116 </span>                :<span class="lineCov">         19 :     ret = fprintf( state-&gt;fout, </span>
 <span class="lineNum">     117 </span>                :            :         &quot;u%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x&quot;, 
-<span class="lineNum">     118 </span>                :<span class="lineCov">         12 :         value[0], value[1], value[2], value[3], </span>
-<span class="lineNum">     119 </span>                :<span class="lineCov">          6 :         value[4], value[5], </span>
-<span class="lineNum">     120 </span>                :<span class="lineCov">          6 :         value[6], value[7], </span>
-<span class="lineNum">     121 </span>                :<span class="lineCov">          6 :         value[8], value[9], </span>
-<span class="lineNum">     122 </span>                :<span class="lineCov">         18 :         value[10], value[11], value[12], value[13], value[14], value[15] );</span>
-<span class="lineNum">     123 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          3 :     CHECK_RET( ret == 37, FALSE );</span>
+<span class="lineNum">     118 </span>                :<span class="lineCov">         76 :         value[0], value[1], value[2], value[3], </span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">         38 :         value[4], value[5], </span>
+<span class="lineNum">     120 </span>                :<span class="lineCov">         38 :         value[6], value[7], </span>
+<span class="lineNum">     121 </span>                :<span class="lineCov">         38 :         value[8], value[9], </span>
+<span class="lineNum">     122 </span>                :<span class="lineCov">        114 :         value[10], value[11], value[12], value[13], value[14], value[15] );</span>
+<span class="lineNum">     123 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">         19 :     CHECK_RET( ret == 37, FALSE );</span>
 <span class="lineNum">     124 </span>                :            : 
-<span class="lineNum">     125 </span>[<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">          3 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
-<span class="lineNum">     126 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
-<span class="lineNum">     127 </span>                :<span class="lineCov">          3 :     return TRUE;</span>
+<span class="lineNum">     125 </span>[<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 9 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">         19 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
+<span class="lineNum">     126 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 18 times"> + </span>]:<span class="lineCov">         18 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     127 </span>                :<span class="lineCov">         19 :     return TRUE;</span>
 <a name="128"><span class="lineNum">     128 </span>                :            : }</a>
 <span class="lineNum">     129 </span>                :            : 
-<span class="lineNum">     130 </span>                :<span class="lineCov">         65 : int llsd_notation_string( uint8_t const * str, int const own_it, void * const user_data )</span>
+<span class="lineNum">     130 </span>                :<span class="lineCov">        215 : int llsd_notation_string( uint8_t const * str, int const own_it, void * const user_data )</span>
 <span class="lineNum">     131 </span>                :            : {
 <span class="lineNum">     132 </span>                :            :     cont_state_t s;
-<span class="lineNum">     133 </span>                :<span class="lineCov">         65 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">     134 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 65 times"> + </span>]:<span class="lineCov">         65 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">     135 </span>                :<span class="lineCov">         65 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">     136 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 65 times"> + </span>]:<span class="lineCov">         65 :     CHECK_PTR_RET( str, FALSE );</span>
+<span class="lineNum">     133 </span>                :<span class="lineCov">        215 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">     134 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 215 times"> + </span>]:<span class="lineCov">        215 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">     135 </span>                :<span class="lineCov">        215 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">     136 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 215 times"> + </span>]:<span class="lineCov">        215 :     CHECK_PTR_RET( str, FALSE );</span>
 <span class="lineNum">     137 </span>                :            : 
 <span class="lineNum">     138 </span>                :            :     /* use raw string format because the parser is a little faster */
-<span class="lineNum">     139 </span>                :<span class="lineCov">         65 :     fprintf( state-&gt;fout, &quot;s(%d)\&quot;%s\&quot;&quot;, strlen(str), str );</span>
+<span class="lineNum">     139 </span>                :<span class="lineCov">        215 :     fprintf( state-&gt;fout, &quot;s(%d)\&quot;%s\&quot;&quot;, strlen(str), str );</span>
 <span class="lineNum">     140 </span>                :            : 
-<span class="lineNum">     141 </span>        [<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 55 times"> + </span>]:<span class="lineCov">         65 :     if ( s == MAP_KEY )</span>
+<span class="lineNum">     141 </span>        [<span class="branchCov" title="Branch 0 was taken 31 times"> + </span><span class="branchCov" title="Branch 1 was taken 184 times"> + </span>]:<span class="lineCov">        215 :     if ( s == MAP_KEY )</span>
 <span class="lineNum">     142 </span>                :            :     {
-<span class="lineNum">     143 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 10 times"> + </span>]:<span class="lineCov">         10 :         CHECK_RET( COLON( state-&gt;fout ) == 1, FALSE );</span>
-<span class="lineNum">     144 </span>                :<span class="lineCov">         10 :         list_pop_head( state-&gt;container_stack );</span>
-<span class="lineNum">     145 </span>                :<span class="lineCov">         10 :         list_push_head( state-&gt;container_stack, (void*)MAP_VALUE );</span>
+<span class="lineNum">     143 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 31 times"> + </span>]:<span class="lineCov">         31 :         CHECK_RET( COLON( state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     144 </span>                :<span class="lineCov">         31 :         list_pop_head( state-&gt;container_stack );</span>
+<span class="lineNum">     145 </span>                :<span class="lineCov">         31 :         list_push_head( state-&gt;container_stack, (void*)MAP_VALUE );</span>
 <span class="lineNum">     146 </span>                :            :     }
-<span class="lineNum">     147 </span>[<span class="branchCov" title="Branch 0 was taken 54 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>][<span class="branchCov" title="Branch 2 was taken 53 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">         55 :     else if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
-<span class="lineNum">     148 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54 times"> + </span>]:<span class="lineCov">         54 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
-<span class="lineNum">     149 </span>                :<span class="lineCov">         65 :     return TRUE;</span>
+<span class="lineNum">     147 </span>[<span class="branchCov" title="Branch 0 was taken 175 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 174 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">        184 :     else if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
+<span class="lineNum">     148 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 183 times"> + </span>]:<span class="lineCov">        183 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     149 </span>                :<span class="lineCov">        215 :     return TRUE;</span>
 <a name="150"><span class="lineNum">     150 </span>                :            : }</a>
 <span class="lineNum">     151 </span>                :            : 
-<span class="lineNum">     152 </span>                :<span class="lineCov">          9 : int llsd_notation_date( double const value, void * const user_data )</span>
+<span class="lineNum">     152 </span>                :<span class="lineCov">         27 : int llsd_notation_date( double const value, void * const user_data )</span>
 <span class="lineNum">     153 </span>                :            : {
 <span class="lineNum">     154 </span>                :            :     cont_state_t s;
 <span class="lineNum">     155 </span>                :            :     double int_time;
 <span class="lineNum">     156 </span>                :            :     int32_t useconds;
 <span class="lineNum">     157 </span>                :            :     time_t seconds;
 <span class="lineNum">     158 </span>                :            :     struct tm parts;
-<span class="lineNum">     159 </span>                :<span class="lineCov">          9 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">     160 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">          9 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">     161 </span>                :<span class="lineCov">          9 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">     162 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">          9 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
+<span class="lineNum">     159 </span>                :<span class="lineCov">         27 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">     160 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">     161 </span>                :<span class="lineCov">         27 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">     162 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
 <span class="lineNum">     163 </span>                :            : 
-<span class="lineNum">     164 </span>                :<span class="lineCov">          9 :     int_time = floor( value );</span>
-<span class="lineNum">     165 </span>                :<span class="lineCov">          9 :     seconds = (time_t)int_time;</span>
-<span class="lineNum">     166 </span>                :<span class="lineCov">          9 :     useconds = (int32_t)( ( value - int_time) * 1000000.0 );</span>
-<span class="lineNum">     167 </span>                :<span class="lineCov">          9 :     parts = *gmtime(&amp;seconds);</span>
-<span class="lineNum">     168 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>]:<span class="lineCov">          9 :     fprintf( state-&gt;fout,</span>
+<span class="lineNum">     164 </span>                :<span class="lineCov">         27 :     int_time = floor( value );</span>
+<span class="lineNum">     165 </span>                :<span class="lineCov">         27 :     seconds = (time_t)int_time;</span>
+<span class="lineNum">     166 </span>                :<span class="lineCov">         27 :     useconds = (int32_t)( ( value - int_time) * 1000000.0 );</span>
+<span class="lineNum">     167 </span>                :<span class="lineCov">         27 :     parts = *gmtime(&amp;seconds);</span>
+<span class="lineNum">     168 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :     fprintf( state-&gt;fout,</span>
 <span class="lineNum">     169 </span>                :            :         &quot;d\&quot;%04d-%02d-%02dT%02d:%02d:%02d.%03dZ\&quot;&quot;,
-<span class="lineNum">     170 </span>                :<span class="lineCov">          9 :         parts.tm_year + 1900,</span>
-<span class="lineNum">     171 </span>                :<span class="lineCov">          9 :         parts.tm_mon + 1,</span>
+<span class="lineNum">     170 </span>                :<span class="lineCov">         27 :         parts.tm_year + 1900,</span>
+<span class="lineNum">     171 </span>                :<span class="lineCov">         27 :         parts.tm_mon + 1,</span>
 <span class="lineNum">     172 </span>                :            :         parts.tm_mday,
 <span class="lineNum">     173 </span>                :            :         parts.tm_hour,
 <span class="lineNum">     174 </span>                :            :         parts.tm_min,
 <span class="lineNum">     175 </span>                :            :         parts.tm_sec,
 <span class="lineNum">     176 </span>                :<span class="lineNoCov">          0 :         ((useconds != 0) ? (int32_t)(useconds / 1000.f + 0.5f) : 0) );</span>
 <span class="lineNum">     177 </span>                :            : 
-<span class="lineNum">     178 </span>[<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>][<span class="branchCov" title="Branch 2 was taken 7 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">          9 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
-<span class="lineNum">     179 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 8 times"> + </span>]:<span class="lineCov">          8 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
-<span class="lineNum">     180 </span>                :<span class="lineCov">          9 :     return TRUE;</span>
+<span class="lineNum">     178 </span>[<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 17 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">         27 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
+<span class="lineNum">     179 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 26 times"> + </span>]:<span class="lineCov">         26 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     180 </span>                :<span class="lineCov">         27 :     return TRUE;</span>
 <a name="181"><span class="lineNum">     181 </span>                :            : }</a>
 <span class="lineNum">     182 </span>                :            : 
-<span class="lineNum">     183 </span>                :<span class="lineCov">          6 : int llsd_notation_uri( uint8_t const * uri, int const own_it, void * const user_data )</span>
+<span class="lineNum">     183 </span>                :<span class="lineCov">         20 : int llsd_notation_uri( uint8_t const * uri, int const own_it, void * const user_data )</span>
 <span class="lineNum">     184 </span>                :            : {
 <span class="lineNum">     185 </span>                :            :     cont_state_t s;
-<span class="lineNum">     186 </span>                :<span class="lineCov">          6 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">     187 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">     188 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :     CHECK_PTR_RET( uri, FALSE );</span>
-<span class="lineNum">     189 </span>                :<span class="lineCov">          6 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">     190 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
+<span class="lineNum">     186 </span>                :<span class="lineCov">         20 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">     187 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">     188 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :     CHECK_PTR_RET( uri, FALSE );</span>
+<span class="lineNum">     189 </span>                :<span class="lineCov">         20 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">     190 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
 <span class="lineNum">     191 </span>                :            : 
-<span class="lineNum">     192 </span>                :<span class="lineCov">          6 :     fprintf( state-&gt;fout, &quot;l\&quot;%s\&quot;&quot;, uri );</span>
+<span class="lineNum">     192 </span>                :<span class="lineCov">         20 :     fprintf( state-&gt;fout, &quot;l\&quot;%s\&quot;&quot;, uri );</span>
 <span class="lineNum">     193 </span>                :            : 
-<span class="lineNum">     194 </span>[<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">          6 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
-<span class="lineNum">     195 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 5 times"> + </span>]:<span class="lineCov">          5 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
-<span class="lineNum">     196 </span>                :<span class="lineCov">          6 :     return TRUE;</span>
+<span class="lineNum">     194 </span>[<span class="branchCov" title="Branch 0 was taken 11 times"> + </span><span class="branchCov" title="Branch 1 was taken 9 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 10 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">         20 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
+<span class="lineNum">     195 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 19 times"> + </span>]:<span class="lineCov">         19 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     196 </span>                :<span class="lineCov">         20 :     return TRUE;</span>
 <a name="197"><span class="lineNum">     197 </span>                :            : }</a>
 <span class="lineNum">     198 </span>                :            : 
-<span class="lineNum">     199 </span>                :<span class="lineCov">          6 : int llsd_notation_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )</span>
+<span class="lineNum">     199 </span>                :<span class="lineCov">         28 : int llsd_notation_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )</span>
 <span class="lineNum">     200 </span>                :            : {
 <span class="lineNum">     201 </span>                :            :     uint8_t * buf;
-<span class="lineNum">     202 </span>                :<span class="lineCov">          6 :     uint32_t outlen = 0;</span>
+<span class="lineNum">     202 </span>                :<span class="lineCov">         28 :     uint32_t outlen = 0;</span>
 <span class="lineNum">     203 </span>                :            :     cont_state_t s;
-<span class="lineNum">     204 </span>                :<span class="lineCov">          6 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">     205 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">     206 </span>                :<span class="lineCov">          6 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">     207 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
+<span class="lineNum">     204 </span>                :<span class="lineCov">         28 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">     205 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">     206 </span>                :<span class="lineCov">         28 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">     207 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
 <span class="lineNum">     208 </span>                :            :     
-<span class="lineNum">     209 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          6 :     if ( len &gt; 0 )</span>
+<span class="lineNum">     209 </span>        [<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         28 :     if ( len &gt; 0 )</span>
 <span class="lineNum">     210 </span>                :            :     {
-<span class="lineNum">     211 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         CHECK_PTR_RET( data, FALSE );</span>
-<span class="lineNum">     212 </span>                :<span class="lineCov">          6 :         outlen = BASE64_LENGTH( len );</span>
-<span class="lineNum">     213 </span>        [<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          6 :         buf = CALLOC( outlen, sizeof(uint8_t) );</span>
-<span class="lineNum">     214 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         CHECK_PTR_RET( buf, FALSE );</span>
-<span class="lineNum">     215 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         CHECK_RET( base64_encode( data, len, buf, &amp;outlen ), FALSE );</span>
-<span class="lineNum">     216 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         CHECK_RET( fwrite( &quot;b64\&quot;&quot;, sizeof(uint8_t), 4, state-&gt;fout ) == 4, FALSE );</span>
-<span class="lineNum">     217 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         CHECK_RET( fwrite( buf, sizeof(uint8_t), outlen, state-&gt;fout ) == outlen, FALSE );</span>
-<span class="lineNum">     218 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         CHECK_RET( fwrite( &quot;\&quot;&quot;, sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     211 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         CHECK_PTR_RET( data, FALSE );</span>
+<span class="lineNum">     212 </span>                :<span class="lineCov">         28 :         outlen = BASE64_LENGTH( len );</span>
+<span class="lineNum">     213 </span>        [<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         28 :         buf = CALLOC( outlen, sizeof(uint8_t) );</span>
+<span class="lineNum">     214 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         CHECK_PTR_RET( buf, FALSE );</span>
+<span class="lineNum">     215 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         CHECK_RET( base64_encode( data, len, buf, &amp;outlen ), FALSE );</span>
+<span class="lineNum">     216 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         CHECK_RET( fwrite( &quot;b64\&quot;&quot;, sizeof(uint8_t), 4, state-&gt;fout ) == 4, FALSE );</span>
+<span class="lineNum">     217 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         CHECK_RET( fwrite( buf, sizeof(uint8_t), outlen, state-&gt;fout ) == outlen, FALSE );</span>
+<span class="lineNum">     218 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         CHECK_RET( fwrite( &quot;\&quot;&quot;, sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
 <span class="lineNum">     219 </span>                :            :     }
 <span class="lineNum">     220 </span>                :            :     else
 <span class="lineNum">     221 </span>                :            :     {
 <span class="lineNum">     222 </span>        [<span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span>]:<span class="lineNoCov">          0 :         CHECK_RET( fwrite( &quot;b(0)\&quot;\&quot;&quot;, sizeof(uint8_t), 6, state-&gt;fout ) == 6, FALSE );</span>
 <span class="lineNum">     223 </span>                :            :     }
 <span class="lineNum">     224 </span>                :            : 
-<span class="lineNum">     225 </span>[<span class="branchCov" title="Branch 0 was taken 6 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 5 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">          6 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
-<span class="lineNum">     226 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 5 times"> + </span>]:<span class="lineCov">          5 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
-<span class="lineNum">     227 </span>                :<span class="lineCov">          6 :     return TRUE;</span>
+<span class="lineNum">     225 </span>[<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 17 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">         28 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
+<span class="lineNum">     226 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     227 </span>                :<span class="lineCov">         28 :     return TRUE;</span>
 <a name="228"><span class="lineNum">     228 </span>                :            : }</a>
 <span class="lineNum">     229 </span>                :            : 
-<span class="lineNum">     230 </span>                :<span class="lineCov">         10 : int llsd_notation_array_begin( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     230 </span>                :<span class="lineCov">         29 : int llsd_notation_array_begin( uint32_t const size, void * const user_data )</span>
 <span class="lineNum">     231 </span>                :            : {
 <span class="lineNum">     232 </span>                :            :     cont_state_t s;
-<span class="lineNum">     233 </span>                :<span class="lineCov">         10 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">     234 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">     235 </span>                :<span class="lineCov">         10 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">     236 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
+<span class="lineNum">     233 </span>                :<span class="lineCov">         29 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">     234 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 29 times"> + </span>]:<span class="lineCov">         29 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">     235 </span>                :<span class="lineCov">         29 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">     236 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 29 times"> + </span>]:<span class="lineCov">         29 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
 <span class="lineNum">     237 </span>                :            : 
-<span class="lineNum">     238 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 10 times"> + </span>]:<span class="lineCov">         10 :     CHECK_RET( fwrite( &quot;[&quot;, sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     238 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 29 times"> + </span>]:<span class="lineCov">         29 :     CHECK_RET( fwrite( &quot;[&quot;, sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
 <span class="lineNum">     239 </span>                :            : 
-<span class="lineNum">     240 </span>                :<span class="lineCov">         10 :     list_push_head( state-&gt;container_stack, (void*)ARRAY_VALUE );</span>
-<span class="lineNum">     241 </span>                :<span class="lineCov">         10 :     return TRUE;</span>
+<span class="lineNum">     240 </span>                :<span class="lineCov">         29 :     list_push_head( state-&gt;container_stack, (void*)ARRAY_VALUE );</span>
+<span class="lineNum">     241 </span>                :<span class="lineCov">         29 :     return TRUE;</span>
 <a name="242"><span class="lineNum">     242 </span>                :            : }</a>
 <span class="lineNum">     243 </span>                :            : 
-<span class="lineNum">     244 </span>                :<span class="lineCov">         10 : int llsd_notation_array_end( void * const user_data )</span>
+<span class="lineNum">     244 </span>                :<span class="lineCov">         29 : int llsd_notation_array_end( void * const user_data )</span>
 <span class="lineNum">     245 </span>                :            : {
 <span class="lineNum">     246 </span>                :            :     cont_state_t s;
-<span class="lineNum">     247 </span>                :<span class="lineCov">         10 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">     248 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">     249 </span>                :<span class="lineCov">         10 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">     250 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :     CHECK_RET( s == ARRAY_VALUE, FALSE );</span>
+<span class="lineNum">     247 </span>                :<span class="lineCov">         29 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">     248 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 29 times"> + </span>]:<span class="lineCov">         29 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">     249 </span>                :<span class="lineCov">         29 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">     250 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 29 times"> + </span>]:<span class="lineCov">         29 :     CHECK_RET( s == ARRAY_VALUE, FALSE );</span>
 <span class="lineNum">     251 </span>                :            : 
-<span class="lineNum">     252 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 10 times"> + </span>]:<span class="lineCov">         10 :     CHECK_RET( fwrite( &quot;]&quot;, sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     252 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 29 times"> + </span>]:<span class="lineCov">         29 :     CHECK_RET( fwrite( &quot;]&quot;, sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
 <span class="lineNum">     253 </span>                :            : 
-<span class="lineNum">     254 </span>                :<span class="lineCov">         10 :     list_pop_head( state-&gt;container_stack );</span>
+<span class="lineNum">     254 </span>                :<span class="lineCov">         29 :     list_pop_head( state-&gt;container_stack );</span>
 <span class="lineNum">     255 </span>                :            : 
-<span class="lineNum">     256 </span>                :<span class="lineCov">         10 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">     257 </span>[<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 9 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">         10 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
-<span class="lineNum">     258 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 9 times"> + </span>]:<span class="lineCov">          9 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
-<span class="lineNum">     259 </span>                :<span class="lineCov">         10 :     return TRUE;</span>
+<span class="lineNum">     256 </span>                :<span class="lineCov">         29 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">     257 </span>[<span class="branchCov" title="Branch 0 was taken 23 times"> + </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 22 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">         29 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
+<span class="lineNum">     258 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     259 </span>                :<span class="lineCov">         29 :     return TRUE;</span>
 <a name="260"><span class="lineNum">     260 </span>                :            : }</a>
 <span class="lineNum">     261 </span>                :            : 
-<span class="lineNum">     262 </span>                :<span class="lineCov">         13 : int llsd_notation_map_begin( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     262 </span>                :<span class="lineCov">         35 : int llsd_notation_map_begin( uint32_t const size, void * const user_data )</span>
 <span class="lineNum">     263 </span>                :            : {
 <span class="lineNum">     264 </span>                :            :     cont_state_t s;
-<span class="lineNum">     265 </span>                :<span class="lineCov">         13 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">     266 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13 times"> + </span>]:<span class="lineCov">         13 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">     267 </span>                :<span class="lineCov">         13 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">     268 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13 times"> + </span>]:<span class="lineCov">         13 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
+<span class="lineNum">     265 </span>                :<span class="lineCov">         35 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">     266 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 35 times"> + </span>]:<span class="lineCov">         35 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">     267 </span>                :<span class="lineCov">         35 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">     268 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 35 times"> + </span>]:<span class="lineCov">         35 :     CHECK_RET( s != MAP_KEY, FALSE );</span>
 <span class="lineNum">     269 </span>                :            : 
-<span class="lineNum">     270 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 13 times"> + </span>]:<span class="lineCov">         13 :     CHECK_RET( fwrite( &quot;{&quot;, sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     270 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 35 times"> + </span>]:<span class="lineCov">         35 :     CHECK_RET( fwrite( &quot;{&quot;, sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
 <span class="lineNum">     271 </span>                :            : 
-<span class="lineNum">     272 </span>                :<span class="lineCov">         13 :     list_push_head( state-&gt;container_stack, (void*)MAP_KEY );</span>
-<span class="lineNum">     273 </span>                :<span class="lineCov">         13 :     return TRUE;</span>
+<span class="lineNum">     272 </span>                :<span class="lineCov">         35 :     list_push_head( state-&gt;container_stack, (void*)MAP_KEY );</span>
+<span class="lineNum">     273 </span>                :<span class="lineCov">         35 :     return TRUE;</span>
 <a name="274"><span class="lineNum">     274 </span>                :            : }</a>
 <span class="lineNum">     275 </span>                :            : 
-<span class="lineNum">     276 </span>                :<span class="lineCov">         13 : int llsd_notation_map_end( void * const user_data )</span>
+<span class="lineNum">     276 </span>                :<span class="lineCov">         35 : int llsd_notation_map_end( void * const user_data )</span>
 <span class="lineNum">     277 </span>                :            : {
 <span class="lineNum">     278 </span>                :            :     cont_state_t s;
-<span class="lineNum">     279 </span>                :<span class="lineCov">         13 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">     280 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13 times"> + </span>]:<span class="lineCov">         13 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">     281 </span>                :<span class="lineCov">         13 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">     282 </span>[<span class="branchCov" title="Branch 0 was taken 10 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 10 times"> + </span>]:<span class="lineCov">         13 :     CHECK_RET( (s == MAP_KEY) || (s == MAP_VALUE), FALSE );</span>
+<span class="lineNum">     279 </span>                :<span class="lineCov">         35 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">     280 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 35 times"> + </span>]:<span class="lineCov">         35 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">     281 </span>                :<span class="lineCov">         35 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">     282 </span>[<span class="branchCov" title="Branch 0 was taken 31 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 31 times"> + </span>]:<span class="lineCov">         35 :     CHECK_RET( (s == MAP_KEY) || (s == MAP_VALUE), FALSE );</span>
 <span class="lineNum">     283 </span>                :            : 
-<span class="lineNum">     284 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 13 times"> + </span>]:<span class="lineCov">         13 :     CHECK_RET( fwrite( &quot;}&quot;, sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     284 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 35 times"> + </span>]:<span class="lineCov">         35 :     CHECK_RET( fwrite( &quot;}&quot;, sizeof(uint8_t), 1, state-&gt;fout ) == 1, FALSE );</span>
 <span class="lineNum">     285 </span>                :            : 
-<span class="lineNum">     286 </span>                :<span class="lineCov">         13 :     list_pop_head( state-&gt;container_stack );</span>
+<span class="lineNum">     286 </span>                :<span class="lineCov">         35 :     list_pop_head( state-&gt;container_stack );</span>
 <span class="lineNum">     287 </span>                :            : 
-<span class="lineNum">     288 </span>                :<span class="lineCov">         13 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
-<span class="lineNum">     289 </span>[<span class="branchCov" title="Branch 0 was taken 11 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 4 times"> + </span><span class="branchCov" title="Branch 3 was taken 7 times"> + </span>]:<span class="lineCov">         13 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
-<span class="lineNum">     290 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
-<span class="lineNum">     291 </span>                :<span class="lineCov">         13 :     return TRUE;</span>
+<span class="lineNum">     288 </span>                :<span class="lineCov">         35 :     s = (cont_state_t)list_get_head( state-&gt;container_stack );</span>
+<span class="lineNum">     289 </span>[<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchCov" title="Branch 1 was taken 11 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 15 times"> + </span><span class="branchCov" title="Branch 3 was taken 9 times"> + </span>]:<span class="lineCov">         35 :     if ( (s == ARRAY_VALUE) || (s == MAP_VALUE) )</span>
+<span class="lineNum">     290 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 26 times"> + </span>]:<span class="lineCov">         26 :         CHECK_RET( COMMA( state-&gt;fout ) == 1, FALSE );</span>
+<span class="lineNum">     291 </span>                :<span class="lineCov">         35 :     return TRUE;</span>
 <span class="lineNum">     292 </span>                :            : }
 <span class="lineNum">     293 </span>                :            : 
 <span class="lineNum">     294 </span>                :            : #define NOTATION_SIG_LEN (18)
 <a name="295"><span class="lineNum">     295 </span>                :            : static uint8_t const * const notation_header = &quot;&lt;?llsd/notation?&gt;\n&quot;;</a>
 <span class="lineNum">     296 </span>                :            : 
-<span class="lineNum">     297 </span>                :<span class="lineCov">         17 : int llsd_notation_serializer_init( FILE * fout, llsd_ops_t * const ops, int const pretty, void ** const user_data )</span>
+<span class="lineNum">     297 </span>                :<span class="lineCov">         19 : int llsd_notation_serializer_init( FILE * fout, llsd_ops_t * const ops, int const pretty, void ** const user_data )</span>
 <span class="lineNum">     298 </span>                :            : {
-<span class="lineNum">     299 </span>                :<span class="lineCov">         17 :     ns_state_t * state = NULL;</span>
-<span class="lineNum">     300 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         17 :     CHECK_PTR_RET( fout, FALSE );</span>
-<span class="lineNum">     301 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         17 :     CHECK_PTR_RET( ops, FALSE );</span>
-<span class="lineNum">     302 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         17 :     CHECK_PTR_RET( user_data, FALSE );</span>
+<span class="lineNum">     299 </span>                :<span class="lineCov">         19 :     ns_state_t * state = NULL;</span>
+<span class="lineNum">     300 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">         19 :     CHECK_PTR_RET( fout, FALSE );</span>
+<span class="lineNum">     301 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">         19 :     CHECK_PTR_RET( ops, FALSE );</span>
+<span class="lineNum">     302 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">         19 :     CHECK_PTR_RET( user_data, FALSE );</span>
 <span class="lineNum">     303 </span>                :            : 
 <span class="lineNum">     304 </span>                :            :     /* give the serializer the proper callback functions */
-<span class="lineNum">     305 </span>                :<span class="lineCov">         17 :     (*ops) = (llsd_ops_t){</span>
+<span class="lineNum">     305 </span>                :<span class="lineCov">         19 :     (*ops) = (llsd_ops_t){</span>
 <span class="lineNum">     306 </span>                :            :         &amp;llsd_notation_undef,
 <span class="lineNum">     307 </span>                :            :         &amp;llsd_notation_boolean,
 <span class="lineNum">     308 </span>                :            :         &amp;llsd_notation_integer,
@@ -390,36 +390,36 @@
 <span class="lineNum">     319 </span>                :            :     };
 <span class="lineNum">     320 </span>                :            : 
 <span class="lineNum">     321 </span>                :            :     /* write out the notation signature */
-<span class="lineNum">     322 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 17 times"> + </span>]:<span class="lineCov">         17 :     CHECK_RET( fwrite( notation_header, sizeof(uint8_t), NOTATION_SIG_LEN, fout ) == NOTATION_SIG_LEN, FALSE );</span>
+<span class="lineNum">     322 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 19 times"> + </span>]:<span class="lineCov">         19 :     CHECK_RET( fwrite( notation_header, sizeof(uint8_t), NOTATION_SIG_LEN, fout ) == NOTATION_SIG_LEN, FALSE );</span>
 <span class="lineNum">     323 </span>                :            : 
 <span class="lineNum">     324 </span>                :            :     /* allocate the serializer state and store the file pointer */
-<span class="lineNum">     325 </span>        [<span class="branchCov" title="Branch 0 was taken 17 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         17 :     state = CALLOC( 1, sizeof(ns_state_t) );</span>
-<span class="lineNum">     326 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         17 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">     327 </span>                :<span class="lineCov">         17 :     state-&gt;fout = fout;</span>
-<span class="lineNum">     328 </span>                :<span class="lineCov">         17 :     state-&gt;container_stack = list_new( 1, NULL );</span>
-<span class="lineNum">     329 </span>                :<span class="lineCov">         17 :     list_push_head( state-&gt;container_stack, (void*)TOP_LEVEL );</span>
-<span class="lineNum">     330 </span>                :<span class="lineCov">         17 :     state-&gt;pretty = pretty;</span>
+<span class="lineNum">     325 </span>        [<span class="branchCov" title="Branch 0 was taken 19 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         19 :     state = CALLOC( 1, sizeof(ns_state_t) );</span>
+<span class="lineNum">     326 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">         19 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">     327 </span>                :<span class="lineCov">         19 :     state-&gt;fout = fout;</span>
+<span class="lineNum">     328 </span>                :<span class="lineCov">         19 :     state-&gt;container_stack = list_new( 1, NULL );</span>
+<span class="lineNum">     329 </span>                :<span class="lineCov">         19 :     list_push_head( state-&gt;container_stack, (void*)TOP_LEVEL );</span>
+<span class="lineNum">     330 </span>                :<span class="lineCov">         19 :     state-&gt;pretty = pretty;</span>
 <span class="lineNum">     331 </span>                :            : 
 <span class="lineNum">     332 </span>                :            :     /* return the state as the user_date */
-<span class="lineNum">     333 </span>                :<span class="lineCov">         17 :     (*user_data) = state;</span>
+<span class="lineNum">     333 </span>                :<span class="lineCov">         19 :     (*user_data) = state;</span>
 <span class="lineNum">     334 </span>                :            : 
-<span class="lineNum">     335 </span>                :<span class="lineCov">         17 :     return TRUE;</span>
+<span class="lineNum">     335 </span>                :<span class="lineCov">         19 :     return TRUE;</span>
 <span class="lineNum">     336 </span>                :            : }
 <a name="337"><span class="lineNum">     337 </span>                :            : </a>
 <span class="lineNum">     338 </span>                :            : 
-<span class="lineNum">     339 </span>                :<span class="lineCov">         17 : int llsd_notation_serializer_deinit( FILE * fout, void * user_data )</span>
+<span class="lineNum">     339 </span>                :<span class="lineCov">         19 : int llsd_notation_serializer_deinit( FILE * fout, void * user_data )</span>
 <span class="lineNum">     340 </span>                :            : {
-<span class="lineNum">     341 </span>                :<span class="lineCov">         17 :     ns_state_t * state = (ns_state_t*)user_data;</span>
-<span class="lineNum">     342 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         17 :     CHECK_PTR_RET( fout, FALSE );</span>
-<span class="lineNum">     343 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         17 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">     344 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         17 :     CHECK_PTR_RET( state-&gt;container_stack, FALSE );</span>
-<span class="lineNum">     345 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 17 times"> + </span>]:<span class="lineCov">         17 :     CHECK_RET( list_count( state-&gt;container_stack ) == 1, FALSE );</span>
+<span class="lineNum">     341 </span>                :<span class="lineCov">         19 :     ns_state_t * state = (ns_state_t*)user_data;</span>
+<span class="lineNum">     342 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">         19 :     CHECK_PTR_RET( fout, FALSE );</span>
+<span class="lineNum">     343 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">         19 :     CHECK_PTR_RET( state, FALSE );</span>
+<span class="lineNum">     344 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">         19 :     CHECK_PTR_RET( state-&gt;container_stack, FALSE );</span>
+<span class="lineNum">     345 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 19 times"> + </span>]:<span class="lineCov">         19 :     CHECK_RET( list_count( state-&gt;container_stack ) == 1, FALSE );</span>
 <span class="lineNum">     346 </span>                :            : 
-<span class="lineNum">     347 </span>                :<span class="lineCov">         17 :     list_pop_head( state-&gt;container_stack );</span>
-<span class="lineNum">     348 </span>                :<span class="lineCov">         17 :     list_delete( state-&gt;container_stack );</span>
+<span class="lineNum">     347 </span>                :<span class="lineCov">         19 :     list_pop_head( state-&gt;container_stack );</span>
+<span class="lineNum">     348 </span>                :<span class="lineCov">         19 :     list_delete( state-&gt;container_stack );</span>
 <span class="lineNum">     349 </span>                :            : 
-<span class="lineNum">     350 </span>                :<span class="lineCov">         17 :     FREE( state );</span>
-<span class="lineNum">     351 </span>                :<span class="lineCov">         17 :     return TRUE;</span>
+<span class="lineNum">     350 </span>                :<span class="lineCov">         19 :     FREE( state );</span>
+<span class="lineNum">     351 </span>                :<span class="lineCov">         19 :     return TRUE;</span>
 <span class="lineNum">     352 </span>                :            : }
 <span class="lineNum">     353 </span>                :            : 
 <span class="lineNum">     354 </span>                :            : 

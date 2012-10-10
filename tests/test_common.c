@@ -51,13 +51,19 @@ static llsd_t* get_random_str( int zero )
 static llsd_t* get_random_uri( void )
 {
 	static uint8_t uri[1024];
+	uint8_t c;
 	int i;
 	int len = (rand() % 128);
 
 	for ( i = 0; i < len; i++ )
 	{
-		/* get a random, printable ascii character */
-		uri[i] = (32 + (rand() % 94));
+		/* get a random, non-double quote, printable ascii character */
+		do
+		{
+			c = (32 + (rand() % 94));
+		} while( c == '\"' );
+
+		uri[i] = c;
 		/*uri[i] = (rand() % 26) + 'a';*/
 	}
 	uri[len] = '\0';
