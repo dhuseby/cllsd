@@ -39,6 +39,31 @@ static llsd_t* get_random_str( int zero )
 	int len = (rand() % 128);
 	if ( !zero && !len )
 		len++;
+	CHECK_RET( len < 1024, FALSE );
+
+	for ( i = 0; i < len; i++ )
+	{
+		/* get a random, non-double quote, printable ascii character */
+		do
+		{
+			c = (32 + (rand() % 94));
+		} while( (c == '\"') || (c == '\\') );
+
+		str[i] = c;
+	}
+	str[len] = '\0';
+	DEBUG( "%*sSTRING %s\n", indent, " ", str );
+	/* tell it to copy the string into the LLSD */
+	return llsd_new_string( str, FALSE );
+}
+
+static llsd_t* get_random_key( int min )
+{
+	static uint8_t str[1024];
+	uint8_t c;
+	int i;
+	int len = min + (rand() % 128);
+	CHECK_RET( len < 1024, FALSE );
 
 	for ( i = 0; i < len; i++ )
 	{
@@ -160,9 +185,11 @@ static llsd_t * get_random_array( uint32_t size )
 	uint32_t total = 0;
 	uint32_t s = 0;
 	llsd_type_t type_;
+	llsd_t * value = NULL;
 
 	/* create the array */
 	llsd_t * arr = llsd_new_array( 0 );
+	CHECK_PTR_RET( arr, NULL );
 	
 	DEBUG( "%*s[[\n", indent, " " );
 	indent += 4;
@@ -170,77 +197,79 @@ static llsd_t * get_random_array( uint32_t size )
 	/* now populate it with random data */
 	while( total < size )
 	{
+		/* reset s */
+		s = 0;
+
+		/* reset value */
+		value = NULL;
+
+		/* get a random LLSD type */
 		type_ = get_random_llsd_type();
 
 		switch( type_ )
 		{
 			case LLSD_UNDEF:
-				llsd_array_append( arr, llsd_new_undef() );
-				total++;
+				value = llsd_new_undef();
 				break;
 			case LLSD_BOOLEAN:
-				llsd_array_append( arr, get_random_boolean() );
-				total++;
+				value = get_random_boolean();
 				break;
 			case LLSD_INTEGER:
-				llsd_array_append( arr, get_random_integer() );
-				total++;
+				value = get_random_integer();
 				break;
 			case LLSD_REAL:
-				llsd_array_append( arr, get_random_real() );
-				total++;
+				value = get_random_real();
 				break;
 			case LLSD_UUID:
-				llsd_array_append( arr, get_random_uuid() );
-				total++;
+				value = get_random_uuid();
 				break;
 			case LLSD_STRING:
-				llsd_array_append( arr, get_random_str( TRUE ) );
-				total++;
+				value = get_random_str( TRUE );
 				break;
 			case LLSD_DATE:
-				llsd_array_append( arr, get_random_date() );
-				total++;
+				value = get_random_date();
 				break;
 			case LLSD_URI:
-				llsd_array_append( arr, get_random_uri() );
-				total++;
+				value = get_random_uri();
 				break;
 			case LLSD_BINARY:
-				llsd_array_append( arr, get_random_bin() );
-				total++;
+				value = get_random_bin();
 				break;
 			case LLSD_ARRAY:	
 				s = (rand() % (size - total));
-				llsd_array_append( arr, get_random_array( s ) );
-				if ( s == 0 )
-				{
-					total++;
-				}
-				else
-				{
-					total += s;
-				}
+				value = get_random_array( s );
 				break;
 			case LLSD_MAP:
 				s = (rand() % (size - total));
-				llsd_array_append( arr, get_random_map( s ) );
-				if ( s == 0 )
-				{
-					total++;
-				}
-				else
-				{
-					total += s;
-				}
-			break;
+				value = get_random_map( s );
+				break;
 		}
+
+		if ( value == NULL )
+			goto gra_value_fail;
+
+		if ( !llsd_array_append( arr, value ) )
+			goto gra_append_fail;
+
+		if ( s == 0 )
+			total++;
+		else
+			total += s;
 	}
 	
 	indent -= 4;
 	DEBUG( "%*s]]\n", indent, " " );
 
 	return arr;
+
+gra_value_fail:
+	llsd_delete( arr );
+	return NULL;
+
+gra_append_fail:
+	llsd_delete( value );
+	llsd_delete( arr );
+	return NULL;
 }
 
 static llsd_t * get_random_map( uint32_t size )
@@ -250,9 +279,11 @@ static llsd_t * get_random_map( uint32_t size )
 	llsd_type_t type_;
 	llsd_t * map;
 	llsd_t * key;
+	llsd_t * value;
 
 	/* create the map */
 	map = llsd_new_map( 0 );
+	CHECK_PTR_RET( map, NULL );
 
 	DEBUG( "%*s{{\n", indent, " " );
 	indent += 4;
@@ -260,127 +291,83 @@ static llsd_t * get_random_map( uint32_t size )
 	/* now populate it with random data */
 	while( total < size )
 	{
+		/* reset s */
+		s = 0;
+
+		/* reset value pointer */
+		value = NULL;
+
 		/* get a random type */
 		type_ = get_random_llsd_type();
 
 		/* get a random key */
-		key = get_random_str( FALSE );
+		key = get_random_key( 64 );
 
 		switch( type_ )
 		{
 			case LLSD_UNDEF:
-				if ( !llsd_map_insert( map, key, llsd_new_undef() ) )
-				{
-					llsd_delete( key );
-					goto grm_fail;
-				}
-				total++;
+				value = llsd_new_undef();
 				break;
 			case LLSD_BOOLEAN:
-				if ( !llsd_map_insert( map, key, get_random_boolean() ) )
-				{
-					llsd_delete( key );
-					goto grm_fail;
-				}
-				total++;
+				value = get_random_boolean();
 				break;
 			case LLSD_INTEGER:
-				if ( !llsd_map_insert( map, key, get_random_integer() ) )
-				{
-					llsd_delete( key );
-					goto grm_fail;
-				}
-				total++;
+				value = get_random_integer();
 				break;
 			case LLSD_REAL:
-				if ( !llsd_map_insert( map, key, get_random_real() ) )
-				{
-					llsd_delete( key );
-					goto grm_fail;
-				}
-				total++;
+				value = get_random_real();
 				break;
 			case LLSD_UUID:
-				if ( !llsd_map_insert( map, key, get_random_uuid() ) )
-				{
-					llsd_delete( key );
-					goto grm_fail;
-				}
-				total++;
+				value = get_random_uuid();
 				break;
 			case LLSD_STRING:
-				if ( !llsd_map_insert( map, key, get_random_str( TRUE ) ) )
-				{
-					llsd_delete( key );
-					goto grm_fail;
-				}
-				total++;
+				value = get_random_str( TRUE );
 				break;
 			case LLSD_DATE:
-				if ( !llsd_map_insert( map, key, get_random_date() ) )
-				{
-					llsd_delete( key );
-					goto grm_fail;
-				}
-				total++;
+				value = get_random_date();
 				break;
 			case LLSD_URI:
-				if ( !llsd_map_insert( map, key, get_random_uri() ) )
-				{
-					llsd_delete( key );
-					goto grm_fail;
-				}
-				total++;
+				value = get_random_uri();
 				break;
 			case LLSD_BINARY:
-				if ( !llsd_map_insert( map, key, get_random_bin() ) )
-				{
-					llsd_delete( key );
-					goto grm_fail;
-				}
-				total++;
+				value = get_random_bin();
 				break;
 			case LLSD_ARRAY:	
 				s = (rand() % (size - total));
-				if ( !llsd_map_insert( map, key, get_random_array( s ) ) )
-				{
-					llsd_delete( key );
-					goto grm_fail;
-				}
-				if ( s == 0 )
-				{
-					total++;
-				}
-				else
-				{
-					total += s;
-				}
+				value = get_random_array( s );
 				break;
 			case LLSD_MAP:
 				s = (rand() % (size - total));
-				if ( !llsd_map_insert( map, key, get_random_map( s ) ) )
-				{
-					llsd_delete( key );
-					goto grm_fail;
-				}
-				if ( s == 0 )
-				{
-					total++;
-				}
-				else
-				{
-					total += s;
-				}
+				value = get_random_map( s );
 				break;
 		}
 		DEBUG( "%*s----------\n", indent, " " );
+
+		if ( value == NULL )
+			goto grm_value_fail;
+
+		if ( !llsd_map_insert( map, key, value ) )
+			goto grm_insert_fail;
+
+		if ( s == 0 )
+			total++;
+		else
+			total += s;
 	}
 	indent -= 4;
 	DEBUG( "%*s}}\n", indent, " " );
 
 	return map;
 
-grm_fail:
+grm_value_fail:
+	llsd_delete( key );
+	llsd_delete( map );
+	return NULL;
+
+grm_insert_fail:
+	llsd_map_insert( map, key, value );
+	llsd_delete( key );
+	llsd_delete( value );
 	llsd_delete( map );
 	return NULL;
 }
