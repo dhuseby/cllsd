@@ -35,9 +35,9 @@ static int decode_quintet( uint8_t const * in, uint32_t inlen, uint8_t * out, ui
 		uint8_t cval[4];
 	} v;
 
-	CHECK_PTR_RET( in, -1 );
-	CHECK_PTR_RET( inlen > 0, -1 );
-	CHECK_RET( ((padding >= 0) && (padding < 4)), -1 );
+	CHECK_PTR_RET( in, 0 );
+	CHECK_PTR_RET( inlen > 0, 0 );
+	CHECK_RET( ((padding >= 0) && (padding < 4)), 0 );
 
 	for ( i = (inlen - 1); i >= 0; i-- )
 	{
@@ -68,8 +68,8 @@ static int encode_quintet( uint8_t const * in, uint32_t inlen, uint8_t * out )
 		uint8_t cval[4];
 	} v;
 
-	CHECK_PTR_RET( in, -1 );
-	CHECK_RET( inlen > 0, -1 );
+	CHECK_PTR_RET( in, 0 );
+	CHECK_RET( inlen > 0, 0 );
 
 	v.beval = 0;
 	switch ( inlen )
@@ -109,7 +109,7 @@ static int encode_quintet( uint8_t const * in, uint32_t inlen, uint8_t * out )
 
 		return (1 + inlen);
 	}
-	return -1;
+	return 0;
 }
 
 int base85_encode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen)
@@ -136,7 +136,6 @@ int base85_encode (uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t *
 
 		MEMSET( buf, 0, (5 * sizeof(uint8_t)) );
 		ret = encode_quintet( &(in[i]), ilen, buf );
-		CHECK_RET( ret != -1, FALSE );
 
 		/* copy the bytes over */
 		MEMCPY( &(out[o]), buf, ret );

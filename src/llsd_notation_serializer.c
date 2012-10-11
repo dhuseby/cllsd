@@ -313,6 +313,7 @@ static int llsd_notation_binary( uint8_t const * data, uint32_t const len, int c
 		CHECK_RET( fwrite( "b64\"", sizeof(uint8_t), 4, state->fout ) == 4, FALSE );
 		CHECK_RET( fwrite( buf, sizeof(uint8_t), outlen, state->fout ) == outlen, FALSE );
 		CHECK_RET( fwrite( "\"", sizeof(uint8_t), 1, state->fout ) == 1, FALSE );
+		FREE( buf );
 	}
 	else
 	{
@@ -327,18 +328,19 @@ static int llsd_notation_array_begin( uint32_t const size, void * const user_dat
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 
+	CHECK_RET( update_state( VALUE_STATES, LLSD_ARRAY, state ), FALSE );
+
 	if ( (TOP == ARRAY_VALUE) || ((TOP == MAP_VALUE) && (size > 1)) )
 	{
 		NL;
 		INDENT;
 	}
+
+	PUSH( ARRAY_START );
+
 	/* if there is > 1 item in this array, we want to output items in multi-line format */
 	PUSHML( (size > 1) );
 
-	CHECK_RET( update_state( VALUE_STATES, LLSD_ARRAY, state ), FALSE );
-	PUSH( ARRAY_START );
-
-	INDENT;
 	CHECK_RET( fwrite( "[", sizeof(uint8_t), 1, state->fout ) == 1, FALSE );
 
 	/* increment indent */
@@ -381,19 +383,19 @@ static int llsd_notation_map_begin( uint32_t const size, void * const user_data 
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 
+	CHECK_RET( update_state( VALUE_STATES, LLSD_MAP, state ), FALSE );
+
 	if ( (TOP == ARRAY_VALUE) || ((TOP == MAP_VALUE) && (size > 1)) )
 	{
 		NL;
 		INDENT;
 	}
 
+	PUSH( MAP_START );
+
 	/* if there is > 1 item in this array, we want to output items in multi-line format */
 	PUSHML( (size > 1) );
 
-	CHECK_RET( update_state( VALUE_STATES, LLSD_MAP, state ), FALSE );
-	PUSH( MAP_START );
-
-	INDENT;
 	CHECK_RET( fwrite( "{", sizeof(uint8_t), 1, state->fout ) == 1, FALSE );
 
 	/* increment indent */

@@ -464,6 +464,7 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 	}
 
 	list_delete( state.container_stack );
+	list_delete( state.step_stack );
 
 	if ( !ok )
 	{

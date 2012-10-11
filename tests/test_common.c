@@ -19,6 +19,8 @@
  * deserializer functions are specified when the suites are initialized.
  */
 
+#include "test_macros.h"
+
 extern FILE* tmpf;
 extern llsd_serializer_t format;
 
@@ -44,7 +46,7 @@ static llsd_t* get_random_str( int zero )
 		do
 		{
 			c = (32 + (rand() % 94));
-		} while( c == '\"' );
+		} while( (c == '\"') || (c == '\\') );
 
 		str[i] = c;
 	}
@@ -67,7 +69,7 @@ static llsd_t* get_random_uri( void )
 		do
 		{
 			c = (32 + (rand() % 94));
-		} while( c == '\"' );
+		} while( (c == '\"') || (c == '\\') );
 
 		uri[i] = c;
 		/*uri[i] = (rand() % 26) + 'a';*/
@@ -141,6 +143,11 @@ static llsd_t* get_random_date( void )
 	time_t seconds = (time_t)int_time;
 	int32_t useconds = (int32_t)( ( d - int_time) * 1000000.0 );
 	struct tm parts = *gmtime(&seconds);
+	/* clamp date to valid 4-byte time_t seconds range */
+	if ( d > 2000000000.0 )
+	{
+		d = 2000000000.0;
+	}
 	DEBUG( "%*sDATE %04d-%02d-%02dT%02d:%02d:%02d.%03dZ\n", indent, " ", parts.tm_year + 1900, parts.tm_mon + 1, parts.tm_mday, parts.tm_hour, parts.tm_min, parts.tm_sec, ((useconds != 0) ? (int32_t)(useconds / 1000.f + 0.5f) : 0) );
 	return llsd_new_date( d );
 }
@@ -262,44 +269,84 @@ static llsd_t * get_random_map( uint32_t size )
 		switch( type_ )
 		{
 			case LLSD_UNDEF:
-				llsd_map_insert( map, key, llsd_new_undef() );
+				if ( !llsd_map_insert( map, key, llsd_new_undef() ) )
+				{
+					llsd_delete( key );
+					goto grm_fail;
+				}
 				total++;
 				break;
 			case LLSD_BOOLEAN:
-				llsd_map_insert( map, key, get_random_boolean() );
+				if ( !llsd_map_insert( map, key, get_random_boolean() ) )
+				{
+					llsd_delete( key );
+					goto grm_fail;
+				}
 				total++;
 				break;
 			case LLSD_INTEGER:
-				llsd_map_insert( map, key, get_random_integer() );
+				if ( !llsd_map_insert( map, key, get_random_integer() ) )
+				{
+					llsd_delete( key );
+					goto grm_fail;
+				}
 				total++;
 				break;
 			case LLSD_REAL:
-				llsd_map_insert( map, key, get_random_real() );
+				if ( !llsd_map_insert( map, key, get_random_real() ) )
+				{
+					llsd_delete( key );
+					goto grm_fail;
+				}
 				total++;
 				break;
 			case LLSD_UUID:
-				llsd_map_insert( map, key, get_random_uuid() );
+				if ( !llsd_map_insert( map, key, get_random_uuid() ) )
+				{
+					llsd_delete( key );
+					goto grm_fail;
+				}
 				total++;
 				break;
 			case LLSD_STRING:
-				llsd_map_insert( map, key, get_random_str( TRUE ) );
+				if ( !llsd_map_insert( map, key, get_random_str( TRUE ) ) )
+				{
+					llsd_delete( key );
+					goto grm_fail;
+				}
 				total++;
 				break;
 			case LLSD_DATE:
-				llsd_map_insert( map, key, get_random_date() );
+				if ( !llsd_map_insert( map, key, get_random_date() ) )
+				{
+					llsd_delete( key );
+					goto grm_fail;
+				}
 				total++;
 				break;
 			case LLSD_URI:
-				llsd_map_insert( map, key, get_random_uri() );
+				if ( !llsd_map_insert( map, key, get_random_uri() ) )
+				{
+					llsd_delete( key );
+					goto grm_fail;
+				}
 				total++;
 				break;
 			case LLSD_BINARY:
-				llsd_map_insert( map, key, get_random_bin() );
+				if ( !llsd_map_insert( map, key, get_random_bin() ) )
+				{
+					llsd_delete( key );
+					goto grm_fail;
+				}
 				total++;
 				break;
 			case LLSD_ARRAY:	
 				s = (rand() % (size - total));
-				llsd_map_insert( map, key, get_random_array( s ) );
+				if ( !llsd_map_insert( map, key, get_random_array( s ) ) )
+				{
+					llsd_delete( key );
+					goto grm_fail;
+				}
 				if ( s == 0 )
 				{
 					total++;
@@ -311,7 +358,11 @@ static llsd_t * get_random_map( uint32_t size )
 				break;
 			case LLSD_MAP:
 				s = (rand() % (size - total));
-				llsd_map_insert( map, key, get_random_map( s ) );
+				if ( !llsd_map_insert( map, key, get_random_map( s ) ) )
+				{
+					llsd_delete( key );
+					goto grm_fail;
+				}
 				if ( s == 0 )
 				{
 					total++;
@@ -328,6 +379,10 @@ static llsd_t * get_random_map( uint32_t size )
 	DEBUG( "%*s}}\n", indent, " " );
 
 	return map;
+
+grm_fail:
+	llsd_delete( map );
+	return NULL;
 }
 
 static llsd_t * get_random_llsd( uint32_t size, uint32_t seed )
@@ -423,6 +478,35 @@ static void test_newdel( void )
 		CU_ASSERT_EQUAL( type_, llsd_get_type( llsd ) );
 
 		/* delete the llsd */
+		llsd_delete( llsd );
+		llsd = NULL;
+	}
+}
+
+static void test_random_map( void )
+{
+	int i;
+	llsd_t * llsd = NULL;
+	srand(0xDEADBEEF);
+	
+	for( i = 0; i < 1024; i++ )
+	{
+		llsd = get_random_map(1024);
+		CU_ASSERT_EQUAL( llsd_get_type( llsd ), LLSD_MAP );
+		llsd_delete( llsd );
+		llsd = NULL;
+	}
+}
+
+static void test_random_array( void )
+{
+	int i;
+	llsd_t * llsd = NULL;
+	srand(0xDEADBEEF);
+	for ( i = 0; i < 1024; i++ )
+	{
+		llsd = get_random_array(1024);
+		CU_ASSERT_EQUAL( llsd_get_type( llsd ), LLSD_ARRAY );
 		llsd_delete( llsd );
 		llsd = NULL;
 	}
@@ -640,9 +724,11 @@ static void test_random_serialize_zero_copy( void )
 
 static CU_pSuite add_tests( CU_pSuite pSuite )
 {
-	CHECK_PTR_RET( CU_add_test( pSuite, "new/delete of all types", test_newdel), NULL );
-	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of all types", test_serialization), NULL );
-	CHECK_PTR_RET( CU_add_test( pSuite, "serialization of random llsd", test_random_serialize), NULL );
+	ADD_TEST( "new/del of random map", test_random_map );
+	ADD_TEST( "new/del of random array", test_random_array );
+	ADD_TEST( "new/delete of all types", test_newdel );
+	ADD_TEST( "serialization of all types", test_serialization );
+	ADD_TEST( "serialization of random llsd", test_random_serialize );
 #if 0
 	CHECK_PTR_RET( CU_add_test( pSuite, "zero copy serialization of random llsd", test_random_serialize_zero_copy), NULL );
 	if ( format != LLSD_ENC_XML )

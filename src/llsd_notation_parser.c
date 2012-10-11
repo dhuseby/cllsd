@@ -282,15 +282,12 @@ static int llsd_notation_parse_raw( FILE * fin, uint8_t ** buffer, uint32_t len,
 	CHECK_RET( fread( &c, sizeof(uint8_t), 1, fin ) == 1, FALSE );
 	CHECK_RET( c == '\"', FALSE );
 
-	if ( len > 0 )
-	{
-		/* add 1 for null termination on strings */
-		(*buffer) = CALLOC( len + (str ? 1 : 0), sizeof(uint8_t) );
-		CHECK_PTR_RET( (*buffer), FALSE );
+	/* add 1 for null termination on strings */
+	(*buffer) = CALLOC( len + (str ? 1 : 0), sizeof(uint8_t) );
+	CHECK_PTR_RET( (*buffer), FALSE );
 
-		/* read the raw data */
-		CHECK_RET( fread( (*buffer), sizeof(uint8_t), len, fin ) == len, FALSE );
-	}
+	/* read the raw data */
+	CHECK_RET( fread( (*buffer), sizeof(uint8_t), len, fin ) == len, FALSE );
 
 	/* read second double quote */
 	CHECK_RET( fread( &c, sizeof(uint8_t), 1, fin ) == 1, FALSE );
@@ -317,17 +314,29 @@ static int llsd_notation_parse_quoted( FILE * fin, uint8_t ** buffer, uint32_t *
 			CHECK_RET( fread( &buf[i], sizeof(uint8_t), 1, fin ) == 1, FALSE );
 
 			/* check for an unescaped matching quote character */
-			if ( (buf[i] == quote) && (i > 0) && (buf[i-1] != '\\') )
-				done = TRUE;
+			if ( buf[i] == quote ) 
+			{
+				if ( (i == 0) || ((i > 0) && (buf[i-1] != '\\')) )
+					done = TRUE;
+			}
 		}
 
-		/* increase the buffer size */
-		(*buffer) = REALLOC( (*buffer), (*len) + i );
-		CHECK_PTR_RET( (*buffer), FALSE );
+		if ( done && (((*len) + i) == 0) )
+		{
+			/* make sure there is at least one byte in the buffer */
+			(*buffer) = REALLOC( (*buffer), 1 );
+			CHECK_PTR_RET( (*buffer), FALSE );
+		}
+		else
+		{
+			/* increase the buffer size */
+			(*buffer) = REALLOC( (*buffer), (*len) + i );
+			CHECK_PTR_RET( (*buffer), FALSE );
 
-		/* copy the data over */
-		MEMCPY( &((*buffer)[(*len)]), buf, i - (done ? 1 : 0) );
-		(*len) += (i - (done ? 1 : 0));
+			/* copy the data over */
+			MEMCPY( &((*buffer)[(*len)]), buf, i - (done ? 1 : 0) );
+			(*len) += (i - (done ? 1 : 0));
+		}
 
 		/* null terminate */
 		if ( done )
