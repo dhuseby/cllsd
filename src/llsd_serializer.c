@@ -134,12 +134,14 @@ static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const 
 
 		case LLSD_ARRAY:
 			CHECK_PTR_RET( ops->array_begin_fn, FALSE );
+			CHECK_PTR_RET( ops->array_value_end_fn, FALSE );
 			CHECK_PTR_RET( ops->array_end_fn, FALSE );
 
 			/* begin array serialization */
 			CHECK_RET( (*(ops->array_begin_fn))( llsd_get_count( llsd ), user_data ), FALSE );
 
 			/* serialize all of the array members */
+			len = llsd_get_count( llsd );
 			end = llsd_itr_end( llsd );
 			for ( itr = llsd_itr_begin( llsd ); !LLSD_ITR_EQ( itr, end ); itr = llsd_itr_next( llsd, itr ) )
 			{
@@ -147,6 +149,13 @@ static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const 
 				CHECK_PTR_RET( v, FALSE );
 				/* recurse */
 				CHECK_RET( llsd_serialize( v, fout, ops, user_data ), FALSE );
+
+				if ( len > 1 )
+				{
+					/* call value end callback */
+					CHECK_RET( (*(ops->array_value_end_fn))( user_data ), FALSE );
+				}
+				len--;
 			}
 
 			/* end array serialization */
@@ -155,12 +164,15 @@ static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const 
 
 		case LLSD_MAP:
 			CHECK_PTR_RET( ops->map_begin_fn, FALSE );
+			CHECK_PTR_RET( ops->map_key_end_fn, FALSE );
+			CHECK_PTR_RET( ops->map_value_end_fn, FALSE );
 			CHECK_PTR_RET( ops->map_end_fn, FALSE );
 
 			/* begin map serialization */
 			CHECK_RET( (*(ops->map_begin_fn))( llsd_get_count( llsd ), user_data ), FALSE );
 
 			/* serialize all of the map members */
+			len = llsd_get_count( llsd );
 			end = llsd_itr_end( llsd );
 			for( itr = llsd_itr_begin( llsd ); !LLSD_ITR_EQ( itr, end ); itr = llsd_itr_next( llsd, itr ) )
 			{
@@ -171,8 +183,18 @@ static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const 
 				/* recurse for the key */
 				CHECK_RET( llsd_serialize( k, fout, ops, user_data ), FALSE );
 
+				/* call key end callback */
+				CHECK_RET( (*(ops->map_key_end_fn))( user_data ), FALSE );
+
 				/* recurse for the value */
 				CHECK_RET( llsd_serialize( v, fout, ops, user_data ), FALSE );
+
+				if ( len > 1 )
+				{
+					/* call value end callback */
+					CHECK_RET( (*(ops->map_value_end_fn))( user_data ), FALSE );
+				}
+				len--;
 			}
 
 			/* end map serialization */

@@ -32,6 +32,7 @@ static llsd_type_t get_random_llsd_type( void )
 static llsd_t* get_random_str( int zero )
 {
 	static uint8_t str[1024];
+	uint8_t c;
 	int i;
 	int len = (rand() % 128);
 	if ( !zero && !len )
@@ -39,8 +40,13 @@ static llsd_t* get_random_str( int zero )
 
 	for ( i = 0; i < len; i++ )
 	{
-		/* get a random, printable ascii character */
-		str[i] = (32 + (rand() % 94));
+		/* get a random, non-double quote, printable ascii character */
+		do
+		{
+			c = (32 + (rand() % 94));
+		} while( c == '\"' );
+
+		str[i] = c;
 	}
 	str[len] = '\0';
 	DEBUG( "%*sSTRING %s\n", indent, " ", str );
@@ -534,7 +540,7 @@ static void test_random_serialize( void )
 		tmpf = fopen( "test.llsd", "w+b" );
 		CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
-		CU_ASSERT_TRUE( llsd_serialize_to_file( llsd_out, tmpf, format, FALSE ) );
+		CU_ASSERT_TRUE( llsd_serialize_to_file( llsd_out, tmpf, format, TRUE ) );
 		fclose( tmpf );
 		tmpf = NULL;
 

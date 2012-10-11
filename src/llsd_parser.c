@@ -22,27 +22,42 @@
 #include "llsd_binary_parser.h"
 #include "llsd_notation_parser.h"
 
-typedef enum parser_step_e
+typedef enum step_e
 {
-	PARSER_START,
-	PARSER_ARRAY_CONTAINER,
-	PARSER_MAP_CONTAINER,
-	PARSER_MAP_HAVE_KEY,
-	PARSER_DONE,
-	PARSER_ERROR
+	TOP_LEVEL		= 0x001,
+	ARRAY_START		= 0x002,
+	ARRAY_VALUE		= 0x004,
+	ARRAY_VALUE_END = 0x008,
+	ARRAY_END		= 0x010,
+	MAP_START		= 0x020,
+	MAP_KEY			= 0x040,
+	MAP_KEY_END		= 0x080,
+	MAP_VALUE		= 0x100,
+	MAP_VALUE_END	= 0x200,
+	MAP_END			= 0x400
+} step_t;
 
-} parser_step_t;
+#define VALUE_STATES (TOP_LEVEL | ARRAY_START | ARRAY_VALUE_END | MAP_KEY_END )
+#define STRING_STATES ( VALUE_STATES | MAP_START | MAP_VALUE_END )
+
+#define PUSH(x) (list_push_head( state->step_stack, (void*)x ))
+#define TOP		((uint32_t)list_get_head( state->step_stack ))
+#define POP		(list_pop_head( state->step_stack ))
+
+#define PUSHC(x) (list_push_head( state->container_stack, (void*)x ))
+#define TOPC	((llsd_t*)list_get_head( state->container_stack ))
+#define POPC	(list_pop_head( state->container_stack ))
 
 typedef struct parser_state_s
 {
 	llsd_t * llsd;
 	llsd_t * key;
 	list_t * container_stack;
-	parser_step_t step;
+	list_t * step_stack;
 
 } parser_state_t;
 
-static int llsd_add_to_container( llsd_t * const container, llsd_t * const key, llsd_t * const value )
+static int add_to_container( llsd_t * const container, llsd_t * const key, llsd_t * const value )
 {
 	CHECK_PTR_RET( container, FALSE );
 	CHECK_PTR_RET( value, FALSE );
@@ -60,171 +75,76 @@ static int llsd_add_to_container( llsd_t * const container, llsd_t * const key, 
 	return TRUE;
 }
 
-static int llsd_update_parser_state( void * const user_data, llsd_t * const v )
+static int update_state( uint32_t valid_states, void * const user_data, llsd_t * const v )
 {
 	llsd_t * container = NULL;
 	parser_state_t * state = (parser_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
-	CHECK_PTR_RET( v, FALSE );
+	CHECK_PTR_RET( state->step_stack, FALSE );
 
-	switch ( state->step )
+	/* make sure we're in a valid state */
+	CHECK_RET( (TOP & valid_states), FALSE );
+
+	switch ( llsd_get_type( v ) )
 	{
-		case PARSER_START:
-			/* v is array	=> PARSER_ARRAY_CONTAINER
-			 * v is map		=> PARSER_MAP_CONTAINER
-			 * v is other	=> PARSER_DONE */
-
-			if ( list_count( state->container_stack ) != 0 )
-				goto parser_error;
-
-			/* handle containers */
-			if ( (llsd_get_type( v ) == LLSD_ARRAY) || (llsd_get_type( v ) == LLSD_MAP) )
+		case LLSD_UNDEF:
+		case LLSD_BOOLEAN:
+		case LLSD_INTEGER:
+		case LLSD_REAL:
+		case LLSD_UUID:
+		case LLSD_DATE:
+		case LLSD_URI:
+		case LLSD_BINARY:
+		case LLSD_ARRAY:
+		case LLSD_MAP:
+			switch( TOP )
 			{
-				/* push the container on the container stack */
-				if ( !list_push_head( state->container_stack, v ) )
-				{
-					llsd_delete( v );
-					goto parser_error;
-				}
-
-				/* we cleanly made the state transition so update the state value */
-				state->step = (llsd_get_type( v ) == LLSD_ARRAY) ? 
-								PARSER_ARRAY_CONTAINER :
-								PARSER_MAP_CONTAINER;
-				return TRUE;
+				case ARRAY_START:
+				case ARRAY_VALUE_END:
+					POP;
+					PUSH( ARRAY_VALUE );
+					CHECK_RET( add_to_container( TOPC, NULL, v ), FALSE );
+					break;
+				case MAP_KEY_END:
+					POP;
+					PUSH( MAP_VALUE );
+					CHECK_RET( add_to_container( TOPC, state->key, v ), FALSE );
+					state->key = NULL;
+					break;
+				case TOP_LEVEL:
+					state->llsd = v;
+					break;
 			}
-			/* handle integral types */
-			else
+		break;
+		
+		case LLSD_STRING:
+			switch( TOP )
 			{
-				/* v is a non-container, so set it as the result and move to 
-				 * the PARSER_DONE state. */
-				state->llsd = v;
-				state->step = PARSER_DONE;
-				return TRUE;
+				case ARRAY_START:
+				case ARRAY_VALUE_END:
+					POP;
+					PUSH( ARRAY_VALUE );
+					CHECK_RET( add_to_container( TOPC, NULL, v ), FALSE );
+					break;
+				case MAP_KEY_END:
+					POP;
+					PUSH( MAP_VALUE );
+					CHECK_RET( add_to_container( TOPC, state->key, v ), FALSE );
+					state->key = NULL;
+					break;
+				case MAP_START:
+				case MAP_VALUE_END:
+					POP;
+					PUSH( MAP_KEY );
+					state->key = v;
+					break;
+				case TOP_LEVEL:
+					state->llsd = v;
+					break;
 			}
-
-			break;
-
-		case PARSER_ARRAY_CONTAINER:
-			/* v is array	=> PARSER_ARRAY_CONTAINER
-			 * v is map		=> PARSER_MAP_CONTAINER
-			 * v is other	=> PARSER_ARRAY_CONTAINER */
-
-			if ( list_count( state->container_stack ) == 0 )
-				goto parser_error;
-
-			/* get the current container */
-			container = list_get_head( state->container_stack );
-			if ( container == NULL )
-				goto parser_error;
-			if ( llsd_get_type( container ) != LLSD_ARRAY )
-				goto parser_error;
-
-			/* add v to the array */
-			if ( !llsd_add_to_container( container, NULL, v ) )
-			{
-				llsd_delete( v );
-				goto parser_error;
-			}
-
-			/* push containers */
-			if ( (llsd_get_type( v ) == LLSD_ARRAY) || (llsd_get_type( v ) == LLSD_MAP) )
-			{
-				/* push the container on the container stack */
-				if ( !list_push_head( state->container_stack, v ) )
-				{
-					llsd_delete( v );
-					goto parser_error;
-				}
-				state->step = (llsd_get_type( v ) == LLSD_ARRAY) ? 
-								PARSER_ARRAY_CONTAINER :
-								PARSER_MAP_CONTAINER;
-			}
-			break;
-
-		case PARSER_MAP_CONTAINER:
-			/* v is string	=> PARSER_MAP_HAVE_KEY
-			 * v is other	=> PARSER_ERROR */
-
-			if ( list_count( state->container_stack ) == 0 )
-				goto parser_error;
-
-			/* get the current container */
-			container = list_get_head( state->container_stack );
-			if ( container == NULL )
-				goto parser_error;
-			if ( llsd_get_type( container ) != LLSD_MAP )
-				goto parser_error;
-			if ( llsd_get_type( v ) != LLSD_STRING )
-				goto parser_error;
-
-			/* store the key, move to the second part of the map state */
-			state->key = v;
-			state->step = PARSER_MAP_HAVE_KEY;
-			break;
-
-		case PARSER_MAP_HAVE_KEY:
-			/* v is array	=> PARSER_ARRAY_CONTAINER
-			 * v is map		=> PARSER_MAP_CONTAINER
-			 * v is other	=> PARSER_MAP_CONTAINER */
-
-			if ( list_count( state->container_stack ) == 0 )
-				goto parser_error;
-
-			/* get the current container */
-			container = list_get_head( state->container_stack );
-			if ( container == NULL )
-				goto parser_error;
-			if ( llsd_get_type( container ) != LLSD_MAP )
-				goto parser_error;
-
-			/* make sure we have a string key */
-			if ( state->key == NULL )
-				goto parser_error;
-			if ( llsd_get_type( state->key ) != LLSD_STRING )
-				goto parser_error;
-
-			/* add v to the map */
-			if ( !llsd_add_to_container( container, state->key, v ) )
-			{
-				llsd_delete( v );
-				goto parser_error;
-			}
-
-			/* drop our reference to the key */
-			state->key = NULL;
-
-			/* push containers */
-			if ( (llsd_get_type( v ) == LLSD_ARRAY) || (llsd_get_type( v ) == LLSD_MAP) )
-			{
-				/* push the container on the container stack */
-				if ( !list_push_head( state->container_stack, v ) )
-				{
-					llsd_delete( v );
-					goto parser_error;
-				}
-				state->step = (llsd_get_type( v ) == LLSD_ARRAY) ? 
-								PARSER_ARRAY_CONTAINER :
-								PARSER_MAP_CONTAINER;
-			}
-			else
-			{
-				/* we're still in the map container state */
-				state->step = PARSER_MAP_CONTAINER;
-			}
-			break;
-
-		/* should never call this function when in DONE/ERROR state */
-		case PARSER_DONE:
-		case PARSER_ERROR:
-			goto parser_error;
+		break;
 	}
-
 	return TRUE;
-
-parser_error:
-	state->step = PARSER_ERROR;
-	return FALSE;
 }
 
 static int llsd_undef_fn( void * const user_data )
@@ -234,8 +154,13 @@ static int llsd_undef_fn( void * const user_data )
 	/* create the undef */
 	v = llsd_new_undef();
 	CHECK_PTR_RET( v, FALSE );
-
-	return llsd_update_parser_state( user_data, v );
+	
+	if ( !update_state( VALUE_STATES, user_data, v ) )
+	{
+		llsd_delete( v );
+		return FALSE;
+	}
+	return TRUE;
 }
 
 static int llsd_boolean_fn( int const value, void * const user_data )
@@ -246,7 +171,12 @@ static int llsd_boolean_fn( int const value, void * const user_data )
 	v = llsd_new_boolean( value );
 	CHECK_PTR_RET( v, FALSE );
 	
-	return llsd_update_parser_state( user_data, v );
+	if ( !update_state( VALUE_STATES, user_data, v ) )
+	{
+		llsd_delete( v );
+		return FALSE;
+	}
+	return TRUE;
 }
 
 static int llsd_integer_fn( int32_t const value, void * const user_data )
@@ -257,7 +187,12 @@ static int llsd_integer_fn( int32_t const value, void * const user_data )
 	v = llsd_new_integer( value );
 	CHECK_PTR_RET( v, FALSE );
 
-	return llsd_update_parser_state( user_data, v );
+	if ( !update_state( VALUE_STATES, user_data, v ) )
+	{
+		llsd_delete( v );
+		return FALSE;
+	}
+	return TRUE;
 }
 
 static int llsd_real_fn( double const value, void * const user_data )
@@ -268,7 +203,12 @@ static int llsd_real_fn( double const value, void * const user_data )
 	v = llsd_new_real( value );
 	CHECK_PTR_RET( v, FALSE );
 
-	return llsd_update_parser_state( user_data, v );
+	if ( !update_state( VALUE_STATES, user_data, v ) )
+	{
+		llsd_delete( v );
+		return FALSE;
+	}
+	return TRUE;
 }
 
 static int llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )
@@ -279,7 +219,12 @@ static int llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )
 	v = llsd_new_uuid( value );
 	CHECK_PTR_RET( v, FALSE );
 
-	return llsd_update_parser_state( user_data, v );
+	if ( !update_state( VALUE_STATES, user_data, v ) )
+	{
+		llsd_delete( v );
+		return FALSE;
+	}
+	return TRUE;
 }
 
 static int llsd_string_fn( uint8_t const * str, int own_it, void * const user_data )
@@ -290,7 +235,12 @@ static int llsd_string_fn( uint8_t const * str, int own_it, void * const user_da
 	v = llsd_new_string( str, own_it );
 	CHECK_PTR_RET( v, FALSE );
 
-	return llsd_update_parser_state( user_data, v );
+	if ( !update_state( STRING_STATES, user_data, v ) )
+	{
+		llsd_delete( v );
+		return FALSE;
+	}
+	return TRUE;
 }
 
 static int llsd_date_fn( double const value, void * const user_data )
@@ -301,7 +251,12 @@ static int llsd_date_fn( double const value, void * const user_data )
 	v = llsd_new_date( value );
 	CHECK_PTR_RET( v, FALSE );
 
-	return llsd_update_parser_state( user_data, v );
+	if ( !update_state( VALUE_STATES, user_data, v ) )
+	{
+		llsd_delete( v );
+		return FALSE;
+	}
+	return TRUE;
 }
 
 static int llsd_uri_fn( uint8_t const * uri, int own_it, void * const user_data )
@@ -312,7 +267,12 @@ static int llsd_uri_fn( uint8_t const * uri, int own_it, void * const user_data 
 	v = llsd_new_uri( uri, own_it );
 	CHECK_PTR_RET( v, FALSE );
 
-	return llsd_update_parser_state( user_data, v );
+	if ( !update_state( VALUE_STATES, user_data, v ) )
+	{
+		llsd_delete( v );
+		return FALSE;
+	}
+	return TRUE;
 }
 
 static int llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it, void * const user_data )
@@ -323,83 +283,117 @@ static int llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it,
 	v = llsd_new_binary( data, len, own_it );
 	CHECK_PTR_RET( v, FALSE );
 
-	return llsd_update_parser_state( user_data, v );
+	if ( !update_state( VALUE_STATES, user_data, v ) )
+	{
+		llsd_delete( v );
+		return FALSE;
+	}
+	return TRUE;
 }
 
 static int llsd_array_begin_fn( uint32_t const size, void * const user_data )
 {
 	llsd_t * v = NULL;
+	parser_state_t * state = (parser_state_t*)user_data;
+	CHECK_PTR_RET( state, FALSE );
+	CHECK_PTR_RET( state->step_stack, FALSE );
 
 	/* create the array */
 	v = llsd_new_array( size );
 	CHECK_PTR_RET( v, FALSE );
 
-	return llsd_update_parser_state( user_data, v );
+	if ( !update_state( VALUE_STATES, user_data, v ) )
+	{
+		llsd_delete( v );
+		return FALSE;
+	}
+
+	PUSHC( v );
+	PUSH( ARRAY_START );
+	return TRUE;
+}
+
+static int llsd_array_value_end_fn( void * const user_data )
+{
+	parser_state_t * state = (parser_state_t*)user_data;
+	CHECK_PTR_RET( state, FALSE );
+	CHECK_PTR_RET( state->step_stack, FALSE );
+	CHECK_RET( (TOP & ARRAY_VALUE), FALSE );
+
+	POP;
+	PUSH( ARRAY_VALUE_END );
+	return TRUE;
+}
+
+static int llsd_array_end_fn( void * const user_data )
+{
+	parser_state_t * state = (parser_state_t*)user_data;
+	CHECK_PTR_RET( state, FALSE );
+	CHECK_PTR_RET( state->step_stack, FALSE );
+	CHECK_RET( (TOP & (ARRAY_START | ARRAY_VALUE)), FALSE );
+
+	POPC;
+	POP;
+	return TRUE;
 }
 
 static int llsd_map_begin_fn( uint32_t const size, void * const user_data )
 {
 	llsd_t * v = NULL;
+	parser_state_t * state = (parser_state_t*)user_data;
+	CHECK_PTR_RET( state, FALSE );
+	CHECK_PTR_RET( state->step_stack, FALSE );
 
 	/* create the map */
 	v = llsd_new_map( size );
 	CHECK_PTR_RET( v, FALSE );
 
-	return llsd_update_parser_state( user_data, v );
+	if ( !update_state( VALUE_STATES, user_data, v ) )
+	{
+		llsd_delete( v );
+		return FALSE;
+	}
+
+	PUSHC( v );
+	PUSH( MAP_START );
+	return TRUE;
 }
 
-static int llsd_container_end_fn( void * const user_data )
+static int llsd_map_key_end_fn( void * const user_data )
 {
-	uint32_t count;
-	llsd_t * container = NULL;
 	parser_state_t * state = (parser_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
+	CHECK_PTR_RET( state->step_stack, FALSE );
+	CHECK_RET( (TOP & MAP_KEY), FALSE );
 
-	/* make sure there is a container on the stack */
-	if ( list_count( state->container_stack ) == 0 )
-		goto parser_error_container_end;
-
-	/* try to get the current container */
-	container = list_get_head( state->container_stack );
-	if ( container == NULL )
-		goto parser_error_container_end;
-	if ( (llsd_get_type( container ) != LLSD_MAP) && 
-		 (llsd_get_type( container ) != LLSD_ARRAY) )
-		goto parser_error_container_end;
-
-	/* remove the container from the top of the stack */
-	count = list_count( state->container_stack );
-	list_pop_head( state->container_stack );
-	if ( list_count( state->container_stack ) != (count - 1) )
-		goto parser_error_container_end;
-
-	/* if the container stack is now empty, set the array as the llsd value
-	 * and return */
-	if ( list_count( state->container_stack ) == 0 )
-	{
-		state->step = PARSER_DONE;
-		state->llsd = container;
-	}
-	else
-	{
-		/* try to get the new current container */
-		container = list_get_head( state->container_stack );
-		if ( container == NULL )
-			goto parser_error_container_end;
-
-		/* we cleanly made the state transition so update the state value */
-		state->step = (llsd_get_type( container ) == LLSD_ARRAY) ? 
-						PARSER_ARRAY_CONTAINER :
-						PARSER_MAP_CONTAINER;
-	}
-
+	POP;
+	PUSH( MAP_KEY_END );
 	return TRUE;
-
-parser_error_container_end:
-	state->step = PARSER_ERROR;
-	return FALSE;
 }
 
+static int llsd_map_value_end_fn( void * const user_data )
+{
+	parser_state_t * state = (parser_state_t*)user_data;
+	CHECK_PTR_RET( state, FALSE );
+	CHECK_PTR_RET( state->step_stack, FALSE );
+	CHECK_RET( (TOP & MAP_VALUE), FALSE );
+
+	POP;
+	PUSH( MAP_VALUE_END );
+	return TRUE;
+}
+
+static int llsd_map_end_fn( void * const user_data )
+{
+	parser_state_t * state = (parser_state_t*)user_data;
+	CHECK_PTR_RET( state, FALSE );
+	CHECK_PTR_RET( state->step_stack, FALSE );
+	CHECK_RET( (TOP & (MAP_START | MAP_VALUE)), FALSE );
+
+	POPC;
+	POP;
+	return TRUE;
+}
 
 llsd_t * llsd_parse_from_file( FILE * fin )
 {
@@ -417,9 +411,12 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 		&llsd_uri_fn,
 		&llsd_binary_fn,
 		&llsd_array_begin_fn,
-		&llsd_container_end_fn,
+		&llsd_array_value_end_fn,
+		&llsd_array_end_fn,
 		&llsd_map_begin_fn,
-		&llsd_container_end_fn
+		&llsd_map_key_end_fn,
+		&llsd_map_value_end_fn,
+		&llsd_map_end_fn
 	};
 
 	CHECK_PTR_RET( fin, NULL );
@@ -428,7 +425,13 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 	MEMSET( &state, 0, sizeof( parser_state_t ) );
 	state.container_stack = list_new( 0, &llsd_delete );
 	CHECK_PTR_RET( state.container_stack, NULL );
-	state.step = PARSER_START;
+	state.step_stack = list_new( 1, NULL );
+	if ( state.step_stack == NULL )
+	{
+		list_delete( state.container_stack );
+		return NULL;
+	}
+	list_push_head( state.step_stack, (void*)TOP_LEVEL );
 	
 	if ( llsd_binary_check_sig_file( fin ) )
 	{
@@ -455,7 +458,7 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 		ok = FALSE;
 	}
 
-	if ( state.step != PARSER_DONE )
+	if ( (step_t)list_get_head( state.step_stack ) != TOP_LEVEL )
 	{
 		ok = FALSE;
 	}
@@ -464,7 +467,6 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 
 	if ( !ok )
 	{
-		llsd_delete( state.llsd );
 		return NULL;
 	}
 
