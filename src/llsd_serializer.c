@@ -21,6 +21,7 @@
 
 #include "llsd.h"
 #include "llsd_serializer.h"
+#include "llsd_xml_serializer.h"
 #include "llsd_binary_serializer.h"
 #include "llsd_notation_serializer.h"
 
@@ -29,7 +30,7 @@ static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const 
 
 serializer_init_fn const init_fns[LLSD_ENC_COUNT] =
 {
-	NULL,
+	&llsd_xml_serializer_init,
 	&llsd_binary_serializer_init,
 	&llsd_notation_serializer_init,
 	NULL
@@ -37,7 +38,7 @@ serializer_init_fn const init_fns[LLSD_ENC_COUNT] =
 
 serializer_deinit_fn const deinit_fns[LLSD_ENC_COUNT] =
 {
-	NULL,
+	&llsd_xml_serializer_deinit,
 	&llsd_binary_serializer_deinit,
 	&llsd_notation_serializer_deinit,
 	NULL,

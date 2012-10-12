@@ -37,9 +37,7 @@ SUITE( base64 );
 SUITE( base85 );
 SUITE( binary );
 SUITE( notation );
-#if 0
 SUITE( xml );
-#endif
 
 int main()
 {
@@ -53,9 +51,7 @@ int main()
 	ADD_SUITE( base85 );
 	ADD_SUITE( binary );
 	ADD_SUITE( notation );
-#if 0
 	ADD_SUITE( xml );
-#endif
 
 	/* run all tests using the CUnit Basic interface */
 	CU_basic_set_mode( CU_BRM_VERBOSE );

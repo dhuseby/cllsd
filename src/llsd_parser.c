@@ -441,11 +441,11 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 	{
 		ok = llsd_notation_parse_file( fin, &ops, &state );
 	}
-#if 0
 	else if ( llsd_xml_check_sig_file( fin ) )
 	{
 		ok = llsd_xml_parse_file( fin, &ops, &state );
 	}
+#if 0
 	else if ( llsd_json_check_sig_file( fin ) )
 	{
 		ok = llsd_json_parse_file( fin, &ops, &state );

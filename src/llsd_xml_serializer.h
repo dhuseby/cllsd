@@ -14,19 +14,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef LLSD_BINARY_H
-#define LLSD_BINARY_H
+#ifndef LLSD_XML_SERIALIZER_H
+#define LLSD_XML_SERIALIZER_H
 
-#include <stdint.h>
-#include <stdlib.h>
-#include <sys/uio.h>
+#include "llsd_serializer.h"
 
-#include "llsd.h"
+int llsd_xml_serializer_init( FILE * fout, llsd_ops_t * const ops, int const pretty, void ** const user_data );
+int llsd_xml_serializer_deinit( FILE * fout, void * user_data );
 
-llsd_t * llsd_parse_binary( FILE * fin );
-size_t llsd_format_binary( llsd_t * llsd, FILE * fout );
-size_t llsd_get_binary_zero_copy_size( llsd_t * llsd );
-size_t llsd_format_binary_zero_copy( llsd_t * llsd, struct iovec * v );
-
-#endif /* LLSD_BINARY_H */
+#endif/*LLSD_XML_SERIALIZER_H*/
 

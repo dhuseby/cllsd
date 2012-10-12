@@ -14,19 +14,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef LLSD_NOTATION_H
-#define LLSD_NOTATION_H
-
-#include <stdint.h>
-#include <stdlib.h>
-#include <sys/uio.h>
+#ifndef LLSD_XML_PARSER_H
+#define LLSD_XML_PARSER_H
 
 #include "llsd.h"
+#include "llsd_parser.h"
 
-llsd_t * llsd_parse_notation( FILE * fin );
-size_t llsd_format_notation( llsd_t * llsd, FILE * fout, int pretty );
-size_t llsd_get_notation_zero_copy_size( llsd_t * llsd, int pretty );
-size_t llsd_format_notation_zero_copy( llsd_t * llsd, struct iovec * v, int pretty );
+int llsd_xml_check_sig_file( FILE * fin );
+int llsd_xml_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data );
 
-#endif /* LLSD_NOTATION_H */
+#endif/*LLSD_XML_PARSER_H*/
 

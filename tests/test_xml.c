@@ -28,18 +28,16 @@
 #include <cutil/macros.h>
 
 #include <llsd.h>
-#include <llsd_const.h>
-#include <llsd_util.h>
-#include <llsd_xml.h>
 
 /* offset of first by after header */
+#define XML_SIG_LEN (38)
 static size_t const data_offset = XML_SIG_LEN;
 
 /* expected values */
 static size_t expected_sizes[ LLSD_TYPE_COUNT ] = 
 {
 	22,		/* LLSD_UNDEF */
-	36,		/* LLSD_BOOLEAN */
+	33,		/* LLSD_BOOLEAN */
 	33,		/* LLSD_INTEGER */
 	34,		/* LLSD_REAL */
 	62,		/* LLSD_UUID */
@@ -52,7 +50,7 @@ static size_t expected_sizes[ LLSD_TYPE_COUNT ] =
 };
 
 static uint8_t const undef_[] = "<llsd><undef /></llsd>";
-static uint8_t const boolean_[] = "<llsd><boolean>true</boolean></llsd>";
+static uint8_t const boolean_[] = "<llsd><boolean>1</boolean></llsd>";
 static uint8_t const integer_[] = "<llsd><integer>1</integer></llsd>";
 static uint8_t const real_[] = "<llsd><real>1.000000</real></llsd>";
 static uint8_t const uuid_[] = "<llsd><uuid>01020304-0506-0708-0900-010203040506</uuid></llsd>";

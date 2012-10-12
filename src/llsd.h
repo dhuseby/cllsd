@@ -22,7 +22,6 @@
 #include <cutil/hashtable.h>
 
 /* different sig lengths */
-#define XML_SIG_LEN (38)
 
 typedef enum llsd_type_e
 {

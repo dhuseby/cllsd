@@ -476,7 +476,7 @@ static void test_random_map( void )
 	llsd_t * llsd = NULL;
 	srand(0xDEADBEEF);
 	
-	for( i = 0; i < 1024; i++ )
+	for( i = 0; i < 32; i++ )
 	{
 		llsd = get_random_map(1024);
 		CU_ASSERT_EQUAL( llsd_get_type( llsd ), LLSD_MAP );
@@ -490,7 +490,7 @@ static void test_random_array( void )
 	int i;
 	llsd_t * llsd = NULL;
 	srand(0xDEADBEEF);
-	for ( i = 0; i < 1024; i++ )
+	for ( i = 0; i < 32; i++ )
 	{
 		llsd = get_random_array(1024);
 		CU_ASSERT_EQUAL( llsd_get_type( llsd ), LLSD_ARRAY );
