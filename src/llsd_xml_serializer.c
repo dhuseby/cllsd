@@ -283,7 +283,7 @@ static int llsd_xml_uuid( uint8_t const value[UUID_LEN], void * const user_data 
 			value[6], value[7], 
 			value[8], value[9], 
 			value[10], value[11], value[12], value[13], value[14], value[15] );
-		CHECK_RET( ret == 37, FALSE );
+		CHECK_RET( ret == 36, FALSE );
 		UUID_E;
 	}
 
@@ -452,7 +452,14 @@ static int llsd_xml_array_begin( uint32_t const size, void * const user_data )
 	/* if there is > 1 item in this array, we want to output items in multi-line format */
 	PUSHML( (size > 1) );
 
-	ARRAY_S;
+	if ( size == 0 )
+	{
+		ARRAY_N;
+	}
+	else
+	{
+		ARRAY_S;
+	}
 
 	/* increment indent */
 	INC_INDENT;
@@ -472,7 +479,7 @@ static int llsd_xml_array_value_end( void * const user_data )
 }
 
 
-static int llsd_xml_array_end( void * const user_data )
+static int llsd_xml_array_end( uint32_t const size, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -482,7 +489,10 @@ static int llsd_xml_array_end( void * const user_data )
 	NL;
 	DEC_INDENT;
 	INDENT;
-	ARRAY_E;
+	if ( size > 0 )
+	{
+		ARRAY_E;
+	}
 	POPML;
 	return TRUE;
 }
@@ -505,7 +515,14 @@ static int llsd_xml_map_begin( uint32_t const size, void * const user_data )
 	/* if there is > 1 item in this array, we want to output items in multi-line format */
 	PUSHML( (size > 1) );
 
-	MAP_S;
+	if ( size == 0 )
+	{
+		MAP_N;
+	}
+	else
+	{
+		MAP_S;
+	}
 
 	/* increment indent */
 	INC_INDENT;
@@ -535,7 +552,7 @@ static int llsd_xml_map_value_end( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_map_end( void * const user_data )
+static int llsd_xml_map_end( uint32_t const size, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -544,7 +561,10 @@ static int llsd_xml_map_end( void * const user_data )
 	NL;
 	DEC_INDENT;
 	INDENT;
-	MAP_E;
+	if ( size > 0 )
+	{
+		MAP_E;
+	}
 	POPML;
 	return TRUE;
 }

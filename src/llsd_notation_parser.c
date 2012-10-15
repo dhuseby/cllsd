@@ -620,7 +620,7 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 				break;
 
 			case ']':
-				CHECK_RET( (*(ops->array_end_fn))( user_data ), FALSE );
+				CHECK_RET( (*(ops->array_end_fn))( 0, user_data ), FALSE );
 				POP;
 				break;
 			
@@ -631,7 +631,7 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 				break;
 
 			case '}':
-				CHECK_RET( (*(ops->map_end_fn))( user_data ), FALSE );
+				CHECK_RET( (*(ops->map_end_fn))( 0, user_data ), FALSE );
 				POP;
 				break;
 

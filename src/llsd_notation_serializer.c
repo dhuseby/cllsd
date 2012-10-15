@@ -363,7 +363,7 @@ static int llsd_notation_array_value_end( void * const user_data )
 }
 
 
-static int llsd_notation_array_end( void * const user_data )
+static int llsd_notation_array_end( uint32_t const size, void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -430,7 +430,7 @@ static int llsd_notation_map_value_end( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_notation_map_end( void * const user_data )
+static int llsd_notation_map_end( uint32_t const size, void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );

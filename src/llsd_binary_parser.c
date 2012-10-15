@@ -280,7 +280,7 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 				break;
 
 			case ']':
-				CHECK_RET( (*(ops->array_end_fn))( user_data ), FALSE );
+				CHECK_RET( (*(ops->array_end_fn))( 0, user_data ), FALSE );
 				POP;
 				break;
 			
@@ -293,7 +293,7 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 				break;
 
 			case '}':
-				CHECK_RET( (*(ops->map_end_fn))( user_data ), FALSE );
+				CHECK_RET( (*(ops->map_end_fn))( 0, user_data ), FALSE );
 				POP;
 				break;
 

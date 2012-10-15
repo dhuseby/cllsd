@@ -69,8 +69,8 @@ typedef struct xp_state_s
 	void * user_data;
 } xp_state_t;
 
-#define VALUE_STATES (TOP_LEVEL | ARRAY_START | ARRAY_VALUE_END | MAP_KEY_END )
-#define STRING_STATES ( VALUE_STATES | MAP_START | MAP_VALUE_END )
+#define VALUE_STATES (TOP_LEVEL | ARRAY_START | ARRAY_VALUE | MAP_KEY )
+#define STRING_STATES ( VALUE_STATES | MAP_START | MAP_VALUE )
 
 #define PUSH(x) (list_push_head( state->step_stack, (void*)x ))
 #define TOP		((uint32_t)list_get_head( state->step_stack ))
@@ -78,12 +78,16 @@ typedef struct xp_state_s
 
 static int update_state( uint32_t valid_states, llsd_type_t type_, xp_state_t * state )
 {
+	xp_step_t step = TOP_LEVEL;
+
 	/* make sure we have a valid LLSD type */
 	CHECK_RET( IS_VALID_LLSD_TYPE( type_ ), FALSE );
 	
 	/* make sure we have a valid state object pointer */
 	CHECK_PTR_RET( state, FALSE );
 	CHECK_RET( list_count( state->step_stack ) >= 1, FALSE );
+
+	step = TOP;
 
 	/* make sure we're in a valid state */
 	CHECK_RET( (TOP & valid_states), FALSE );
@@ -103,12 +107,15 @@ static int update_state( uint32_t valid_states, llsd_type_t type_, xp_state_t * 
 		case LLSD_MAP:
 			switch( TOP )
 			{
+				case ARRAY_VALUE:
+					CHECK_RET( (*(state->ops->array_value_end_fn))( state->user_data ), FALSE );
+					/* fall through */
 				case ARRAY_START:
-				case ARRAY_VALUE_END:
 					POP;
 					PUSH( ARRAY_VALUE );
 					break;
-				case MAP_KEY_END:
+				case MAP_KEY:
+					CHECK_RET( (*(state->ops->map_value_end_fn))( state->user_data ), FALSE );
 					POP;
 					PUSH( MAP_VALUE );
 					break;
@@ -121,17 +128,25 @@ static int update_state( uint32_t valid_states, llsd_type_t type_, xp_state_t * 
 		case LLSD_STRING:
 			switch( TOP )
 			{
+				case ARRAY_VALUE:
+					CHECK_RET( (*(state->ops->array_value_end_fn))( state->user_data ), FALSE );
+					/* fall through */
 				case ARRAY_START:
-				case ARRAY_VALUE_END:
 					POP;
 					PUSH( ARRAY_VALUE );
 					break;
-				case MAP_KEY_END:
+				case MAP_KEY:
+					CHECK_RET( (*(state->ops->map_value_end_fn))( state->user_data ), FALSE );
 					POP;
 					PUSH( MAP_VALUE );
 					break;
+				case MAP_VALUE:
+					CHECK_RET( (*(state->ops->map_value_end_fn))( state->user_data ), FALSE );
+					POP;
+					PUSH( MAP_KEY );
+					break;
 				case MAP_START:
-				case MAP_VALUE_END:
+					CHECK_RET( (*(state->ops->map_key_end_fn))( state->user_data ), FALSE );
 					POP;
 					PUSH( MAP_KEY );
 					break;
@@ -231,6 +246,11 @@ static int integer_from_buf( buffer_t * const buf, int * ival )
 
 	if ( buf->iov_len > 0 )
 	{
+		if ( ((uint8_t*)buf->iov_base)[buf->iov_len-1] != '\0' )
+		{
+			/* zero terminate the string */
+			buffer_append( buf, "\0", 1 );
+		}
 		CHECK_RET( sscanf( buf->iov_base, "%d", ival ) == 1, FALSE );
 	}
 	return TRUE;
@@ -244,6 +264,11 @@ static int real_from_buf( buffer_t * const buf, double * rval )
 
 	if ( buf->iov_len > 0 )
 	{
+		if ( ((uint8_t*)buf->iov_base)[buf->iov_len-1] != '\0' )
+		{
+			/* zero terminate the string */
+			buffer_append( buf, "\0", 1 );
+		}
 		CHECK_RET( sscanf( buf->iov_base, "%lf", rval ) == 1, FALSE );
 	}
 	return TRUE;
@@ -406,6 +431,11 @@ static int date_from_buf( buffer_t * const buf, double * rval )
 
 	MEMSET( &parts, 0, sizeof(struct tm) );
 
+	if ( ((uint8_t*)buf->iov_base)[buf->iov_len-1] != '\0' )
+	{
+		/* zero terminate the string */
+		buffer_append( buf, "\0", 1 );
+	}
 	CHECK_RET( sscanf( buf->iov_base, "%04d-%02d-%02dT%02d:%02d:%02d.%03dZ", &parts.tm_year, &parts.tm_mon, &parts.tm_mday, &parts.tm_hour, &parts.tm_min, &parts.tm_sec, &useconds ) == 7, FALSE );
 
 	/* adjust a few things */
@@ -453,7 +483,7 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 		case LLSD_STRING:
 		case LLSD_URI:
 			break;
-		case LLSD_BINARY:
+		;.,rfm,.rtfvvvvvvvvvase LLSD_BINARY:
 			/* try to get the encoding attribute if there is one */
 			state->enc = LLSD_BASE64;
 			if ( (attr[0] != NULL) && (strncmp( attr[0], "encoding", 9 ) == 0) )
@@ -467,8 +497,8 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 			{
 				size = atoi( attr[1] );
 			}
-			CHECK( (*(state->ops->array_begin_fn))( 0, state->user_data ) );
 			CHECK( update_state( VALUE_STATES, LLSD_ARRAY, state ) );
+			CHECK( (*(state->ops->array_begin_fn))( size, state->user_data ) );
 			PUSH( ARRAY_START );
 			break;
 		case LLSD_MAP:
@@ -477,8 +507,8 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 			{
 				size = atoi( attr[1] );
 			}
-			CHECK( (*(state->ops->map_begin_fn))( 0, state->user_data ) );
 			CHECK( update_state( VALUE_STATES, LLSD_MAP, state ) );
+			CHECK( (*(state->ops->map_begin_fn))( size, state->user_data ) );
 			PUSH( MAP_START );
 			break;
 	}
@@ -536,6 +566,12 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			CHECK( update_state( VALUE_STATES, LLSD_DATE, state ) );
 			break;
 		case LLSD_KEY:
+			/* zero terminate the string */
+			buffer_append( state->buf, "\0", 1 );
+			CHECK( (*(state->ops->string_fn))( (uint8_t*)state->buf->iov_base, FALSE, state->user_data ) );
+			/* this synthesizes the key end callback */
+			CHECK( update_state( STRING_STATES, LLSD_STRING, state ) );
+			break;
 		case LLSD_STRING:
 			/* zero terminate the string */
 			buffer_append( state->buf, "\0", 1 );
@@ -556,12 +592,14 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			len = 0;
 			break;
 		case LLSD_ARRAY:
-			CHECK( (*(state->ops->array_end_fn))( state->user_data ) );
+			CHECK( (*(state->ops->array_end_fn))( 0, state->user_data ) );
 			POP;
+			CHECK( update_state( VALUE_STATES, LLSD_BINARY, state ) );
 			break;
 		case LLSD_MAP:
-			CHECK( (*(state->ops->map_end_fn))( state->user_data ) );
+			CHECK( (*(state->ops->map_end_fn))( 0, state->user_data ) );
 			POP;
+			CHECK( update_state( VALUE_STATES, LLSD_BINARY, state ) );
 			break;
 	}
 
@@ -576,12 +614,9 @@ static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len 
 
 	CHECK_PTR( state );
 
-	/* extend the buffer enough to hold the new data */
-	buf = buffer_append( state->buf, NULL, len );
+	/* extend the buffer and copy the new data into it */
+	buf = buffer_append( state->buf, s, len );
 	CHECK_PTR( buf );
-
-	/* copy the data over */
-	MEMCPY( buf, s, len );
 }
 
 #define XML_BUF_SIZE (4096)

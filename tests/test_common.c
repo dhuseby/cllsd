@@ -47,7 +47,7 @@ static llsd_t* get_random_str( int zero )
 		do
 		{
 			c = (32 + (rand() % 94));
-		} while( (c == '\"') || (c == '\\') );
+		} while( (c == '\"') || (c == '\\') || (c == '\'') || (c == '<') || (c == '>') || (c == '&') );
 
 		str[i] = c;
 	}
@@ -71,7 +71,7 @@ static llsd_t* get_random_key( int min )
 		do
 		{
 			c = (32 + (rand() % 94));
-		} while( (c == '\"') || (c == '\\') );
+		} while( (c == '\"') || (c == '\\') || (c == '\'') || (c == '<') || (c == '>') || (c == '&') );
 
 		str[i] = c;
 	}
@@ -94,7 +94,7 @@ static llsd_t* get_random_uri( void )
 		do
 		{
 			c = (32 + (rand() % 94));
-		} while( (c == '\"') || (c == '\\') );
+		} while( (c == '\"') || (c == '\\') || (c == '\'') || (c == '<') || (c == '>') || (c == '&') );
 
 		uri[i] = c;
 		/*uri[i] = (rand() % 26) + 'a';*/

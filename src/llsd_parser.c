@@ -325,7 +325,7 @@ static int llsd_array_value_end_fn( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_array_end_fn( void * const user_data )
+static int llsd_array_end_fn( uint32_t const size, void * const user_data )
 {
 	parser_state_t * state = (parser_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -383,7 +383,7 @@ static int llsd_map_value_end_fn( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_map_end_fn( void * const user_data )
+static int llsd_map_end_fn( uint32_t const size, void * const user_data )
 {
 	parser_state_t * state = (parser_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );

@@ -160,7 +160,7 @@ static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const 
 			}
 
 			/* end array serialization */
-			CHECK_RET( (*(ops->array_end_fn))( user_data ), FALSE );
+			CHECK_RET( (*(ops->array_end_fn))( llsd_get_count( llsd ), user_data ), FALSE );
 			break;
 
 		case LLSD_MAP:
@@ -199,7 +199,7 @@ static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const 
 			}
 
 			/* end map serialization */
-			CHECK_RET( (*(ops->map_end_fn))( user_data ), FALSE );
+			CHECK_RET( (*(ops->map_end_fn))( llsd_get_count( llsd ), user_data ), FALSE );
 
 			break;
 	}

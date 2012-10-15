@@ -169,11 +169,11 @@ typedef struct llsd_ops_s
 	int (*binary_fn)( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data );
 	int (*array_begin_fn)( uint32_t const size, void * const user_data );
 	int (*array_value_end_fn)( void * const user_data );
-	int (*array_end_fn)( void * const user_data );
+	int (*array_end_fn)( uint32_t const size, void * const user_data );
 	int (*map_begin_fn)( uint32_t const size, void * const user_data );
 	int (*map_key_end_fn)( void * const user_data );
 	int (*map_value_end_fn)( void * const user_data );
-	int (*map_end_fn)( void * const user_data );
+	int (*map_end_fn)( uint32_t const size, void * const user_data );
 
 } llsd_ops_t;
 
