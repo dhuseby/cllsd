@@ -168,14 +168,36 @@ typedef struct llsd_ops_s
 	int (*uri_fn)( uint8_t const * uri, int const own_it, void * const user_data );
 	int (*binary_fn)( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data );
 	int (*array_begin_fn)( uint32_t const size, void * const user_data );
+	int (*array_value_begin_fn)(void * const user_data);
 	int (*array_value_end_fn)( void * const user_data );
 	int (*array_end_fn)( uint32_t const size, void * const user_data );
 	int (*map_begin_fn)( uint32_t const size, void * const user_data );
+	int (*map_key_begin_fn)( void * const user_data );
 	int (*map_key_end_fn)( void * const user_data );
+	int (*map_value_begin_fn)( void * const user_data );
 	int (*map_value_end_fn)( void * const user_data );
 	int (*map_end_fn)( uint32_t const size, void * const user_data );
 
 } llsd_ops_t;
+
+/* states of the parser/serializer */
+typedef enum state_e
+{
+	TOP_LEVEL			= 0x0001,
+	ARRAY_BEGIN			= 0x0002,
+	ARRAY_VALUE_BEGIN	= 0x0004,
+	ARRAY_VALUE			= 0x0008,
+	ARRAY_VALUE_END		= 0x0010,
+	ARRAY_END			= 0x0020,
+	MAP_BEGIN			= 0x0040,
+	MAP_KEY_BEGIN		= 0x0080,
+	MAP_KEY				= 0x0100,
+	MAP_KEY_END			= 0x0200,
+	MAP_VALUE_BEGIN		= 0x0400,
+	MAP_VALUE			= 0x0800,
+	MAP_VALUE_END		= 0x1000,
+	MAP_END				= 0x2000
+} state_t;
 
 #endif /*LLSD_H*/
 

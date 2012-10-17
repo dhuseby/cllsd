@@ -22,38 +22,23 @@
 #include "llsd_binary_parser.h"
 #include "llsd_notation_parser.h"
 
-typedef enum step_e
-{
-	TOP_LEVEL		= 0x001,
-	ARRAY_START		= 0x002,
-	ARRAY_VALUE		= 0x004,
-	ARRAY_VALUE_END = 0x008,
-	ARRAY_END		= 0x010,
-	MAP_START		= 0x020,
-	MAP_KEY			= 0x040,
-	MAP_KEY_END		= 0x080,
-	MAP_VALUE		= 0x100,
-	MAP_VALUE_END	= 0x200,
-	MAP_END			= 0x400
-} step_t;
+#define VALUE_STATES (TOP_LEVEL | ARRAY_VALUE_BEGIN | MAP_VALUE_BEGIN )
+#define STRING_STATES ( VALUE_STATES | MAP_KEY_BEGIN )
 
-#define VALUE_STATES (TOP_LEVEL | ARRAY_START | ARRAY_VALUE_END | MAP_KEY_END )
-#define STRING_STATES ( VALUE_STATES | MAP_START | MAP_VALUE_END )
+#define PUSH(x) (list_push_head( parser_state->state_stack, (void*)x ))
+#define TOP		((uint32_t)list_get_head( parser_state->state_stack ))
+#define POP		(list_pop_head( parser_state->state_stack ))
 
-#define PUSH(x) (list_push_head( state->step_stack, (void*)x ))
-#define TOP		((uint32_t)list_get_head( state->step_stack ))
-#define POP		(list_pop_head( state->step_stack ))
-
-#define PUSHC(x) (list_push_head( state->container_stack, (void*)x ))
-#define TOPC	((llsd_t*)list_get_head( state->container_stack ))
-#define POPC	(list_pop_head( state->container_stack ))
+#define PUSHC(x) (list_push_head( parser_state->container_stack, (void*)x ))
+#define TOPC	((llsd_t*)list_get_head( parser_state->container_stack ))
+#define POPC	(list_pop_head( parser_state->container_stack ))
 
 typedef struct parser_state_s
 {
 	llsd_t * llsd;
 	llsd_t * key;
 	list_t * container_stack;
-	list_t * step_stack;
+	list_t * state_stack;
 
 } parser_state_t;
 
@@ -78,12 +63,16 @@ static int add_to_container( llsd_t * const container, llsd_t * const key, llsd_
 static int update_state( uint32_t valid_states, void * const user_data, llsd_t * const v )
 {
 	llsd_t * container = NULL;
-	parser_state_t * state = (parser_state_t*)user_data;
-	CHECK_PTR_RET( state, FALSE );
-	CHECK_PTR_RET( state->step_stack, FALSE );
+	state_t state = TOP_LEVEL;
+	parser_state_t * parser_state = (parser_state_t*)user_data;
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+
+	/* get the current step we're in */
+	state = TOP;
 
 	/* make sure we're in a valid state */
-	CHECK_RET( (TOP & valid_states), FALSE );
+	CHECK_RET( (state & valid_states), FALSE );
 
 	switch ( llsd_get_type( v ) )
 	{
@@ -97,49 +86,46 @@ static int update_state( uint32_t valid_states, void * const user_data, llsd_t *
 		case LLSD_BINARY:
 		case LLSD_ARRAY:
 		case LLSD_MAP:
-			switch( TOP )
+			switch( state )
 			{
-				case ARRAY_START:
-				case ARRAY_VALUE_END:
+				case ARRAY_VALUE_BEGIN:
 					POP;
 					PUSH( ARRAY_VALUE );
 					CHECK_RET( add_to_container( TOPC, NULL, v ), FALSE );
 					break;
-				case MAP_KEY_END:
+				case MAP_VALUE_BEGIN:
 					POP;
 					PUSH( MAP_VALUE );
-					CHECK_RET( add_to_container( TOPC, state->key, v ), FALSE );
-					state->key = NULL;
+					CHECK_RET( add_to_container( TOPC, parser_state->key, v ), FALSE );
+					parser_state->key = NULL;
 					break;
 				case TOP_LEVEL:
-					state->llsd = v;
+					parser_state->llsd = v;
 					break;
 			}
 		break;
 		
 		case LLSD_STRING:
-			switch( TOP )
+			switch( state )
 			{
-				case ARRAY_START:
-				case ARRAY_VALUE_END:
+				case ARRAY_VALUE_BEGIN:
 					POP;
 					PUSH( ARRAY_VALUE );
 					CHECK_RET( add_to_container( TOPC, NULL, v ), FALSE );
 					break;
-				case MAP_KEY_END:
+				case MAP_VALUE_BEGIN:
 					POP;
 					PUSH( MAP_VALUE );
-					CHECK_RET( add_to_container( TOPC, state->key, v ), FALSE );
-					state->key = NULL;
+					CHECK_RET( add_to_container( TOPC, parser_state->key, v ), FALSE );
+					parser_state->key = NULL;
 					break;
-				case MAP_START:
-				case MAP_VALUE_END:
+				case MAP_KEY_BEGIN:
 					POP;
 					PUSH( MAP_KEY );
-					state->key = v;
+					parser_state->key = v;
 					break;
 				case TOP_LEVEL:
-					state->llsd = v;
+					parser_state->llsd = v;
 					break;
 			}
 		break;
@@ -294,9 +280,9 @@ static int llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it,
 static int llsd_array_begin_fn( uint32_t const size, void * const user_data )
 {
 	llsd_t * v = NULL;
-	parser_state_t * state = (parser_state_t*)user_data;
-	CHECK_PTR_RET( state, FALSE );
-	CHECK_PTR_RET( state->step_stack, FALSE );
+	parser_state_t * parser_state = (parser_state_t*)user_data;
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
 
 	/* create the array */
 	v = llsd_new_array( size );
@@ -309,16 +295,33 @@ static int llsd_array_begin_fn( uint32_t const size, void * const user_data )
 	}
 
 	PUSHC( v );
-	PUSH( ARRAY_START );
+	PUSH( ARRAY_BEGIN );
+	return TRUE;
+}
+
+static int llsd_array_value_begin_fn( void * const user_data )
+{
+	parser_state_t * parser_state = (parser_state_t*)user_data;
+	state_t state = TOP_LEVEL;
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+	state = TOP;
+	CHECK_RET( (state & (ARRAY_BEGIN | ARRAY_VALUE_END)), FALSE );
+
+	POP;
+	PUSH( ARRAY_VALUE_BEGIN );
+
 	return TRUE;
 }
 
 static int llsd_array_value_end_fn( void * const user_data )
 {
-	parser_state_t * state = (parser_state_t*)user_data;
-	CHECK_PTR_RET( state, FALSE );
-	CHECK_PTR_RET( state->step_stack, FALSE );
-	CHECK_RET( (TOP & ARRAY_VALUE), FALSE );
+	parser_state_t * parser_state = (parser_state_t*)user_data;
+	state_t state = TOP_LEVEL;
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+	state = TOP;
+	CHECK_RET( (state & ARRAY_VALUE), FALSE );
 
 	POP;
 	PUSH( ARRAY_VALUE_END );
@@ -327,10 +330,12 @@ static int llsd_array_value_end_fn( void * const user_data )
 
 static int llsd_array_end_fn( uint32_t const size, void * const user_data )
 {
-	parser_state_t * state = (parser_state_t*)user_data;
-	CHECK_PTR_RET( state, FALSE );
-	CHECK_PTR_RET( state->step_stack, FALSE );
-	CHECK_RET( (TOP & (ARRAY_START | ARRAY_VALUE)), FALSE );
+	parser_state_t * parser_state = (parser_state_t*)user_data;
+	state_t state = TOP_LEVEL;
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+	state = TOP;
+	CHECK_RET( (state & (ARRAY_BEGIN | ARRAY_VALUE_END)), FALSE );
 
 	POPC;
 	POP;
@@ -340,9 +345,9 @@ static int llsd_array_end_fn( uint32_t const size, void * const user_data )
 static int llsd_map_begin_fn( uint32_t const size, void * const user_data )
 {
 	llsd_t * v = NULL;
-	parser_state_t * state = (parser_state_t*)user_data;
-	CHECK_PTR_RET( state, FALSE );
-	CHECK_PTR_RET( state->step_stack, FALSE );
+	parser_state_t * parser_state = (parser_state_t*)user_data;
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
 
 	/* create the map */
 	v = llsd_new_map( size );
@@ -355,28 +360,60 @@ static int llsd_map_begin_fn( uint32_t const size, void * const user_data )
 	}
 
 	PUSHC( v );
-	PUSH( MAP_START );
+	PUSH( MAP_BEGIN );
+	return TRUE;
+}
+
+static int llsd_map_key_begin_fn( void * const user_data )
+{
+	parser_state_t * parser_state = (parser_state_t*)user_data;
+	state_t state = TOP_LEVEL;
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+	state = TOP;
+	CHECK_RET( (state & (MAP_BEGIN | MAP_VALUE_END)), FALSE );
+
+	POP;
+	PUSH( MAP_KEY_BEGIN );
 	return TRUE;
 }
 
 static int llsd_map_key_end_fn( void * const user_data )
 {
-	parser_state_t * state = (parser_state_t*)user_data;
-	CHECK_PTR_RET( state, FALSE );
-	CHECK_PTR_RET( state->step_stack, FALSE );
-	CHECK_RET( (TOP & MAP_KEY), FALSE );
+	parser_state_t * parser_state = (parser_state_t*)user_data;
+	state_t state = TOP_LEVEL;
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+	state = TOP;
+	CHECK_RET( (state & MAP_KEY), FALSE );
 
 	POP;
 	PUSH( MAP_KEY_END );
 	return TRUE;
 }
 
+static int llsd_map_value_begin_fn( void * const user_data )
+{
+	parser_state_t * parser_state = (parser_state_t*)user_data;
+	state_t state = TOP_LEVEL;
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+	state = TOP;
+	CHECK_RET( (state & MAP_KEY_END), FALSE );
+
+	POP;
+	PUSH( MAP_VALUE_BEGIN );
+	return TRUE;
+}
+
 static int llsd_map_value_end_fn( void * const user_data )
 {
-	parser_state_t * state = (parser_state_t*)user_data;
-	CHECK_PTR_RET( state, FALSE );
-	CHECK_PTR_RET( state->step_stack, FALSE );
-	CHECK_RET( (TOP & MAP_VALUE), FALSE );
+	parser_state_t * parser_state = (parser_state_t*)user_data;
+	state_t state = TOP_LEVEL;
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+	state = TOP;
+	CHECK_RET( (state & MAP_VALUE), FALSE );
 
 	POP;
 	PUSH( MAP_VALUE_END );
@@ -385,10 +422,12 @@ static int llsd_map_value_end_fn( void * const user_data )
 
 static int llsd_map_end_fn( uint32_t const size, void * const user_data )
 {
-	parser_state_t * state = (parser_state_t*)user_data;
-	CHECK_PTR_RET( state, FALSE );
-	CHECK_PTR_RET( state->step_stack, FALSE );
-	CHECK_RET( (TOP & (MAP_START | MAP_VALUE)), FALSE );
+	parser_state_t * parser_state = (parser_state_t*)user_data;
+	state_t state = TOP_LEVEL;
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+	state = TOP;
+	CHECK_RET( (TOP & (MAP_BEGIN | MAP_VALUE_END)), FALSE );
 
 	POPC;
 	POP;
@@ -411,10 +450,13 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 		&llsd_uri_fn,
 		&llsd_binary_fn,
 		&llsd_array_begin_fn,
+		&llsd_array_value_begin_fn,
 		&llsd_array_value_end_fn,
 		&llsd_array_end_fn,
 		&llsd_map_begin_fn,
+		&llsd_map_key_begin_fn,
 		&llsd_map_key_end_fn,
+		&llsd_map_value_begin_fn,
 		&llsd_map_value_end_fn,
 		&llsd_map_end_fn
 	};
@@ -425,13 +467,13 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 	MEMSET( &state, 0, sizeof( parser_state_t ) );
 	state.container_stack = list_new( 0, &llsd_delete );
 	CHECK_PTR_RET( state.container_stack, NULL );
-	state.step_stack = list_new( 1, NULL );
-	if ( state.step_stack == NULL )
+	state.state_stack = list_new( 1, NULL );
+	if ( state.state_stack == NULL )
 	{
 		list_delete( state.container_stack );
 		return NULL;
 	}
-	list_push_head( state.step_stack, (void*)TOP_LEVEL );
+	list_push_head( state.state_stack, (void*)TOP_LEVEL );
 	
 	if ( llsd_binary_check_sig_file( fin ) )
 	{
@@ -458,13 +500,13 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 		ok = FALSE;
 	}
 
-	if ( (step_t)list_get_head( state.step_stack ) != TOP_LEVEL )
+	if ( (state_t)list_get_head( state.state_stack ) != TOP_LEVEL )
 	{
 		ok = FALSE;
 	}
 
 	list_delete( state.container_stack );
-	list_delete( state.step_stack );
+	list_delete( state.state_stack );
 
 	if ( !ok )
 	{

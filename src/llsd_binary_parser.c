@@ -14,9 +14,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#define DEBUG_ON
 #include <cutil/debug.h>
 #include <cutil/macros.h>
+#include <cutil/list.h>
 
 #include "llsd.h"
 #include "llsd_binary_parser.h"
@@ -41,40 +41,33 @@ int llsd_binary_check_sig_file( FILE * fin )
 	return ( memcmp( sig, binary_header, BINARY_SIG_LEN ) == 0 );
 }
 
-typedef enum bs_step_e
+typedef struct bs_state_s
 {
-	TOP_LEVEL		= 0x001,
-	ARRAY_START		= 0x002,
-	ARRAY_VALUE		= 0x004,
-	ARRAY_VALUE_END = 0x008,
-	ARRAY_END		= 0x010,
-	MAP_START		= 0x020,
-	MAP_KEY			= 0x040,
-	MAP_KEY_END		= 0x080,
-	MAP_VALUE		= 0x100,
-	MAP_VALUE_END	= 0x200,
-	MAP_END			= 0x400
-} bs_step_t;
+	list_t * state_stack;
+	llsd_ops_t * ops;
+	void * user_data;
+} bs_state_t;
 
-#define VALUE_STATES (TOP_LEVEL | ARRAY_START | ARRAY_VALUE | MAP_KEY )
-#define STRING_STATES ( VALUE_STATES | MAP_START | MAP_VALUE )
+#define PUSH(x) (list_push_head( parser_state->state_stack, (void*)x ))
+#define TOP		((uint32_t)list_get_head( parser_state->state_stack ))
+#define POP		(list_pop_head( parser_state->state_stack))
 
-#define PUSH(x) (list_push_head( step_stack, (void*)x ))
-#define TOP		((uint32_t)list_get_head( step_stack ))
-#define POP		(list_pop_head( step_stack))
-
-static int update_state( uint32_t valid_states, llsd_type_t type_, 
-						 list_t * step_stack, llsd_ops_t * const ops, 
-						 void * const user_data )
+#define BEGIN_VALUE_STATES ( TOP_LEVEL | ARRAY_BEGIN | ARRAY_VALUE_END | MAP_KEY_END )
+#define BEGIN_STRING_STATES ( VALUE_STATES | MAP_BEGIN )
+static int begin_value( uint32_t valid_states, llsd_type_t type_, bs_state_t * parser_state )
 {
+	state_t state = TOP_LEVEL;
+
 	/* make sure we have a valid LLSD type */
 	CHECK_RET( IS_VALID_LLSD_TYPE( type_ ), FALSE );
 	
 	/* make sure we have a valid state object pointer */
-	CHECK_PTR_RET( step_stack, FALSE );
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
 
 	/* make sure we're in a valid state */
-	CHECK_RET( (TOP & valid_states), FALSE );
+	state = TOP;
+	CHECK_RET( (state & valid_states), FALSE );
 
 	/* transition toe the next state based on type_ and current state */
 	switch ( type_ )
@@ -89,50 +82,44 @@ static int update_state( uint32_t valid_states, llsd_type_t type_,
 		case LLSD_BINARY:
 		case LLSD_ARRAY:
 		case LLSD_MAP:
-			switch( TOP )
+			switch( state )
 			{
-				case ARRAY_VALUE:
-					CHECK_RET( (*(ops->array_value_end_fn))( user_data ), FALSE );
-					/* fall through */
-				case ARRAY_START:
+				case ARRAY_BEGIN:
+				case ARRAY_VALUE_END:
+					CHECK_RET( (*(parser_state->ops->array_value_begin_fn))( parser_state->user_data ), FALSE );
 					POP;
-					PUSH( ARRAY_VALUE );
+					PUSH( ARRAY_VALUE_BEGIN );
 					break;
-				case MAP_KEY:
-					CHECK_RET( (*(ops->map_key_end_fn))( user_data ), FALSE );
+				case MAP_KEY_END:
+					CHECK_RET( (*(parser_state->ops->map_value_begin_fn))( parser_state->user_data ), FALSE );
 					POP;
-					PUSH( MAP_VALUE );
+					PUSH( MAP_VALUE_BEGIN );
 					break;
 				case TOP_LEVEL:
-					/* no state change */
 					break;
 			}
 		break;
 		
 		case LLSD_STRING:
-			switch( TOP )
+			switch( state )
 			{
-				case ARRAY_VALUE:
-					CHECK_RET( (*(ops->array_value_end_fn))( user_data ), FALSE );
-					/* fall through */
-				case ARRAY_START:
+				case ARRAY_BEGIN:
+				case ARRAY_VALUE_END:
+					CHECK_RET( (*(parser_state->ops->array_value_begin_fn))( parser_state->user_data ), FALSE );
 					POP;
-					PUSH( ARRAY_VALUE );
+					PUSH( ARRAY_VALUE_BEGIN );
 					break;
-				case MAP_KEY:
-					CHECK_RET( (*(ops->map_key_end_fn))( user_data ), FALSE );
+				case MAP_BEGIN:
+					CHECK_RET( (*(parser_state->ops->map_key_begin_fn))( parser_state->user_data ), FALSE );
 					POP;
-					PUSH( MAP_VALUE );
+					PUSH( MAP_KEY_BEGIN );
 					break;
-				case MAP_VALUE:
-					CHECK_RET( (*(ops->map_value_end_fn))( user_data ), FALSE );
-					/* fall through */
-				case MAP_START:
+				case MAP_KEY_END:
+					CHECK_RET( (*(parser_state->ops->map_value_begin_fn))( parser_state->user_data ), FALSE );
 					POP;
-					PUSH( MAP_KEY );
+					PUSH( MAP_VALUE_BEGIN );
 					break;
 				case TOP_LEVEL:
-					/* no state change */
 					break;
 			}
 		break;
@@ -141,7 +128,148 @@ static int update_state( uint32_t valid_states, llsd_type_t type_,
 	return TRUE;
 }
 
+#define VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE_BEGIN | MAP_VALUE_BEGIN )
+#define STRING_STATES ( VALUE_STATES | MAP_KEY_BEGIN )
+static int value( uint32_t valid_states, llsd_type_t type_, bs_state_t * parser_state )
+{
+	state_t state = TOP_LEVEL;
 
+	/* make sure we have a valid LLSD type */
+	CHECK_RET( IS_VALID_LLSD_TYPE( type_ ), FALSE );
+	
+	/* make sure we have a valid state object pointer */
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+
+	/* make sure we're in a valid state */
+	state = TOP;
+	CHECK_RET( (state & valid_states), FALSE );
+
+	/* transition toe the next state based on type_ and current state */
+	switch ( type_ )
+	{
+		case LLSD_UNDEF:
+		case LLSD_BOOLEAN:
+		case LLSD_INTEGER:
+		case LLSD_REAL:
+		case LLSD_UUID:
+		case LLSD_DATE:
+		case LLSD_URI:
+		case LLSD_BINARY:
+		case LLSD_ARRAY:
+		case LLSD_MAP:
+			switch( state )
+			{
+				case ARRAY_VALUE_BEGIN:
+					POP;
+					PUSH( ARRAY_VALUE );
+					break;
+				case MAP_VALUE_BEGIN:
+					POP;
+					PUSH( MAP_VALUE );
+					break;
+				case TOP_LEVEL:
+					break;
+			}
+		break;
+		
+		case LLSD_STRING:
+			switch( state )
+			{
+				case ARRAY_VALUE_BEGIN:
+					POP;
+					PUSH( ARRAY_VALUE );
+					break;
+				case MAP_VALUE_BEGIN:
+					POP;
+					PUSH( MAP_VALUE );
+					break;
+				case MAP_KEY_BEGIN:
+					POP;
+					PUSH( MAP_KEY );
+					break;
+				case TOP_LEVEL:
+					break;
+			}
+		break;
+	}
+
+	return TRUE;
+}
+
+#define END_VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE | MAP_VALUE )
+#define END_STRING_STATES ( VALUE_STATES | MAP_KEY )
+static int end_value( uint32_t valid_states, llsd_type_t type_, bs_state_t * parser_state )
+{
+	state_t state = TOP_LEVEL;
+
+	/* make sure we have a valid LLSD type */
+	CHECK_RET( IS_VALID_LLSD_TYPE( type_ ), FALSE );
+	
+	/* make sure we have a valid state object pointer */
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+
+	/* make sure we're in a valid state */
+	state = TOP;
+	CHECK_RET( (state & valid_states), FALSE );
+
+	/* transition toe the next state based on type_ and current state */
+	switch ( type_ )
+	{
+		case LLSD_UNDEF:
+		case LLSD_BOOLEAN:
+		case LLSD_INTEGER:
+		case LLSD_REAL:
+		case LLSD_UUID:
+		case LLSD_DATE:
+		case LLSD_URI:
+		case LLSD_BINARY:
+		case LLSD_ARRAY:
+		case LLSD_MAP:
+			switch( state )
+			{
+				case ARRAY_VALUE:
+					CHECK_RET( (*(parser_state->ops->array_value_end_fn))( parser_state->user_data ), FALSE );
+					POP;
+					PUSH( ARRAY_VALUE_END );
+					break;
+				case MAP_VALUE:
+					CHECK_RET( (*(parser_state->ops->map_value_end_fn))( parser_state->user_data ), FALSE );
+					POP;
+					PUSH( MAP_VALUE_END );
+					break;
+				case TOP_LEVEL:
+					break;
+			}
+		break;
+		
+		case LLSD_STRING:
+			switch( state )
+			{
+				case ARRAY_VALUE:
+					CHECK_RET( (*(parser_state->ops->array_value_end_fn))( parser_state->user_data ), FALSE );
+					POP;
+					PUSH( ARRAY_VALUE_END );
+					break;
+				case MAP_VALUE:
+					CHECK_RET( (*(parser_state->ops->map_value_end_fn))( parser_state->user_data ), FALSE );
+					POP;
+					PUSH( MAP_VALUE_END );
+					break;
+				case MAP_KEY:
+					CHECK_RET( (*(parser_state->ops->map_key_end_fn))( parser_state->user_data ), FALSE );
+					POP;
+					PUSH( MAP_KEY_END );
+					break;
+				case TOP_LEVEL:
+					break;
+			}
+		break;
+	}
+
+	return TRUE;
+}
 
 int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data )
 {
@@ -151,15 +279,21 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 	uint8_t * buffer;
 	uint32_t be_int;
 	uint64_t be_real;
-	list_t * step_stack = NULL;
+	bs_state_t * parser_state = NULL;
 
 	CHECK_PTR_RET( fin, FALSE );
 	CHECK_PTR_RET( ops, FALSE );
 
 	/* set up step stack, used to synthesize array value end, map key end, 
 	 * and map value end callbacks */
-	step_stack = list_new( 1, NULL );
-	CHECK_PTR_RET( step_stack, FALSE );
+	parser_state = CALLOC( 1, sizeof(bs_state_t) );
+	CHECK_PTR_RET( parser_state, FALSE );
+	parser_state->state_stack = list_new( 1, NULL );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+	parser_state->ops = ops;
+	parser_state->user_data = user_data;
+
+	/* start in the top level state */
 	PUSH( TOP_LEVEL );
 
 	/* seek past signature */
@@ -178,41 +312,55 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 		{
 
 			case '!':
-				CHECK_RET( update_state( VALUE_STATES, LLSD_UNDEF, step_stack, ops, user_data ), FALSE );
+				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_UNDEF, parser_state ), FALSE );
 				CHECK_RET( (*(ops->undef_fn))( user_data ), FALSE );
+				CHECK_RET( value( VALUE_STATES, LLSD_UNDEF, parser_state ), FALSE );
+				CHECK_RET( end_value( END_VALUE_STATES, LLSD_UNDEF, parser_state ), FALSE );
 				break;
 
 			case '1':
-				CHECK_RET( update_state( VALUE_STATES, LLSD_BOOLEAN, step_stack, ops, user_data ), FALSE );
+				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
 				CHECK_RET( (*(ops->boolean_fn))( TRUE, user_data ), FALSE );
+				CHECK_RET( value( VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
+				CHECK_RET( end_value( END_VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
 				break;
 
 			case '0':
-				CHECK_RET( update_state( VALUE_STATES, LLSD_BOOLEAN, step_stack, ops, user_data ), FALSE );
+				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
 				CHECK_RET( (*(ops->boolean_fn))( FALSE, user_data ), FALSE );
+				CHECK_RET( value( VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
+				CHECK_RET( end_value( END_VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
 				break;
 
 			case 'i':
-				CHECK_RET( update_state( VALUE_STATES, LLSD_INTEGER, step_stack, ops, user_data ), FALSE );
 				CHECK_RET( fread( &be_int, sizeof(uint32_t), 1, fin ) == 1, FALSE );
+
+				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_INTEGER, parser_state ), FALSE );
 				CHECK_RET( (*(ops->integer_fn))( ntohl( be_int ), user_data ), FALSE );
+				CHECK_RET( value( VALUE_STATES, LLSD_INTEGER, parser_state ), FALSE );
+				CHECK_RET( end_value( END_VALUE_STATES, LLSD_INTEGER, parser_state ), FALSE );
 				break;
 
 			case 'r':
-				CHECK_RET( update_state( VALUE_STATES, LLSD_REAL, step_stack, ops, user_data ), FALSE );
 				CHECK_RET( fread( &be_real, sizeof(uint64_t), 1, fin ) == 1, FALSE );
 				be_real = be64toh( be_real );
+
+				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_REAL, parser_state ), FALSE );
 				CHECK_RET( (*(ops->real_fn))( *((double*)&be_real), user_data ), FALSE );
+				CHECK_RET( value( VALUE_STATES, LLSD_REAL, parser_state ), FALSE );
+				CHECK_RET( end_value( END_VALUE_STATES, LLSD_REAL, parser_state ), FALSE );
 				break;
 
 			case 'u':
-				CHECK_RET( update_state( VALUE_STATES, LLSD_UUID, step_stack, ops, user_data ), FALSE );
 				CHECK_RET( fread( uuid, sizeof(uint8_t), UUID_LEN, fin ) == UUID_LEN, FALSE );
+
+				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_UUID, parser_state ), FALSE );
 				CHECK_RET( (*(ops->uuid_fn))( uuid, user_data ), FALSE );
+				CHECK_RET( value( VALUE_STATES, LLSD_UUID, parser_state ), FALSE );
+				CHECK_RET( end_value( END_VALUE_STATES, LLSD_UUID, parser_state ), FALSE );
 				break;
 
 			case 'b':
-				CHECK_RET( update_state( VALUE_STATES, LLSD_BINARY, step_stack, ops, user_data ), FALSE );
 				CHECK_RET( fread( &be_int, sizeof(uint32_t), 1, fin ) == 1, FALSE );
 				be_int = ntohl( be_int );
 				buffer = CALLOC( be_int, sizeof(uint8_t) );
@@ -223,13 +371,17 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 					FREE( buffer );
 					return FALSE;
 				}
+
+				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_BINARY, parser_state ), FALSE );
 				/* tell it to take ownership of the memory */
 				CHECK_RET( (*(ops->binary_fn))( buffer, be_int, TRUE, user_data ), FALSE );
+				CHECK_RET( value( VALUE_STATES, LLSD_BINARY, parser_state ), FALSE );
+				CHECK_RET( end_value( END_VALUE_STATES, LLSD_BINARY, parser_state ), FALSE );
+
 				buffer = NULL;
 				break;
 
 			case 's':
-				CHECK_RET( update_state( STRING_STATES, LLSD_STRING, step_stack, ops, user_data ), FALSE );
 				/* in the binary format, strings are the raw byte values */
 				CHECK_RET( fread( &be_int, sizeof(uint32_t), 1, fin ) == 1, FALSE );
 				be_int = ntohl( be_int );
@@ -241,13 +393,17 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 					FREE( buffer );
 					return FALSE;
 				}
+
+				CHECK_RET( begin_value( BEGIN_STRING_STATES, LLSD_STRING, parser_state ), FALSE );
 				/* tell it to take ownership of the memory */
 				CHECK_RET( (*(ops->string_fn))( buffer, TRUE, user_data ), FALSE );
+				CHECK_RET( value( VALUE_STATES, LLSD_STRING, parser_state ), FALSE );
+				CHECK_RET( end_value( END_STRING_STATES, LLSD_STRING, parser_state ), FALSE );
+
 				buffer = NULL;
 				break;
 
 			case 'l':
-				CHECK_RET( update_state( VALUE_STATES, LLSD_URI, step_stack, ops, user_data ), FALSE );
 				/* in the binary format, uri's are the raw byte values */
 				CHECK_RET( fread( &be_int, sizeof(uint32_t), 1, fin ) == 1, FALSE );
 				be_int = ntohl( be_int );
@@ -259,42 +415,56 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 					FREE( buffer );
 					return FALSE;
 				}
+
+				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_URI, parser_state ), FALSE );
 				/* tell it to take ownership of the memory */
 				CHECK_RET( (*(ops->uri_fn))( buffer, TRUE, user_data ), FALSE );
+				CHECK_RET( value( VALUE_STATES, LLSD_URI, parser_state ), FALSE );
+				CHECK_RET( end_value( END_VALUE_STATES, LLSD_URI, parser_state ), FALSE );
+
 				buffer = NULL;
 				break;
 
 			case 'd':
-				CHECK_RET( update_state( VALUE_STATES, LLSD_DATE, step_stack, ops, user_data ), FALSE );
 				CHECK_RET( fread( &be_real, sizeof(double), 1, fin ) == 1, FALSE );
 				be_real = be64toh( be_real );
+
+				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_DATE, parser_state ), FALSE );
 				CHECK_RET( (*(ops->date_fn))( *((double*)&be_real), user_data ), FALSE );
+				CHECK_RET( value( VALUE_STATES, LLSD_DATE, parser_state ), FALSE );
+				CHECK_RET( end_value( END_VALUE_STATES, LLSD_DATE, parser_state ), FALSE );
 				break;
 
 			case '[':
-				CHECK_RET( update_state( VALUE_STATES, LLSD_ARRAY, step_stack, ops, user_data ), FALSE );
 				CHECK_RET( fread( &be_int, sizeof(uint32_t), 1, fin ) == 1, FALSE );
 				be_int = ntohl( be_int );
+
+				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_ARRAY, parser_state ), FALSE );
 				CHECK_RET( (*(ops->array_begin_fn))( be_int, user_data ), FALSE );
-				PUSH( ARRAY_START );
+				PUSH( ARRAY_BEGIN );
 				break;
 
 			case ']':
 				CHECK_RET( (*(ops->array_end_fn))( 0, user_data ), FALSE );
 				POP;
+				CHECK_RET( value( VALUE_STATES, LLSD_ARRAY, parser_state ), FALSE );
+				CHECK_RET( end_value( END_VALUE_STATES, LLSD_ARRAY, parser_state ), FALSE );
 				break;
 			
 			case '{':
-				CHECK_RET( update_state( VALUE_STATES, LLSD_MAP, step_stack, ops, user_data ), FALSE );
 				CHECK_RET( fread( &be_int, sizeof(uint32_t), 1, fin ) == 1, FALSE );
 				be_int = ntohl( be_int );
+
+				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_MAP, parser_state ), FALSE );
 				CHECK_RET( (*(ops->map_begin_fn))( be_int, user_data ), FALSE );
-				PUSH( MAP_START );
+				PUSH( MAP_BEGIN );
 				break;
 
 			case '}':
 				CHECK_RET( (*(ops->map_end_fn))( 0, user_data ), FALSE );
 				POP;
+				CHECK_RET( value( VALUE_STATES, LLSD_MAP, parser_state ), FALSE );
+				CHECK_RET( end_value( END_VALUE_STATES, LLSD_MAP, parser_state ), FALSE );
 				break;
 
 			default:
@@ -305,7 +475,10 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 
 	/* clean up the step stack */
 	CHECK_RET( TOP == TOP_LEVEL, FALSE );
-	list_delete( step_stack );
+	list_delete( parser_state->state_stack );
+
+	/* clean up the parser_state */
+	FREE( parser_state );
 
 	return TRUE;
 }

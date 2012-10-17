@@ -45,52 +45,35 @@ int llsd_xml_check_sig_file( FILE * fin )
 	return ( memcmp( sig, xml_header, XML_SIG_LEN ) == 0 );
 }
 
-typedef enum xp_step_e
-{
-	TOP_LEVEL		= 0x001,
-	ARRAY_START		= 0x002,
-	ARRAY_VALUE		= 0x004,
-	ARRAY_VALUE_END = 0x008,
-	ARRAY_END		= 0x010,
-	MAP_START		= 0x020,
-	MAP_KEY			= 0x040,
-	MAP_KEY_END		= 0x080,
-	MAP_VALUE		= 0x100,
-	MAP_VALUE_END	= 0x200,
-	MAP_END			= 0x400
-} xp_step_t;
-
 typedef struct xp_state_s
 {
 	llsd_bin_enc_t enc;
-	list_t * step_stack;
+	list_t * state_stack;
 	buffer_t * buf;
 	llsd_ops_t * ops;
 	void * user_data;
 } xp_state_t;
 
-#define VALUE_STATES (TOP_LEVEL | ARRAY_START | ARRAY_VALUE | MAP_KEY )
-#define STRING_STATES ( VALUE_STATES | MAP_START | MAP_VALUE )
+#define PUSH(x) (list_push_head( parser_state->state_stack, (void*)x ))
+#define TOP		((uint32_t)list_get_head( parser_state->state_stack ))
+#define POP		(list_pop_head( parser_state->state_stack))
 
-#define PUSH(x) (list_push_head( state->step_stack, (void*)x ))
-#define TOP		((uint32_t)list_get_head( state->step_stack ))
-#define POP		(list_pop_head( state->step_stack))
-
-static int update_state( uint32_t valid_states, llsd_type_t type_, xp_state_t * state )
+#define BEGIN_VALUE_STATES ( TOP_LEVEL | ARRAY_BEGIN | ARRAY_VALUE_END | MAP_KEY_END )
+#define BEGIN_STRING_STATES ( VALUE_STATES | MAP_BEGIN )
+static int begin_value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_state )
 {
-	xp_step_t step = TOP_LEVEL;
+	state_t state = TOP_LEVEL;
 
 	/* make sure we have a valid LLSD type */
 	CHECK_RET( IS_VALID_LLSD_TYPE( type_ ), FALSE );
 	
 	/* make sure we have a valid state object pointer */
-	CHECK_PTR_RET( state, FALSE );
-	CHECK_RET( list_count( state->step_stack ) >= 1, FALSE );
-
-	step = TOP;
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
 
 	/* make sure we're in a valid state */
-	CHECK_RET( (TOP & valid_states), FALSE );
+	state = TOP;
+	CHECK_RET( (state & valid_states), FALSE );
 
 	/* transition toe the next state based on type_ and current state */
 	switch ( type_ )
@@ -105,53 +88,187 @@ static int update_state( uint32_t valid_states, llsd_type_t type_, xp_state_t * 
 		case LLSD_BINARY:
 		case LLSD_ARRAY:
 		case LLSD_MAP:
-			switch( TOP )
+			switch( state )
 			{
-				case ARRAY_VALUE:
-					CHECK_RET( (*(state->ops->array_value_end_fn))( state->user_data ), FALSE );
-					/* fall through */
-				case ARRAY_START:
+				case ARRAY_BEGIN:
+				case ARRAY_VALUE_END:
+					CHECK_RET( (*(parser_state->ops->array_value_begin_fn))( parser_state->user_data ), FALSE );
 					POP;
-					PUSH( ARRAY_VALUE );
+					PUSH( ARRAY_VALUE_BEGIN );
 					break;
-				case MAP_KEY:
-					CHECK_RET( (*(state->ops->map_value_end_fn))( state->user_data ), FALSE );
+				case MAP_KEY_END:
+					CHECK_RET( (*(parser_state->ops->map_value_begin_fn))( parser_state->user_data ), FALSE );
 					POP;
-					PUSH( MAP_VALUE );
+					PUSH( MAP_VALUE_BEGIN );
 					break;
 				case TOP_LEVEL:
-					/* no state change */
 					break;
 			}
 		break;
 		
 		case LLSD_STRING:
-			switch( TOP )
+			switch( state )
 			{
-				case ARRAY_VALUE:
-					CHECK_RET( (*(state->ops->array_value_end_fn))( state->user_data ), FALSE );
-					/* fall through */
-				case ARRAY_START:
+				case ARRAY_BEGIN:
+				case ARRAY_VALUE_END:
+					CHECK_RET( (*(parser_state->ops->array_value_begin_fn))( parser_state->user_data ), FALSE );
+					POP;
+					PUSH( ARRAY_VALUE_BEGIN );
+					break;
+				case MAP_BEGIN:
+					CHECK_RET( (*(parser_state->ops->map_key_begin_fn))( parser_state->user_data ), FALSE );
+					POP;
+					PUSH( MAP_KEY_BEGIN );
+					break;
+				case MAP_KEY_END:
+					CHECK_RET( (*(parser_state->ops->map_value_begin_fn))( parser_state->user_data ), FALSE );
+					POP;
+					PUSH( MAP_VALUE_BEGIN );
+					break;
+				case TOP_LEVEL:
+					break;
+			}
+		break;
+	}
+
+	return TRUE;
+}
+
+#define VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE_BEGIN | MAP_VALUE_BEGIN )
+#define STRING_STATES ( VALUE_STATES | MAP_KEY_BEGIN )
+static int value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_state )
+{
+	state_t state = TOP_LEVEL;
+
+	/* make sure we have a valid LLSD type */
+	CHECK_RET( IS_VALID_LLSD_TYPE( type_ ), FALSE );
+	
+	/* make sure we have a valid state object pointer */
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+
+	/* make sure we're in a valid state */
+	state = TOP;
+	CHECK_RET( (state & valid_states), FALSE );
+
+	/* transition toe the next state based on type_ and current state */
+	switch ( type_ )
+	{
+		case LLSD_UNDEF:
+		case LLSD_BOOLEAN:
+		case LLSD_INTEGER:
+		case LLSD_REAL:
+		case LLSD_UUID:
+		case LLSD_DATE:
+		case LLSD_URI:
+		case LLSD_BINARY:
+		case LLSD_ARRAY:
+		case LLSD_MAP:
+			switch( state )
+			{
+				case ARRAY_VALUE_BEGIN:
 					POP;
 					PUSH( ARRAY_VALUE );
 					break;
-				case MAP_KEY:
-					CHECK_RET( (*(state->ops->map_value_end_fn))( state->user_data ), FALSE );
+				case MAP_VALUE_BEGIN:
 					POP;
 					PUSH( MAP_VALUE );
 					break;
-				case MAP_VALUE:
-					CHECK_RET( (*(state->ops->map_value_end_fn))( state->user_data ), FALSE );
-					POP;
-					PUSH( MAP_KEY );
+				case TOP_LEVEL:
 					break;
-				case MAP_START:
-					CHECK_RET( (*(state->ops->map_key_end_fn))( state->user_data ), FALSE );
+			}
+		break;
+		
+		case LLSD_STRING:
+			switch( state )
+			{
+				case ARRAY_VALUE_BEGIN:
+					POP;
+					PUSH( ARRAY_VALUE );
+					break;
+				case MAP_VALUE_BEGIN:
+					POP;
+					PUSH( MAP_VALUE );
+					break;
+				case MAP_KEY_BEGIN:
 					POP;
 					PUSH( MAP_KEY );
 					break;
 				case TOP_LEVEL:
-					/* no state change */
+					break;
+			}
+		break;
+	}
+
+	return TRUE;
+}
+
+#define END_VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE | MAP_VALUE )
+#define END_STRING_STATES ( VALUE_STATES | MAP_KEY )
+static int end_value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_state )
+{
+	state_t state = TOP_LEVEL;
+
+	/* make sure we have a valid LLSD type */
+	CHECK_RET( IS_VALID_LLSD_TYPE( type_ ), FALSE );
+	
+	/* make sure we have a valid state object pointer */
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+
+	/* make sure we're in a valid state */
+	state = TOP;
+	CHECK_RET( (state & valid_states), FALSE );
+
+	/* transition toe the next state based on type_ and current state */
+	switch ( type_ )
+	{
+		case LLSD_UNDEF:
+		case LLSD_BOOLEAN:
+		case LLSD_INTEGER:
+		case LLSD_REAL:
+		case LLSD_UUID:
+		case LLSD_DATE:
+		case LLSD_URI:
+		case LLSD_BINARY:
+		case LLSD_ARRAY:
+		case LLSD_MAP:
+			switch( state )
+			{
+				case ARRAY_VALUE:
+					CHECK_RET( (*(parser_state->ops->array_value_end_fn))( parser_state->user_data ), FALSE );
+					POP;
+					PUSH( ARRAY_VALUE_END );
+					break;
+				case MAP_VALUE:
+					CHECK_RET( (*(parser_state->ops->map_value_end_fn))( parser_state->user_data ), FALSE );
+					POP;
+					PUSH( MAP_VALUE_END );
+					break;
+				case TOP_LEVEL:
+					break;
+			}
+		break;
+		
+		case LLSD_STRING:
+			switch( state )
+			{
+				case ARRAY_VALUE:
+					CHECK_RET( (*(parser_state->ops->array_value_end_fn))( parser_state->user_data ), FALSE );
+					POP;
+					PUSH( ARRAY_VALUE_END );
+					break;
+				case MAP_VALUE:
+					CHECK_RET( (*(parser_state->ops->map_value_end_fn))( parser_state->user_data ), FALSE );
+					POP;
+					PUSH( MAP_VALUE_END );
+					break;
+				case MAP_KEY:
+					CHECK_RET( (*(parser_state->ops->map_key_end_fn))( parser_state->user_data ), FALSE );
+					POP;
+					PUSH( MAP_KEY_END );
+					break;
+				case TOP_LEVEL:
 					break;
 			}
 		break;
@@ -461,9 +578,9 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 {
 	uint32_t size = 0;
 	llsd_type_t t = LLSD_UNDEF;
-	xp_state_t *state = (xp_state_t*)data;
+	xp_state_t * parser_state = (xp_state_t*)data;
 
-	CHECK_PTR( state );
+	CHECK_PTR( parser_state );
 
 	/* get the type */
 	t = llsd_type_from_tag( el );
@@ -480,16 +597,20 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 		case LLSD_UUID:
 		case LLSD_DATE:
 		case LLSD_KEY:
-		case LLSD_STRING:
 		case LLSD_URI:
+			CHECK( begin_value( BEGIN_VALUE_STATES, t, parser_state ) );
 			break;
-		;.,rfm,.rtfvvvvvvvvvase LLSD_BINARY:
+		case LLSD_STRING:
+			CHECK( begin_value( BEGIN_STRING_STATES, LLSD_STRING, parser_state ) );
+			break;
+		case LLSD_BINARY:
 			/* try to get the encoding attribute if there is one */
-			state->enc = LLSD_BASE64;
+			parser_state->enc = LLSD_BASE64;
 			if ( (attr[0] != NULL) && (strncmp( attr[0], "encoding", 9 ) == 0) )
 			{
-				state->enc = llsd_bin_enc_from_attr( attr[1] );
+				parser_state->enc = llsd_bin_enc_from_attr( attr[1] );
 			}
+			CHECK( begin_value( BEGIN_VALUE_STATES, LLSD_BINARY, parser_state ) );
 			break;
 		case LLSD_ARRAY:
 			/* try to get the size attribute if there is one */
@@ -497,9 +618,9 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 			{
 				size = atoi( attr[1] );
 			}
-			CHECK( update_state( VALUE_STATES, LLSD_ARRAY, state ) );
-			CHECK( (*(state->ops->array_begin_fn))( size, state->user_data ) );
-			PUSH( ARRAY_START );
+			CHECK( begin_value( BEGIN_VALUE_STATES, LLSD_ARRAY, parser_state ) );
+			CHECK( (*(parser_state->ops->array_begin_fn))( size, parser_state->user_data ) );
+			PUSH( ARRAY_BEGIN );
 			break;
 		case LLSD_MAP:
 			/* try to get the size attribute if there is one */
@@ -507,9 +628,9 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 			{
 				size = atoi( attr[1] );
 			}
-			CHECK( update_state( VALUE_STATES, LLSD_MAP, state ) );
-			CHECK( (*(state->ops->map_begin_fn))( size, state->user_data ) );
-			PUSH( MAP_START );
+			CHECK( begin_value( BEGIN_VALUE_STATES, LLSD_MAP, parser_state ) );
+			CHECK( (*(parser_state->ops->map_begin_fn))( size, parser_state->user_data ) );
+			PUSH( MAP_BEGIN );
 			break;
 	}
 }
@@ -524,9 +645,9 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 	uint8_t * buffer = NULL;
 	uint32_t len = 0;
 	llsd_type_t t = LLSD_UNDEF;
-	xp_state_t *state = (xp_state_t*)data;
+	xp_state_t * parser_state = (xp_state_t*)data;
 
-	CHECK_PTR( state );
+	CHECK_PTR( parser_state );
 
 	/* get the type */
 	t = llsd_type_from_tag( el );
@@ -537,74 +658,85 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			POP;
 			break;
 		case LLSD_UNDEF:
-			CHECK( (*(state->ops->undef_fn))( state->user_data ) );
-			CHECK( update_state( VALUE_STATES, LLSD_UNDEF, state ) );
+			CHECK( (*(parser_state->ops->undef_fn))( parser_state->user_data ) );
+			CHECK( value( VALUE_STATES, LLSD_UNDEF, parser_state ) );
+			CHECK( end_value( END_VALUE_STATES, LLSD_UNDEF, parser_state ) );
 			break;
 		case LLSD_BOOLEAN:
-			bool_val = boolean_from_buf( state->buf );
-			CHECK( (*(state->ops->boolean_fn))( bool_val, state->user_data ) );
-			CHECK( update_state( VALUE_STATES, LLSD_BOOLEAN, state ) );
+			bool_val = boolean_from_buf( parser_state->buf );
+			CHECK( (*(parser_state->ops->boolean_fn))( bool_val, parser_state->user_data ) );
+			CHECK( value( VALUE_STATES, LLSD_BOOLEAN, parser_state ) );
+			CHECK( end_value( END_VALUE_STATES, LLSD_BOOLEAN, parser_state ) );
 			break;
 		case LLSD_INTEGER:
-			CHECK( integer_from_buf( state->buf, &int_val ) );
-			CHECK( (*(state->ops->integer_fn))( int_val, state->user_data ) );
-			CHECK( update_state( VALUE_STATES, LLSD_INTEGER, state ) );
+			CHECK( integer_from_buf( parser_state->buf, &int_val ) );
+			CHECK( (*(parser_state->ops->integer_fn))( int_val, parser_state->user_data ) );
+			CHECK( value( VALUE_STATES, LLSD_INTEGER, parser_state ) );
+			CHECK( end_value( END_VALUE_STATES, LLSD_INTEGER, parser_state ) );
 			break;
 		case LLSD_REAL:
-			CHECK( real_from_buf( state->buf, &real_val ) );
-			CHECK( (*(state->ops->real_fn))( real_val, state->user_data ) );
-			CHECK( update_state( VALUE_STATES, LLSD_REAL, state ) );
+			CHECK( real_from_buf( parser_state->buf, &real_val ) );
+			CHECK( (*(parser_state->ops->real_fn))( real_val, parser_state->user_data ) );
+			CHECK( value( VALUE_STATES, LLSD_REAL, parser_state ) );
+			CHECK( end_value( END_VALUE_STATES, LLSD_REAL, parser_state ) );
 			break;
 		case LLSD_UUID:
-			CHECK( uuid_from_buf( state->buf, uuid_val ) );
-			CHECK( (*(state->ops->uuid_fn))( uuid_val, state->user_data ) );
-			CHECK( update_state( VALUE_STATES, LLSD_UUID, state ) );
+			CHECK( uuid_from_buf( parser_state->buf, uuid_val ) );
+			CHECK( (*(parser_state->ops->uuid_fn))( uuid_val, parser_state->user_data ) );
+			CHECK( value( VALUE_STATES, LLSD_UUID, parser_state ) );
+			CHECK( end_value( END_VALUE_STATES, LLSD_UUID, parser_state ) );
 			break;
 		case LLSD_DATE:
-			CHECK( date_from_buf( state->buf, &real_val ) );
-			CHECK( (*(state->ops->date_fn))( real_val, state->user_data ) );
-			CHECK( update_state( VALUE_STATES, LLSD_DATE, state ) );
+			CHECK( date_from_buf( parser_state->buf, &real_val ) );
+			CHECK( (*(parser_state->ops->date_fn))( real_val, parser_state->user_data ) );
+			CHECK( value( VALUE_STATES, LLSD_DATE, parser_state ) );
+			CHECK( end_value( END_VALUE_STATES, LLSD_DATE, parser_state ) );
 			break;
 		case LLSD_KEY:
 			/* zero terminate the string */
-			buffer_append( state->buf, "\0", 1 );
-			CHECK( (*(state->ops->string_fn))( (uint8_t*)state->buf->iov_base, FALSE, state->user_data ) );
-			/* this synthesizes the key end callback */
-			CHECK( update_state( STRING_STATES, LLSD_STRING, state ) );
+			buffer_append( parser_state->buf, "\0", 1 );
+			CHECK( (*(parser_state->ops->string_fn))( (uint8_t*)parser_state->buf->iov_base, FALSE, parser_state->user_data ) );
+			CHECK( value( MAP_KEY_BEGIN, LLSD_STRING, parser_state ) );
+			CHECK( end_value( MAP_KEY, LLSD_STRING, parser_state ) );
 			break;
 		case LLSD_STRING:
 			/* zero terminate the string */
-			buffer_append( state->buf, "\0", 1 );
-			CHECK( (*(state->ops->string_fn))( (uint8_t*)state->buf->iov_base, FALSE, state->user_data ) );
-			CHECK( update_state( STRING_STATES, LLSD_STRING, state ) );
+			buffer_append( parser_state->buf, "\0", 1 );
+			CHECK( (*(parser_state->ops->string_fn))( (uint8_t*)parser_state->buf->iov_base, FALSE, parser_state->user_data ) );
+			CHECK( value( STRING_STATES, LLSD_STRING, parser_state ) );
+			CHECK( end_value( END_STRING_STATES, LLSD_STRING, parser_state ) );
 			break;
 		case LLSD_URI:
 			/* zero terminate the string */
-			buffer_append( state->buf, "\0", 1 );
-			CHECK( (*(state->ops->uri_fn))( (uint8_t*)state->buf->iov_base, FALSE, state->user_data ) );
-			CHECK( update_state( VALUE_STATES, LLSD_URI, state ) );
+			buffer_append( parser_state->buf, "\0", 1 );
+			CHECK( (*(parser_state->ops->uri_fn))( (uint8_t*)parser_state->buf->iov_base, FALSE, parser_state->user_data ) );
+			CHECK( value( VALUE_STATES, LLSD_URI, parser_state ) );
+			CHECK( end_value( END_VALUE_STATES, LLSD_URI, parser_state ) );
 			break;
 		case LLSD_BINARY:
-			CHECK( binary_from_buf( state->buf, state->enc, &buffer, &len ) );
-			CHECK( (*(state->ops->binary_fn))( buffer, len, TRUE, state->user_data ) );
-			CHECK( update_state( VALUE_STATES, LLSD_BINARY, state ) );
+			CHECK( binary_from_buf( parser_state->buf, parser_state->enc, &buffer, &len ) );
+			CHECK( (*(parser_state->ops->binary_fn))( buffer, len, TRUE, parser_state->user_data ) );
+			CHECK( value( VALUE_STATES, LLSD_BINARY, parser_state ) );
+			CHECK( end_value( END_VALUE_STATES, LLSD_BINARY, parser_state ) );
 			buffer = NULL;
 			len = 0;
 			break;
 		case LLSD_ARRAY:
-			CHECK( (*(state->ops->array_end_fn))( 0, state->user_data ) );
+			CHECK( (*(parser_state->ops->array_end_fn))( 0, parser_state->user_data ) );
 			POP;
-			CHECK( update_state( VALUE_STATES, LLSD_BINARY, state ) );
+			CHECK( value( VALUE_STATES, LLSD_ARRAY, parser_state ) );
+			CHECK( end_value( END_VALUE_STATES, LLSD_ARRAY, parser_state ) );
 			break;
 		case LLSD_MAP:
-			CHECK( (*(state->ops->map_end_fn))( 0, state->user_data ) );
+			CHECK( (*(parser_state->ops->map_end_fn))( 0, parser_state->user_data ) );
 			POP;
-			CHECK( update_state( VALUE_STATES, LLSD_BINARY, state ) );
+			CHECK( value( VALUE_STATES, LLSD_MAP, parser_state ) );
+			CHECK( end_value( END_VALUE_STATES, LLSD_MAP, parser_state ) );
 			break;
 	}
 
 	/* reset the buffer */
-	buffer_deinitialize( state->buf );
+	buffer_deinitialize( parser_state->buf );
 }
 
 static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len )
@@ -640,8 +772,8 @@ int llsd_xml_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_d
 
 	/* set up step stack, used to synthesize array value end, map key end, 
 	 * and map value end callbacks */
-	state.step_stack = list_new( 1, NULL );
-	CHECK_PTR_RET( state.step_stack, FALSE );
+	state.state_stack = list_new( 1, NULL );
+	CHECK_PTR_RET( state.state_stack, FALSE );
 
 	/* create the buffer */
 	state.buf = buffer_new( NULL, 0 );
@@ -675,7 +807,7 @@ int llsd_xml_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_d
 	} while ( !done );
 
 	/* clean up the step stack */
-	list_delete( state.step_stack );
+	list_delete( state.state_stack );
 
 	/* clean up the buffer */
 	buffer_delete( state.buf );
