@@ -135,6 +135,7 @@ static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const 
 
 		case LLSD_ARRAY:
 			CHECK_PTR_RET( ops->array_begin_fn, FALSE );
+			CHECK_PTR_RET( ops->array_value_begin_fn, FALSE );
 			CHECK_PTR_RET( ops->array_value_end_fn, FALSE );
 			CHECK_PTR_RET( ops->array_end_fn, FALSE );
 
@@ -148,14 +149,16 @@ static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const 
 			{
 				CHECK_RET( llsd_get( llsd, itr, &v, &k ), FALSE );
 				CHECK_PTR_RET( v, FALSE );
-				/* recurse */
+
+				/* call array value begin callback */
+				CHECK_RET( (*(ops->array_value_begin_fn))( user_data ), FALSE );
+
+				/* recurse for the array value */
 				CHECK_RET( llsd_serialize( v, fout, ops, user_data ), FALSE );
 
-				if ( len > 1 )
-				{
-					/* call value end callback */
-					CHECK_RET( (*(ops->array_value_end_fn))( user_data ), FALSE );
-				}
+				/* call array value end callback */
+				CHECK_RET( (*(ops->array_value_end_fn))( user_data ), FALSE );
+
 				len--;
 			}
 
@@ -165,7 +168,9 @@ static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const 
 
 		case LLSD_MAP:
 			CHECK_PTR_RET( ops->map_begin_fn, FALSE );
+			CHECK_PTR_RET( ops->map_key_begin_fn, FALSE );
 			CHECK_PTR_RET( ops->map_key_end_fn, FALSE );
+			CHECK_PTR_RET( ops->map_value_begin_fn, FALSE );
 			CHECK_PTR_RET( ops->map_value_end_fn, FALSE );
 			CHECK_PTR_RET( ops->map_end_fn, FALSE );
 
@@ -180,21 +185,25 @@ static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const 
 				CHECK_RET( llsd_get( llsd, itr, &v, &k ), FALSE );
 				CHECK_PTR_RET( k, FALSE );
 				CHECK_PTR_RET( v, FALSE );
+				
+				/* call key begin callback */
+				CHECK_RET( (*(ops->map_key_begin_fn))( user_data ), FALSE );
 
-				/* recurse for the key */
+				/* recurse for the map key */
 				CHECK_RET( llsd_serialize( k, fout, ops, user_data ), FALSE );
 
 				/* call key end callback */
 				CHECK_RET( (*(ops->map_key_end_fn))( user_data ), FALSE );
 
-				/* recurse for the value */
+				/* call map value begin callback */
+				CHECK_RET( (*(ops->map_value_begin_fn))( user_data ), FALSE );
+
+				/* recurse for the map value */
 				CHECK_RET( llsd_serialize( v, fout, ops, user_data ), FALSE );
 
-				if ( len > 1 )
-				{
-					/* call value end callback */
-					CHECK_RET( (*(ops->map_value_end_fn))( user_data ), FALSE );
-				}
+				/* call map value end callback */
+				CHECK_RET( (*(ops->map_value_end_fn))( user_data ), FALSE );
+
 				len--;
 			}
 

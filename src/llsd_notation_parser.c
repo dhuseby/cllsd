@@ -41,17 +41,22 @@ int llsd_notation_check_sig_file( FILE * fin )
 
 typedef struct ns_state_s
 {
-	list_t * state_stack;
 	llsd_ops_t * ops;
 	void * user_data;
+	list_t * count_stack;
+	list_t * state_stack;
 } ns_state_t;
 
-#define PUSH(x) (list_push_head( parser_state->state_stack, (void*)x ))
-#define TOP		((uint32_t)list_get_head( parser_state->state_stack ))
-#define POP		(list_pop_head( parser_state->state_stack))
+#define PUSH(x)		(list_push_head( parser_state->state_stack, (void*)x ))
+#define TOP			((uint32_t)list_get_head( parser_state->state_stack ))
+#define POP			(list_pop_head( parser_state->state_stack ))
+
+#define PUSHC(x)	(list_push_head( parser_state->count_stack, (void*)x ))
+#define TOPC		((int)list_get_head( parser_state->count_stack ))
+#define POPC		(list_pop_head( parser_state->count_stack ))
 
 #define BEGIN_VALUE_STATES ( TOP_LEVEL | ARRAY_BEGIN | ARRAY_VALUE_END | MAP_KEY_END )
-#define BEGIN_STRING_STATES ( VALUE_STATES | MAP_BEGIN )
+#define BEGIN_STRING_STATES ( BEGIN_VALUE_STATES | MAP_VALUE_END | MAP_BEGIN )
 static int begin_value( uint32_t valid_states, llsd_type_t type_, ns_state_t * parser_state )
 {
 	state_t state = TOP_LEVEL;
@@ -108,6 +113,7 @@ static int begin_value( uint32_t valid_states, llsd_type_t type_, ns_state_t * p
 					PUSH( ARRAY_VALUE_BEGIN );
 					break;
 				case MAP_BEGIN:
+				case MAP_VALUE_END:
 					CHECK_RET( (*(parser_state->ops->map_key_begin_fn))( parser_state->user_data ), FALSE );
 					POP;
 					PUSH( MAP_KEY_BEGIN );
@@ -124,6 +130,17 @@ static int begin_value( uint32_t valid_states, llsd_type_t type_, ns_state_t * p
 	}
 
 	return TRUE;
+}
+
+static int incc( ns_state_t * parser_state )
+{
+	int c = 0;
+	/* make sure we have a valid state object pointer */
+	CHECK_PTR_RET( parser_state, FALSE );
+	CHECK_PTR_RET( parser_state->count_stack, FALSE );
+	c = TOPC;
+	POPC;
+	PUSHC( ++c );
 }
 
 #define VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE_BEGIN | MAP_VALUE_BEGIN )
@@ -161,10 +178,12 @@ static int value( uint32_t valid_states, llsd_type_t type_, ns_state_t * parser_
 				case ARRAY_VALUE_BEGIN:
 					POP;
 					PUSH( ARRAY_VALUE );
+					incc( parser_state );
 					break;
 				case MAP_VALUE_BEGIN:
 					POP;
 					PUSH( MAP_VALUE );
+					incc( parser_state );
 					break;
 				case TOP_LEVEL:
 					break;
@@ -177,10 +196,12 @@ static int value( uint32_t valid_states, llsd_type_t type_, ns_state_t * parser_
 				case ARRAY_VALUE_BEGIN:
 					POP;
 					PUSH( ARRAY_VALUE );
+					incc( parser_state );
 					break;
 				case MAP_VALUE_BEGIN:
 					POP;
 					PUSH( MAP_VALUE );
+					incc( parser_state );
 					break;
 				case MAP_KEY_BEGIN:
 					POP;
@@ -196,7 +217,7 @@ static int value( uint32_t valid_states, llsd_type_t type_, ns_state_t * parser_
 }
 
 #define END_VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE | MAP_VALUE )
-#define END_STRING_STATES ( VALUE_STATES | MAP_KEY )
+#define END_STRING_STATES ( END_VALUE_STATES | MAP_KEY )
 static int end_value( uint32_t valid_states, ns_state_t * parser_state )
 {
 	state_t state = TOP_LEVEL;
@@ -510,8 +531,21 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 	 * and map value end callbacks */
 	parser_state = CALLOC( 1, sizeof(ns_state_t) );
 	CHECK_PTR_RET( parser_state, FALSE );
+
+	parser_state->count_stack = list_new( 0, NULL );
+	if ( parser_state->count_stack == NULL )
+	{
+		FREE( parser_state );
+		return FALSE;
+	}
+
 	parser_state->state_stack = list_new( 1, NULL );
-	CHECK_PTR_RET( parser_state->state_stack, FALSE );
+	if ( parser_state->state_stack == NULL )
+	{
+		list_delete( parser_state->count_stack );
+		FREE( parser_state );
+		return FALSE;
+	}
 	parser_state->ops = ops;
 	parser_state->user_data = user_data;
 
@@ -526,7 +560,7 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 		/* read the type marker */
 		ret = fread( &p, sizeof(uint8_t), 1, fin );
 		if ( feof( fin ) )
-			return TRUE;
+			break;
 
 		CHECK_RET( ret == 1, FALSE );
 
@@ -751,11 +785,21 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_ARRAY, parser_state ), FALSE );
 				CHECK_RET( (*(ops->array_begin_fn))( 0, user_data ), FALSE );
 				PUSH( ARRAY_BEGIN );
+				PUSHC( 0 );
 				break;
 
 			case ']':
-				CHECK_RET( (*(ops->array_end_fn))( 0, user_data ), FALSE );
+				/* if there were any items in this array, we need to generate the end_value
+				 * callbacks here because there isn't a comma to mark the end of the last 
+				 * value */
+				if ( TOPC )
+				{
+					CHECK_RET( end_value( ARRAY_VALUE, parser_state ), FALSE );
+				}
+
 				POP;
+				POPC;
+				CHECK_RET( (*(ops->array_end_fn))( 0, user_data ), FALSE );
 				CHECK_RET( value( VALUE_STATES, LLSD_ARRAY, parser_state ), FALSE );
 				break;
 			
@@ -763,11 +807,21 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_MAP, parser_state ), FALSE );
 				CHECK_RET( (*(ops->map_begin_fn))( 0, user_data ), FALSE );
 				PUSH( MAP_BEGIN );
+				PUSHC( 0 );
 				break;
 
 			case '}':
-				CHECK_RET( (*(ops->map_end_fn))( 0, user_data ), FALSE );
+				/* if there were any items in this array, we need to generate the end_value
+				 * callbacks here because there isn't a comma to mark the end of the last 
+				 * value */
+				if ( TOPC )
+				{
+					CHECK_RET( end_value( MAP_VALUE, parser_state ), FALSE );
+				}
+
 				POP;
+				POPC;
+				CHECK_RET( (*(ops->map_end_fn))( 0, user_data ), FALSE );
 				CHECK_RET( value( VALUE_STATES, LLSD_MAP, parser_state ), FALSE );
 				break;
 
@@ -790,6 +844,9 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 				return FALSE;
 		}
 	}
+
+	/* clean up the count stack */
+	list_delete( parser_state->count_stack );
 
 	/* clean up the step stack */
 	CHECK_RET( TOP == TOP_LEVEL, FALSE );

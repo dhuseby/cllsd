@@ -59,7 +59,7 @@ typedef struct xp_state_s
 #define POP		(list_pop_head( parser_state->state_stack))
 
 #define BEGIN_VALUE_STATES ( TOP_LEVEL | ARRAY_BEGIN | ARRAY_VALUE_END | MAP_KEY_END )
-#define BEGIN_STRING_STATES ( VALUE_STATES | MAP_BEGIN )
+#define BEGIN_STRING_STATES ( BEGIN_VALUE_STATES | MAP_VALUE_END | MAP_BEGIN )
 static int begin_value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_state )
 {
 	state_t state = TOP_LEVEL;
@@ -116,6 +116,7 @@ static int begin_value( uint32_t valid_states, llsd_type_t type_, xp_state_t * p
 					PUSH( ARRAY_VALUE_BEGIN );
 					break;
 				case MAP_BEGIN:
+				case MAP_VALUE_END:
 					CHECK_RET( (*(parser_state->ops->map_key_begin_fn))( parser_state->user_data ), FALSE );
 					POP;
 					PUSH( MAP_KEY_BEGIN );
@@ -204,7 +205,7 @@ static int value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_
 }
 
 #define END_VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE | MAP_VALUE )
-#define END_STRING_STATES ( VALUE_STATES | MAP_KEY )
+#define END_STRING_STATES ( END_VALUE_STATES | MAP_KEY )
 static int end_value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_state )
 {
 	state_t state = TOP_LEVEL;
@@ -596,10 +597,10 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 		case LLSD_REAL:
 		case LLSD_UUID:
 		case LLSD_DATE:
-		case LLSD_KEY:
 		case LLSD_URI:
 			CHECK( begin_value( BEGIN_VALUE_STATES, t, parser_state ) );
 			break;
+		case LLSD_KEY:
 		case LLSD_STRING:
 			CHECK( begin_value( BEGIN_STRING_STATES, LLSD_STRING, parser_state ) );
 			break;
@@ -633,6 +634,9 @@ static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const
 			PUSH( MAP_BEGIN );
 			break;
 	}
+
+	/* reset the buffer */
+	buffer_deinitialize( parser_state->buf );
 }
 
 
@@ -693,12 +697,6 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			CHECK( end_value( END_VALUE_STATES, LLSD_DATE, parser_state ) );
 			break;
 		case LLSD_KEY:
-			/* zero terminate the string */
-			buffer_append( parser_state->buf, "\0", 1 );
-			CHECK( (*(parser_state->ops->string_fn))( (uint8_t*)parser_state->buf->iov_base, FALSE, parser_state->user_data ) );
-			CHECK( value( MAP_KEY_BEGIN, LLSD_STRING, parser_state ) );
-			CHECK( end_value( MAP_KEY, LLSD_STRING, parser_state ) );
-			break;
 		case LLSD_STRING:
 			/* zero terminate the string */
 			buffer_append( parser_state->buf, "\0", 1 );

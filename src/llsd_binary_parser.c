@@ -53,7 +53,7 @@ typedef struct bs_state_s
 #define POP		(list_pop_head( parser_state->state_stack))
 
 #define BEGIN_VALUE_STATES ( TOP_LEVEL | ARRAY_BEGIN | ARRAY_VALUE_END | MAP_KEY_END )
-#define BEGIN_STRING_STATES ( VALUE_STATES | MAP_BEGIN )
+#define BEGIN_STRING_STATES ( BEGIN_VALUE_STATES | MAP_VALUE_END | MAP_BEGIN )
 static int begin_value( uint32_t valid_states, llsd_type_t type_, bs_state_t * parser_state )
 {
 	state_t state = TOP_LEVEL;
@@ -110,6 +110,7 @@ static int begin_value( uint32_t valid_states, llsd_type_t type_, bs_state_t * p
 					PUSH( ARRAY_VALUE_BEGIN );
 					break;
 				case MAP_BEGIN:
+				case MAP_VALUE_END:
 					CHECK_RET( (*(parser_state->ops->map_key_begin_fn))( parser_state->user_data ), FALSE );
 					POP;
 					PUSH( MAP_KEY_BEGIN );
@@ -198,7 +199,7 @@ static int value( uint32_t valid_states, llsd_type_t type_, bs_state_t * parser_
 }
 
 #define END_VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE | MAP_VALUE )
-#define END_STRING_STATES ( VALUE_STATES | MAP_KEY )
+#define END_STRING_STATES ( END_VALUE_STATES | MAP_KEY )
 static int end_value( uint32_t valid_states, llsd_type_t type_, bs_state_t * parser_state )
 {
 	state_t state = TOP_LEVEL;
@@ -397,7 +398,7 @@ int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const use
 				CHECK_RET( begin_value( BEGIN_STRING_STATES, LLSD_STRING, parser_state ), FALSE );
 				/* tell it to take ownership of the memory */
 				CHECK_RET( (*(ops->string_fn))( buffer, TRUE, user_data ), FALSE );
-				CHECK_RET( value( VALUE_STATES, LLSD_STRING, parser_state ), FALSE );
+				CHECK_RET( value( STRING_STATES, LLSD_STRING, parser_state ), FALSE );
 				CHECK_RET( end_value( END_STRING_STATES, LLSD_STRING, parser_state ), FALSE );
 
 				buffer = NULL;
