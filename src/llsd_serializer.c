@@ -24,6 +24,7 @@
 #include "llsd_xml_serializer.h"
 #include "llsd_binary_serializer.h"
 #include "llsd_notation_serializer.h"
+#include "llsd_json_serializer.h"
 
 /* forward decl of private serializer driver */
 static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const ops, void * user_data );
@@ -33,7 +34,7 @@ serializer_init_fn const init_fns[LLSD_ENC_COUNT] =
 	&llsd_xml_serializer_init,
 	&llsd_binary_serializer_init,
 	&llsd_notation_serializer_init,
-	NULL
+	&llsd_json_serializer_init
 };
 
 serializer_deinit_fn const deinit_fns[LLSD_ENC_COUNT] =

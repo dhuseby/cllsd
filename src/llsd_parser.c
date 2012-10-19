@@ -21,6 +21,7 @@
 #include "llsd_parser.h"
 #include "llsd_binary_parser.h"
 #include "llsd_notation_parser.h"
+#include "llsd_json_parser.h"
 
 #define VALUE_STATES (TOP_LEVEL | ARRAY_VALUE_BEGIN | MAP_VALUE_BEGIN )
 #define STRING_STATES ( VALUE_STATES | MAP_KEY_BEGIN )
@@ -487,12 +488,12 @@ llsd_t * llsd_parse_from_file( FILE * fin )
 	{
 		ok = llsd_xml_parse_file( fin, &ops, &state );
 	}
-#if 0
+	/* NOTE: this *must* be last because JSON files don't have a signature
+	 * so llsd_json_check_sig_file always returns TRUE */
 	else if ( llsd_json_check_sig_file( fin ) )
 	{
 		ok = llsd_json_parse_file( fin, &ops, &state );
 	}
-#endif
 
 	/* make sure we had a complete parse */
 	if ( list_count( state.container_stack ) > 0 )
