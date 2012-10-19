@@ -264,6 +264,7 @@ static int llsd_json_consume_boolean( FILE * fin, int bval )
 static int llsd_json_parse_number( FILE * fin, llsd_type_t * const type_, int * const ival, double * dval )
 {
 	long pos;
+	uint32_t whole, frac;
 	CHECK_PTR_RET( fin, FALSE );
 	CHECK_PTR_RET( type_, FALSE );
 	CHECK_PTR_RET( ival, FALSE );
@@ -272,21 +273,27 @@ static int llsd_json_parse_number( FILE * fin, llsd_type_t * const type_, int * 
 	/* remember where we are in the stream */
 	pos = ftell( fin );
 
-	/* try to parse an integer from the stream */
-	if ( fscanf( fin, "%d", ival ) == 1 )
-	{
-		(*type_) = LLSD_INTEGER;
-		return TRUE;
-	}
-
-	/* move back to where we started */
-	fseek( fin, pos, SEEK_SET );
+	whole = 0;
+	frac = 0;
 
 	/* try to parse a long float from the stream */
-	if ( fscanf( fin, "%lf", dval ) == 1 )
+	if ( fscanf( fin, "%d.%d", &whole, &frac ) == 2 )
 	{
-		(*type_) = LLSD_REAL;
-		return TRUE;
+		fseek( fin, pos, SEEK_SET );
+		if ( fscanf( fin, "%lf", dval ) == 1 )
+		{
+			(*type_) = LLSD_REAL;
+			return TRUE;
+		}
+	}
+	else 
+	{
+		fseek( fin, pos, SEEK_SET );
+		if ( fscanf( fin, "%d", ival ) == 1 )
+		{
+			(*type_) = LLSD_INTEGER;
+			return TRUE;
+		}
 	}
 
 	return FALSE;
@@ -401,11 +408,11 @@ static int llsd_json_decode_date( uint8_t const * const data, double * real_val 
 	return TRUE;
 }
 
-static int llsd_json_parse_uuid( uint8_t const * const buf, uint8_t uuid[UUID_LEN] )
+static int llsd_json_decode_uuid( uint8_t const * const buf, uint8_t uuid[UUID_LEN] )
 {
 	int i;
 
-	CHECK_PTR_RET( data, FALSE );
+	CHECK_PTR_RET( buf, FALSE );
 	CHECK_PTR_RET( uuid, FALSE );
 
 	/* check for 8-4-4-4-12 */
@@ -458,17 +465,17 @@ static int llsd_json_parse_uuid( uint8_t const * const buf, uint8_t uuid[UUID_LE
 }
 
 /* binary data is stored as base64 encoded binary data in a string */
-static int llsd_json_decode_binary( uint8_t * const encoded, uint32_t const enc_len,
+static int llsd_json_decode_binary( uint8_t const * const encoded, uint32_t const enc_len,
 									uint8_t ** const buffer, uint32_t * const len )
 {
 	uint32_t dlen = 0;
-	CHECK_PTR_RET( encoded );
+	CHECK_PTR_RET( encoded, FALSE );
 	CHECK_RET( (enc_len > 0), FALSE );
-	CHECK_PTR_RET( buffer );
-	CHECK_PTR_RET( len );
+	CHECK_PTR_RET( buffer, FALSE );
+	CHECK_PTR_RET( len, FALSE );
 
 	dlen = base64_decoded_len( encoded, enc_len );
-	(*buffer) = CALLOC( len, sizeof(uint8_t) );
+	(*buffer) = CALLOC( dlen, sizeof(uint8_t) );
 	CHECK_PTR_RET( (*buffer), FALSE );
 
 	if ( !base64_decode( encoded, enc_len, (*buffer), len ) )
@@ -485,29 +492,167 @@ static int llsd_json_decode_binary( uint8_t * const encoded, uint32_t const enc_
 #define BUF_SIZE (1024)
 
 /* uri's are url encoded strings */
-static int llsd_json_decode_uri( uint8_t * const encoded, uint32_t const enc_len,
+static int llsd_json_decode_uri( uint8_t const * const encoded, uint32_t const enc_len,
 								 uint8_t ** const buffer, uint32_t * const len )
 {
-	static uint8_t buf[BUF_SIZE];
-	CHECK_PTR_RET( encoded );
+	uint8_t const * p = NULL;
+	uint8_t * q = NULL;
+	int escaped = FALSE;
+	CHECK_PTR_RET( encoded, FALSE );
 	CHECK_RET( (enc_len > 0), FALSE );
-	CHECK_PTR_RET( buffer );
-	CHECK_PTR_RET( len );
+	CHECK_PTR_RET( buffer, FALSE );
+	CHECK_PTR_RET( len, FALSE );
+
+	/* do % decoding */
+	p = encoded;
+	while ( p < (encoded + enc_len) )
+	{
+		if ( !escaped )
+		{
+			if ( *p == '%' )
+			{
+				escaped = TRUE;
+				p++;
+			}
+			else
+			{
+				*q++ = *p++;
+			}
+		}
+		else
+		{
+			CHECK_RET( (p+1) < (encoded + enc_len), FALSE );
+			(*q) = hex_to_byte( p[0], p[1] );
+			q++;
+			p++;
+			escaped = FALSE;
+		}
+	}
 
 	return TRUE;
 }
 
+static int llsd_json_surrogate_pair( uint8_t const * const data )
+{
+	CHECK_PTR_RET( data, FALSE );
+	uint8_t b1, b2;
+	uint16_t s1;
+	b1 = hex_to_byte( data[0], data[1] );
+	b2 = hex_to_byte( data[2], data[3] );
+	s1 = ((b1 << 8) | b2);
+
+	/* if the first four hex characters decode to a value within the valid
+	 * range of the lead surrogate in a surrogate pair, return TRUE. */
+	return ((s1 >= 0xD800) && (s1 <= 0xDBFF));
+}
+
+static int llsd_json_utf8_len( uint8_t const * const first, uint8_t const * const second )
+{
+	uint8_t b1, b2;
+	uint16_t s1, s2;
+	uint32_t d1;
+	b1 = hex_to_byte( first[0], first[1] );
+	b2 = hex_to_byte( first[2], first[3] );
+	s1 = ((b1 << 8) | b2);
+
+	if ( (b1 == 0) && (b2 <= 0x7F) )
+	{
+		/* this is a non-extended character encoded as \uXXXX */
+		return 1;
+	}
+
+	if ( (s1 >= 0xD800) && (s1 <= 0xDBFF) )
+	{
+		/* surrogate pair */
+		CHECK_PTR_RET( second, 0 );
+		return 4;
+	}
+	else
+	{
+		if ( s1 <= 0x7FF )
+		{
+			/* this results in a 2-byte UTF-8 sequence */
+			return 2;
+		}
+
+		/* this results in a 3-byte UTF-8 sequence */
+		return 3;
+	}
+
+	return 0;
+}
+
+static int llsd_json_utf8_decode( uint8_t const * const first, uint8_t const * const second, 
+								  uint8_t * out )
+{
+	uint8_t b1, b2, b3, b4;
+	uint16_t s1, s2;
+	uint32_t d1;
+	b1 = hex_to_byte( first[0], first[1] );
+	b2 = hex_to_byte( first[2], first[3] );
+	s1 = ((b1 << 8) | b2);
+
+	if ( (b1 == 0) && (b2 <= 0x7F) )
+	{
+		/* this is a non-extended character encoded as \uXXXX */
+		out[0] = b2;
+		return 1;
+	}
+
+	if ( (s1 >= 0xD800) && (s1 <= 0xDBFF) )
+	{
+		/* surrogate pair converts to 20-bit UTF-32 value in the 
+		 * range 0x10000 - 0x10FFFF which encodes to a 4-byte
+		 * UTF-8 sequence */
+		CHECK_PTR_RET( second, FALSE );
+
+		b3 = hex_to_byte( second[0], second[1] );
+		b4 = hex_to_byte( second[2], second[3] );
+		s2 = ((b3 << 8) | b4);
+
+		/* subtract the range adjusters */
+		s1 -= 0xD800;
+		s2 -= 0xDC00;
+
+		/* covert to UTF-32 */
+		d1 = (((s1 << 16) | s2) + 0x10000);
+
+		/* now covert to UTF-8 */
+		out[0] = (0xF0 | ((uint8_t)(((d1 & 0x001C0000) >> 18) & 0x0000003F)));
+		out[1] = (0x80 | ((uint8_t)(((d1 & 0x0003F000) >> 12) & 0x0000003F)));
+		out[2] = (0x80 | ((uint8_t)(((d1 & 0x00000FC0) >>  6) & 0x0000003F)));
+		out[3] = (0x80 | ((uint8_t)(d1 & 0x0000003F)));
+		return 4;
+	}
+	else
+	{
+		if ( s1 <= 0x7FF )
+		{
+			/* this results in a 2-byte UTF-8 sequence */
+			out[0] = (0xC0 | ((b2 & 0xC0) >> 6) | ((b1 & 0x03) << 3));
+			out[1] = (0x80 | (b2 & 0x3F));
+			return 2;
+		}
+
+		/* this results in a 3-byte UTF-8 sequence */
+		out[0] = (0xE0 | ((b1 & 0xF0) >> 4));
+		out[1] = (0x80 | ((b1 & 0x0F) << 2) | ((b2 & 0xC0) >> 6));
+		out[2] = (0x80 | (b2 & 0x3F));
+		return 3;
+	}
+	return 0;
+}
+
 /* strings are backslash encoded, empty strings are valid */
-static int llsd_json_decode_string( uint8_t * const encoded, uint32_t const enc_len,
+static int llsd_json_decode_string( uint8_t const * const encoded, uint32_t const enc_len,
 									uint8_t ** const buffer, uint32_t * const len )
 {
-	static uint8_t buf[BUF_SIZE];
-	uint8_t * p = NULL;
-	int i;
+	uint8_t const * p = NULL;
+	uint8_t * q = NULL;
 	int escaped;
-	CHECK_PTR_RET( encoded );
-	CHECK_PTR_RET( buffer );
-	CHECK_PTR_RET( len );
+	CHECK_PTR_RET( encoded, FALSE );
+	CHECK_PTR_RET( buffer, FALSE );
+	CHECK_PTR_RET( len, FALSE );
 
 	if ( enc_len == 0 )
 	{
@@ -520,22 +665,127 @@ static int llsd_json_decode_string( uint8_t * const encoded, uint32_t const enc_
 
 	(*len) = 0;
 
-	for ( i = 0; i < enc_len; i++ )
+	escaped = FALSE;
+	p = encoded;
+	while( p < (encoded + enc_len) )
 	{
 		if ( !escaped )
 		{
-			if ( encoded[i] == '\\' )
+			if ( *p == '\\' )
 			{
 				escaped = TRUE;
 			}
 			
 			(*len)++;
+			p++;
 		}
 		else
 		{
-			if ( encoded[i] == 'u' )
+			/* process \uXXXX encoded extended chars */
+			if ( *p == 'u' )
 			{
+				CHECK_RET( (p+4) < (encoded + enc_len), FALSE );
+				if ( llsd_json_surrogate_pair( p+1 ) )
+				{
+					/* process an UTF-32 encoded subordinate pair */
+					CHECK_RET( (p + 10) < (encoded + enc_len), FALSE );
+					CHECK_RET( *(p+5) == '\\', FALSE );
+					CHECK_RET( *(p+6) == 'u', FALSE );
+					(*len) += llsd_json_utf8_len( p+1, p+5 );
+					p += 11;
+				}
+				else
+				{
+					/* process an UTF-16 encoded extended char */
+					(*len) += llsd_json_utf8_len( p+1, NULL );
+					p += 5;
+				}
+			}
+			else
+			{
+				/* one of the other escaped characters */
+				CHECK_RET( (*p == '\"') || (*p == '\\') || (*p == '/') || \
+						   (*p == 'b') || (*p == 'f') || (*p == 'n') || \
+						   (*p == 'r') || (*p == 't'), FALSE );
+				p++;
+			}
+			escaped = FALSE;
+		}
+	}
 
+	/* allocate a buffer for the UTF-8 encoded string */
+	(*buffer) = CALLOC( (*len) + 1, sizeof(uint8_t) );
+	CHECK_PTR_RET( (*buffer), FALSE );
+
+	p = encoded;
+	q = (*buffer);
+	escaped = FALSE;
+	while( q < (encoded + enc_len) )
+	{
+		if ( !escaped )
+		{
+			if ( *p == '\\' )
+			{
+				escaped = TRUE;
+				p++;
+			}
+			else
+			{
+				/* copy the character over */
+				*q++ = *p++;
+			}
+		}
+		else
+		{
+			/* process \uXXXX encoded extended chars */
+			if ( *p == 'u' )
+			{
+				CHECK_RET( (p+4) < (encoded + enc_len), FALSE );
+				if ( llsd_json_surrogate_pair( p+1 ) )
+				{
+					/* process an UTF-32 encoded subordinate pair */
+					CHECK_RET( (p + 10) < (encoded + enc_len), FALSE );
+					CHECK_RET( *(p+5) == '\\', FALSE );
+					CHECK_RET( *(p+6) == 'u', FALSE );
+					q += llsd_json_utf8_decode( p+1, p+5, q );
+					p += 11;
+				}
+				else
+				{
+					/* process an UTF-16 encoded extended char */
+					q += llsd_json_utf8_decode( p+1, NULL, q );
+					p += 5;
+				}
+			}
+			else
+			{
+				switch ( *p++ )
+				{
+					case '\"':
+						*q++ = '\"';
+						break;
+					case '\\':
+						*q++ = '\\';
+						break;
+					case '/':
+						*q++ = '/';
+						break;
+					case 'b':
+						*q++ = '\b';
+						break;
+					case 'f':
+						*q++ = '\f';
+						break;
+					case 'n':
+						*q++ = '\n';
+						break;
+					case 'r':
+						*q++ = '\r';
+						break;
+					case 't':
+						*q++ = '\t';
+						break;
+				}
 			}
 			escaped = FALSE;
 		}
@@ -548,7 +798,7 @@ static int llsd_json_decode_string( uint8_t * const encoded, uint32_t const enc_
  * if all of those fail, then it stays as a string.
  * NOTE: empty strings will always be returned as an LLSD_STRING */
 static int llsd_json_convert_quoted( uint8_t const * const encoded, uint32_t const enc_len, 
-									 llsd_t * const type_, double * const dval, 
+									 llsd_type_t * const type_, double * const dval, 
 									 uint8_t uuid[UUID_LEN], uint8_t ** const buffer, 
 									 uint32_t * const len )
 {
@@ -558,10 +808,10 @@ static int llsd_json_convert_quoted( uint8_t const * const encoded, uint32_t con
 	CHECK_PTR_RET( dval, FALSE );
 	CHECK_PTR_RET( uuid, FALSE );
 	CHECK_PTR_RET( buffer, FALSE );
-	CHECK_PTR_RET( len );
+	CHECK_PTR_RET( len, FALSE );
 
 	/* try to convert it to a date */
-	if ( (enc_len = DATE_STR_LEN) && llsd_json_decode_date( encoded, dval ) )
+	if ( (enc_len == DATE_STR_LEN) && llsd_json_decode_date( encoded, dval ) )
 	{
 		(*type_) = LLSD_DATE;
 		return TRUE;
@@ -602,7 +852,7 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 	uint8_t * encoded = NULL;
 	uint32_t len;
 	uint32_t enc_len;
-	llsd_t type_ = LLSD_NONE;
+	llsd_type_t type_ = LLSD_NONE;
 	js_state_t* parser_state = NULL;
 
 	CHECK_PTR_RET( fin, FALSE );
@@ -633,9 +883,6 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 	/* start at top level state */
 	PUSH( TOP_LEVEL );
 
-	/* seek past signature */
-	fseek( fin, NOTATION_SIG_LEN, SEEK_SET );
-
 	while( TRUE )
 	{
 		/* read the type marker */
@@ -651,6 +898,7 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 			case 'n': /* null */
 				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_UNDEF, parser_state ), FALSE );
 				CHECK_RET( (*(ops->undef_fn))( user_data ), FALSE );
+				fseek( fin, 3, SEEK_CUR );
 				CHECK_RET( value( VALUE_STATES, LLSD_UNDEF, parser_state ), FALSE );
 				break;
 
@@ -659,6 +907,7 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 				
 				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
 				CHECK_RET( (*(ops->boolean_fn))( TRUE, user_data ), FALSE );
+				fseek( fin, 3, SEEK_CUR );
 				CHECK_RET( value( VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
 				break;
 
@@ -667,6 +916,7 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 				
 				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
 				CHECK_RET( (*(ops->boolean_fn))( FALSE, user_data ), FALSE );
+				fseek( fin, 4, SEEK_CUR );
 				CHECK_RET( value( VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
 				break;
 

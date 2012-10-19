@@ -6,7 +6,7 @@ CUTIL_ROOT?=../cutil/src
 EXTRA_LIBS_ROOT?=/usr/local
 
 SHELL=/bin/sh
-SRC=test_all.c test_base16.c test_base64.c test_base85.c test_binary.c test_flags.c test_notation.c test_xml.c
+SRC=test_all.c test_base16.c test_base64.c test_base85.c test_binary.c test_flags.c test_json.c test_notation.c test_xml.c
 OBJ=$(SRC:.c=.o)
 GCDA=$(SRC:.c=.gcda)
 GCNO=$(SRC:.c=.gcno)

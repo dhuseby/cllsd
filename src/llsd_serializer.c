@@ -42,7 +42,7 @@ serializer_deinit_fn const deinit_fns[LLSD_ENC_COUNT] =
 	&llsd_xml_serializer_deinit,
 	&llsd_binary_serializer_deinit,
 	&llsd_notation_serializer_deinit,
-	NULL,
+	&llsd_json_serializer_deinit,
 };
 
 int llsd_serialize_to_file( llsd_t * const llsd, FILE * fout, llsd_serializer_t const fmt, int const pretty )

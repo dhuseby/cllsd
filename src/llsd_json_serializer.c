@@ -103,7 +103,8 @@ static int llsd_json_string( uint8_t const * str, int const own_it, void * const
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
-	/* TODO: escape any double quotes in the string */
+	/* TODO: escape double quotes and controll code as well as convert extended 
+	 * characters to \uXXXX and/or \uXXXX\uXXXX subordinate pairs. */
 	fprintf( state->fout, "\"%s\"", str );
 	return TRUE;
 }

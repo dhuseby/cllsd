@@ -38,6 +38,7 @@ SUITE( base85 );
 SUITE( binary );
 SUITE( notation );
 SUITE( xml );
+SUITE( json );
 
 int main()
 {
@@ -52,6 +53,7 @@ int main()
 	ADD_SUITE( binary );
 	ADD_SUITE( notation );
 	ADD_SUITE( xml );
+	ADD_SUITE( json );
 
 	/* run all tests using the CUnit Basic interface */
 	CU_basic_set_mode( CU_BRM_VERBOSE );
