@@ -48,6 +48,8 @@ typedef struct js_state_s
 #define INC_INDENT { if(state->pretty) state->indent++; }
 #define DEC_INDENT { if(state->pretty) state->indent--; }
 
+static int map_value = FALSE;
+
 static int llsd_json_undef( void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
@@ -140,7 +142,7 @@ static int llsd_json_uri( uint8_t const * uri, int const own_it, void * const us
 	CHECK_PTR_RET( state, FALSE );
 	CHECK_PTR_RET( uri, FALSE );
 	/* TODO: uri escape the uri */
-	fprintf( state->fout, "\"%s\"", uri );
+	fprintf( state->fout, "\"||uri||%s\"", uri );
 	return TRUE;
 }
 
@@ -162,14 +164,14 @@ static int llsd_json_binary( uint8_t const * data, uint32_t const len, int const
 		buf = CALLOC( outlen, sizeof(uint8_t) );
 		CHECK_PTR_RET( buf, FALSE );
 		CHECK_RET( base64_encode( data, len, buf, &outlen ), FALSE );
-		CHECK_RET( fwrite( "\"", sizeof(uint8_t), 4, state->fout ) == 4, FALSE );
+		CHECK_RET( fwrite( "\"||b64||", sizeof(uint8_t), 8, state->fout ) == 8, FALSE );
 		CHECK_RET( fwrite( buf, sizeof(uint8_t), outlen, state->fout ) == outlen, FALSE );
 		CHECK_RET( fwrite( "\"", sizeof(uint8_t), 1, state->fout ) == 1, FALSE );
 		FREE( buf );
 	}
 	else
 	{
-		CHECK_RET( fwrite( "\"\"", sizeof(uint8_t), 6, state->fout ) == 6, FALSE );
+		CHECK_RET( fwrite( "\"||b64||\"", sizeof(uint8_t), 9, state->fout ) == 5, FALSE );
 	}
 
 	return TRUE;
@@ -185,6 +187,12 @@ static int llsd_json_array_begin( uint32_t const size, void * const user_data )
 
 	/* if there is > 1 item in this array, we want to output items in multi-line format */
 	PUSHML( (size > 1) );
+
+	if ( map_value && (size > 1))
+	{
+		NL;
+		INDENT;
+	}
 
 	CHECK_RET( fwrite( "[", sizeof(uint8_t), 1, state->fout ) == 1, FALSE );
 
@@ -241,6 +249,12 @@ static int llsd_json_map_begin( uint32_t const size, void * const user_data )
 	/* if there is > 1 item in this array, we want to output items in multi-line format */
 	PUSHML( (size > 1) );
 
+	if ( map_value && (size > 1))
+	{
+		NL;
+		INDENT;
+	}
+
 	CHECK_RET( fwrite( "{", sizeof(uint8_t), 1, state->fout ) == 1, FALSE );
 
 	/* increment indent */
@@ -272,6 +286,7 @@ static int llsd_json_map_value_begin( void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
+	map_value = TRUE;
 	return TRUE;
 }
 
@@ -283,6 +298,7 @@ static int llsd_json_map_value_end( void * const user_data )
 	c = TOPC;
 	POPC;
 	PUSHC( ++c );
+	map_value = FALSE;
 	return TRUE;
 }
 

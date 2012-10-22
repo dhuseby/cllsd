@@ -241,25 +241,6 @@ static int end_value( uint32_t valid_states, js_state_t * parser_state )
 	return TRUE;
 }
 
-
-static int llsd_json_consume_boolean( FILE * fin, int bval )
-{
-	uint8_t p;
-	long offset;
-	CHECK_PTR_RET( fin, FALSE );
-
-	if ( (fread( &p, sizeof(uint8_t), 1, fin ) == 1) && isalpha(p) )
-	{
-		offset = (bval ? 2 : 3 );
-		/* move to where we need to be for the rest of the parse */
-		fseek( fin, offset, SEEK_CUR );
-
-		return TRUE;
-	}
-
-	return FALSE;
-}
-
 /* parse a JSON number into either an integer or a real */
 static int llsd_json_parse_number( FILE * fin, llsd_type_t * const type_, int * const ival, double * dval )
 {
@@ -326,11 +307,13 @@ static int llsd_json_parse_quoted( FILE * fin, uint8_t ** buffer, uint32_t * len
 {
 	int i;
 	int done = FALSE;
+	int escaped = FALSE;
 	static uint8_t buf[1024];
 	CHECK_PTR_RET( fin, FALSE );
 	CHECK_PTR_RET( buffer, FALSE );
 	CHECK_PTR_RET( len, FALSE );
 
+	(*buffer) = NULL;
 	(*len) = 0;
 
 	while( !done )
@@ -339,11 +322,23 @@ static int llsd_json_parse_quoted( FILE * fin, uint8_t ** buffer, uint32_t * len
 		{
 			CHECK_RET( fread( &buf[i], sizeof(uint8_t), 1, fin ) == 1, FALSE );
 
-			/* check for an unescaped matching quote character */
-			if ( buf[i] == quote ) 
+			/* handle escaped quotes */
+			if ( !escaped )
 			{
-				if ( (i == 0) || ((i > 0) && (buf[i-1] != '\\')) )
+				if ( buf[i] == '\\' )
+				{
+					/* found escaping char */
+					escaped = TRUE;
+				}
+				else if ( buf[i] == '\"' )
+				{
+					/* found an unescaped double quote, must be done */
 					done = TRUE;
+				}
+			}
+			else
+			{
+				escaped = FALSE;
 			}
 		}
 
@@ -464,6 +459,8 @@ static int llsd_json_decode_uuid( uint8_t const * const buf, uint8_t uuid[UUID_L
 	return TRUE;
 }
 
+#define JSON_BINARY_TAG_LEN (7)
+
 /* binary data is stored as base64 encoded binary data in a string */
 static int llsd_json_decode_binary( uint8_t const * const encoded, uint32_t const enc_len,
 									uint8_t ** const buffer, uint32_t * const len )
@@ -474,11 +471,12 @@ static int llsd_json_decode_binary( uint8_t const * const encoded, uint32_t cons
 	CHECK_PTR_RET( buffer, FALSE );
 	CHECK_PTR_RET( len, FALSE );
 
-	dlen = base64_decoded_len( encoded, enc_len );
+	dlen = base64_decoded_len( &(encoded[JSON_BINARY_TAG_LEN]), 
+							   (enc_len - JSON_BINARY_TAG_LEN) );
 	(*buffer) = CALLOC( dlen, sizeof(uint8_t) );
 	CHECK_PTR_RET( (*buffer), FALSE );
 
-	if ( !base64_decode( encoded, enc_len, (*buffer), len ) )
+	if ( !base64_decode( &(encoded[JSON_BINARY_TAG_LEN]), (enc_len - JSON_BINARY_TAG_LEN), (*buffer), len ) )
 	{
 		FREE( (*buffer) );
 		(*buffer) = NULL;
@@ -489,7 +487,7 @@ static int llsd_json_decode_binary( uint8_t const * const encoded, uint32_t cons
 	return TRUE;
 }
 
-#define BUF_SIZE (1024)
+#define JSON_URI_TAG_LEN (7)
 
 /* uri's are url encoded strings */
 static int llsd_json_decode_uri( uint8_t const * const encoded, uint32_t const enc_len,
@@ -503,8 +501,13 @@ static int llsd_json_decode_uri( uint8_t const * const encoded, uint32_t const e
 	CHECK_PTR_RET( buffer, FALSE );
 	CHECK_PTR_RET( len, FALSE );
 
+	(*buffer) = CALLOC( enc_len, sizeof(uint8_t) );
+	CHECK_PTR_RET( (*buffer), FALSE );
+	q = (*buffer);
+	(*len) = 0;
+
 	/* do % decoding */
-	p = encoded;
+	p = &encoded[JSON_URI_TAG_LEN];
 	while ( p < (encoded + enc_len) )
 	{
 		if ( !escaped )
@@ -517,6 +520,7 @@ static int llsd_json_decode_uri( uint8_t const * const encoded, uint32_t const e
 			else
 			{
 				*q++ = *p++;
+				(*len)++;
 			}
 		}
 		else
@@ -525,6 +529,7 @@ static int llsd_json_decode_uri( uint8_t const * const encoded, uint32_t const e
 			(*q) = hex_to_byte( p[0], p[1] );
 			q++;
 			p++;
+			(*len)++;
 			escaped = FALSE;
 		}
 	}
@@ -650,6 +655,7 @@ static int llsd_json_decode_string( uint8_t const * const encoded, uint32_t cons
 	uint8_t const * p = NULL;
 	uint8_t * q = NULL;
 	int escaped;
+	int has_escaped = FALSE;
 	CHECK_PTR_RET( encoded, FALSE );
 	CHECK_PTR_RET( buffer, FALSE );
 	CHECK_PTR_RET( len, FALSE );
@@ -674,6 +680,7 @@ static int llsd_json_decode_string( uint8_t const * const encoded, uint32_t cons
 			if ( *p == '\\' )
 			{
 				escaped = TRUE;
+				has_escaped = TRUE;
 			}
 			
 			(*len)++;
@@ -717,10 +724,17 @@ static int llsd_json_decode_string( uint8_t const * const encoded, uint32_t cons
 	(*buffer) = CALLOC( (*len) + 1, sizeof(uint8_t) );
 	CHECK_PTR_RET( (*buffer), FALSE );
 
+	/* shortcut for strings without escaping */
+	if ( !has_escaped )
+	{
+		MEMCPY( (*buffer), encoded, enc_len );
+		return TRUE;
+	}
+
 	p = encoded;
 	q = (*buffer);
 	escaped = FALSE;
-	while( q < (encoded + enc_len) )
+	while( p < (encoded + enc_len) )
 	{
 		if ( !escaped )
 		{
@@ -821,12 +835,14 @@ static int llsd_json_convert_quoted( uint8_t const * const encoded, uint32_t con
 		(*type_) = LLSD_UUID;
 		return TRUE;
 	}
-	else if ( llsd_json_decode_binary( encoded, enc_len, buffer, len ) )
+	else if ( (strncmp( encoded, "||b64||", 7 ) == 0) && 
+			  llsd_json_decode_binary( encoded, enc_len, buffer, len ) )
 	{
 		(*type_) = LLSD_BINARY;
 		return TRUE;
 	}
-	else if ( llsd_json_decode_uri( encoded, enc_len, buffer, len ) )
+	else if ( (strncmp( encoded, "||uri||", 7 ) == 0) && 
+			  llsd_json_decode_uri( encoded, enc_len, buffer, len ) )
 	{
 		(*type_) = LLSD_URI;
 		return TRUE;
@@ -852,6 +868,9 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 	uint8_t * encoded = NULL;
 	uint32_t len;
 	uint32_t enc_len;
+	int32_t line;
+	long line_start;
+	long err_column;
 	llsd_type_t type_ = LLSD_NONE;
 	js_state_t* parser_state = NULL;
 
@@ -883,6 +902,9 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 	/* start at top level state */
 	PUSH( TOP_LEVEL );
 
+	line = 0;
+	line_start = ftell( fin );
+
 	while( TRUE )
 	{
 		/* read the type marker */
@@ -896,28 +918,24 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 		{
 
 			case 'n': /* null */
-				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_UNDEF, parser_state ), FALSE );
-				CHECK_RET( (*(ops->undef_fn))( user_data ), FALSE );
+				CHECK_GOTO( begin_value( BEGIN_VALUE_STATES, LLSD_UNDEF, parser_state ), fail_json_parse );
+				CHECK_GOTO( (*(ops->undef_fn))( user_data ), fail_json_parse );
 				fseek( fin, 3, SEEK_CUR );
-				CHECK_RET( value( VALUE_STATES, LLSD_UNDEF, parser_state ), FALSE );
+				CHECK_GOTO( value( VALUE_STATES, LLSD_UNDEF, parser_state ), fail_json_parse );
 				break;
 
 			case 't': /* true */
-				CHECK_RET( llsd_json_consume_boolean( fin, TRUE ), FALSE );
-				
-				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
-				CHECK_RET( (*(ops->boolean_fn))( TRUE, user_data ), FALSE );
+				CHECK_GOTO( begin_value( BEGIN_VALUE_STATES, LLSD_BOOLEAN, parser_state ), fail_json_parse );
+				CHECK_GOTO( (*(ops->boolean_fn))( TRUE, user_data ), fail_json_parse );
 				fseek( fin, 3, SEEK_CUR );
-				CHECK_RET( value( VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
+				CHECK_GOTO( value( VALUE_STATES, LLSD_BOOLEAN, parser_state ), fail_json_parse );
 				break;
 
 			case 'f': /* false */
-				CHECK_RET( llsd_json_consume_boolean( fin, FALSE ), FALSE );
-				
-				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
-				CHECK_RET( (*(ops->boolean_fn))( FALSE, user_data ), FALSE );
+				CHECK_GOTO( begin_value( BEGIN_VALUE_STATES, LLSD_BOOLEAN, parser_state ), fail_json_parse );
+				CHECK_GOTO( (*(ops->boolean_fn))( FALSE, user_data ), fail_json_parse );
 				fseek( fin, 4, SEEK_CUR );
-				CHECK_RET( value( VALUE_STATES, LLSD_BOOLEAN, parser_state ), FALSE );
+				CHECK_GOTO( value( VALUE_STATES, LLSD_BOOLEAN, parser_state ), fail_json_parse );
 				break;
 
 			case '-':
@@ -933,65 +951,66 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 			case '9': /* number */
 				/* back up one character so that we can parse the number */
 				fseek( fin, -1, SEEK_CUR );
-				CHECK_RET( llsd_json_parse_number( fin, &type_, &int_val, &real_val ), FALSE );
+				CHECK_GOTO( llsd_json_parse_number( fin, &type_, &int_val, &real_val ), fail_json_parse );
 				
-				CHECK_RET( begin_value( BEGIN_VALUE_STATES, type_, parser_state ), FALSE );
+				CHECK_GOTO( begin_value( BEGIN_VALUE_STATES, type_, parser_state ), fail_json_parse );
 				switch( type_ )
 				{
 					case LLSD_INTEGER:
-						CHECK_RET( (*(ops->integer_fn))( int_val, user_data ), FALSE );
+						CHECK_GOTO( (*(ops->integer_fn))( int_val, user_data ), fail_json_parse );
 						break;
 					case LLSD_REAL:
-						CHECK_RET( (*(ops->real_fn))( real_val, user_data ), FALSE );
+						CHECK_GOTO( (*(ops->real_fn))( real_val, user_data ), fail_json_parse );
 						break;
 				}
-				CHECK_RET( value( VALUE_STATES, type_, parser_state ), FALSE );
+				CHECK_GOTO( value( VALUE_STATES, type_, parser_state ), fail_json_parse );
 				break;
 
 			case '\"':
 				/* read the quoted string */
-				CHECK_RET( llsd_json_parse_quoted( fin, &encoded, &enc_len, p ), FALSE );
+				CHECK_GOTO( llsd_json_parse_quoted( fin, &encoded, &enc_len, p ), fail_json_parse );
 
 				/* try to convert it to date, uuid, uri, binary, or leave it as a string */
 				if ( !llsd_json_convert_quoted( encoded, enc_len, &type_, &real_val, uuid, &buffer, &len ) )
 				{
 					FREE( encoded );
-					return FALSE;
+					goto fail_json_parse;
 				}
 				
 				FREE( encoded );
+				encoded = NULL;
 				
 				switch ( type_ )
 				{
 					case LLSD_DATE:
-						CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_DATE, parser_state ), FALSE );
-						CHECK_RET( (*(ops->date_fn))( real_val, user_data ), FALSE );
-						CHECK_RET( value( VALUE_STATES, LLSD_DATE, parser_state ), FALSE );
+						CHECK_GOTO( begin_value( BEGIN_VALUE_STATES, LLSD_DATE, parser_state ), fail_json_parse );
+						CHECK_GOTO( (*(ops->date_fn))( real_val, user_data ), fail_json_parse );
+						CHECK_GOTO( value( VALUE_STATES, LLSD_DATE, parser_state ), fail_json_parse );
 						break;
 					case LLSD_UUID:
-						CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_UUID, parser_state ), FALSE );
-						CHECK_RET( (*(ops->uuid_fn))( uuid, user_data ), FALSE );
-						CHECK_RET( value( VALUE_STATES, LLSD_UUID, parser_state ), FALSE );
+						CHECK_GOTO( begin_value( BEGIN_VALUE_STATES, LLSD_UUID, parser_state ), fail_json_parse );
+						CHECK_GOTO( (*(ops->uuid_fn))( uuid, user_data ), fail_json_parse );
+						CHECK_GOTO( value( VALUE_STATES, LLSD_UUID, parser_state ), fail_json_parse );
 						break;
 					case LLSD_BINARY:
-						CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_BINARY, parser_state ), FALSE );
+						CHECK_GOTO( begin_value( BEGIN_VALUE_STATES, LLSD_BINARY, parser_state ), fail_json_parse );
 						/* tell it to take ownership of the memory */
-						CHECK_RET( (*(ops->binary_fn))( buffer, len, TRUE, user_data ), FALSE );
-						CHECK_RET( value( VALUE_STATES, LLSD_BINARY, parser_state ), FALSE );
+						CHECK_GOTO( (*(ops->binary_fn))( buffer, len, TRUE, user_data ), fail_json_parse );
+						CHECK_GOTO( value( VALUE_STATES, LLSD_BINARY, parser_state ), fail_json_parse );
 						buffer = NULL;
 						break;
 					case LLSD_URI:
-						CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_URI, parser_state ), FALSE );
+						CHECK_GOTO( begin_value( BEGIN_VALUE_STATES, LLSD_URI, parser_state ), fail_json_parse );
 						/* tell it to take ownership of the memory */
-						CHECK_RET( (*(ops->uri_fn))( buffer, TRUE, user_data ), FALSE );
-						CHECK_RET( value( VALUE_STATES, LLSD_URI, parser_state ), FALSE );
+						CHECK_GOTO( (*(ops->uri_fn))( buffer, TRUE, user_data ), fail_json_parse );
+						CHECK_GOTO( value( VALUE_STATES, LLSD_URI, parser_state ), fail_json_parse );
 						buffer = NULL;
 						break;
 					case LLSD_STRING:
-						CHECK_RET( begin_value( BEGIN_STRING_STATES, LLSD_STRING, parser_state ), FALSE );
+						CHECK_GOTO( begin_value( BEGIN_STRING_STATES, LLSD_STRING, parser_state ), fail_json_parse );
 						/* tell it to take ownership of the memory */
-						CHECK_RET( (*(ops->string_fn))( buffer, TRUE, user_data ), FALSE );
-						CHECK_RET( value( STRING_STATES, LLSD_STRING, parser_state ), FALSE );
+						CHECK_GOTO( (*(ops->string_fn))( buffer, TRUE, user_data ), fail_json_parse );
+						CHECK_GOTO( value( STRING_STATES, LLSD_STRING, parser_state ), fail_json_parse );
 						buffer = NULL;
 						break;
 				}
@@ -999,8 +1018,8 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 				break;
 
 			case '[':
-				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_ARRAY, parser_state ), FALSE );
-				CHECK_RET( (*(ops->array_begin_fn))( 0, user_data ), FALSE );
+				CHECK_GOTO( begin_value( BEGIN_VALUE_STATES, LLSD_ARRAY, parser_state ), fail_json_parse );
+				CHECK_GOTO( (*(ops->array_begin_fn))( 0, user_data ), fail_json_parse );
 				PUSH( ARRAY_BEGIN );
 				PUSHC( 0 );
 				break;
@@ -1011,18 +1030,18 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 				 * value */
 				if ( TOPC )
 				{
-					CHECK_RET( end_value( ARRAY_VALUE, parser_state ), FALSE );
+					CHECK_GOTO( end_value( ARRAY_VALUE, parser_state ), fail_json_parse );
 				}
 
 				POP;
 				POPC;
-				CHECK_RET( (*(ops->array_end_fn))( 0, user_data ), FALSE );
-				CHECK_RET( value( VALUE_STATES, LLSD_ARRAY, parser_state ), FALSE );
+				CHECK_GOTO( (*(ops->array_end_fn))( 0, user_data ), fail_json_parse );
+				CHECK_GOTO( value( VALUE_STATES, LLSD_ARRAY, parser_state ), fail_json_parse );
 				break;
 			
 			case '{':
-				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_MAP, parser_state ), FALSE );
-				CHECK_RET( (*(ops->map_begin_fn))( 0, user_data ), FALSE );
+				CHECK_GOTO( begin_value( BEGIN_VALUE_STATES, LLSD_MAP, parser_state ), fail_json_parse );
+				CHECK_GOTO( (*(ops->map_begin_fn))( 0, user_data ), fail_json_parse );
 				PUSH( MAP_BEGIN );
 				PUSHC( 0 );
 				break;
@@ -1033,32 +1052,35 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 				 * value */
 				if ( TOPC )
 				{
-					CHECK_RET( end_value( MAP_VALUE, parser_state ), FALSE );
+					CHECK_GOTO( end_value( MAP_VALUE, parser_state ), fail_json_parse );
 				}
 
 				POP;
 				POPC;
-				CHECK_RET( (*(ops->map_end_fn))( 0, user_data ), FALSE );
-				CHECK_RET( value( VALUE_STATES, LLSD_MAP, parser_state ), FALSE );
+				CHECK_GOTO( (*(ops->map_end_fn))( 0, user_data ), fail_json_parse );
+				CHECK_GOTO( value( VALUE_STATES, LLSD_MAP, parser_state ), fail_json_parse );
 				break;
 
 			case ',':
-				CHECK_RET( end_value( (ARRAY_VALUE | MAP_VALUE), parser_state ), FALSE );
+				CHECK_GOTO( end_value( (ARRAY_VALUE | MAP_VALUE), parser_state ), fail_json_parse );
 				break;
 
 			case ':':
-				CHECK_RET( end_value( MAP_KEY, parser_state ), FALSE );
+				CHECK_GOTO( end_value( MAP_KEY, parser_state ), fail_json_parse );
 				break;
 
 			/* eat whitespace and commas */
+			case '\n':
+				line++;
+				line_start = ftell( fin );
+				break;
 			case ' ':
 			case '\t':
 			case '\r':
-			case '\n':
 				break;
 			default:
 				WARN( "garbage byte %c at 0x%08x\n", p, (unsigned int)ftell( fin ) - 1 );
-				return FALSE;
+				goto fail_json_parse;
 		}
 	}
 
@@ -1073,6 +1095,29 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 	FREE( parser_state );
 
 	return TRUE;
+
+fail_json_parse:
+	err_column = ftell( fin );
+	fseek( fin, SEEK_SET, line_start );
+	buffer = CALLOC( (err_column - line_start) + 1, sizeof(uint8_t) );
+	fread( buffer, sizeof(uint8_t), (err_column - line_start), fin );
+	fprintf(stderr, "\n");
+	fprintf(stderr, "%s\n", buffer );
+	fprintf(stderr, "%*s^\n", (int)((err_column - line_start) - 1), " " );
+	fprintf(stderr, "Parse failed on line %d, column %d\n", line, (int)(err_column - line_start) );
+	FREE( buffer );
+
+	/* clean up the count stack */
+	list_delete( parser_state->count_stack );
+
+	/* clean up the step stack */
+	CHECK_RET( TOP == TOP_LEVEL, FALSE );
+	list_delete( parser_state->state_stack );
+
+	/* free the parser_state */
+	FREE( parser_state );
+
+	return FALSE;
 }
 
 
