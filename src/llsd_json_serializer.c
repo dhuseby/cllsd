@@ -171,7 +171,7 @@ static int llsd_json_binary( uint8_t const * data, uint32_t const len, int const
 	}
 	else
 	{
-		CHECK_RET( fwrite( "\"||b64||\"", sizeof(uint8_t), 9, state->fout ) == 5, FALSE );
+		CHECK_RET( fwrite( "\"||b64||\"", sizeof(uint8_t), 9, state->fout ) == 9, FALSE );
 	}
 
 	return TRUE;

@@ -315,6 +315,7 @@ static int llsd_json_parse_quoted( FILE * fin, uint8_t ** buffer, uint32_t * len
 
 	(*buffer) = NULL;
 	(*len) = 0;
+	MEMSET( buf, 0, 1024 );
 
 	while( !done )
 	{
@@ -465,15 +466,22 @@ static int llsd_json_decode_uuid( uint8_t const * const buf, uint8_t uuid[UUID_L
 static int llsd_json_decode_binary( uint8_t const * const encoded, uint32_t const enc_len,
 									uint8_t ** const buffer, uint32_t * const len )
 {
-	uint32_t dlen = 0;
 	CHECK_PTR_RET( encoded, FALSE );
 	CHECK_RET( (enc_len > 0), FALSE );
 	CHECK_PTR_RET( buffer, FALSE );
 	CHECK_PTR_RET( len, FALSE );
 
-	dlen = base64_decoded_len( &(encoded[JSON_BINARY_TAG_LEN]), 
+	(*len) = base64_decoded_len( &(encoded[JSON_BINARY_TAG_LEN]), 
 							   (enc_len - JSON_BINARY_TAG_LEN) );
-	(*buffer) = CALLOC( dlen, sizeof(uint8_t) );
+
+	/* handle zero length binary */
+	if ( (*len) == 0 )
+	{
+		(*buffer) = NULL;
+		return TRUE;
+	}
+
+	(*buffer) = CALLOC( (*len), sizeof(uint8_t) );
 	CHECK_PTR_RET( (*buffer), FALSE );
 
 	if ( !base64_decode( &(encoded[JSON_BINARY_TAG_LEN]), (enc_len - JSON_BINARY_TAG_LEN), (*buffer), len ) )
@@ -818,7 +826,6 @@ static int llsd_json_convert_quoted( uint8_t const * const encoded, uint32_t con
 {
 	CHECK_PTR_RET( encoded, FALSE );
 	CHECK_PTR_RET( type_, FALSE );
-	CHECK_RET( (enc_len > 0), FALSE );
 	CHECK_PTR_RET( dval, FALSE );
 	CHECK_PTR_RET( uuid, FALSE );
 	CHECK_PTR_RET( buffer, FALSE );
@@ -858,6 +865,7 @@ static int llsd_json_convert_quoted( uint8_t const * const encoded, uint32_t con
 
 int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data )
 {
+	int i;
 	uint8_t p;
 	size_t ret;
 	int bool_val;
@@ -871,6 +879,7 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 	int32_t line;
 	long line_start;
 	long err_column;
+	long text_start;
 	llsd_type_t type_ = LLSD_NONE;
 	js_state_t* parser_state = NULL;
 
@@ -1098,12 +1107,24 @@ int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_
 
 fail_json_parse:
 	err_column = ftell( fin );
-	fseek( fin, SEEK_SET, line_start );
+	fseek( fin, line_start, SEEK_SET );
 	buffer = CALLOC( (err_column - line_start) + 1, sizeof(uint8_t) );
 	fread( buffer, sizeof(uint8_t), (err_column - line_start), fin );
+
+	text_start = line_start;
+	for( i = 0; i < (int)(err_column - line_start); i++ )
+	{
+		if ( (buffer[i] == ' ') || (buffer[i] == '\t') || (buffer[i] == '\r') )
+		{
+			text_start++;
+		}
+	}
+
 	fprintf(stderr, "\n");
 	fprintf(stderr, "%s\n", buffer );
-	fprintf(stderr, "%*s^\n", (int)((err_column - line_start) - 1), " " );
+	fprintf(stderr, "%*s^", (int)(text_start - line_start), " " );
+	fprintf(stderr, "%*s^\n", (int)((err_column - text_start) - 1), " " );
+	fprintf(stderr, "%*s%lu\n", (int)(text_start - line_start), " ", text_start );
 	fprintf(stderr, "Parse failed on line %d, column %d\n", line, (int)(err_column - line_start) );
 	FREE( buffer );
 
