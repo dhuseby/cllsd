@@ -261,8 +261,7 @@ llsd_t * llsd_new( llsd_type_t type_, ... )
 	switch( type_ )
 	{
 		case LLSD_UNDEF:
-			if ( !llsd_initialize( llsd, type_ ) )
-				goto fail_llsd_new;
+			CHECK_GOTO( llsd_initialize( llsd, type_ ), fail_llsd_new );
 			break;
 
 		case LLSD_BOOLEAN:
@@ -270,8 +269,7 @@ llsd_t * llsd_new( llsd_type_t type_, ... )
 			va_start( args, type_ );
 			a1 = va_arg( args, int );
 			va_end( args );
-			if ( !llsd_initialize( llsd, type_, a1 ) )
-				goto fail_llsd_new;
+			CHECK_GOTO( llsd_initialize( llsd, type_, a1 ), fail_llsd_new );
 			break;
 
 		case LLSD_REAL:
@@ -279,16 +277,14 @@ llsd_t * llsd_new( llsd_type_t type_, ... )
 			va_start( args, type_ );
 			a3 = va_arg( args, double );
 			va_end( args );
-			if ( !llsd_initialize( llsd, type_, a3 ) )
-				goto fail_llsd_new;
+			CHECK_GOTO( llsd_initialize( llsd, type_, a3 ), fail_llsd_new );
 			break;
 
 		case LLSD_UUID:
 			va_start( args, type_ );
 			a2 = va_arg( args, uint8_t* );
 			va_end( args );
-			if ( !llsd_initialize( llsd, type_, a2 ) )
-				goto fail_llsd_new;
+			CHECK_GOTO( llsd_initialize( llsd, type_, a2 ), fail_llsd_new );
 			break;
 
 		case LLSD_STRING:
@@ -297,8 +293,7 @@ llsd_t * llsd_new( llsd_type_t type_, ... )
 			a2 = va_arg( args, uint8_t* );
 			a1 = va_arg( args, int );
 			va_end( args );
-			if ( !llsd_initialize( llsd, type_, a2, a1 ) )
-				goto fail_llsd_new;
+			CHECK_GOTO( llsd_initialize( llsd, type_, a2, a1 ), fail_llsd_new );
 			break;
 
 		case LLSD_BINARY:
@@ -307,8 +302,7 @@ llsd_t * llsd_new( llsd_type_t type_, ... )
 			a4 = va_arg( args, uint32_t );	/* size */
 			a1 = va_arg( args, int );
 			va_end( args );
-			if ( !llsd_initialize( llsd, type_, a2, a4, a1 ) )
-				goto fail_llsd_new;
+			CHECK_GOTO( llsd_initialize( llsd, type_, a2, a4, a1 ), fail_llsd_new );
 			break;
 
 		case LLSD_ARRAY:
@@ -316,8 +310,7 @@ llsd_t * llsd_new( llsd_type_t type_, ... )
 			va_start( args, type_ );
 			a4 = va_arg( args, uint32_t ); /* initial capacity */
 			va_end( args );
-			if ( !llsd_initialize( llsd, type_, a4 ) )
-				goto fail_llsd_new;
+			CHECK_GOTO( llsd_initialize( llsd, type_, a4 ), fail_llsd_new );
 			break;
 	}
 
@@ -960,6 +953,193 @@ int llsd_as_binary( llsd_t * llsd, uint8_t ** v, uint32_t * len )
 			(*len) = llsd->binary_.iov_len;
 			break;
 	}
+	return TRUE;
+}
+
+#define URL_ENCODED_CHAR( x ) ( ( x <= 0x1F ) || \
+								( x >= 0x7F ) || \
+								( x == ' '  ) || \
+								( x == '\'' ) || \
+								( x == '"'  ) || \
+								( x == '<'  ) || \
+								( x == '>'  ) || \
+								( x == '%'  ) || \
+								( x == '{'  ) || \
+								( x == '}'  ) || \
+								( x == '|'  ) || \
+								( x == '\\' ) || \
+								( x == '^'  ) || \
+								( x == '['  ) || \
+								( x == ']'  ) || \
+								( x == '`'  ) )
+
+static int llsd_escaped_uri_len( uint8_t const * const uri, uint32_t const len, uint32_t * const esc_len )
+{
+	uint8_t const * p;
+	CHECK_PTR_RET( uri, FALSE );
+	CHECK_PTR_RET( esc_len, FALSE );
+	CHECK_RET( len > 0, FALSE );
+
+	p = uri;
+	while( p < (uri + len) )
+	{
+		if ( URL_ENCODED_CHAR( *p ) )
+		{
+			(*esc_len) += 3;
+		}
+		else
+		{
+			(*esc_len)++;
+		}
+		p++;
+	}
+	return TRUE;
+}
+
+int llsd_escape_uri( uint8_t const * const uri, uint32_t const len, uint8_t ** const escaped, uint32_t * const esc_len )
+{
+	int i;
+	uint8_t c;
+	uint8_t * p;
+	uint32_t l = 0;
+
+	CHECK_PTR_RET( uri, FALSE );
+	CHECK_RET( len > 0, FALSE );
+	CHECK_PTR_RET( escaped, FALSE );
+	CHECK_PTR_RET( esc_len, FALSE );
+
+	(*esc_len) = 0;
+	(*escaped) = NULL;
+
+	CHECK_RET( llsd_escaped_uri_len( uri, len, &l ), FALSE );
+	(*escaped) = CALLOC( l, sizeof(uint8_t) );
+	CHECK_PTR_RET( (*escaped), FALSE );
+	(*esc_len) = l;
+
+	p = (*escaped);
+	for( i = 0; i < len; i++)
+	{
+		c = uri[i];
+		if ( URL_ENCODED_CHAR( c ) )
+		{
+			sprintf( p, "%%02x", c );
+			p += 3;
+		}
+		else
+		{
+			*p = c;
+			p++;
+		}
+	}
+	return TRUE;
+}
+
+static int llsd_unescaped_uri_len( uint8_t const * const escaped, uint32_t const enc_len, uint32_t * const len )
+{
+	int esc = FALSE;
+	int hex = FALSE;
+	uint8_t const * p;
+
+	CHECK_PTR_RET( escaped, FALSE );
+	CHECK_RET( enc_len > 0, FALSE );
+	CHECK_PTR_RET( len, FALSE );
+
+	p = escaped;
+	while ( p < (escaped + enc_len) )
+	{
+		if ( esc )
+		{
+			if ( hex )
+			{
+				CHECK_RET( isxdigit( *p ), FALSE );
+				/* found % followed by two hex digits that will decode
+				 * to a single char */
+				(*len)++;
+				esc = FALSE;
+				hex = FALSE;
+			}
+			else
+			{
+				CHECK_RET( isxdigit( *p ), FALSE );
+				hex = TRUE;
+			}
+		}
+		else
+		{
+			if ( *p == '%' )
+			{
+				esc = TRUE;
+			}
+			else
+			{
+				(*len)++;
+			}
+		}
+		p++;
+	}
+	return TRUE;
+}
+
+int llsd_unescape_uri( uint8_t const * const escaped, uint32_t const esc_len, uint8_t ** const uri, uint32_t * const len )
+{
+	int esc = FALSE;
+	int hex = FALSE;
+	uint8_t const * p;
+	uint8_t * q;
+	uint32_t l;
+
+	CHECK_PTR_RET( escaped, FALSE );
+	CHECK_RET( esc_len > 0, FALSE );
+	CHECK_PTR_RET( uri, FALSE );
+	CHECK_PTR_RET( len, FALSE );
+
+	(*uri) = NULL;
+	(*len) = 0;
+
+	CHECK_RET( llsd_unescaped_uri_len( escaped, esc_len, &l ), FALSE );
+	(*uri) = CALLOC( l, sizeof(uint8_t) );
+	CHECK_PTR_RET( (*uri), FALSE );
+	(*len) = l;
+
+	p = escaped;
+	q = (*uri);
+	while ( p < (escaped + esc_len) )
+	{
+		if ( esc )
+		{
+			if ( hex )
+			{
+				CHECK_RET( isxdigit( *p ), FALSE );
+				/* found % followed by two hex digits that will decode
+				 * to a single char */
+				esc = FALSE;
+				hex = FALSE;
+
+				/* decode the hex chars to a byte */
+				*q = hex_to_byte( *(p-1), *p );
+				q++;
+			}
+			else
+			{
+				CHECK_RET( isxdigit( *p ), FALSE );
+				hex = TRUE;
+			}
+		}
+		else
+		{
+			if ( *p == '%' )
+			{
+				esc = TRUE;
+			}
+			else
+			{
+				*q = *p;
+				q++;
+			}
+		}
+		p++;
+	}
+
 	return TRUE;
 }
 

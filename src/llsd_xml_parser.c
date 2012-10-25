@@ -575,6 +575,124 @@ static int date_from_buf( buffer_t * const buf, double * rval )
 	return TRUE;
 }
 
+static int decode_xml_escape( uint8_t * const buf, uint8_t * const chr, uint32_t * const len )
+{
+	CHECK_PTR_RET( buf, FALSE );
+	CHECK_PTR_RET( chr, FALSE );
+	CHECK_PTR_RET( len, FALSE );
+
+	(*chr) = '\0';
+	(*len) = 0;
+
+	switch( buf[1] )
+	{
+		case 'l':
+			CHECK_RET( strncmp( buf, "&lt;", 4 ) == 0, FALSE );
+			(*chr) = '<';
+			(*len) = 4;
+			return TRUE;
+		case 'g':
+			CHECK_RET( strncmp( buf, "&gt;", 4 ) == 0, FALSE );
+			(*chr) = '>';
+			(*len) = 4;
+			return TRUE;
+		case 'a':
+			if ( buf[2] == 'm' )
+			{
+				CHECK_RET( strncmp( buf, "&amp;", 5 ) == 0, FALSE );
+				(*chr) = '&';
+				(*len) = 5;
+				return TRUE;
+			}
+			else
+			{
+				CHECK_RET( strncmp( buf, "&apos;", 6 ) == 0, FALSE );
+				(*chr) = '\'';
+				(*len) = 6;
+				return TRUE;
+			}
+			return FALSE;
+		case 'q':
+			CHECK_RET( strncmp( buf, "&quot;", 6 ) == 0, FALSE );
+			(*chr) = '\"';
+			(*len) = 6;
+			return TRUE;
+	}
+	return FALSE;
+}
+
+static int decoded_xml_string_len( uint8_t const * const encoded, uint32_t const enc_len, uint32_t * const len )
+{
+	int amp = FALSE;
+	uint8_t const * p;
+	uint32_t l = 0;
+	CHECK_PTR_RET( encoded, FALSE );
+	CHECK_PTR_RET( len, FALSE );
+
+	(*len) = 0;
+	p = encoded;
+	while( p < (encoded + enc_len) )
+	{
+		if ( amp )
+		{
+			if ( *p == ';' )
+			{
+				l++;
+				amp = FALSE;
+			}
+		}
+		else
+		{
+			if ( *p == '&' )
+			{
+				amp = TRUE;
+			}
+			else
+			{
+				l++;
+			}
+		}
+		p++;
+	}
+	(*len) = l;
+	return TRUE;
+}
+
+static int string_from_buf( buffer_t * const buf, uint8_t ** const str, uint32_t * len )
+{
+	uint8_t c;
+	uint8_t * p;
+	uint8_t * q;
+	uint32_t l;
+	CHECK_PTR_RET( buf, FALSE );
+	CHECK_PTR_RET( str, FALSE );
+	CHECK_PTR_RET( len, FALSE );
+
+	CHECK_RET( decoded_xml_string_len( buf->iov_base, buf->iov_len, &l ), FALSE );
+	(*str) = CALLOC( l + 1, sizeof(uint8_t) );
+	CHECK_PTR_RET( (*str), FALSE );
+	(*len) = l;
+
+	p = (uint8_t*)buf->iov_base;
+	q = (*str);
+	while ( p < ((uint8_t*)buf->iov_base + buf->iov_len) )
+	{
+		l = 1;
+		if ( *p == '&' )
+		{
+			CHECK_RET( decode_xml_escape( p, q, &l ), FALSE );
+		}
+		else
+		{
+			*q = *p;
+			q++;
+		}
+		p += l;
+	}
+
+	return TRUE;
+}
+
 static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const ** attr )
 {
 	uint32_t size = 0;
@@ -646,6 +764,8 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 	int int_val;
 	double real_val;
 	uint8_t uuid_val[UUID_LEN];
+	uint8_t * encoded = NULL;
+	uint32_t enc_len = 0;
 	uint8_t * buffer = NULL;
 	uint32_t len = 0;
 	llsd_type_t t = LLSD_UNDEF;
@@ -700,16 +820,25 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 		case LLSD_STRING:
 			/* zero terminate the string */
 			buffer_append( parser_state->buf, "\0", 1 );
-			CHECK( (*(parser_state->ops->string_fn))( (uint8_t*)parser_state->buf->iov_base, FALSE, parser_state->user_data ) );
+			CHECK( string_from_buf( parser_state->buf, &buffer, &len ) );
+			CHECK( (*(parser_state->ops->string_fn))( buffer, TRUE, parser_state->user_data ) );
 			CHECK( value( STRING_STATES, LLSD_STRING, parser_state ) );
 			CHECK( end_value( END_STRING_STATES, LLSD_STRING, parser_state ) );
+			buffer = NULL;
+			len = 0;
 			break;
 		case LLSD_URI:
 			/* zero terminate the string */
 			buffer_append( parser_state->buf, "\0", 1 );
-			CHECK( (*(parser_state->ops->uri_fn))( (uint8_t*)parser_state->buf->iov_base, FALSE, parser_state->user_data ) );
+			CHECK( string_from_buf( parser_state->buf, &encoded, &enc_len ) );
+			CHECK( llsd_unescape_uri( encoded, enc_len, &buffer, &len ) );
+			CHECK( (*(parser_state->ops->uri_fn))( buffer, TRUE, parser_state->user_data ) );
 			CHECK( value( VALUE_STATES, LLSD_URI, parser_state ) );
 			CHECK( end_value( END_VALUE_STATES, LLSD_URI, parser_state ) );
+			FREE( encoded );
+			buffer = NULL;
+			enc_len = 0;
+			len = 0;
 			break;
 		case LLSD_BINARY:
 			CHECK( binary_from_buf( parser_state->buf, parser_state->enc, &buffer, &len ) );

@@ -17,6 +17,7 @@
 #include <math.h>
 #include <time.h>
 
+#include "llsd.h"
 #include "llsd_serializer.h"
 #include "llsd_xml_serializer.h"
 #include "base64.h"
@@ -160,6 +161,38 @@ static int llsd_xml_uuid( uint8_t const value[UUID_LEN], void * const user_data 
 	return TRUE;
 }
 
+static void llsd_xml_write_string( uint8_t const * str, uint32_t len, xs_state_t * const state )
+{
+	uint32_t i;
+	CHECK_PTR( str );
+	CHECK( len > 0 );
+
+	for ( i = 0; i < len; i++ )
+	{
+		switch( str[i] )
+		{
+			case '<':
+				WRITE_STR( "&lt;", 4 );
+				break;
+			case '>':
+				WRITE_STR( "&gt;", 4 );
+				break;
+			case '&':
+				WRITE_STR( "&amp;", 5 );
+				break;
+			case '\'':
+				WRITE_STR( "&apos;", 6 );
+				break;
+			case '\"':
+				WRITE_STR( "&quot;", 6 );
+				break;
+			default:
+				WRITE_STR( &(str[i]), 1 );
+				break;
+		}
+	}
+}
+
 static int llsd_xml_string( uint8_t const * str, int const own_it, void * const user_data )
 {
 	uint8_t * xml_encoded = NULL;
@@ -169,7 +202,7 @@ static int llsd_xml_string( uint8_t const * str, int const own_it, void * const 
 	len = strlen( str );
 	if ( state->key )
 	{
-		WRITE_STR(str, len);
+		llsd_xml_write_string( str, len, state );
 	}
 	else
 	{
@@ -180,7 +213,7 @@ static int llsd_xml_string( uint8_t const * str, int const own_it, void * const 
 		else
 		{
 			STRING_BEGIN;
-			WRITE_STR(str, len);
+			llsd_xml_write_string( str, len, state );
 			STRING_END;
 		}
 	}
@@ -227,6 +260,8 @@ static int llsd_xml_uri( uint8_t const * uri, int const own_it, void * const use
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	size_t len;
+	uint8_t * escaped = NULL;
+	uint32_t esc_len = 0;
 	CHECK_PTR_RET( state, FALSE );
 	CHECK_PTR_RET( uri, FALSE );
 	len = strlen(uri);
@@ -237,7 +272,9 @@ static int llsd_xml_uri( uint8_t const * uri, int const own_it, void * const use
 	else
 	{
 		URI_BEGIN;
-		WRITE_STR(uri, len);
+		CHECK_RET( llsd_escape_uri( uri, len, &escaped, &esc_len ), FALSE );
+		llsd_xml_write_string( escaped, esc_len, state );
+		FREE( escaped );
 		URI_END;
 	}
 

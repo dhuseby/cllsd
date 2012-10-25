@@ -148,6 +148,10 @@ int llsd_as_uuid( llsd_t * llsd, uint8_t uuid[UUID_LEN] );
 int llsd_as_string( llsd_t * llsd, uint8_t ** v );
 int llsd_as_binary( llsd_t * llsd, uint8_t ** v, uint32_t * len );
 
+/* escaping interface */
+int llsd_escape_uri( uint8_t const * const uri, uint32_t const len, uint8_t ** const escaped, uint32_t * const esc_len );
+int llsd_unescape_uri( uint8_t const * const escaped, uint32_t const esc_len, uint8_t ** const uri, uint32_t * const len );
+
 /* compare two llsd items */
 int llsd_equal( llsd_t * l, llsd_t * r );
 
