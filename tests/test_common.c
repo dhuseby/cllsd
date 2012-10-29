@@ -35,25 +35,16 @@ static llsd_t* get_random_str( int zero )
 {
 	static uint8_t str[1024];
 	uint8_t c;
-	int i;
+	int i = 0;
 	int len = (rand() % 128);
 	if ( !zero && !len )
 		len++;
 	CHECK_RET( len < 1024, FALSE );
 
-	for ( i = 0; i < len; i++ )
+	while( i < (len - 1) )
 	{
-		if ( format == LLSD_ENC_XML )
-		{
-			do
-			{
-				c = (rand() % 127);
-			} while ( (c < 0x20) && (c != '\t') && (c != '\n') && (c != '\r') );
-		}
-		else
-		{
-			str[i] = (rand() % 127);
-		}
+		str[i] = ('A' + (rand() % 26));
+		i++;
 	}
 	str[len] = '\0';
 	DEBUG( "%*sSTRING %s\n", indent, " ", str );
@@ -65,13 +56,14 @@ static llsd_t* get_random_key( int min )
 {
 	static uint8_t str[1024];
 	uint8_t c;
-	int i;
+	int i = 0;
 	int len = min + (rand() % 128);
 	CHECK_RET( len < 1024, FALSE );
 
-	for ( i = 0; i < len; i++ )
+	while( i < (len - 1) )
 	{
 		str[i] = ('A' + (rand() % 26));
+		i++;
 	}
 	str[len] = '\0';
 	DEBUG( "%*sSTRING %s\n", indent, " ", str );
@@ -86,18 +78,10 @@ static llsd_t* get_random_uri( void )
 	int i;
 	int len = (rand() % 128);
 
-	for ( i = 0; i < len; i++ )
+	while( i < (len - 1) )
 	{
-		/* get a random, non-double quote, printable ascii character */
-		/*
-		do
-		{
-			c = (32 + (rand() % 94));
-		} while( (c == '\"') || (c == '\\') || (c == '\'') || (c == '<') || (c == '>') || (c == '&') || (c == '%') );
-
-		uri[i] = c;
-		*/
 		uri[i] = ('A' + (rand() % 26));
+		i++;
 	}
 	uri[len] = '\0';
 	DEBUG( "%*sURI %s\n", indent, " ", uri );
@@ -280,6 +264,7 @@ static llsd_t * get_random_map( uint32_t size )
 	llsd_t * map;
 	llsd_t * key;
 	llsd_t * value;
+	uint8_t * k = NULL;
 
 	/* create the map */
 	map = llsd_new_map( 0 );
@@ -343,12 +328,9 @@ static llsd_t * get_random_map( uint32_t size )
 		}
 		DEBUG( "%*s----------\n", indent, " " );
 
-		if ( value == NULL )
-			goto grm_value_fail;
-
-		if ( !llsd_map_insert( map, key, value ) )
-			goto grm_insert_fail;
-
+		CHECK_GOTO( value != NULL, grm_value_fail );
+		CHECK_GOTO( llsd_map_insert( map, key, value ), grm_insert_fail );
+		
 		if ( s == 0 )
 			total++;
 		else
@@ -360,11 +342,14 @@ static llsd_t * get_random_map( uint32_t size )
 	return map;
 
 grm_value_fail:
+	WARN( "Failed %s while generating value of type %s\n", check_err_str_, TYPE_TO_STRING( type_ ) );
 	llsd_delete( key );
 	llsd_delete( map );
 	return NULL;
 
 grm_insert_fail:
+	llsd_as_string( key, &k );
+	WARN( "Failed %s while inserting %s:%s\n", check_err_str_, k, TYPE_TO_STRING( type_ ) );
 	llsd_map_insert( map, key, value );
 	llsd_delete( key );
 	llsd_delete( value );
@@ -479,6 +464,7 @@ static void test_random_map( void )
 	for( i = 0; i < 32; i++ )
 	{
 		llsd = get_random_map(1024);
+		CU_ASSERT_PTR_NOT_NULL( llsd );
 		CU_ASSERT_EQUAL( llsd_get_type( llsd ), LLSD_MAP );
 		llsd_delete( llsd );
 		llsd = NULL;
