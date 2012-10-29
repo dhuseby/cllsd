@@ -617,10 +617,16 @@ static int decode_xml_escape( uint8_t * const buf, uint8_t * const chr, uint32_t
 			(*chr) = '\"';
 			(*len) = 6;
 			return TRUE;
+		case '#':
+			(*chr) = hex_to_byte( buf[2], buf[3] );
+			(*len) = 5;
+			return TRUE;
+			
 	}
 	return FALSE;
 }
 
+#if 0
 static int decoded_xml_string_len( uint8_t const * const encoded, uint32_t const enc_len, uint32_t * const len )
 {
 	int amp = FALSE;
@@ -692,6 +698,7 @@ static int string_from_buf( buffer_t * const buf, uint8_t ** const str, uint32_t
 
 	return TRUE;
 }
+#endif
 
 static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const ** attr )
 {
@@ -782,88 +789,88 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 			POP;
 			break;
 		case LLSD_UNDEF:
-			CHECK( (*(parser_state->ops->undef_fn))( parser_state->user_data ) );
-			CHECK( value( VALUE_STATES, LLSD_UNDEF, parser_state ) );
-			CHECK( end_value( END_VALUE_STATES, LLSD_UNDEF, parser_state ) );
+			CHECK_GOTO( (*(parser_state->ops->undef_fn))( parser_state->user_data ), xml_end_tag_fail );
+			CHECK_GOTO( value( VALUE_STATES, LLSD_UNDEF, parser_state ), xml_end_tag_fail );
+			CHECK_GOTO( end_value( END_VALUE_STATES, LLSD_UNDEF, parser_state ), xml_end_tag_fail );
 			break;
 		case LLSD_BOOLEAN:
 			bool_val = boolean_from_buf( parser_state->buf );
-			CHECK( (*(parser_state->ops->boolean_fn))( bool_val, parser_state->user_data ) );
-			CHECK( value( VALUE_STATES, LLSD_BOOLEAN, parser_state ) );
-			CHECK( end_value( END_VALUE_STATES, LLSD_BOOLEAN, parser_state ) );
+			CHECK_GOTO( (*(parser_state->ops->boolean_fn))( bool_val, parser_state->user_data ), xml_end_tag_fail );
+			CHECK_GOTO( value( VALUE_STATES, LLSD_BOOLEAN, parser_state ), xml_end_tag_fail );
+			CHECK_GOTO( end_value( END_VALUE_STATES, LLSD_BOOLEAN, parser_state ), xml_end_tag_fail );
 			break;
 		case LLSD_INTEGER:
-			CHECK( integer_from_buf( parser_state->buf, &int_val ) );
-			CHECK( (*(parser_state->ops->integer_fn))( int_val, parser_state->user_data ) );
-			CHECK( value( VALUE_STATES, LLSD_INTEGER, parser_state ) );
-			CHECK( end_value( END_VALUE_STATES, LLSD_INTEGER, parser_state ) );
+			CHECK_GOTO( integer_from_buf( parser_state->buf, &int_val ), xml_end_tag_fail );
+			CHECK_GOTO( (*(parser_state->ops->integer_fn))( int_val, parser_state->user_data ), xml_end_tag_fail );
+			CHECK_GOTO( value( VALUE_STATES, LLSD_INTEGER, parser_state ), xml_end_tag_fail );
+			CHECK_GOTO( end_value( END_VALUE_STATES, LLSD_INTEGER, parser_state ), xml_end_tag_fail );
 			break;
 		case LLSD_REAL:
-			CHECK( real_from_buf( parser_state->buf, &real_val ) );
-			CHECK( (*(parser_state->ops->real_fn))( real_val, parser_state->user_data ) );
-			CHECK( value( VALUE_STATES, LLSD_REAL, parser_state ) );
-			CHECK( end_value( END_VALUE_STATES, LLSD_REAL, parser_state ) );
+			CHECK_GOTO( real_from_buf( parser_state->buf, &real_val ), xml_end_tag_fail );
+			CHECK_GOTO( (*(parser_state->ops->real_fn))( real_val, parser_state->user_data ), xml_end_tag_fail );
+			CHECK_GOTO( value( VALUE_STATES, LLSD_REAL, parser_state ), xml_end_tag_fail );
+			CHECK_GOTO( end_value( END_VALUE_STATES, LLSD_REAL, parser_state ), xml_end_tag_fail );
 			break;
 		case LLSD_UUID:
-			CHECK( uuid_from_buf( parser_state->buf, uuid_val ) );
-			CHECK( (*(parser_state->ops->uuid_fn))( uuid_val, parser_state->user_data ) );
-			CHECK( value( VALUE_STATES, LLSD_UUID, parser_state ) );
-			CHECK( end_value( END_VALUE_STATES, LLSD_UUID, parser_state ) );
+			CHECK_GOTO( uuid_from_buf( parser_state->buf, uuid_val ), xml_end_tag_fail );
+			CHECK_GOTO( (*(parser_state->ops->uuid_fn))( uuid_val, parser_state->user_data ), xml_end_tag_fail );
+			CHECK_GOTO( value( VALUE_STATES, LLSD_UUID, parser_state ), xml_end_tag_fail );
+			CHECK_GOTO( end_value( END_VALUE_STATES, LLSD_UUID, parser_state ), xml_end_tag_fail );
 			break;
 		case LLSD_DATE:
-			CHECK( date_from_buf( parser_state->buf, &real_val ) );
-			CHECK( (*(parser_state->ops->date_fn))( real_val, parser_state->user_data ) );
-			CHECK( value( VALUE_STATES, LLSD_DATE, parser_state ) );
-			CHECK( end_value( END_VALUE_STATES, LLSD_DATE, parser_state ) );
+			CHECK_GOTO( date_from_buf( parser_state->buf, &real_val ), xml_end_tag_fail );
+			CHECK_GOTO( (*(parser_state->ops->date_fn))( real_val, parser_state->user_data ), xml_end_tag_fail );
+			CHECK_GOTO( value( VALUE_STATES, LLSD_DATE, parser_state ), xml_end_tag_fail );
+			CHECK_GOTO( end_value( END_VALUE_STATES, LLSD_DATE, parser_state ), xml_end_tag_fail );
 			break;
 		case LLSD_KEY:
 		case LLSD_STRING:
 			/* zero terminate the string */
 			buffer_append( parser_state->buf, "\0", 1 );
-			CHECK( string_from_buf( parser_state->buf, &buffer, &len ) );
-			CHECK( (*(parser_state->ops->string_fn))( buffer, TRUE, parser_state->user_data ) );
-			CHECK( value( STRING_STATES, LLSD_STRING, parser_state ) );
-			CHECK( end_value( END_STRING_STATES, LLSD_STRING, parser_state ) );
+			CHECK_GOTO( (*(parser_state->ops->string_fn))( (uint8_t*)parser_state->buf->iov_base, FALSE, parser_state->user_data ), xml_end_tag_fail );
+			CHECK_GOTO( value( STRING_STATES, LLSD_STRING, parser_state ), xml_end_tag_fail );
+			CHECK_GOTO( end_value( END_STRING_STATES, LLSD_STRING, parser_state ), xml_end_tag_fail );
 			buffer = NULL;
 			len = 0;
 			break;
 		case LLSD_URI:
 			/* zero terminate the string */
 			buffer_append( parser_state->buf, "\0", 1 );
-			CHECK( string_from_buf( parser_state->buf, &encoded, &enc_len ) );
-			CHECK( llsd_unescape_uri( encoded, enc_len, &buffer, &len ) );
-			CHECK( (*(parser_state->ops->uri_fn))( buffer, TRUE, parser_state->user_data ) );
-			CHECK( value( VALUE_STATES, LLSD_URI, parser_state ) );
-			CHECK( end_value( END_VALUE_STATES, LLSD_URI, parser_state ) );
-			FREE( encoded );
+			CHECK_GOTO( (*(parser_state->ops->uri_fn))( (uint8_t*)parser_state->buf->iov_base, FALSE, parser_state->user_data ), xml_end_tag_fail );
+			CHECK_GOTO( value( VALUE_STATES, LLSD_URI, parser_state ), xml_end_tag_fail );
+			CHECK_GOTO( end_value( END_VALUE_STATES, LLSD_URI, parser_state ), xml_end_tag_fail );
 			buffer = NULL;
 			enc_len = 0;
 			len = 0;
 			break;
 		case LLSD_BINARY:
-			CHECK( binary_from_buf( parser_state->buf, parser_state->enc, &buffer, &len ) );
-			CHECK( (*(parser_state->ops->binary_fn))( buffer, len, TRUE, parser_state->user_data ) );
-			CHECK( value( VALUE_STATES, LLSD_BINARY, parser_state ) );
-			CHECK( end_value( END_VALUE_STATES, LLSD_BINARY, parser_state ) );
+			CHECK_GOTO( binary_from_buf( parser_state->buf, parser_state->enc, &buffer, &len ), xml_end_tag_fail );
+			CHECK_GOTO( (*(parser_state->ops->binary_fn))( buffer, len, TRUE, parser_state->user_data ), xml_end_tag_fail );
+			CHECK_GOTO( value( VALUE_STATES, LLSD_BINARY, parser_state ), xml_end_tag_fail );
+			CHECK_GOTO( end_value( END_VALUE_STATES, LLSD_BINARY, parser_state ), xml_end_tag_fail );
 			buffer = NULL;
 			len = 0;
 			break;
 		case LLSD_ARRAY:
-			CHECK( (*(parser_state->ops->array_end_fn))( 0, parser_state->user_data ) );
+			CHECK_GOTO( (*(parser_state->ops->array_end_fn))( 0, parser_state->user_data ), xml_end_tag_fail );
 			POP;
-			CHECK( value( VALUE_STATES, LLSD_ARRAY, parser_state ) );
-			CHECK( end_value( END_VALUE_STATES, LLSD_ARRAY, parser_state ) );
+			CHECK_GOTO( value( VALUE_STATES, LLSD_ARRAY, parser_state ), xml_end_tag_fail );
+			CHECK_GOTO( end_value( END_VALUE_STATES, LLSD_ARRAY, parser_state ), xml_end_tag_fail );
 			break;
 		case LLSD_MAP:
-			CHECK( (*(parser_state->ops->map_end_fn))( 0, parser_state->user_data ) );
+			CHECK_GOTO( (*(parser_state->ops->map_end_fn))( 0, parser_state->user_data ), xml_end_tag_fail );
 			POP;
-			CHECK( value( VALUE_STATES, LLSD_MAP, parser_state ) );
-			CHECK( end_value( END_VALUE_STATES, LLSD_MAP, parser_state ) );
+			CHECK_GOTO( value( VALUE_STATES, LLSD_MAP, parser_state ), xml_end_tag_fail );
+			CHECK_GOTO( end_value( END_VALUE_STATES, LLSD_MAP, parser_state ), xml_end_tag_fail );
 			break;
 	}
 
 	/* reset the buffer */
 	buffer_deinitialize( parser_state->buf );
+	return;
+
+xml_end_tag_fail:
+	WARN( "Failed %s step while processing %s data.\n", check_err_str_, TYPE_TO_STRING( t ) );
 }
 
 static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len )

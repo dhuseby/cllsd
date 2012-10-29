@@ -43,15 +43,17 @@ static llsd_t* get_random_str( int zero )
 
 	for ( i = 0; i < len; i++ )
 	{
-		/* get a random, non-double quote, printable ascii character */
-		/*
-		do
+		if ( format == LLSD_ENC_XML )
 		{
-			c = (32 + (rand() % 94));
-		} while( (c == '\"') || (c == '\\') || (c == '\'') || (c == '<') || (c == '>') || (c == '&') );
-		str[i] = c;
-		*/
-		str[i] = ('A' + (rand() % 26));
+			do
+			{
+				c = (rand() % 127);
+			} while ( (c < 0x20) && (c != '\t') && (c != '\n') && (c != '\r') );
+		}
+		else
+		{
+			str[i] = (rand() % 127);
+		}
 	}
 	str[len] = '\0';
 	DEBUG( "%*sSTRING %s\n", indent, " ", str );
@@ -69,15 +71,6 @@ static llsd_t* get_random_key( int min )
 
 	for ( i = 0; i < len; i++ )
 	{
-		/* get a random, non-double quote, printable ascii character */
-		/*
-		do
-		{
-			c = (32 + (rand() % 94));
-		} while( (c == '\"') || (c == '\\') || (c == '\'') || (c == '<') || (c == '>') || (c == '&') );
-
-		str[i] = c;
-		*/
 		str[i] = ('A' + (rand() % 26));
 	}
 	str[len] = '\0';

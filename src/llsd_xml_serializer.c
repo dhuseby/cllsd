@@ -186,8 +186,16 @@ static void llsd_xml_write_string( uint8_t const * str, uint32_t len, xs_state_t
 			case '\"':
 				WRITE_STR( "&quot;", 6 );
 				break;
-			default:
+			case '\t':
+			case '\n':
+			case '\r':
 				WRITE_STR( &(str[i]), 1 );
+				break;
+			default:
+				if ( str[i] >= 0x20 )
+				{
+					WRITE_STR( &(str[i]), 1 );
+				}
 				break;
 		}
 	}
@@ -272,8 +280,7 @@ static int llsd_xml_uri( uint8_t const * uri, int const own_it, void * const use
 	else
 	{
 		URI_BEGIN;
-		CHECK_RET( llsd_escape_uri( uri, len, &escaped, &esc_len ), FALSE );
-		llsd_xml_write_string( escaped, esc_len, state );
+		llsd_xml_write_string( uri, len, state );
 		FREE( escaped );
 		URI_END;
 	}

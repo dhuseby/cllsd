@@ -1044,6 +1044,8 @@ static int llsd_unescaped_uri_len( uint8_t const * const escaped, uint32_t const
 	CHECK_RET( enc_len > 0, FALSE );
 	CHECK_PTR_RET( len, FALSE );
 
+	(*len) = 0;
+
 	p = escaped;
 	while ( p < (escaped + enc_len) )
 	{

@@ -745,13 +745,6 @@ int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const u
 
 				/* read the uri */
 				CHECK_RET( llsd_notation_parse_quoted( fin, &encoded, &enc_len, '\"' ), FALSE );
-#if 0
-				if ( !llsd_unescape_uri( encoded, enc_len, &buffer, &len ) )
-				{
-					FREE( encoded );
-					return FALSE;
-				}
-#endif
 				CHECK_RET( begin_value( BEGIN_VALUE_STATES, LLSD_URI, parser_state ), FALSE );
 				/* tell it to take ownership of the memory */
 				CHECK_RET( (*(ops->uri_fn))( encoded, TRUE, user_data ), FALSE );

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-10-25</td>
+            <td class="headerValue">2012-10-29</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">22</td>
@@ -114,39 +114,39 @@
 <span class="lineNum">      43 </span>                :            : 
 <a name="44"><span class="lineNum">      44 </span>                :            : } parser_state_t;</a>
 <span class="lineNum">      45 </span>                :            : 
-<span class="lineNum">      46 </span>                :<span class="lineCov">     604976 : static int add_to_container( llsd_t * const container, llsd_t * const key, llsd_t * const value )</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">     604969 : static int add_to_container( llsd_t * const container, llsd_t * const key, llsd_t * const value )</span>
 <span class="lineNum">      47 </span>                :            : {
-<span class="lineNum">      48 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 604976 times"> + </span>]:<span class="lineCov">     604976 :     CHECK_PTR_RET( container, FALSE );</span>
-<span class="lineNum">      49 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 604976 times"> + </span>]:<span class="lineCov">     604976 :     CHECK_PTR_RET( value, FALSE );</span>
+<span class="lineNum">      48 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 604969 times"> + </span>]:<span class="lineCov">     604969 :     CHECK_PTR_RET( container, FALSE );</span>
+<span class="lineNum">      49 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 604969 times"> + </span>]:<span class="lineCov">     604969 :     CHECK_PTR_RET( value, FALSE );</span>
 <span class="lineNum">      50 </span>                :            : 
-<span class="lineNum">      51 </span>        [<span class="branchCov" title="Branch 1 was taken 297904 times"> + </span><span class="branchCov" title="Branch 2 was taken 307072 times"> + </span>]:<span class="lineCov">     604976 :     if ( llsd_get_type( container ) == LLSD_MAP )</span>
+<span class="lineNum">      51 </span>        [<span class="branchCov" title="Branch 1 was taken 298822 times"> + </span><span class="branchCov" title="Branch 2 was taken 306147 times"> + </span>]:<span class="lineCov">     604969 :     if ( llsd_get_type( container ) == LLSD_MAP )</span>
 <span class="lineNum">      52 </span>                :            :     {
-<span class="lineNum">      53 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :         CHECK_PTR_RET( key, FALSE );</span>
-<span class="lineNum">      54 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :         CHECK_RET( llsd_map_insert( container, key, value ), FALSE );</span>
+<span class="lineNum">      53 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :         CHECK_PTR_RET( key, FALSE );</span>
+<span class="lineNum">      54 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :         CHECK_RET( llsd_map_insert( container, key, value ), FALSE );</span>
 <span class="lineNum">      55 </span>                :            :     }
 <span class="lineNum">      56 </span>                :            :     else
 <span class="lineNum">      57 </span>                :            :     {
-<span class="lineNum">      58 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 307072 times"> + </span>]:<span class="lineCov">     307072 :         CHECK_RET( llsd_get_type( container ) == LLSD_ARRAY, FALSE );</span>
-<span class="lineNum">      59 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 307072 times"> + </span>]:<span class="lineCov">     307072 :         CHECK_RET( llsd_array_append( container, value ), FALSE );</span>
+<span class="lineNum">      58 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 306147 times"> + </span>]:<span class="lineCov">     306147 :         CHECK_RET( llsd_get_type( container ) == LLSD_ARRAY, FALSE );</span>
+<span class="lineNum">      59 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 306147 times"> + </span>]:<span class="lineCov">     306147 :         CHECK_RET( llsd_array_append( container, value ), FALSE );</span>
 <span class="lineNum">      60 </span>                :            :     }
-<span class="lineNum">      61 </span>                :<span class="lineCov">     604976 :     return TRUE;</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">     604969 :     return TRUE;</span>
 <a name="62"><span class="lineNum">      62 </span>                :            : }</a>
 <span class="lineNum">      63 </span>                :            : 
-<span class="lineNum">      64 </span>                :<span class="lineCov">     902992 : static int update_state( uint32_t valid_states, void * const user_data, llsd_t * const v )</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">     903903 : static int update_state( uint32_t valid_states, void * const user_data, llsd_t * const v )</span>
 <span class="lineNum">      65 </span>                :            : {
-<span class="lineNum">      66 </span>                :<span class="lineCov">     902992 :     llsd_t * container = NULL;</span>
-<span class="lineNum">      67 </span>                :<span class="lineCov">     902992 :     state_t state = TOP_LEVEL;</span>
-<span class="lineNum">      68 </span>                :<span class="lineCov">     902992 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
-<span class="lineNum">      69 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 902992 times"> + </span>]:<span class="lineCov">     902992 :     CHECK_PTR_RET( parser_state, FALSE );</span>
-<span class="lineNum">      70 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 902992 times"> + </span>]:<span class="lineCov">     902992 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
+<span class="lineNum">      66 </span>                :<span class="lineCov">     903903 :     llsd_t * container = NULL;</span>
+<span class="lineNum">      67 </span>                :<span class="lineCov">     903903 :     state_t state = TOP_LEVEL;</span>
+<span class="lineNum">      68 </span>                :<span class="lineCov">     903903 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
+<span class="lineNum">      69 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 903903 times"> + </span>]:<span class="lineCov">     903903 :     CHECK_PTR_RET( parser_state, FALSE );</span>
+<span class="lineNum">      70 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 903903 times"> + </span>]:<span class="lineCov">     903903 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
 <span class="lineNum">      71 </span>                :            : 
 <span class="lineNum">      72 </span>                :            :     /* get the current step we're in */
-<span class="lineNum">      73 </span>                :<span class="lineCov">     902992 :     state = TOP;</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">     903903 :     state = TOP;</span>
 <span class="lineNum">      74 </span>                :            : 
 <span class="lineNum">      75 </span>                :            :     /* make sure we're in a valid state */
-<span class="lineNum">      76 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 902992 times"> + </span>]:<span class="lineCov">     902992 :     CHECK_RET( (state &amp; valid_states), FALSE );</span>
+<span class="lineNum">      76 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 903903 times"> + </span>]:<span class="lineCov">     903903 :     CHECK_RET( (state &amp; valid_states), FALSE );</span>
 <span class="lineNum">      77 </span>                :            : 
-<span class="lineNum">      78 </span>     [<span class="branchCov" title="Branch 1 was taken 549836 times"> + </span><span class="branchCov" title="Branch 2 was taken 353156 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">     902992 :     switch ( llsd_get_type( v ) )</span>
+<span class="lineNum">      78 </span>     [<span class="branchCov" title="Branch 1 was taken 549790 times"> + </span><span class="branchCov" title="Branch 2 was taken 354113 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">     903903 :     switch ( llsd_get_type( v ) )</span>
 <span class="lineNum">      79 </span>                :            :     {
 <span class="lineNum">      80 </span>                :            :         case LLSD_UNDEF:
 <span class="lineNum">      81 </span>                :            :         case LLSD_BOOLEAN:
@@ -158,353 +158,353 @@
 <span class="lineNum">      87 </span>                :            :         case LLSD_BINARY:
 <span class="lineNum">      88 </span>                :            :         case LLSD_ARRAY:
 <span class="lineNum">      89 </span>                :            :         case LLSD_MAP:
-<span class="lineNum">      90 </span>  [<span class="branchCov" title="Branch 0 was taken 279052 times"> + </span><span class="branchCov" title="Branch 1 was taken 270676 times"> + </span><span class="branchCov" title="Branch 2 was taken 108 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">     549836 :             switch( state )</span>
+<span class="lineNum">      90 </span>  [<span class="branchCov" title="Branch 0 was taken 278249 times"> + </span><span class="branchCov" title="Branch 1 was taken 271433 times"> + </span><span class="branchCov" title="Branch 2 was taken 108 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">     549790 :             switch( state )</span>
 <span class="lineNum">      91 </span>                :            :             {
 <span class="lineNum">      92 </span>                :            :                 case ARRAY_VALUE_BEGIN:
-<span class="lineNum">      93 </span>                :<span class="lineCov">     279052 :                     POP;</span>
-<span class="lineNum">      94 </span>                :<span class="lineCov">     279052 :                     PUSH( ARRAY_VALUE );</span>
-<span class="lineNum">      95 </span>        [<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 279052 times"> + </span>]:<span class="lineCov">     279052 :                     CHECK_RET( add_to_container( TOPC, NULL, v ), FALSE );</span>
-<span class="lineNum">      96 </span>                :<span class="lineCov">     279052 :                     break;</span>
+<span class="lineNum">      93 </span>                :<span class="lineCov">     278249 :                     POP;</span>
+<span class="lineNum">      94 </span>                :<span class="lineCov">     278249 :                     PUSH( ARRAY_VALUE );</span>
+<span class="lineNum">      95 </span>        [<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 278249 times"> + </span>]:<span class="lineCov">     278249 :                     CHECK_RET( add_to_container( TOPC, NULL, v ), FALSE );</span>
+<span class="lineNum">      96 </span>                :<span class="lineCov">     278249 :                     break;</span>
 <span class="lineNum">      97 </span>                :            :                 case MAP_VALUE_BEGIN:
-<span class="lineNum">      98 </span>                :<span class="lineCov">     270676 :                     POP;</span>
-<span class="lineNum">      99 </span>                :<span class="lineCov">     270676 :                     PUSH( MAP_VALUE );</span>
-<span class="lineNum">     100 </span>        [<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 270676 times"> + </span>]:<span class="lineCov">     270676 :                     CHECK_RET( add_to_container( TOPC, parser_state-&gt;key, v ), FALSE );</span>
-<span class="lineNum">     101 </span>                :<span class="lineCov">     270676 :                     parser_state-&gt;key = NULL;</span>
-<span class="lineNum">     102 </span>                :<span class="lineCov">     270676 :                     break;</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">     271433 :                     POP;</span>
+<span class="lineNum">      99 </span>                :<span class="lineCov">     271433 :                     PUSH( MAP_VALUE );</span>
+<span class="lineNum">     100 </span>        [<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 271433 times"> + </span>]:<span class="lineCov">     271433 :                     CHECK_RET( add_to_container( TOPC, parser_state-&gt;key, v ), FALSE );</span>
+<span class="lineNum">     101 </span>                :<span class="lineCov">     271433 :                     parser_state-&gt;key = NULL;</span>
+<span class="lineNum">     102 </span>                :<span class="lineCov">     271433 :                     break;</span>
 <span class="lineNum">     103 </span>                :            :                 case TOP_LEVEL:
 <span class="lineNum">     104 </span>                :<span class="lineCov">        108 :                     parser_state-&gt;llsd = v;</span>
 <span class="lineNum">     105 </span>                :<span class="lineCov">        108 :                     break;</span>
 <span class="lineNum">     106 </span>                :            :             }
-<span class="lineNum">     107 </span>                :<span class="lineCov">     549836 :         break;</span>
+<span class="lineNum">     107 </span>                :<span class="lineCov">     549790 :         break;</span>
 <span class="lineNum">     108 </span>                :            :         
 <span class="lineNum">     109 </span>                :            :         case LLSD_STRING:
-<span class="lineNum">     110 </span>  [<span class="branchCov" title="Branch 0 was taken 28020 times"> + </span><span class="branchCov" title="Branch 1 was taken 27228 times"> + </span><span class="branchCov" title="Branch 2 was taken 297904 times"> + </span><span class="branchCov" title="Branch 3 was taken 4 times"> + </span> :<span class="lineCov">     353156 :             switch( state )</span>
+<span class="lineNum">     110 </span>  [<span class="branchCov" title="Branch 0 was taken 27898 times"> + </span><span class="branchCov" title="Branch 1 was taken 27389 times"> + </span><span class="branchCov" title="Branch 2 was taken 298822 times"> + </span><span class="branchCov" title="Branch 3 was taken 4 times"> + </span> :<span class="lineCov">     354113 :             switch( state )</span>
 <span class="lineNum">         </span>            <span class="branchNoCov" title="Branch 4 was not taken"> - </span>]
 <span class="lineNum">     111 </span>                :            :             {
 <span class="lineNum">     112 </span>                :            :                 case ARRAY_VALUE_BEGIN:
-<span class="lineNum">     113 </span>                :<span class="lineCov">      28020 :                     POP;</span>
-<span class="lineNum">     114 </span>                :<span class="lineCov">      28020 :                     PUSH( ARRAY_VALUE );</span>
-<span class="lineNum">     115 </span>        [<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 28020 times"> + </span>]:<span class="lineCov">      28020 :                     CHECK_RET( add_to_container( TOPC, NULL, v ), FALSE );</span>
-<span class="lineNum">     116 </span>                :<span class="lineCov">      28020 :                     break;</span>
+<span class="lineNum">     113 </span>                :<span class="lineCov">      27898 :                     POP;</span>
+<span class="lineNum">     114 </span>                :<span class="lineCov">      27898 :                     PUSH( ARRAY_VALUE );</span>
+<span class="lineNum">     115 </span>        [<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 27898 times"> + </span>]:<span class="lineCov">      27898 :                     CHECK_RET( add_to_container( TOPC, NULL, v ), FALSE );</span>
+<span class="lineNum">     116 </span>                :<span class="lineCov">      27898 :                     break;</span>
 <span class="lineNum">     117 </span>                :            :                 case MAP_VALUE_BEGIN:
-<span class="lineNum">     118 </span>                :<span class="lineCov">      27228 :                     POP;</span>
-<span class="lineNum">     119 </span>                :<span class="lineCov">      27228 :                     PUSH( MAP_VALUE );</span>
-<span class="lineNum">     120 </span>        [<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 27228 times"> + </span>]:<span class="lineCov">      27228 :                     CHECK_RET( add_to_container( TOPC, parser_state-&gt;key, v ), FALSE );</span>
-<span class="lineNum">     121 </span>                :<span class="lineCov">      27228 :                     parser_state-&gt;key = NULL;</span>
-<span class="lineNum">     122 </span>                :<span class="lineCov">      27228 :                     break;</span>
+<span class="lineNum">     118 </span>                :<span class="lineCov">      27389 :                     POP;</span>
+<span class="lineNum">     119 </span>                :<span class="lineCov">      27389 :                     PUSH( MAP_VALUE );</span>
+<span class="lineNum">     120 </span>        [<span class="branchNoCov" title="Branch 3 was not taken"> - </span><span class="branchCov" title="Branch 4 was taken 27389 times"> + </span>]:<span class="lineCov">      27389 :                     CHECK_RET( add_to_container( TOPC, parser_state-&gt;key, v ), FALSE );</span>
+<span class="lineNum">     121 </span>                :<span class="lineCov">      27389 :                     parser_state-&gt;key = NULL;</span>
+<span class="lineNum">     122 </span>                :<span class="lineCov">      27389 :                     break;</span>
 <span class="lineNum">     123 </span>                :            :                 case MAP_KEY_BEGIN:
-<span class="lineNum">     124 </span>                :<span class="lineCov">     297904 :                     POP;</span>
-<span class="lineNum">     125 </span>                :<span class="lineCov">     297904 :                     PUSH( MAP_KEY );</span>
-<span class="lineNum">     126 </span>                :<span class="lineCov">     297904 :                     parser_state-&gt;key = v;</span>
-<span class="lineNum">     127 </span>                :<span class="lineCov">     297904 :                     break;</span>
+<span class="lineNum">     124 </span>                :<span class="lineCov">     298822 :                     POP;</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">     298822 :                     PUSH( MAP_KEY );</span>
+<span class="lineNum">     126 </span>                :<span class="lineCov">     298822 :                     parser_state-&gt;key = v;</span>
+<span class="lineNum">     127 </span>                :<span class="lineCov">     298822 :                     break;</span>
 <span class="lineNum">     128 </span>                :            :                 case TOP_LEVEL:
 <span class="lineNum">     129 </span>                :<span class="lineCov">          4 :                     parser_state-&gt;llsd = v;</span>
 <span class="lineNum">     130 </span>                :<span class="lineCov">          4 :                     break;</span>
 <span class="lineNum">     131 </span>                :            :             }
-<span class="lineNum">     132 </span>                :<span class="lineCov">     353156 :         break;</span>
+<span class="lineNum">     132 </span>                :<span class="lineCov">     354113 :         break;</span>
 <span class="lineNum">     133 </span>                :            :     }
-<span class="lineNum">     134 </span>                :<span class="lineCov">     902992 :     return TRUE;</span>
+<span class="lineNum">     134 </span>                :<span class="lineCov">     903903 :     return TRUE;</span>
 <a name="135"><span class="lineNum">     135 </span>                :            : }</a>
 <span class="lineNum">     136 </span>                :            : 
-<span class="lineNum">     137 </span>                :<span class="lineCov">      55144 : static int llsd_undef_fn( void * const user_data )</span>
+<span class="lineNum">     137 </span>                :<span class="lineCov">      55240 : static int llsd_undef_fn( void * const user_data )</span>
 <span class="lineNum">     138 </span>                :            : {
-<span class="lineNum">     139 </span>                :<span class="lineCov">      55144 :     llsd_t * v = NULL;</span>
+<span class="lineNum">     139 </span>                :<span class="lineCov">      55240 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     140 </span>                :            :     
 <span class="lineNum">     141 </span>                :            :     /* create the undef */
-<span class="lineNum">     142 </span>                :<span class="lineCov">      55144 :     v = llsd_new_undef();</span>
-<span class="lineNum">     143 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55144 times"> + </span>]:<span class="lineCov">      55144 :     CHECK_PTR_RET( v, FALSE );</span>
+<span class="lineNum">     142 </span>                :<span class="lineCov">      55240 :     v = llsd_new_undef();</span>
+<span class="lineNum">     143 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55240 times"> + </span>]:<span class="lineCov">      55240 :     CHECK_PTR_RET( v, FALSE );</span>
 <span class="lineNum">     144 </span>                :            :     
-<span class="lineNum">     145 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 55144 times"> + </span>]:<span class="lineCov">      55144 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
+<span class="lineNum">     145 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 55240 times"> + </span>]:<span class="lineCov">      55240 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
 <span class="lineNum">     146 </span>                :            :     {
 <span class="lineNum">     147 </span>                :<span class="lineNoCov">          0 :         llsd_delete( v );</span>
 <span class="lineNum">     148 </span>                :<span class="lineNoCov">          0 :         return FALSE;</span>
 <span class="lineNum">     149 </span>                :            :     }
-<span class="lineNum">     150 </span>                :<span class="lineCov">      55144 :     return TRUE;</span>
+<span class="lineNum">     150 </span>                :<span class="lineCov">      55240 :     return TRUE;</span>
 <a name="151"><span class="lineNum">     151 </span>                :            : }</a>
 <span class="lineNum">     152 </span>                :            : 
-<span class="lineNum">     153 </span>                :<span class="lineCov">      54616 : static int llsd_boolean_fn( int const value, void * const user_data )</span>
+<span class="lineNum">     153 </span>                :<span class="lineCov">      54716 : static int llsd_boolean_fn( int const value, void * const user_data )</span>
 <span class="lineNum">     154 </span>                :            : {
-<span class="lineNum">     155 </span>                :<span class="lineCov">      54616 :     llsd_t * v = NULL;</span>
+<span class="lineNum">     155 </span>                :<span class="lineCov">      54716 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     156 </span>                :            : 
 <span class="lineNum">     157 </span>                :            :     /* create the boolean */
-<span class="lineNum">     158 </span>                :<span class="lineCov">      54616 :     v = llsd_new_boolean( value );</span>
-<span class="lineNum">     159 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54616 times"> + </span>]:<span class="lineCov">      54616 :     CHECK_PTR_RET( v, FALSE );</span>
+<span class="lineNum">     158 </span>                :<span class="lineCov">      54716 :     v = llsd_new_boolean( value );</span>
+<span class="lineNum">     159 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54716 times"> + </span>]:<span class="lineCov">      54716 :     CHECK_PTR_RET( v, FALSE );</span>
 <span class="lineNum">     160 </span>                :            :     
-<span class="lineNum">     161 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54616 times"> + </span>]:<span class="lineCov">      54616 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
+<span class="lineNum">     161 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54716 times"> + </span>]:<span class="lineCov">      54716 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
 <span class="lineNum">     162 </span>                :            :     {
 <span class="lineNum">     163 </span>                :<span class="lineNoCov">          0 :         llsd_delete( v );</span>
 <span class="lineNum">     164 </span>                :<span class="lineNoCov">          0 :         return FALSE;</span>
 <span class="lineNum">     165 </span>                :            :     }
-<span class="lineNum">     166 </span>                :<span class="lineCov">      54616 :     return TRUE;</span>
+<span class="lineNum">     166 </span>                :<span class="lineCov">      54716 :     return TRUE;</span>
 <a name="167"><span class="lineNum">     167 </span>                :            : }</a>
 <span class="lineNum">     168 </span>                :            : 
-<span class="lineNum">     169 </span>                :<span class="lineCov">      54932 : static int llsd_integer_fn( int32_t const value, void * const user_data )</span>
+<span class="lineNum">     169 </span>                :<span class="lineCov">      54818 : static int llsd_integer_fn( int32_t const value, void * const user_data )</span>
 <span class="lineNum">     170 </span>                :            : {
-<span class="lineNum">     171 </span>                :<span class="lineCov">      54932 :     llsd_t * v = NULL;</span>
+<span class="lineNum">     171 </span>                :<span class="lineCov">      54818 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     172 </span>                :            : 
 <span class="lineNum">     173 </span>                :            :     /* create the integer */
-<span class="lineNum">     174 </span>                :<span class="lineCov">      54932 :     v = llsd_new_integer( value );</span>
-<span class="lineNum">     175 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54932 times"> + </span>]:<span class="lineCov">      54932 :     CHECK_PTR_RET( v, FALSE );</span>
+<span class="lineNum">     174 </span>                :<span class="lineCov">      54818 :     v = llsd_new_integer( value );</span>
+<span class="lineNum">     175 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54818 times"> + </span>]:<span class="lineCov">      54818 :     CHECK_PTR_RET( v, FALSE );</span>
 <span class="lineNum">     176 </span>                :            : 
-<span class="lineNum">     177 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54932 times"> + </span>]:<span class="lineCov">      54932 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
+<span class="lineNum">     177 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54818 times"> + </span>]:<span class="lineCov">      54818 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
 <span class="lineNum">     178 </span>                :            :     {
 <span class="lineNum">     179 </span>                :<span class="lineNoCov">          0 :         llsd_delete( v );</span>
 <span class="lineNum">     180 </span>                :<span class="lineNoCov">          0 :         return FALSE;</span>
 <span class="lineNum">     181 </span>                :            :     }
-<span class="lineNum">     182 </span>                :<span class="lineCov">      54932 :     return TRUE;</span>
+<span class="lineNum">     182 </span>                :<span class="lineCov">      54818 :     return TRUE;</span>
 <a name="183"><span class="lineNum">     183 </span>                :            : }</a>
 <span class="lineNum">     184 </span>                :            : 
-<span class="lineNum">     185 </span>                :<span class="lineCov">      54696 : static int llsd_real_fn( double const value, void * const user_data )</span>
+<span class="lineNum">     185 </span>                :<span class="lineCov">      54891 : static int llsd_real_fn( double const value, void * const user_data )</span>
 <span class="lineNum">     186 </span>                :            : {
-<span class="lineNum">     187 </span>                :<span class="lineCov">      54696 :     llsd_t * v = NULL;</span>
+<span class="lineNum">     187 </span>                :<span class="lineCov">      54891 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     188 </span>                :            : 
 <span class="lineNum">     189 </span>                :            :     /* create the real */
-<span class="lineNum">     190 </span>                :<span class="lineCov">      54696 :     v = llsd_new_real( value );</span>
-<span class="lineNum">     191 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54696 times"> + </span>]:<span class="lineCov">      54696 :     CHECK_PTR_RET( v, FALSE );</span>
+<span class="lineNum">     190 </span>                :<span class="lineCov">      54891 :     v = llsd_new_real( value );</span>
+<span class="lineNum">     191 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54891 times"> + </span>]:<span class="lineCov">      54891 :     CHECK_PTR_RET( v, FALSE );</span>
 <span class="lineNum">     192 </span>                :            : 
-<span class="lineNum">     193 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54696 times"> + </span>]:<span class="lineCov">      54696 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
+<span class="lineNum">     193 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54891 times"> + </span>]:<span class="lineCov">      54891 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
 <span class="lineNum">     194 </span>                :            :     {
 <span class="lineNum">     195 </span>                :<span class="lineNoCov">          0 :         llsd_delete( v );</span>
 <span class="lineNum">     196 </span>                :<span class="lineNoCov">          0 :         return FALSE;</span>
 <span class="lineNum">     197 </span>                :            :     }
-<span class="lineNum">     198 </span>                :<span class="lineCov">      54696 :     return TRUE;</span>
+<span class="lineNum">     198 </span>                :<span class="lineCov">      54891 :     return TRUE;</span>
 <a name="199"><span class="lineNum">     199 </span>                :            : }</a>
 <span class="lineNum">     200 </span>                :            : 
-<span class="lineNum">     201 </span>                :<span class="lineCov">      54884 : static int llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )</span>
+<span class="lineNum">     201 </span>                :<span class="lineCov">      54769 : static int llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )</span>
 <span class="lineNum">     202 </span>                :            : {
-<span class="lineNum">     203 </span>                :<span class="lineCov">      54884 :     llsd_t * v = NULL;</span>
+<span class="lineNum">     203 </span>                :<span class="lineCov">      54769 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     204 </span>                :            : 
 <span class="lineNum">     205 </span>                :            :     /* create the uuid */
-<span class="lineNum">     206 </span>                :<span class="lineCov">      54884 :     v = llsd_new_uuid( value );</span>
-<span class="lineNum">     207 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54884 times"> + </span>]:<span class="lineCov">      54884 :     CHECK_PTR_RET( v, FALSE );</span>
+<span class="lineNum">     206 </span>                :<span class="lineCov">      54769 :     v = llsd_new_uuid( value );</span>
+<span class="lineNum">     207 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54769 times"> + </span>]:<span class="lineCov">      54769 :     CHECK_PTR_RET( v, FALSE );</span>
 <span class="lineNum">     208 </span>                :            : 
-<span class="lineNum">     209 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54884 times"> + </span>]:<span class="lineCov">      54884 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
+<span class="lineNum">     209 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54769 times"> + </span>]:<span class="lineCov">      54769 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
 <span class="lineNum">     210 </span>                :            :     {
 <span class="lineNum">     211 </span>                :<span class="lineNoCov">          0 :         llsd_delete( v );</span>
 <span class="lineNum">     212 </span>                :<span class="lineNoCov">          0 :         return FALSE;</span>
 <span class="lineNum">     213 </span>                :            :     }
-<span class="lineNum">     214 </span>                :<span class="lineCov">      54884 :     return TRUE;</span>
+<span class="lineNum">     214 </span>                :<span class="lineCov">      54769 :     return TRUE;</span>
 <a name="215"><span class="lineNum">     215 </span>                :            : }</a>
 <span class="lineNum">     216 </span>                :            : 
-<span class="lineNum">     217 </span>                :<span class="lineCov">     353156 : static int llsd_string_fn( uint8_t const * str, int own_it, void * const user_data )</span>
+<span class="lineNum">     217 </span>                :<span class="lineCov">     354113 : static int llsd_string_fn( uint8_t const * str, int own_it, void * const user_data )</span>
 <span class="lineNum">     218 </span>                :            : {
-<span class="lineNum">     219 </span>                :<span class="lineCov">     353156 :     llsd_t * v = NULL;</span>
+<span class="lineNum">     219 </span>                :<span class="lineCov">     354113 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     220 </span>                :            : 
 <span class="lineNum">     221 </span>                :            :     /* create the string */
-<span class="lineNum">     222 </span>                :<span class="lineCov">     353156 :     v = llsd_new_string( str, own_it );</span>
-<span class="lineNum">     223 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 353156 times"> + </span>]:<span class="lineCov">     353156 :     CHECK_PTR_RET( v, FALSE );</span>
+<span class="lineNum">     222 </span>                :<span class="lineCov">     354113 :     v = llsd_new_string( str, own_it );</span>
+<span class="lineNum">     223 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 354113 times"> + </span>]:<span class="lineCov">     354113 :     CHECK_PTR_RET( v, FALSE );</span>
 <span class="lineNum">     224 </span>                :            : 
-<span class="lineNum">     225 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 353156 times"> + </span>]:<span class="lineCov">     353156 :     if ( !update_state( STRING_STATES, user_data, v ) )</span>
+<span class="lineNum">     225 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 354113 times"> + </span>]:<span class="lineCov">     354113 :     if ( !update_state( STRING_STATES, user_data, v ) )</span>
 <span class="lineNum">     226 </span>                :            :     {
 <span class="lineNum">     227 </span>                :<span class="lineNoCov">          0 :         llsd_delete( v );</span>
 <span class="lineNum">     228 </span>                :<span class="lineNoCov">          0 :         return FALSE;</span>
 <span class="lineNum">     229 </span>                :            :     }
-<span class="lineNum">     230 </span>                :<span class="lineCov">     353156 :     return TRUE;</span>
+<span class="lineNum">     230 </span>                :<span class="lineCov">     354113 :     return TRUE;</span>
 <a name="231"><span class="lineNum">     231 </span>                :            : }</a>
 <span class="lineNum">     232 </span>                :            : 
-<span class="lineNum">     233 </span>                :<span class="lineCov">      55548 : static int llsd_date_fn( double const value, void * const user_data )</span>
+<span class="lineNum">     233 </span>                :<span class="lineCov">      55292 : static int llsd_date_fn( double const value, void * const user_data )</span>
 <span class="lineNum">     234 </span>                :            : {
-<span class="lineNum">     235 </span>                :<span class="lineCov">      55548 :     llsd_t * v = NULL;</span>
+<span class="lineNum">     235 </span>                :<span class="lineCov">      55292 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     236 </span>                :            : 
 <span class="lineNum">     237 </span>                :            :     /* create the date */
-<span class="lineNum">     238 </span>                :<span class="lineCov">      55548 :     v = llsd_new_date( value );</span>
-<span class="lineNum">     239 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55548 times"> + </span>]:<span class="lineCov">      55548 :     CHECK_PTR_RET( v, FALSE );</span>
+<span class="lineNum">     238 </span>                :<span class="lineCov">      55292 :     v = llsd_new_date( value );</span>
+<span class="lineNum">     239 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55292 times"> + </span>]:<span class="lineCov">      55292 :     CHECK_PTR_RET( v, FALSE );</span>
 <span class="lineNum">     240 </span>                :            : 
-<span class="lineNum">     241 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 55548 times"> + </span>]:<span class="lineCov">      55548 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
+<span class="lineNum">     241 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 55292 times"> + </span>]:<span class="lineCov">      55292 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
 <span class="lineNum">     242 </span>                :            :     {
 <span class="lineNum">     243 </span>                :<span class="lineNoCov">          0 :         llsd_delete( v );</span>
 <span class="lineNum">     244 </span>                :<span class="lineNoCov">          0 :         return FALSE;</span>
 <span class="lineNum">     245 </span>                :            :     }
-<span class="lineNum">     246 </span>                :<span class="lineCov">      55548 :     return TRUE;</span>
+<span class="lineNum">     246 </span>                :<span class="lineCov">      55292 :     return TRUE;</span>
 <a name="247"><span class="lineNum">     247 </span>                :            : }</a>
 <span class="lineNum">     248 </span>                :            : 
-<span class="lineNum">     249 </span>                :<span class="lineCov">      54628 : static int llsd_uri_fn( uint8_t const * uri, int own_it, void * const user_data )</span>
+<span class="lineNum">     249 </span>                :<span class="lineCov">      54745 : static int llsd_uri_fn( uint8_t const * uri, int own_it, void * const user_data )</span>
 <span class="lineNum">     250 </span>                :            : {
-<span class="lineNum">     251 </span>                :<span class="lineCov">      54628 :     llsd_t * v = NULL;</span>
+<span class="lineNum">     251 </span>                :<span class="lineCov">      54745 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     252 </span>                :            : 
 <span class="lineNum">     253 </span>                :            :     /* create the uri */
-<span class="lineNum">     254 </span>                :<span class="lineCov">      54628 :     v = llsd_new_uri( uri, own_it );</span>
-<span class="lineNum">     255 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54628 times"> + </span>]:<span class="lineCov">      54628 :     CHECK_PTR_RET( v, FALSE );</span>
+<span class="lineNum">     254 </span>                :<span class="lineCov">      54745 :     v = llsd_new_uri( uri, own_it );</span>
+<span class="lineNum">     255 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54745 times"> + </span>]:<span class="lineCov">      54745 :     CHECK_PTR_RET( v, FALSE );</span>
 <span class="lineNum">     256 </span>                :            : 
-<span class="lineNum">     257 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54628 times"> + </span>]:<span class="lineCov">      54628 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
+<span class="lineNum">     257 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54745 times"> + </span>]:<span class="lineCov">      54745 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
 <span class="lineNum">     258 </span>                :            :     {
 <span class="lineNum">     259 </span>                :<span class="lineNoCov">          0 :         llsd_delete( v );</span>
 <span class="lineNum">     260 </span>                :<span class="lineNoCov">          0 :         return FALSE;</span>
 <span class="lineNum">     261 </span>                :            :     }
-<span class="lineNum">     262 </span>                :<span class="lineCov">      54628 :     return TRUE;</span>
+<span class="lineNum">     262 </span>                :<span class="lineCov">      54745 :     return TRUE;</span>
 <a name="263"><span class="lineNum">     263 </span>                :            : }</a>
 <span class="lineNum">     264 </span>                :            : 
-<span class="lineNum">     265 </span>                :<span class="lineCov">      55376 : static int llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it, void * const user_data )</span>
+<span class="lineNum">     265 </span>                :<span class="lineCov">      55414 : static int llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it, void * const user_data )</span>
 <span class="lineNum">     266 </span>                :            : {
-<span class="lineNum">     267 </span>                :<span class="lineCov">      55376 :     llsd_t * v = NULL;</span>
+<span class="lineNum">     267 </span>                :<span class="lineCov">      55414 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     268 </span>                :            : 
 <span class="lineNum">     269 </span>                :            :     /* create the binary */
-<span class="lineNum">     270 </span>                :<span class="lineCov">      55376 :     v = llsd_new_binary( data, len, own_it );</span>
-<span class="lineNum">     271 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55376 times"> + </span>]:<span class="lineCov">      55376 :     CHECK_PTR_RET( v, FALSE );</span>
+<span class="lineNum">     270 </span>                :<span class="lineCov">      55414 :     v = llsd_new_binary( data, len, own_it );</span>
+<span class="lineNum">     271 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55414 times"> + </span>]:<span class="lineCov">      55414 :     CHECK_PTR_RET( v, FALSE );</span>
 <span class="lineNum">     272 </span>                :            : 
-<span class="lineNum">     273 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 55376 times"> + </span>]:<span class="lineCov">      55376 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
+<span class="lineNum">     273 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 55414 times"> + </span>]:<span class="lineCov">      55414 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
 <span class="lineNum">     274 </span>                :            :     {
 <span class="lineNum">     275 </span>                :<span class="lineNoCov">          0 :         llsd_delete( v );</span>
 <span class="lineNum">     276 </span>                :<span class="lineNoCov">          0 :         return FALSE;</span>
 <span class="lineNum">     277 </span>                :            :     }
-<span class="lineNum">     278 </span>                :<span class="lineCov">      55376 :     return TRUE;</span>
+<span class="lineNum">     278 </span>                :<span class="lineCov">      55414 :     return TRUE;</span>
 <a name="279"><span class="lineNum">     279 </span>                :            : }</a>
 <span class="lineNum">     280 </span>                :            : 
-<span class="lineNum">     281 </span>                :<span class="lineCov">      55148 : static int llsd_array_begin_fn( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     281 </span>                :<span class="lineCov">      55060 : static int llsd_array_begin_fn( uint32_t const size, void * const user_data )</span>
 <span class="lineNum">     282 </span>                :            : {
-<span class="lineNum">     283 </span>                :<span class="lineCov">      55148 :     llsd_t * v = NULL;</span>
-<span class="lineNum">     284 </span>                :<span class="lineCov">      55148 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
-<span class="lineNum">     285 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55148 times"> + </span>]:<span class="lineCov">      55148 :     CHECK_PTR_RET( parser_state, FALSE );</span>
-<span class="lineNum">     286 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55148 times"> + </span>]:<span class="lineCov">      55148 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
+<span class="lineNum">     283 </span>                :<span class="lineCov">      55060 :     llsd_t * v = NULL;</span>
+<span class="lineNum">     284 </span>                :<span class="lineCov">      55060 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
+<span class="lineNum">     285 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55060 times"> + </span>]:<span class="lineCov">      55060 :     CHECK_PTR_RET( parser_state, FALSE );</span>
+<span class="lineNum">     286 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55060 times"> + </span>]:<span class="lineCov">      55060 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
 <span class="lineNum">     287 </span>                :            : 
 <span class="lineNum">     288 </span>                :            :     /* create the array */
-<span class="lineNum">     289 </span>                :<span class="lineCov">      55148 :     v = llsd_new_array( size );</span>
-<span class="lineNum">     290 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55148 times"> + </span>]:<span class="lineCov">      55148 :     CHECK_PTR_RET( v, FALSE );</span>
+<span class="lineNum">     289 </span>                :<span class="lineCov">      55060 :     v = llsd_new_array( size );</span>
+<span class="lineNum">     290 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55060 times"> + </span>]:<span class="lineCov">      55060 :     CHECK_PTR_RET( v, FALSE );</span>
 <span class="lineNum">     291 </span>                :            : 
-<span class="lineNum">     292 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 55148 times"> + </span>]:<span class="lineCov">      55148 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
+<span class="lineNum">     292 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 55060 times"> + </span>]:<span class="lineCov">      55060 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
 <span class="lineNum">     293 </span>                :            :     {
 <span class="lineNum">     294 </span>                :<span class="lineNoCov">          0 :         llsd_delete( v );</span>
 <span class="lineNum">     295 </span>                :<span class="lineNoCov">          0 :         return FALSE;</span>
 <span class="lineNum">     296 </span>                :            :     }
 <span class="lineNum">     297 </span>                :            : 
-<span class="lineNum">     298 </span>                :<span class="lineCov">      55148 :     PUSHC( v );</span>
-<span class="lineNum">     299 </span>                :<span class="lineCov">      55148 :     PUSH( ARRAY_BEGIN );</span>
-<span class="lineNum">     300 </span>                :<span class="lineCov">      55148 :     return TRUE;</span>
+<span class="lineNum">     298 </span>                :<span class="lineCov">      55060 :     PUSHC( v );</span>
+<span class="lineNum">     299 </span>                :<span class="lineCov">      55060 :     PUSH( ARRAY_BEGIN );</span>
+<span class="lineNum">     300 </span>                :<span class="lineCov">      55060 :     return TRUE;</span>
 <a name="301"><span class="lineNum">     301 </span>                :            : }</a>
 <span class="lineNum">     302 </span>                :            : 
-<span class="lineNum">     303 </span>                :<span class="lineCov">     307072 : static int llsd_array_value_begin_fn( void * const user_data )</span>
+<span class="lineNum">     303 </span>                :<span class="lineCov">     306147 : static int llsd_array_value_begin_fn( void * const user_data )</span>
 <span class="lineNum">     304 </span>                :            : {
-<span class="lineNum">     305 </span>                :<span class="lineCov">     307072 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
-<span class="lineNum">     306 </span>                :<span class="lineCov">     307072 :     state_t state = TOP_LEVEL;</span>
-<span class="lineNum">     307 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 307072 times"> + </span>]:<span class="lineCov">     307072 :     CHECK_PTR_RET( parser_state, FALSE );</span>
-<span class="lineNum">     308 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 307072 times"> + </span>]:<span class="lineCov">     307072 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
-<span class="lineNum">     309 </span>                :<span class="lineCov">     307072 :     state = TOP;</span>
-<span class="lineNum">     310 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 307072 times"> + </span>]:<span class="lineCov">     307072 :     CHECK_RET( (state &amp; (ARRAY_BEGIN | ARRAY_VALUE_END)), FALSE );</span>
+<span class="lineNum">     305 </span>                :<span class="lineCov">     306147 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
+<span class="lineNum">     306 </span>                :<span class="lineCov">     306147 :     state_t state = TOP_LEVEL;</span>
+<span class="lineNum">     307 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 306147 times"> + </span>]:<span class="lineCov">     306147 :     CHECK_PTR_RET( parser_state, FALSE );</span>
+<span class="lineNum">     308 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 306147 times"> + </span>]:<span class="lineCov">     306147 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
+<span class="lineNum">     309 </span>                :<span class="lineCov">     306147 :     state = TOP;</span>
+<span class="lineNum">     310 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 306147 times"> + </span>]:<span class="lineCov">     306147 :     CHECK_RET( (state &amp; (ARRAY_BEGIN | ARRAY_VALUE_END)), FALSE );</span>
 <span class="lineNum">     311 </span>                :            : 
-<span class="lineNum">     312 </span>                :<span class="lineCov">     307072 :     POP;</span>
-<span class="lineNum">     313 </span>                :<span class="lineCov">     307072 :     PUSH( ARRAY_VALUE_BEGIN );</span>
+<span class="lineNum">     312 </span>                :<span class="lineCov">     306147 :     POP;</span>
+<span class="lineNum">     313 </span>                :<span class="lineCov">     306147 :     PUSH( ARRAY_VALUE_BEGIN );</span>
 <span class="lineNum">     314 </span>                :            : 
-<span class="lineNum">     315 </span>                :<span class="lineCov">     307072 :     return TRUE;</span>
+<span class="lineNum">     315 </span>                :<span class="lineCov">     306147 :     return TRUE;</span>
 <a name="316"><span class="lineNum">     316 </span>                :            : }</a>
 <span class="lineNum">     317 </span>                :            : 
-<span class="lineNum">     318 </span>                :<span class="lineCov">     307072 : static int llsd_array_value_end_fn( void * const user_data )</span>
+<span class="lineNum">     318 </span>                :<span class="lineCov">     306147 : static int llsd_array_value_end_fn( void * const user_data )</span>
 <span class="lineNum">     319 </span>                :            : {
-<span class="lineNum">     320 </span>                :<span class="lineCov">     307072 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
-<span class="lineNum">     321 </span>                :<span class="lineCov">     307072 :     state_t state = TOP_LEVEL;</span>
-<span class="lineNum">     322 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 307072 times"> + </span>]:<span class="lineCov">     307072 :     CHECK_PTR_RET( parser_state, FALSE );</span>
-<span class="lineNum">     323 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 307072 times"> + </span>]:<span class="lineCov">     307072 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
-<span class="lineNum">     324 </span>                :<span class="lineCov">     307072 :     state = TOP;</span>
-<span class="lineNum">     325 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 307072 times"> + </span>]:<span class="lineCov">     307072 :     CHECK_RET( (state &amp; ARRAY_VALUE), FALSE );</span>
+<span class="lineNum">     320 </span>                :<span class="lineCov">     306147 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
+<span class="lineNum">     321 </span>                :<span class="lineCov">     306147 :     state_t state = TOP_LEVEL;</span>
+<span class="lineNum">     322 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 306147 times"> + </span>]:<span class="lineCov">     306147 :     CHECK_PTR_RET( parser_state, FALSE );</span>
+<span class="lineNum">     323 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 306147 times"> + </span>]:<span class="lineCov">     306147 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
+<span class="lineNum">     324 </span>                :<span class="lineCov">     306147 :     state = TOP;</span>
+<span class="lineNum">     325 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 306147 times"> + </span>]:<span class="lineCov">     306147 :     CHECK_RET( (state &amp; ARRAY_VALUE), FALSE );</span>
 <span class="lineNum">     326 </span>                :            : 
-<span class="lineNum">     327 </span>                :<span class="lineCov">     307072 :     POP;</span>
-<span class="lineNum">     328 </span>                :<span class="lineCov">     307072 :     PUSH( ARRAY_VALUE_END );</span>
-<span class="lineNum">     329 </span>                :<span class="lineCov">     307072 :     return TRUE;</span>
+<span class="lineNum">     327 </span>                :<span class="lineCov">     306147 :     POP;</span>
+<span class="lineNum">     328 </span>                :<span class="lineCov">     306147 :     PUSH( ARRAY_VALUE_END );</span>
+<span class="lineNum">     329 </span>                :<span class="lineCov">     306147 :     return TRUE;</span>
 <a name="330"><span class="lineNum">     330 </span>                :            : }</a>
 <span class="lineNum">     331 </span>                :            : 
-<span class="lineNum">     332 </span>                :<span class="lineCov">      55148 : static int llsd_array_end_fn( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     332 </span>                :<span class="lineCov">      55060 : static int llsd_array_end_fn( uint32_t const size, void * const user_data )</span>
 <span class="lineNum">     333 </span>                :            : {
-<span class="lineNum">     334 </span>                :<span class="lineCov">      55148 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
-<span class="lineNum">     335 </span>                :<span class="lineCov">      55148 :     state_t state = TOP_LEVEL;</span>
-<span class="lineNum">     336 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55148 times"> + </span>]:<span class="lineCov">      55148 :     CHECK_PTR_RET( parser_state, FALSE );</span>
-<span class="lineNum">     337 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55148 times"> + </span>]:<span class="lineCov">      55148 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
-<span class="lineNum">     338 </span>                :<span class="lineCov">      55148 :     state = TOP;</span>
-<span class="lineNum">     339 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55148 times"> + </span>]:<span class="lineCov">      55148 :     CHECK_RET( (state &amp; (ARRAY_BEGIN | ARRAY_VALUE_END)), FALSE );</span>
+<span class="lineNum">     334 </span>                :<span class="lineCov">      55060 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
+<span class="lineNum">     335 </span>                :<span class="lineCov">      55060 :     state_t state = TOP_LEVEL;</span>
+<span class="lineNum">     336 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55060 times"> + </span>]:<span class="lineCov">      55060 :     CHECK_PTR_RET( parser_state, FALSE );</span>
+<span class="lineNum">     337 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55060 times"> + </span>]:<span class="lineCov">      55060 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
+<span class="lineNum">     338 </span>                :<span class="lineCov">      55060 :     state = TOP;</span>
+<span class="lineNum">     339 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55060 times"> + </span>]:<span class="lineCov">      55060 :     CHECK_RET( (state &amp; (ARRAY_BEGIN | ARRAY_VALUE_END)), FALSE );</span>
 <span class="lineNum">     340 </span>                :            : 
-<span class="lineNum">     341 </span>                :<span class="lineCov">      55148 :     POPC;</span>
-<span class="lineNum">     342 </span>                :<span class="lineCov">      55148 :     POP;</span>
-<span class="lineNum">     343 </span>                :<span class="lineCov">      55148 :     return TRUE;</span>
+<span class="lineNum">     341 </span>                :<span class="lineCov">      55060 :     POPC;</span>
+<span class="lineNum">     342 </span>                :<span class="lineCov">      55060 :     POP;</span>
+<span class="lineNum">     343 </span>                :<span class="lineCov">      55060 :     return TRUE;</span>
 <a name="344"><span class="lineNum">     344 </span>                :            : }</a>
 <span class="lineNum">     345 </span>                :            : 
-<span class="lineNum">     346 </span>                :<span class="lineCov">      54864 : static int llsd_map_begin_fn( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     346 </span>                :<span class="lineCov">      54845 : static int llsd_map_begin_fn( uint32_t const size, void * const user_data )</span>
 <span class="lineNum">     347 </span>                :            : {
-<span class="lineNum">     348 </span>                :<span class="lineCov">      54864 :     llsd_t * v = NULL;</span>
-<span class="lineNum">     349 </span>                :<span class="lineCov">      54864 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
-<span class="lineNum">     350 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54864 times"> + </span>]:<span class="lineCov">      54864 :     CHECK_PTR_RET( parser_state, FALSE );</span>
-<span class="lineNum">     351 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54864 times"> + </span>]:<span class="lineCov">      54864 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
+<span class="lineNum">     348 </span>                :<span class="lineCov">      54845 :     llsd_t * v = NULL;</span>
+<span class="lineNum">     349 </span>                :<span class="lineCov">      54845 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
+<span class="lineNum">     350 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54845 times"> + </span>]:<span class="lineCov">      54845 :     CHECK_PTR_RET( parser_state, FALSE );</span>
+<span class="lineNum">     351 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54845 times"> + </span>]:<span class="lineCov">      54845 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
 <span class="lineNum">     352 </span>                :            : 
 <span class="lineNum">     353 </span>                :            :     /* create the map */
-<span class="lineNum">     354 </span>                :<span class="lineCov">      54864 :     v = llsd_new_map( size );</span>
-<span class="lineNum">     355 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54864 times"> + </span>]:<span class="lineCov">      54864 :     CHECK_PTR_RET( v, FALSE );</span>
+<span class="lineNum">     354 </span>                :<span class="lineCov">      54845 :     v = llsd_new_map( size );</span>
+<span class="lineNum">     355 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54845 times"> + </span>]:<span class="lineCov">      54845 :     CHECK_PTR_RET( v, FALSE );</span>
 <span class="lineNum">     356 </span>                :            : 
-<span class="lineNum">     357 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54864 times"> + </span>]:<span class="lineCov">      54864 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
+<span class="lineNum">     357 </span>        [<span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 54845 times"> + </span>]:<span class="lineCov">      54845 :     if ( !update_state( VALUE_STATES, user_data, v ) )</span>
 <span class="lineNum">     358 </span>                :            :     {
 <span class="lineNum">     359 </span>                :<span class="lineNoCov">          0 :         llsd_delete( v );</span>
 <span class="lineNum">     360 </span>                :<span class="lineNoCov">          0 :         return FALSE;</span>
 <span class="lineNum">     361 </span>                :            :     }
 <span class="lineNum">     362 </span>                :            : 
-<span class="lineNum">     363 </span>                :<span class="lineCov">      54864 :     PUSHC( v );</span>
-<span class="lineNum">     364 </span>                :<span class="lineCov">      54864 :     PUSH( MAP_BEGIN );</span>
-<span class="lineNum">     365 </span>                :<span class="lineCov">      54864 :     return TRUE;</span>
+<span class="lineNum">     363 </span>                :<span class="lineCov">      54845 :     PUSHC( v );</span>
+<span class="lineNum">     364 </span>                :<span class="lineCov">      54845 :     PUSH( MAP_BEGIN );</span>
+<span class="lineNum">     365 </span>                :<span class="lineCov">      54845 :     return TRUE;</span>
 <a name="366"><span class="lineNum">     366 </span>                :            : }</a>
 <span class="lineNum">     367 </span>                :            : 
-<span class="lineNum">     368 </span>                :<span class="lineCov">     297904 : static int llsd_map_key_begin_fn( void * const user_data )</span>
+<span class="lineNum">     368 </span>                :<span class="lineCov">     298822 : static int llsd_map_key_begin_fn( void * const user_data )</span>
 <span class="lineNum">     369 </span>                :            : {
-<span class="lineNum">     370 </span>                :<span class="lineCov">     297904 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
-<span class="lineNum">     371 </span>                :<span class="lineCov">     297904 :     state_t state = TOP_LEVEL;</span>
-<span class="lineNum">     372 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :     CHECK_PTR_RET( parser_state, FALSE );</span>
-<span class="lineNum">     373 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
-<span class="lineNum">     374 </span>                :<span class="lineCov">     297904 :     state = TOP;</span>
-<span class="lineNum">     375 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :     CHECK_RET( (state &amp; (MAP_BEGIN | MAP_VALUE_END)), FALSE );</span>
+<span class="lineNum">     370 </span>                :<span class="lineCov">     298822 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
+<span class="lineNum">     371 </span>                :<span class="lineCov">     298822 :     state_t state = TOP_LEVEL;</span>
+<span class="lineNum">     372 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :     CHECK_PTR_RET( parser_state, FALSE );</span>
+<span class="lineNum">     373 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
+<span class="lineNum">     374 </span>                :<span class="lineCov">     298822 :     state = TOP;</span>
+<span class="lineNum">     375 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :     CHECK_RET( (state &amp; (MAP_BEGIN | MAP_VALUE_END)), FALSE );</span>
 <span class="lineNum">     376 </span>                :            : 
-<span class="lineNum">     377 </span>                :<span class="lineCov">     297904 :     POP;</span>
-<span class="lineNum">     378 </span>                :<span class="lineCov">     297904 :     PUSH( MAP_KEY_BEGIN );</span>
-<span class="lineNum">     379 </span>                :<span class="lineCov">     297904 :     return TRUE;</span>
+<span class="lineNum">     377 </span>                :<span class="lineCov">     298822 :     POP;</span>
+<span class="lineNum">     378 </span>                :<span class="lineCov">     298822 :     PUSH( MAP_KEY_BEGIN );</span>
+<span class="lineNum">     379 </span>                :<span class="lineCov">     298822 :     return TRUE;</span>
 <a name="380"><span class="lineNum">     380 </span>                :            : }</a>
 <span class="lineNum">     381 </span>                :            : 
-<span class="lineNum">     382 </span>                :<span class="lineCov">     297904 : static int llsd_map_key_end_fn( void * const user_data )</span>
+<span class="lineNum">     382 </span>                :<span class="lineCov">     298822 : static int llsd_map_key_end_fn( void * const user_data )</span>
 <span class="lineNum">     383 </span>                :            : {
-<span class="lineNum">     384 </span>                :<span class="lineCov">     297904 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
-<span class="lineNum">     385 </span>                :<span class="lineCov">     297904 :     state_t state = TOP_LEVEL;</span>
-<span class="lineNum">     386 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :     CHECK_PTR_RET( parser_state, FALSE );</span>
-<span class="lineNum">     387 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
-<span class="lineNum">     388 </span>                :<span class="lineCov">     297904 :     state = TOP;</span>
-<span class="lineNum">     389 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :     CHECK_RET( (state &amp; MAP_KEY), FALSE );</span>
+<span class="lineNum">     384 </span>                :<span class="lineCov">     298822 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
+<span class="lineNum">     385 </span>                :<span class="lineCov">     298822 :     state_t state = TOP_LEVEL;</span>
+<span class="lineNum">     386 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :     CHECK_PTR_RET( parser_state, FALSE );</span>
+<span class="lineNum">     387 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
+<span class="lineNum">     388 </span>                :<span class="lineCov">     298822 :     state = TOP;</span>
+<span class="lineNum">     389 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :     CHECK_RET( (state &amp; MAP_KEY), FALSE );</span>
 <span class="lineNum">     390 </span>                :            : 
-<span class="lineNum">     391 </span>                :<span class="lineCov">     297904 :     POP;</span>
-<span class="lineNum">     392 </span>                :<span class="lineCov">     297904 :     PUSH( MAP_KEY_END );</span>
-<span class="lineNum">     393 </span>                :<span class="lineCov">     297904 :     return TRUE;</span>
+<span class="lineNum">     391 </span>                :<span class="lineCov">     298822 :     POP;</span>
+<span class="lineNum">     392 </span>                :<span class="lineCov">     298822 :     PUSH( MAP_KEY_END );</span>
+<span class="lineNum">     393 </span>                :<span class="lineCov">     298822 :     return TRUE;</span>
 <a name="394"><span class="lineNum">     394 </span>                :            : }</a>
 <span class="lineNum">     395 </span>                :            : 
-<span class="lineNum">     396 </span>                :<span class="lineCov">     297904 : static int llsd_map_value_begin_fn( void * const user_data )</span>
+<span class="lineNum">     396 </span>                :<span class="lineCov">     298822 : static int llsd_map_value_begin_fn( void * const user_data )</span>
 <span class="lineNum">     397 </span>                :            : {
-<span class="lineNum">     398 </span>                :<span class="lineCov">     297904 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
-<span class="lineNum">     399 </span>                :<span class="lineCov">     297904 :     state_t state = TOP_LEVEL;</span>
-<span class="lineNum">     400 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :     CHECK_PTR_RET( parser_state, FALSE );</span>
-<span class="lineNum">     401 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
-<span class="lineNum">     402 </span>                :<span class="lineCov">     297904 :     state = TOP;</span>
-<span class="lineNum">     403 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :     CHECK_RET( (state &amp; MAP_KEY_END), FALSE );</span>
+<span class="lineNum">     398 </span>                :<span class="lineCov">     298822 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
+<span class="lineNum">     399 </span>                :<span class="lineCov">     298822 :     state_t state = TOP_LEVEL;</span>
+<span class="lineNum">     400 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :     CHECK_PTR_RET( parser_state, FALSE );</span>
+<span class="lineNum">     401 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
+<span class="lineNum">     402 </span>                :<span class="lineCov">     298822 :     state = TOP;</span>
+<span class="lineNum">     403 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :     CHECK_RET( (state &amp; MAP_KEY_END), FALSE );</span>
 <span class="lineNum">     404 </span>                :            : 
-<span class="lineNum">     405 </span>                :<span class="lineCov">     297904 :     POP;</span>
-<span class="lineNum">     406 </span>                :<span class="lineCov">     297904 :     PUSH( MAP_VALUE_BEGIN );</span>
-<span class="lineNum">     407 </span>                :<span class="lineCov">     297904 :     return TRUE;</span>
+<span class="lineNum">     405 </span>                :<span class="lineCov">     298822 :     POP;</span>
+<span class="lineNum">     406 </span>                :<span class="lineCov">     298822 :     PUSH( MAP_VALUE_BEGIN );</span>
+<span class="lineNum">     407 </span>                :<span class="lineCov">     298822 :     return TRUE;</span>
 <a name="408"><span class="lineNum">     408 </span>                :            : }</a>
 <span class="lineNum">     409 </span>                :            : 
-<span class="lineNum">     410 </span>                :<span class="lineCov">     297904 : static int llsd_map_value_end_fn( void * const user_data )</span>
+<span class="lineNum">     410 </span>                :<span class="lineCov">     298822 : static int llsd_map_value_end_fn( void * const user_data )</span>
 <span class="lineNum">     411 </span>                :            : {
-<span class="lineNum">     412 </span>                :<span class="lineCov">     297904 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
-<span class="lineNum">     413 </span>                :<span class="lineCov">     297904 :     state_t state = TOP_LEVEL;</span>
-<span class="lineNum">     414 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :     CHECK_PTR_RET( parser_state, FALSE );</span>
-<span class="lineNum">     415 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
-<span class="lineNum">     416 </span>                :<span class="lineCov">     297904 :     state = TOP;</span>
-<span class="lineNum">     417 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 297904 times"> + </span>]:<span class="lineCov">     297904 :     CHECK_RET( (state &amp; MAP_VALUE), FALSE );</span>
+<span class="lineNum">     412 </span>                :<span class="lineCov">     298822 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
+<span class="lineNum">     413 </span>                :<span class="lineCov">     298822 :     state_t state = TOP_LEVEL;</span>
+<span class="lineNum">     414 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :     CHECK_PTR_RET( parser_state, FALSE );</span>
+<span class="lineNum">     415 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
+<span class="lineNum">     416 </span>                :<span class="lineCov">     298822 :     state = TOP;</span>
+<span class="lineNum">     417 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 298822 times"> + </span>]:<span class="lineCov">     298822 :     CHECK_RET( (state &amp; MAP_VALUE), FALSE );</span>
 <span class="lineNum">     418 </span>                :            : 
-<span class="lineNum">     419 </span>                :<span class="lineCov">     297904 :     POP;</span>
-<span class="lineNum">     420 </span>                :<span class="lineCov">     297904 :     PUSH( MAP_VALUE_END );</span>
-<span class="lineNum">     421 </span>                :<span class="lineCov">     297904 :     return TRUE;</span>
+<span class="lineNum">     419 </span>                :<span class="lineCov">     298822 :     POP;</span>
+<span class="lineNum">     420 </span>                :<span class="lineCov">     298822 :     PUSH( MAP_VALUE_END );</span>
+<span class="lineNum">     421 </span>                :<span class="lineCov">     298822 :     return TRUE;</span>
 <a name="422"><span class="lineNum">     422 </span>                :            : }</a>
 <span class="lineNum">     423 </span>                :            : 
-<span class="lineNum">     424 </span>                :<span class="lineCov">      54864 : static int llsd_map_end_fn( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     424 </span>                :<span class="lineCov">      54845 : static int llsd_map_end_fn( uint32_t const size, void * const user_data )</span>
 <span class="lineNum">     425 </span>                :            : {
-<span class="lineNum">     426 </span>                :<span class="lineCov">      54864 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
-<span class="lineNum">     427 </span>                :<span class="lineCov">      54864 :     state_t state = TOP_LEVEL;</span>
-<span class="lineNum">     428 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54864 times"> + </span>]:<span class="lineCov">      54864 :     CHECK_PTR_RET( parser_state, FALSE );</span>
-<span class="lineNum">     429 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54864 times"> + </span>]:<span class="lineCov">      54864 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
-<span class="lineNum">     430 </span>                :<span class="lineCov">      54864 :     state = TOP;</span>
-<span class="lineNum">     431 </span>        [<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 54864 times"> + </span>]:<span class="lineCov">      54864 :     CHECK_RET( (TOP &amp; (MAP_BEGIN | MAP_VALUE_END)), FALSE );</span>
+<span class="lineNum">     426 </span>                :<span class="lineCov">      54845 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
+<span class="lineNum">     427 </span>                :<span class="lineCov">      54845 :     state_t state = TOP_LEVEL;</span>
+<span class="lineNum">     428 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54845 times"> + </span>]:<span class="lineCov">      54845 :     CHECK_PTR_RET( parser_state, FALSE );</span>
+<span class="lineNum">     429 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 54845 times"> + </span>]:<span class="lineCov">      54845 :     CHECK_PTR_RET( parser_state-&gt;state_stack, FALSE );</span>
+<span class="lineNum">     430 </span>                :<span class="lineCov">      54845 :     state = TOP;</span>
+<span class="lineNum">     431 </span>        [<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 54845 times"> + </span>]:<span class="lineCov">      54845 :     CHECK_RET( (TOP &amp; (MAP_BEGIN | MAP_VALUE_END)), FALSE );</span>
 <span class="lineNum">     432 </span>                :            : 
-<span class="lineNum">     433 </span>                :<span class="lineCov">      54864 :     POPC;</span>
-<span class="lineNum">     434 </span>                :<span class="lineCov">      54864 :     POP;</span>
-<span class="lineNum">     435 </span>                :<span class="lineCov">      54864 :     return TRUE;</span>
+<span class="lineNum">     433 </span>                :<span class="lineCov">      54845 :     POPC;</span>
+<span class="lineNum">     434 </span>                :<span class="lineCov">      54845 :     POP;</span>
+<span class="lineNum">     435 </span>                :<span class="lineCov">      54845 :     return TRUE;</span>
 <a name="436"><span class="lineNum">     436 </span>                :            : }</a>
 <span class="lineNum">     437 </span>                :            : 
 <span class="lineNum">     438 </span>                :<span class="lineCov">        112 : llsd_t * llsd_parse_from_file( FILE * fin )</span>

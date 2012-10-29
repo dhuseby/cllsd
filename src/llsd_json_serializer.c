@@ -38,10 +38,10 @@ typedef struct js_state_s
 #define TOPC	  ((int)list_get_head( state->count_stack ))
 #define POPC	  (list_pop_head( state->count_stack ))
 
-#define WRITE_CHAR(x) (fwrite( x, sizeof(uint8_t), 1, state->fout ))
-#define COMMA { if(TOPC) WRITE_CHAR(","); }
-#define COLON WRITE_CHAR(":")
-#define NL { if(state->pretty && TOPML) WRITE_CHAR("\n"); }
+#define WRITE_STR(x,y) (fwrite( x, sizeof(uint8_t), y, state->fout ))
+#define COMMA { if(TOPC) WRITE_STR(",", 1); }
+#define COLON WRITE_STR(":", 1)
+#define NL { if(state->pretty && TOPML) WRITE_STR("\n", 1); }
 
 #define INDENT_SPACES (4)
 #define INDENT { if(state->pretty && state->indent && TOPML) fprintf( state->fout, "%*s", state->indent * INDENT_SPACES, " " ); }
@@ -103,11 +103,51 @@ static int llsd_json_uuid( uint8_t const value[UUID_LEN], void * const user_data
 
 static int llsd_json_string( uint8_t const * str, int const own_it, void * const user_data )
 {
+	int i;
+	size_t len = 0;
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
-	/* TODO: escape double quotes and controll code as well as convert extended 
-	 * characters to \uXXXX and/or \uXXXX\uXXXX subordinate pairs. */
-	fprintf( state->fout, "\"%s\"", str );
+	CHECK_PTR( str );
+
+	/* get the len */
+	len = strlen( str );
+
+	/* write out the string, escaping backslash, double quote, and control chars */
+	WRITE_STR( "\"", 1 );
+	for ( i = 0; i < len; i++ )
+	{
+		switch( str[i] )
+		{
+			case '\"':
+				WRITE_STR( "\\\"", 2 );
+				break;
+			case '\\':
+				WRITE_STR( "\\\\", 2 );
+				break;
+			case '/':
+				WRITE_STR( "\\/", 2 );
+				break;
+			case '\b':
+				WRITE_STR( "\\b", 2 );
+				break;
+			case '\f':
+				WRITE_STR( "\\f", 2 );
+				break;
+			case '\n':
+				WRITE_STR( "\\n", 2 );
+				break;
+			case '\r':
+				WRITE_STR( "\\r", 2 );
+				break;
+			case '\t':
+				WRITE_STR( "\\t", 2 );
+				break;
+			default:
+				WRITE_STR( &str[i], 1 );
+				break;
+		}
+	}
+	WRITE_STR( "\"", 1 );
 	return TRUE;
 }
 
@@ -141,7 +181,6 @@ static int llsd_json_uri( uint8_t const * uri, int const own_it, void * const us
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 	CHECK_PTR_RET( uri, FALSE );
-	/* TODO: uri escape the uri */
 	fprintf( state->fout, "\"||uri||%s\"", uri );
 	return TRUE;
 }
