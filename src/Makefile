@@ -69,6 +69,7 @@ clean:
 	rm -rf $(GCDA)
 	rm -rf $(GCNO)
 	rm -rf $(GCOV)
+	rm -rf *.info
 
 .PHONY: all install uninstall clean test coverage report
 

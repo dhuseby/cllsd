@@ -1109,7 +1109,10 @@ fail_json_parse:
 	err_column = ftell( fin );
 	fseek( fin, line_start, SEEK_SET );
 	buffer = CALLOC( (err_column - line_start) + 1, sizeof(uint8_t) );
-	fread( buffer, sizeof(uint8_t), (err_column - line_start), fin );
+	if ( (i = fread( buffer, sizeof(uint8_t), (err_column - line_start), fin )) != (err_column - line_start) )
+	{
+		fprintf( stderr, "Only read %d bytes from the file when generating error report\n", i );
+	}
 
 	text_start = line_start;
 	for( i = 0; i < (int)(err_column - line_start); i++ )
