@@ -7,7 +7,7 @@ INSTALL_DATA=$(INSTALL) -m 644
 COVERAGE?=./coverage
 
 CUTIL = cutil
-BASEDIRS = src tests python ruby
+BASEDIRS = src tests python ruby php
 DIRS = $(CUTIL) $(BASEDIRS)
 BUILDDIRS = $(DIRS:%=build-%)
 INSTALLDIRS = $(DIRS:%=install-%)
@@ -69,5 +69,5 @@ $(CLEANDIRS):
 .PHONY: subdirs $(REPORTDIRS)
 .PHONY: subdirs $(CLEANDIRS)
 .PHONY: subdirs $(CUTILDIRS)
-.PHONY: all python ruby install uninstall clean test coverage report cutildir
+.PHONY: all install uninstall clean test coverage report cutildir
 

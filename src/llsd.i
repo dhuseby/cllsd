@@ -15,14 +15,8 @@
 #include <cllsd/llsd_parser.h>
 %}
 
-%include <cllsd/llsd.h>
-%include <cllsd/llsd_serializer.h>
-%include <cllsd/llsd_parser.h>
 
 #if defined(SWIGPYTHON)
-    %typemap(in) int {
-        $1 = PyInt_AsLong( $input );
-    }
     %typemap(in) FILE* {
         if ( PyFile_Check( $input ) )
         {
@@ -30,11 +24,13 @@
         }
         else
         {
-            PyErr_SetSTring( PyExc_TypeError, "$1_name must be a file type." );
+            PyErr_SetString( PyExc_TypeError, "$1_name must be a file type." );
             return NULL;
         }
     }
-#else
-    #warning no "in" typemap defined
 #endif
+
+%include <cllsd/llsd.h>
+%include <cllsd/llsd_serializer.h>
+%include <cllsd/llsd_parser.h>
 
