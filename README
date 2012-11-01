@@ -1,10 +1,66 @@
+This library is an ANSI C implementation of a Linden Lab Serialized Data (LLSD)
+serializer and parser.  I fully supports the binary, XML, notation and JSON
+serialization of the data. This implementation fully complies with the proposed
+standard found here:
+
+http://tools.ietf.org/html/draft-hamrick-llsd-00
+
+This implementation does deviate from the proposed standard for the JSON
+encoding of LLSD data simply because the proposed standard is a lossy encoding
+method when serializing to JSON.  This implementation fixes the lossiness.
+
 Dependencies:
   - cutil library (https://bitbucket.org/wookie/cutil)
   - expat library
   - CUnit library
   - lcov utility for unit test coverage generation.
+  - swig utility for generating language wrappers.
+  - python dev library for python wrapper.
+  - ruby dev library for ruby wrapper.
+  - php dev library for php wrapper.
+
+Building the library:
+
+The Makefile supports the standard "make all", "make install", and "make
+install" type of interface.  To build just the C library run:
+
+$ make all
+
+To clean up all of the build byproducts, run:
+
+$ make clean
 
 The Makefile is sensitive to the PREFIX environment variable.  If you set it
 and then run "make install" it will build the static library and copy it to
 $(PREFIX)/lib.  If you do not specify a value for PREFIX, then it defaults to
-/usr/local.
+/usr/local.  To specify the root directory for installation to be /opt, run:
+
+$ PREFIX="/opt" make install
+
+That would build and install the library and header files into /opt/lib and
+/opt/include respectively.
+
+The Makefile is also sensitive to the BUILD_LANG environment variable.  The
+value of that variable defines what other languages are built.  If not defined,
+only the C version will be built and installed.  To build the C librar and the
+C++, Python, and Ruby wrappers, run:
+
+$ BUILD_LANG="c++ python ruby" make all
+
+Unit Testing and Test Coverage:
+
+This library was built from the ground up using test driven development (TDD).
+To build and run all of the unit tests as well as generate the code coverage,
+run the following command:
+
+$ make coverage
+
+You will see the unit tests get built and run and the coverage output
+generated.  The coverage output can be found in the coverage/ subdirectory.
+
+If you find any bugs or would like to contribute, please fork this repo and
+send me pull requests.  If you have feature requests, please feel free to send
+me a message with the request.
+
+-Huseby Linden
+
