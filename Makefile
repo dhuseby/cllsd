@@ -7,12 +7,16 @@ INSTALL_DATA=$(INSTALL) -m 644
 COVERAGE?=./coverage
 
 CUTIL = cutil
-BASEDIRS = src tests python ruby php
+BASEDIRS = src tests
+ifneq ($(BUILD_LANG),"")
+	BASEDIRS += $(BUILD_LANG)
+endif
 DIRS = $(CUTIL) $(BASEDIRS)
+CDIRS = $(CUTIL) src tests python ruby php
 BUILDDIRS = $(DIRS:%=build-%)
 INSTALLDIRS = $(DIRS:%=install-%)
 UNINSTALLDIRS = $(DIRS:%=uninstall-%)
-CLEANDIRS = $(DIRS:%=clean-%)
+CLEANDIRS = $(CDIRS:%=clean-%)
 TESTDIRS = $(DIRS:%=test-%)
 GCOVDIRS = $(BASEDIRS:%=gcov-%)
 REPORTDIRS = $(BASEDIRS:%=report-%)
