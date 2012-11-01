@@ -1,5 +1,5 @@
 This library is an ANSI C implementation of a Linden Lab Serialized Data (LLSD)
-serializer and parser.  I fully supports the binary, XML, notation and JSON
+serializer and parser.  It fully supports the binary, XML, notation and JSON
 serialization of the data. This implementation fully complies with the proposed
 standard found here:
 
