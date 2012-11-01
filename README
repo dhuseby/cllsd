@@ -11,13 +11,13 @@ method when serializing to JSON.  This implementation fixes the lossiness.
 
 Dependencies:
   - cutil library (https://bitbucket.org/wookie/cutil)
-  - expat library
-  - CUnit library
-  - lcov utility for unit test coverage generation.
-  - swig utility for generating language wrappers.
-  - python dev library for python wrapper.
-  - ruby dev library for ruby wrapper.
-  - php dev library for php wrapper.
+  - expat library (http://expat.sourceforge.net)
+  - CUnit library (http://cunit.sourceforge.net)
+  - lcov test coverage utility (http://ltp.sourceforge.net/coverage/lcov.php) 
+  - swig interface generator (http://www.swig.org)
+  - python dev library for python wrapper (http://www.python.org/download/)
+  - ruby dev library for ruby wrapper (http://www.ruby-lang.org/en/)
+  - php dev library for php wrapper (http://www.php.net/)
 
 Building the library:
 
