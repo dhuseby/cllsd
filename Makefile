@@ -77,6 +77,7 @@ $(CLEANDIRS):
 .PHONY: subdirs $(INSTALLDIRS)
 .PHONY: subdirs $(UNINSTALL)
 .PHONY: subdirs $(TESTDIRS)
+.PHONY: subdirs $(DEBUGDIRS)
 .PHONY: subdirs $(GCOVDIRS)
 .PHONY: subdirs $(REPORTDIRS)
 .PHONY: subdirs $(CLEANDIRS)
