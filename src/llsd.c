@@ -607,6 +607,48 @@ llsd_t * llsd_map_find( llsd_t * map, uint8_t const * const key )
 	return llsd_map_find_llsd( map, &t );
 }
 
+static llsd_uuid_t zero_uuid = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+int llsd_as_boolean( llsd_t * llsd, int * v )
+{
+	int i;
+	CHECK_PTR_RET( llsd, FALSE );
+	CHECK_PTR_RET( v, FALSE );
+	(*v) = FALSE;
+
+	switch( llsd->type_ )
+	{
+		case LLSD_UNDEF:
+		case LLSD_DATE:
+		case LLSD_URI:
+		case LLSD_ARRAY:
+		case LLSD_MAP:
+			DEBUG( "illegal conversion of %s to boolean\n", llsd_get_type_string( llsd->type_ ) );
+			return FALSE;
+		case LLSD_UUID:
+			(*v) = (MEMCMP( llsd->uuid_, zero_uuid, UUID_LEN ) != 0);
+			break;
+		case LLSD_BOOLEAN:
+			(*v) = llsd->bool_;
+			break;
+		case LLSD_INTEGER:
+			(*v) = (llsd->int_ != 0);
+			break;
+		case LLSD_REAL:
+			CHECK_RET_MSG( !isnan( llsd->real_ ), FALSE, "converting NaN to boolean\n" );
+			CHECK_RET_MSG( !isinf( llsd->real_ ), FALSE, "convering infinite to boolean\n" );
+			(*v) = (llsd->real_ != 0.0);
+			break;
+		case LLSD_STRING:
+			(*v) = (strlen( llsd->string_ ) != 0);
+			break;
+		case LLSD_BINARY:
+			(*v) = (llsd->binary_.iov_len != 0);
+			break;
+	}
+	return TRUE;
+}
+
 int llsd_as_integer( llsd_t * llsd, int32_t * v )
 {
 	int i;

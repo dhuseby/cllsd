@@ -142,6 +142,7 @@ llsd_t * llsd_map_find_llsd( llsd_t * map, llsd_t * key );
 llsd_t * llsd_map_find( llsd_t * map, uint8_t const * const key );
 
 /* conversion interface */
+int llsd_as_boolean( llsd_t * llsd, int * v );
 int llsd_as_integer( llsd_t * llsd, int32_t * v );
 int llsd_as_double( llsd_t * llsd, double * v );
 int llsd_as_uuid( llsd_t * llsd, uint8_t uuid[UUID_LEN] );
