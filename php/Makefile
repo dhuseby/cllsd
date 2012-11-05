@@ -22,6 +22,8 @@ all: $(OUT)
 
 test:
 
+testnr:
+
 coverage:
 
 # generate llsd.c from the llsd.i interface file

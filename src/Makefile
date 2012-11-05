@@ -21,6 +21,7 @@ CFLAGS=-O3 -I$(CUTIL_ROOT)/include
 debug: CFLAGS=-O0 -gstabs+ -I$(CUTIL_ROOT)/include
 coverage: CFLAGS=-fprofile-arcs -ftest-coverage -O0 -gstabs+ -DUNIT_TESTING -I$(CUTIL_ROOT)/include
 test: CFLAGS=-O0 -gstabs+ -DUNIT_TESTING -I$(CUTIL_ROOT)/include
+testnr: CFLAGS=-O0 -gstabs+ -DUNIT_TESTING -I$(CUTIL_ROOT)/include
 
 # install utility
 INSTALL=/usr/bin/install
@@ -52,6 +53,8 @@ uninstall:
 	rm -rf $(PREFIX)/lib/$(OUT)
 
 test: all
+
+testnr: all
 
 coverage: all
 

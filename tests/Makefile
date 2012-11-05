@@ -24,6 +24,9 @@ all:
 test: $(OUT)
 	./test_all
 
+# build test_all but don't run it
+testnr: $(OUT)
+
 coverage: $(OUT)
 	./test_all
 

@@ -51,6 +51,8 @@ uninstall:
 
 test: all
 
+testnr: all
+
 coverage: all
 
 report:
