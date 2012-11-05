@@ -18,6 +18,7 @@ GCNO=$(SRC:.c=.gcno)
 GCOV=$(SRC:.c=.c.gcov)
 # set CFLAGS to something gcov can use
 CFLAGS=-O3 -I$(CUTIL_ROOT)/include
+debug: CFLAGS=-O0 -gstabs+ -I$(CUTIL_ROOT)/include
 coverage: CFLAGS=-fprofile-arcs -ftest-coverage -O0 -gstabs+ -DUNIT_TESTING -I$(CUTIL_ROOT)/include
 test: CFLAGS=-O0 -gstabs+ -DUNIT_TESTING -I$(CUTIL_ROOT)/include
 
@@ -53,6 +54,8 @@ uninstall:
 test: all
 
 coverage: all
+
+debug: all
 
 report:
 	lcov --base-directory . --directory . -c -o cutil.info

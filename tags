@@ -456,7 +456,6 @@ ASSERT	cutil/src/macros.h	40;"	d
 BASE16_LENGTH	src/base16.h	22;"	d
 BASE64_LENGTH	src/base64.h	24;"	d
 BASE85_LENGTH	src/base85.h	24;"	d
-BASEDIRS	Makefile	/^BASEDIRS = src tests python ruby php$/;"	m
 BEGIN_STRING_STATES	src/llsd_binary_parser.c	56;"	d	file:
 BEGIN_STRING_STATES	src/llsd_json_parser.c	46;"	d	file:
 BEGIN_STRING_STATES	src/llsd_notation_parser.c	59;"	d	file:
@@ -482,6 +481,10 @@ BUILDDIRS	cutil/Makefile	/^BUILDDIRS = $(DIRS:%=build-%)$/;"	m
 C	cutil/src/macros.h	226;"	d
 CALLOC	cutil/src/macros.h	190;"	d
 CALLOC	cutil/src/macros.h	75;"	d
+CDIRS	Makefile	/^CDIRS = $(DEPS) $(SRCDIR) $(TESTDIR) python ruby php$/;"	m
+CFLAGS	c++/Makefile	/^CFLAGS=-O0 -gstabs+ -I$(CLLSD_ROOT)\/include -I$(CUTIL_ROOT)\/include$/;"	m
+CFLAGS	c++/Makefile	/^coverage: CFLAGS=-fprofile-arcs -ftest-coverage -O0 -gstabs+ -DUNIT_TESTING -I$(CUTIL_ROOT)\/include$/;"	m
+CFLAGS	c++/Makefile	/^test: CFLAGS=-O0 -gstabs+ -DUNIT_TESTING -I$(CUTIL_ROOT)\/include$/;"	m
 CFLAGS	cutil/src/Makefile	/^CFLAGS=-O3 -I$(EXTRA_LIBS_ROOT)\/include$/;"	m
 CFLAGS	cutil/src/Makefile	/^coverage: CFLAGS=-fprofile-arcs -ftest-coverage -O0 -gstabs+ -DUNIT_TESTING -I$(EXTRA_LIBS_ROOT)\/include -I..\/tests$/;"	m
 CFLAGS	cutil/src/Makefile	/^debug: CFLAGS=-O0 -gstabs+ -I$(EXTRA_LIBS_ROOT)\/include$/;"	m
@@ -492,6 +495,7 @@ CFLAGS	python/Makefile	/^CFLAGS=-O0 -gstabs+ -I$(CLLSD_ROOT)\/include -I$(CUTIL_
 CFLAGS	ruby/Makefile	/^CFLAGS=-O0 -gstabs+ -I$(CLLSD_ROOT)\/include -I$(CUTIL_ROOT)\/include -I\/usr\/lib\/ruby\/1.8\/i686-linux$/;"	m
 CFLAGS	src/Makefile	/^CFLAGS=-O3 -I$(CUTIL_ROOT)\/include$/;"	m
 CFLAGS	src/Makefile	/^coverage: CFLAGS=-fprofile-arcs -ftest-coverage -O0 -gstabs+ -DUNIT_TESTING -I$(CUTIL_ROOT)\/include$/;"	m
+CFLAGS	src/Makefile	/^debug: CFLAGS=-O0 -gstabs+ -I$(CUTIL_ROOT)\/include$/;"	m
 CFLAGS	src/Makefile	/^test: CFLAGS=-O0 -gstabs+ -DUNIT_TESTING -I$(CUTIL_ROOT)\/include$/;"	m
 CFLAGS	tests/Makefile	/^CFLAGS=-O0 -gstabs+ -I$(CLLSD_ROOT)\/include -I$(CUTIL_ROOT)\/include$/;"	m
 CHECK	cutil/src/macros.h	51;"	d
@@ -505,8 +509,9 @@ CHECK_PTR_RET	cutil/src/macros.h	58;"	d
 CHECK_PTR_RET_MSG	cutil/src/macros.h	59;"	d
 CHECK_RET	cutil/src/macros.h	53;"	d
 CHECK_RET_MSG	cutil/src/macros.h	54;"	d
-CLEANDIRS	Makefile	/^CLEANDIRS = $(DIRS:%=clean-%)$/;"	m
+CLEANDIRS	Makefile	/^CLEANDIRS = $(CDIRS:%=clean-%)$/;"	m
 CLEANDIRS	cutil/Makefile	/^CLEANDIRS = $(DIRS:%=clean-%)$/;"	m
+CLLSD_ROOT	c++/Makefile	/^CLLSD_ROOT=..\/src$/;"	m
 CLLSD_ROOT	php/Makefile	/^CLLSD_ROOT=..\/src$/;"	m
 CLLSD_ROOT	python/Makefile	/^CLLSD_ROOT=..\/src$/;"	m
 CLLSD_ROOT	ruby/Makefile	/^CLLSD_ROOT=..\/src$/;"	m
@@ -520,11 +525,11 @@ COMMA	src/llsd_xml_serializer.c	39;"	d	file:
 CONNECT	cutil/src/macros.h	194;"	d
 CONNECT	cutil/src/macros.h	88;"	d
 COVERAGE	Makefile	/^COVERAGE?=.\/coverage$/;"	m
+COVERAGE	c++/Makefile	/^COVERAGE?=..\/coverage$/;"	m
 COVERAGE	cutil/Makefile	/^COVERAGE?=.\/coverage$/;"	m
 COVERAGE	cutil/src/Makefile	/^COVERAGE?=..\/coverage$/;"	m
 COVERAGE	src/Makefile	/^COVERAGE?=..\/coverage$/;"	m
-CUTIL	Makefile	/^CUTIL = cutil$/;"	m
-CUTILDIRS	Makefile	/^CUTILDIRS = $(CUTIL:%=cutildir-%)$/;"	m
+CUTIL_ROOT	c++/Makefile	/^CUTIL_ROOT?=..\/cutil\/src$/;"	m
 CUTIL_ROOT	cutil/tests/Makefile	/^CUTIL_ROOT=..\/src$/;"	m
 CUTIL_ROOT	php/Makefile	/^CUTIL_ROOT?=..\/cutil\/src$/;"	m
 CUTIL_ROOT	python/Makefile	/^CUTIL_ROOT?=..\/cutil\/src$/;"	m
@@ -538,6 +543,7 @@ DATE_STR_LEN	src/llsd.h	92;"	d
 DEBUG	cutil/src/debug.h	17;"	d
 DEBUG	cutil/src/debug.h	20;"	d
 DEBUG	cutil/src/debug.h	22;"	d
+DEBUGDIRS	Makefile	/^DEBUGDIRS = $(DEPS:%=debug-%) $(SRCDIR:%=debug-%)$/;"	m
 DEBUGDIRS	cutil/Makefile	/^DEBUGDIRS = $(SRCDIR:%=debug-%)$/;"	m
 DEBUG_ON	cutil/src/debug.h	25;"	d
 DEBUG_ON	src/llsd.c	23;"	d	file:
@@ -545,7 +551,9 @@ DEC_INDENT	src/llsd_json_serializer.c	49;"	d	file:
 DEC_INDENT	src/llsd_notation_serializer.c	49;"	d	file:
 DEC_INDENT	src/llsd_xml_serializer.c	46;"	d	file:
 DEFAULT_INITIAL_CAPACITY	cutil/src/btree.c	32;"	d	file:
-DIRS	Makefile	/^DIRS = $(CUTIL) $(BASEDIRS)$/;"	m
+DEPDIRS	Makefile	/^DEPDIRS = $(DEPS:%=depdirs-%)$/;"	m
+DEPS	Makefile	/^DEPS = cutil$/;"	m
+DIRS	Makefile	/^DIRS = $(DEPS) $(SRCDIR) $(TESTDIR) $(LANGDIRS)$/;"	m
 DIRS	cutil/Makefile	/^DIRS = $(SRCDIR) $(TESTDIR)$/;"	m
 DWORDS_NEEDED	cutil/src/bitset.c	25;"	d	file:
 DWORD_INDEX	cutil/src/bitset.c	26;"	d	file:
@@ -592,6 +600,7 @@ FORK	cutil/src/macros.h	198;"	d
 FREE	cutil/src/macros.h	63;"	d
 FSTAT	cutil/src/macros.h	104;"	d
 FSTAT	cutil/src/macros.h	197;"	d
+GCDA	c++/Makefile	/^GCDA=$(SRC:.c=.gcda)$/;"	m
 GCDA	cutil/src/Makefile	/^GCDA=$(SRC:.c=.gcda)$/;"	m
 GCDA	cutil/tests/Makefile	/^GCDA=$(SRC:.c=.gcda)$/;"	m
 GCDA	php/Makefile	/^GCDA=$(SRC:.c=.gcda)$/;"	m
@@ -599,6 +608,7 @@ GCDA	python/Makefile	/^GCDA=$(SRC:.c=.gcda)$/;"	m
 GCDA	ruby/Makefile	/^GCDA=$(SRC:.c=.gcda)$/;"	m
 GCDA	src/Makefile	/^GCDA=$(SRC:.c=.gcda)$/;"	m
 GCDA	tests/Makefile	/^GCDA=$(SRC:.c=.gcda)$/;"	m
+GCNO	c++/Makefile	/^GCNO=$(SRC:.c=.gcno)$/;"	m
 GCNO	cutil/src/Makefile	/^GCNO=$(SRC:.c=.gcno)$/;"	m
 GCNO	cutil/tests/Makefile	/^GCNO=$(SRC:.c=.gcno)$/;"	m
 GCNO	php/Makefile	/^GCNO=$(SRC:.c=.gcno)$/;"	m
@@ -606,6 +616,7 @@ GCNO	python/Makefile	/^GCNO=$(SRC:.c=.gcno)$/;"	m
 GCNO	ruby/Makefile	/^GCNO=$(SRC:.c=.gcno)$/;"	m
 GCNO	src/Makefile	/^GCNO=$(SRC:.c=.gcno)$/;"	m
 GCNO	tests/Makefile	/^GCNO=$(SRC:.c=.gcno)$/;"	m
+GCOV	c++/Makefile	/^GCOV=$(SRC:.c=.c.gcov)$/;"	m
 GCOV	cutil/src/Makefile	/^GCOV=$(SRC:.c=.c.gcov)$/;"	m
 GCOV	cutil/tests/Makefile	/^GCOV=$(SRC:.c=.c.gcov)$/;"	m
 GCOV	php/Makefile	/^GCOV=$(SRC:.c=.c.gcov)$/;"	m
@@ -627,6 +638,7 @@ GETGROUPS	cutil/src/macros.h	124;"	d
 GETGROUPS	cutil/src/macros.h	203;"	d
 GETUID	cutil/src/macros.h	128;"	d
 GETUID	cutil/src/macros.h	204;"	d
+HDR	c++/Makefile	/^HDR=llsd++.h$/;"	m
 HDR	cutil/src/Makefile	/^HDR=aiofd.h bitset.h btree.h buffer.h child.h daemon.h debug.h events.h hashtable.h list.h log.h macros.h pair.h privileges.h sanitize.h socket.h$/;"	m
 HDR	src/Makefile	/^HDR=base16.h base64.h base85.h llsd.h llsd_binary.h llsd_binary_parser.h llsd_json_parser.h llsd_notation_parser.h llsd_xml_parser.h llsd_serializer.h llsd_binary_serializer.h llsd_json_serializer.h llsd_notation_serializer.h llsd_xml_serializer.h$/;"	m
 INC_INDENT	src/llsd_json_serializer.c	48;"	d	file:
@@ -639,16 +651,19 @@ INDENT_SPACES	src/llsd_json_serializer.c	46;"	d	file:
 INDENT_SPACES	src/llsd_notation_serializer.c	46;"	d	file:
 INDENT_SPACES	src/llsd_xml_serializer.c	43;"	d	file:
 INSTALL	Makefile	/^INSTALL=\/usr\/bin\/install$/;"	m
+INSTALL	c++/Makefile	/^INSTALL=\/usr\/bin\/install$/;"	m
 INSTALL	cutil/Makefile	/^INSTALL=\/usr\/bin\/install$/;"	m
 INSTALL	cutil/src/Makefile	/^INSTALL=\/usr\/bin\/install$/;"	m
 INSTALL	src/Makefile	/^INSTALL=\/usr\/bin\/install$/;"	m
 INSTALLDIRS	Makefile	/^INSTALLDIRS = $(DIRS:%=install-%)$/;"	m
 INSTALLDIRS	cutil/Makefile	/^INSTALLDIRS = $(DIRS:%=install-%)$/;"	m
 INSTALL_DATA	Makefile	/^INSTALL_DATA=$(INSTALL) -m 644$/;"	m
+INSTALL_DATA	c++/Makefile	/^INSTALL_DATA=$(INSTALL) -m 644$/;"	m
 INSTALL_DATA	cutil/Makefile	/^INSTALL_DATA=$(INSTALL) -m 644$/;"	m
 INSTALL_DATA	cutil/src/Makefile	/^INSTALL_DATA=$(INSTALL) -m 644$/;"	m
 INSTALL_DATA	src/Makefile	/^INSTALL_DATA=$(INSTALL) -m 644$/;"	m
 INSTALL_PROGRAM	Makefile	/^INSTALL_PROGRAM=$(INSTALL)$/;"	m
+INSTALL_PROGRAM	c++/Makefile	/^INSTALL_PROGRAM=$(INSTALL)$/;"	m
 INSTALL_PROGRAM	cutil/Makefile	/^INSTALL_PROGRAM=$(INSTALL)$/;"	m
 INSTALL_PROGRAM	cutil/src/Makefile	/^INSTALL_PROGRAM=$(INSTALL)$/;"	m
 INSTALL_PROGRAM	src/Makefile	/^INSTALL_PROGRAM=$(INSTALL)$/;"	m
@@ -672,6 +687,7 @@ JSON_BINARY_TAG_LEN	src/llsd_json_parser.c	463;"	d	file:
 JSON_URI_TAG_LEN	src/llsd_json_parser.c	498;"	d	file:
 KEY_BEGIN	src/llsd_xml_serializer.c	78;"	d	file:
 KEY_END	src/llsd_xml_serializer.c	79;"	d	file:
+LANGDIRS	Makefile	/^LANGDIRS =$/;"	m
 LDFLAGS	cutil/tests/Makefile	/^LDFLAGS=-O0 -gstabs+ -L$(CUTIL_ROOT)\/lib -L$(EXTRA_LIBS_ROOT)\/lib$/;"	m
 LDFLAGS	cutil/tests/Makefile	/^coverage: LDFLAGS=-fprofile-arcs -O0 -gstabs+ -L$(CUTIL_ROOT)\/lib -L$(EXTRA_LIBS_ROOT)\/lib$/;"	m
 LDFLAGS	php/Makefile	/^LDFLAGS=-shared -L$(CLLSD_ROOT)\/lib -L$(CUTIL_ROOT)\/lib$/;"	m
@@ -772,6 +788,7 @@ NOTATION_SIG_LEN	tests/test_notation.c	33;"	d	file:
 NOTICE	cutil/src/macros.h	42;"	d
 NO_ARGS	cutil/src/child.h	23;"	d
 NUM_PRIMES	cutil/src/hashtable.c	/^uint_t const NUM_PRIMES = 30;$/;"	v
+OBJ	c++/Makefile	/^OBJ=$(SRC:.c=.o)$/;"	m
 OBJ	cutil/src/Makefile	/^OBJ=$(SRC:.c=.o)$/;"	m
 OBJ	cutil/tests/Makefile	/^OBJ=$(SRC:.c=.o)$/;"	m
 OBJ	php/Makefile	/^OBJ=$(SRC:.c=.o)$/;"	m
@@ -780,6 +797,7 @@ OBJ	ruby/Makefile	/^OBJ=$(SRC:.c=.o)$/;"	m
 OBJ	src/Makefile	/^OBJ=$(SRC:.c=.o)$/;"	m
 OBJ	tests/Makefile	/^OBJ=$(SRC:.c=.o)$/;"	m
 OPEN_MAX	cutil/src/sanitize.c	41;"	d	file:
+OUT	c++/Makefile	/^OUT=lib$(NAME)++.a$/;"	m
 OUT	cutil/src/Makefile	/^OUT=lib$(NAME).a$/;"	m
 OUT	cutil/tests/Makefile	/^OUT=test_all$/;"	m
 OUT	php/Makefile	/^OUT=llsd.so$/;"	m
@@ -806,6 +824,7 @@ POPML	src/llsd_notation_serializer.c	35;"	d	file:
 POPML	src/llsd_xml_serializer.c	27;"	d	file:
 PORTABLE_32_BIT	cutil/src/macros.h	234;"	d
 PORTABLE_64_BIT	cutil/src/macros.h	230;"	d
+PREFIX	c++/Makefile	/^PREFIX?=\/usr\/local$/;"	m
 PREFIX	cutil/src/Makefile	/^PREFIX?=\/usr\/local$/;"	m
 PREFIX	src/Makefile	/^PREFIX?=\/usr\/local$/;"	m
 PRIMES	cutil/src/hashtable.c	/^uint_t const PRIMES[] =$/;"	v
@@ -851,6 +870,7 @@ SETREUID	cutil/src/macros.h	213;"	d
 SETSOCKOPT	cutil/src/macros.h	168;"	d
 SETSOCKOPT	cutil/src/macros.h	214;"	d
 SHELL	Makefile	/^SHELL=\/bin\/sh$/;"	m
+SHELL	c++/Makefile	/^SHELL=\/bin\/sh$/;"	m
 SHELL	cutil/Makefile	/^SHELL=\/bin\/sh$/;"	m
 SHELL	cutil/src/Makefile	/^SHELL=\/bin\/sh$/;"	m
 SHELL	cutil/tests/Makefile	/^SHELL=\/bin\/sh$/;"	m
@@ -886,6 +906,7 @@ SOCKET_TCP	cutil/src/socket.h	/^    SOCKET_TCP,$/;"	e	enum:socket_type_e
 SOCKET_TIMEOUT	cutil/src/socket.h	/^    SOCKET_TIMEOUT      = -5,$/;"	e	enum:socket_ret_e
 SOCKET_UNIX	cutil/src/socket.h	/^	SOCKET_UNIX,$/;"	e	enum:socket_type_e
 SOCKET_UNKNOWN	cutil/src/socket.h	/^	SOCKET_UNKNOWN = -1$/;"	e	enum:socket_type_e
+SRC	c++/Makefile	/^SRC=llsd++.cpp$/;"	m
 SRC	cutil/src/Makefile	/^SRC=aiofd.c bitset.c btree.c buffer.c child.c daemon.c events.c hashtable.c list.c log.c pair.c privileges.c sanitize.c socket.c$/;"	m
 SRC	cutil/tests/Makefile	/^SRC=test_all.c test_aiofd.c test_bitset.c test_btree.c test_buffer.c test_child.c test_events.c test_flags.c test_hashtable.c test_list.c test_pair.c test_privileges.c test_sanitize.c test_socket.c$/;"	m
 SRC	php/Makefile	/^SRC=llsd.c$/;"	m
@@ -893,6 +914,7 @@ SRC	python/Makefile	/^SRC=llsd.c$/;"	m
 SRC	ruby/Makefile	/^SRC=llsd.c$/;"	m
 SRC	src/Makefile	/^SRC=base16.c base64.c base85.c llsd.c llsd_parser.c llsd_binary_parser.c llsd_json_parser.c llsd_notation_parser.c llsd_xml_parser.c llsd_serializer.c llsd_binary_serializer.c llsd_json_serializer.c llsd_notation_serializer.c llsd_xml_serializer.c$/;"	m
 SRC	tests/Makefile	/^SRC=test_all.c test_base16.c test_base64.c test_base85.c test_binary.c test_flags.c test_json.c test_notation.c test_xml.c$/;"	m
+SRCDIR	Makefile	/^SRCDIR = src$/;"	m
 SRCDIR	cutil/Makefile	/^SRCDIR = src$/;"	m
 STRCMP	cutil/src/macros.h	68;"	d
 STRDUP	cutil/src/macros.h	67;"	d
@@ -907,6 +929,7 @@ STRING_STATES	src/llsd_xml_parser.c	139;"	d	file:
 SUITE	cutil/tests/test_macros.h	20;"	d
 SUITE	tests/test_macros.h	20;"	d
 T	cutil/src/macros.h	224;"	d
+TESTDIR	Makefile	/^TESTDIR = tests$/;"	m
 TESTDIR	cutil/Makefile	/^TESTDIR = tests$/;"	m
 TESTDIRS	Makefile	/^TESTDIRS = $(DIRS:%=test-%)$/;"	m
 TESTDIRS	cutil/Makefile	/^TESTDIRS = $(DIRS:%=test-%)$/;"	m
@@ -1046,7 +1069,7 @@ aiofd_write_fn	cutil/src/aiofd.c	/^static evt_ret_t aiofd_write_fn( evt_loop_t *
 aiofd_write_s	cutil/src/aiofd.c	/^typedef struct aiofd_write_s$/;"	s	file:
 aiofd_write_t	cutil/src/aiofd.c	/^} aiofd_write_t;$/;"	t	typeref:struct:aiofd_write_s	file:
 aiofd_writev	cutil/src/aiofd.c	/^int aiofd_writev( aiofd_t * const aiofd,$/;"	f
-array_	src/llsd.c	/^		llsd_array_t	array_;$/;"	m	union:llsd_s::__anon4	file:
+array_	src/llsd.c	/^		llsd_array_t	array_;$/;"	m	union:llsd_s::__anon1	file:
 array_	tests/test_binary.c	/^static uint8_t const array_[] = { '[', 0x00, 0x00, 0x00, 0x00, ']' };$/;"	v	file:
 array_	tests/test_json.c	/^static uint8_t const array_[] = "[]";$/;"	v	file:
 array_	tests/test_notation.c	/^static uint8_t const array_[] = "[]";$/;"	v	file:
@@ -1074,7 +1097,7 @@ begin_value	src/llsd_json_parser.c	/^static int begin_value( uint32_t valid_stat
 begin_value	src/llsd_notation_parser.c	/^static int begin_value( uint32_t valid_states, llsd_type_t type_, ns_state_t * parser_state )$/;"	f	file:
 begin_value	src/llsd_xml_parser.c	/^static int begin_value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_state )$/;"	f	file:
 binary	tests/test_all.c	/^SUITE( binary );$/;"	v
-binary_	src/llsd.c	/^		llsd_binary_t	binary_;$/;"	m	union:llsd_s::__anon4	file:
+binary_	src/llsd.c	/^		llsd_binary_t	binary_;$/;"	m	union:llsd_s::__anon1	file:
 binary_	tests/test_binary.c	/^static uint8_t const binary_[] = { 'b', 0x00, 0x00, 0x00, 0x10, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };$/;"	v	file:
 binary_	tests/test_json.c	/^static uint8_t const binary_[] = "\\"||b64||AQIDBAUGBwgJAAECAwQFBg==\\"";$/;"	v	file:
 binary_	tests/test_notation.c	/^static uint8_t const binary_[] = "b64\\"AQIDBAUGBwgJAAECAwQFBg==\\"";$/;"	v	file:
@@ -1087,7 +1110,7 @@ bits	cutil/src/bitset.h	/^	uint32_t * bits;$/;"	m	struct:bitset_s
 bitset	cutil/tests/test_all.c	/^SUITE( bitset );$/;"	v
 bitset_s	cutil/src/bitset.h	/^typedef struct bitset_s$/;"	s
 bitset_t	cutil/src/bitset.h	/^} bitset_t;$/;"	t	typeref:struct:bitset_s
-bool_	src/llsd.c	/^		llsd_bool_t		bool_;$/;"	m	union:llsd_s::__anon4	file:
+bool_	src/llsd.c	/^		llsd_bool_t		bool_;$/;"	m	union:llsd_s::__anon1	file:
 boolean_	tests/test_binary.c	/^static uint8_t const boolean_[]= { '1' };$/;"	v	file:
 boolean_	tests/test_json.c	/^static uint8_t const boolean_[] = "true";$/;"	v	file:
 boolean_	tests/test_notation.c	/^static uint8_t const boolean_[] = "1";$/;"	v	file:
@@ -1169,7 +1192,7 @@ child_aiofd_read_fn	cutil/src/child.c	/^static int child_aiofd_read_fn( aiofd_t 
 child_aiofd_write_fn	cutil/src/child.c	/^static int child_aiofd_write_fn( aiofd_t * const aiofd,$/;"	f	file:
 child_ops_s	cutil/src/child.h	/^typedef struct child_ops_s $/;"	s
 child_ops_t	cutil/src/child.h	/^} child_ops_t;$/;"	t	typeref:struct:child_ops_s
-child_params	cutil/src/events.h	/^	} child_params;$/;"	m	union:evt_params_u	typeref:struct:evt_params_u::__anon2
+child_params	cutil/src/events.h	/^	} child_params;$/;"	m	union:evt_params_u	typeref:struct:evt_params_u::__anon3
 child_pid	cutil/tests/test_child.c	/^static pid_t child_pid = -1;$/;"	v	file:
 child_process_deinitialize	cutil/src/child.c	/^static void child_process_deinitialize( child_process_t * const child, int wait )$/;"	f	file:
 child_process_delete	cutil/src/child.c	/^void child_process_delete( void * cp, int wait )$/;"	f
@@ -1207,7 +1230,7 @@ data_offset	tests/test_binary.c	/^static size_t const data_offset = BINARY_SIG_L
 data_offset	tests/test_json.c	/^static size_t const data_offset = 0;$/;"	v	file:
 data_offset	tests/test_notation.c	/^static size_t const data_offset = NOTATION_SIG_LEN;$/;"	v	file:
 data_offset	tests/test_xml.c	/^static size_t const data_offset = XML_SIG_LEN;$/;"	v	file:
-date_	src/llsd.c	/^		llsd_date_t		date_;$/;"	m	union:llsd_s::__anon4	file:
+date_	src/llsd.c	/^		llsd_date_t		date_;$/;"	m	union:llsd_s::__anon1	file:
 date_	tests/test_binary.c	/^static uint8_t const date_[] = { 'd', 0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };$/;"	v	file:
 date_	tests/test_json.c	/^static uint8_t const date_[] = "\\"1970-01-01T00:00:01.000Z\\"";$/;"	v	file:
 date_	tests/test_notation.c	/^static uint8_t const date_[] = "d\\"1970-01-01T00:00:01.000Z\\"";$/;"	v	file:
@@ -1562,7 +1585,7 @@ fake_writev	cutil/tests/test_flags.c	/^int fake_writev = FALSE;$/;"	v
 fake_writev	tests/test_flags.c	/^int fake_writev = FALSE;$/;"	v
 fake_writev_ret	cutil/tests/test_flags.c	/^int fake_writev_ret = -1;$/;"	v
 fake_writev_ret	tests/test_flags.c	/^int fake_writev_ret = -1;$/;"	v
-fd	cutil/src/events.h	/^		int fd;$/;"	m	struct:evt_params_u::__anon3
+fd	cutil/src/events.h	/^		int fd;$/;"	m	struct:evt_params_u::__anon4
 filelog_fns	cutil/src/log.c	/^static cookie_io_functions_t filelog_fns =$/;"	v	file:
 filelog_writer	cutil/src/log.c	/^static ssize_t filelog_writer( void * cookie, char const * data, size_t leng )$/;"	f	file:
 first	cutil/src/pair.c	/^	void * first;$/;"	m	struct:pair_s	file:
@@ -1664,7 +1687,7 @@ init_socket_suite	cutil/tests/test_socket.c	/^static int init_socket_suite( void
 init_xml_suite	tests/test_xml.c	/^static int init_xml_suite( void )$/;"	f	file:
 initial	cutil/src/hashtable.h	/^	uint_t				initial;			\/* initial capacity *\/$/;"	m	struct:ht_s
 insert_item	cutil/src/list.c	/^static list_itr_t insert_item( list_item_t * const items, $/;"	f	file:
-int_	src/llsd.c	/^		llsd_int_t		int_;$/;"	m	union:llsd_s::__anon4	file:
+int_	src/llsd.c	/^		llsd_int_t		int_;$/;"	m	union:llsd_s::__anon1	file:
 int_less	cutil/tests/test_btree.c	/^static int int_less( void * l, void * r )$/;"	f	file:
 int_t	cutil/src/macros.h	/^typedef int32_t int_t;$/;"	t
 int_t	cutil/src/macros.h	/^typedef int64_t int_t;$/;"	t
@@ -1675,7 +1698,7 @@ integer_	tests/test_xml.c	/^static uint8_t const integer_[] = "<llsd><integer>1<
 integer_fn	src/llsd.h	/^	int (*integer_fn)( int32_t const value, void * const user_data );$/;"	m	struct:llsd_ops_s
 integer_from_buf	src/llsd_xml_parser.c	/^static int integer_from_buf( buffer_t * const buf, int * ival )$/;"	f	file:
 io	cutil/src/events.h	/^	struct ev_io		io;$/;"	m	union:ev_data_u	typeref:struct:ev_data_u::ev_io
-io_params	cutil/src/events.h	/^	} io_params;$/;"	m	union:evt_params_u	typeref:struct:evt_params_u::__anon3
+io_params	cutil/src/events.h	/^	} io_params;$/;"	m	union:evt_params_u	typeref:struct:evt_params_u::__anon4
 iov	cutil/src/aiofd.c	/^	int iov;$/;"	m	struct:aiofd_write_s	file:
 is_base16	src/base16.c	/^static int is_base16( uint8_t c )$/;"	f	file:
 items	cutil/src/list.h	/^	list_item_t*	items;					\/* array of list items *\/$/;"	m	struct:list_s
@@ -1951,7 +1974,7 @@ log_type_t	cutil/src/log.h	/^} log_type_t;$/;"	t	typeref:enum:log_type_s
 low	tests/test_base16.c	/^static uint8_t * low = "4d616e2069732064697374696e677569736865642c206e6f74206f6"$/;"	v	file:
 main	cutil/tests/test_all.c	/^int main()$/;"	f
 main	tests/test_all.c	/^int main()$/;"	f
-map_	src/llsd.c	/^		llsd_map_t		map_;$/;"	m	union:llsd_s::__anon4	file:
+map_	src/llsd.c	/^		llsd_map_t		map_;$/;"	m	union:llsd_s::__anon1	file:
 map_	tests/test_binary.c	/^static uint8_t const map_[] = { '{', 0x00, 0x00, 0x00, 0x00, '}' };$/;"	v	file:
 map_	tests/test_json.c	/^static uint8_t const map_[] = "{}";$/;"	v	file:
 map_	tests/test_notation.c	/^static uint8_t const map_[] = "{}";$/;"	v	file:
@@ -2008,7 +2031,7 @@ parser_state_s	src/llsd_parser.c	/^typedef struct parser_state_s$/;"	s	file:
 parser_state_t	src/llsd_parser.c	/^} parser_state_t;$/;"	t	typeref:struct:parser_state_s	file:
 pid	cutil/src/child.c	/^	pid_t			pid;			\/* the pid of the child process *\/$/;"	m	struct:child_process_s	file:
 pid	cutil/src/daemon.c	/^pid_t pid, sid;$/;"	v
-pid	cutil/src/events.h	/^		int pid;	\/* pid to watch *\/$/;"	m	struct:evt_params_u::__anon2
+pid	cutil/src/events.h	/^		int pid;	\/* pid to watch *\/$/;"	m	struct:evt_params_u::__anon3
 pint_less	cutil/tests/test_btree.c	/^static int pint_less( void * l, void * r )$/;"	f	file:
 port	cutil/src/socket.c	/^	uint16_t		port;			\/* port number *\/$/;"	m	struct:socket_s	file:
 preserve_environ	cutil/src/sanitize.c	/^static int8_t * preserve_environ[] =$/;"	v	file:
@@ -2032,7 +2055,7 @@ read_fn	cutil/tests/test_aiofd.c	/^static int read_fn( aiofd_t * const aiofd, si
 read_fn	cutil/tests/test_child.c	/^static int32_t read_fn( child_process_t * const cp, size_t nread, void * user_data )$/;"	f	file:
 read_fn	cutil/tests/test_socket.c	/^static int32_t read_fn( socket_t * const s, size_t nread, void * user_data )$/;"	f	file:
 read_pid_fn	cutil/tests/test_child.c	/^static int32_t read_pid_fn( child_process_t * const cp, size_t nread, void * user_data )$/;"	f	file:
-real_	src/llsd.c	/^		llsd_real_t		real_;$/;"	m	union:llsd_s::__anon4	file:
+real_	src/llsd.c	/^		llsd_real_t		real_;$/;"	m	union:llsd_s::__anon1	file:
 real_	tests/test_binary.c	/^static uint8_t const real_[] = { 'r', 0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };$/;"	v	file:
 real_	tests/test_json.c	/^static uint8_t const real_[] = "1.000000";$/;"	v	file:
 real_	tests/test_notation.c	/^static uint8_t const real_[] = "r1.000000";$/;"	v	file:
@@ -2046,8 +2069,8 @@ restore_privileges	cutil/src/privileges.c	/^int restore_privileges( priv_state_t
 revt	cutil/src/aiofd.h	/^	evt_t		revt;			\/* read event *\/$/;"	m	struct:aiofd_s
 rfd	cutil/src/aiofd.h	/^	int			rfd;			\/* read fd if two are given *\/$/;"	m	struct:aiofd_s
 right	cutil/src/btree.c	/^	struct node_s * right;		\/* right child *\/$/;"	m	struct:node_s	typeref:struct:node_s::node_s	file:
-rpid	cutil/src/events.h	/^		int rpid;	\/* pid of process causing change *\/$/;"	m	struct:evt_params_u::__anon2
-rstatus	cutil/src/events.h	/^		int rstatus;\/* status word of process, use macros from sys\/wait.h, waitpid *\/$/;"	m	struct:evt_params_u::__anon2
+rpid	cutil/src/events.h	/^		int rpid;	\/* pid of process causing change *\/$/;"	m	struct:evt_params_u::__anon3
+rstatus	cutil/src/events.h	/^		int rstatus;\/* status word of process, use macros from sys\/wait.h, waitpid *\/$/;"	m	struct:evt_params_u::__anon3
 safe_fork	cutil/src/child.c	/^static pid_t safe_fork( int keepfds[], int nfds, int drop )$/;"	f	file:
 sanitize	cutil/tests/test_all.c	/^SUITE( sanitize );$/;"	v
 sanitize_files	cutil/src/sanitize.c	/^int sanitize_files( int keep[], int nfds )$/;"	f
@@ -2059,8 +2082,8 @@ sid	cutil/src/daemon.c	/^pid_t pid, sid;$/;"	v
 sig	cutil/src/events.h	/^	struct ev_signal	sig;$/;"	m	union:ev_data_u	typeref:struct:ev_data_u::ev_signal
 sigchld	cutil/src/child.c	/^	evt_t			sigchld;		\/* the SIGCHILD signal event handler *\/$/;"	m	struct:child_process_s	file:
 sigchld_cb	cutil/src/child.c	/^static evt_ret_t sigchld_cb( evt_loop_t * const el,$/;"	f	file:
-signal_params	cutil/src/events.h	/^	} signal_params;$/;"	m	union:evt_params_u	typeref:struct:evt_params_u::__anon1
-signum	cutil/src/events.h	/^		int signum;$/;"	m	struct:evt_params_u::__anon1
+signal_params	cutil/src/events.h	/^	} signal_params;$/;"	m	union:evt_params_u	typeref:struct:evt_params_u::__anon2
+signum	cutil/src/events.h	/^		int signum;$/;"	m	struct:evt_params_u::__anon2
 size	cutil/src/aiofd.c	/^	size_t size;$/;"	m	struct:aiofd_write_s	file:
 size	cutil/src/btree.c	/^	uint_t				size;		\/* number of nodes in the tree *\/$/;"	m	struct:bt_s	file:
 size	cutil/src/hashtable.h	/^	uint_t				size;				\/* the size of the list array *\/$/;"	m	struct:ht_s
@@ -2112,7 +2135,7 @@ state_stack	src/llsd_parser.c	/^	list_t * state_stack;$/;"	m	struct:parser_state
 state_stack	src/llsd_xml_parser.c	/^	list_t * state_stack;$/;"	m	struct:xp_state_s	file:
 state_t	src/llsd.h	/^} state_t;$/;"	t	typeref:enum:state_e
 stop_logging	cutil/src/log.c	/^void stop_logging( log_t * log )$/;"	f
-string_	src/llsd.c	/^		llsd_string_t	string_;$/;"	m	union:llsd_s::__anon4	file:
+string_	src/llsd.c	/^		llsd_string_t	string_;$/;"	m	union:llsd_s::__anon1	file:
 string_	tests/test_binary.c	/^static uint8_t const string_[] = { 's', 0x00, 0x00, 0x00, 0x0c, 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '!' };$/;"	v	file:
 string_	tests/test_json.c	/^static uint8_t const string_[] = "\\"Hello World!\\"";$/;"	v	file:
 string_	tests/test_notation.c	/^static uint8_t const string_[] = "s(12)\\"Hello World!\\"";$/;"	v	file:
@@ -2352,12 +2375,12 @@ tmpf	tests/test_json.c	/^static FILE* tmpf;$/;"	v	file:
 tmpf	tests/test_notation.c	/^static FILE* tmpf;$/;"	v	file:
 tmpf	tests/test_xml.c	/^static FILE* tmpf;$/;"	v	file:
 to_idx	src/base64.c	/^static uint8_t to_idx( uint8_t ch )$/;"	f	file:
-trace	cutil/src/events.h	/^		int trace;	\/* 0 == only signal upon termination, 1 == also signal when stopped\/continued *\/$/;"	m	struct:evt_params_u::__anon2
+trace	cutil/src/events.h	/^		int trace;	\/* 0 == only signal upon termination, 1 == also signal when stopped\/continued *\/$/;"	m	struct:evt_params_u::__anon3
 tree	cutil/src/btree.c	/^	node_t*				tree;		\/* pointer to btree root *\/$/;"	m	struct:bt_s	file:
 type	cutil/src/log.h	/^	log_type_t type;$/;"	m	struct:log_s
 type	cutil/src/socket.c	/^	socket_type_t	type;			\/* type of socket *\/$/;"	m	struct:socket_s	file:
 type_	src/llsd.c	/^	llsd_type_t			type_;$/;"	m	struct:llsd_s	file:
-types	cutil/src/events.h	/^		evt_io_type_t types;$/;"	m	struct:evt_params_u::__anon3
+types	cutil/src/events.h	/^		evt_io_type_t types;$/;"	m	struct:evt_params_u::__anon4
 uid	cutil/src/privileges.h	/^	uid_t	uid;$/;"	m	struct:priv_state_s
 uint_t	cutil/src/macros.h	/^typedef uint32_t uint_t;$/;"	t
 uint_t	cutil/src/macros.h	/^typedef uint64_t uint_t;$/;"	t
@@ -2367,7 +2390,7 @@ undef_	tests/test_notation.c	/^static uint8_t const undef_[] = "!";$/;"	v	file:
 undef_	tests/test_xml.c	/^static uint8_t const undef_[] = "<llsd><undef \/><\/llsd>";$/;"	v	file:
 undef_fn	src/llsd.h	/^	int (*undef_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
 update_state	src/llsd_parser.c	/^static int update_state( uint32_t valid_states, void * const user_data, llsd_t * const v )$/;"	f	file:
-uri_	src/llsd.c	/^		llsd_uri_t		uri_;$/;"	m	union:llsd_s::__anon4	file:
+uri_	src/llsd.c	/^		llsd_uri_t		uri_;$/;"	m	union:llsd_s::__anon1	file:
 uri_	tests/test_binary.c	/^static uint8_t const uri_[] = { 'l', 0x00, 0x00, 0x00, 0x16, 'h', 't', 't', 'p', ':', '\/', '\/', 'w', 'w', 'w', '.', 'i', 'x', 'q', 'u', 'i', 'c', 'k', '.', 'c', 'o', 'm' };$/;"	v	file:
 uri_	tests/test_json.c	/^static uint8_t const uri_[] = "\\"||uri||http:\/\/www.ixquick.com\\"";$/;"	v	file:
 uri_	tests/test_notation.c	/^static uint8_t const uri_[] = "l\\"http:\/\/www.ixquick.com\\"";$/;"	v	file:
@@ -2383,7 +2406,7 @@ user_data	src/llsd_binary_parser.c	/^	void * user_data;$/;"	m	struct:bs_state_s	
 user_data	src/llsd_json_parser.c	/^	void * user_data;$/;"	m	struct:js_state_s	file:
 user_data	src/llsd_notation_parser.c	/^	void * user_data;$/;"	m	struct:ns_state_s	file:
 user_data	src/llsd_xml_parser.c	/^	void * user_data;$/;"	m	struct:xp_state_s	file:
-uuid_	src/llsd.c	/^		llsd_uuid_t		uuid_;$/;"	m	union:llsd_s::__anon4	file:
+uuid_	src/llsd.c	/^		llsd_uuid_t		uuid_;$/;"	m	union:llsd_s::__anon1	file:
 uuid_	tests/test_binary.c	/^static uint8_t const uuid_[] = { 'u', 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 };$/;"	v	file:
 uuid_	tests/test_json.c	/^static uint8_t const uuid_[] = "\\"01020304-0506-0708-0900-010203040506\\"";$/;"	v	file:
 uuid_	tests/test_notation.c	/^static uint8_t const uuid_[] = "u01020304-0506-0708-0900-010203040506";$/;"	v	file:
