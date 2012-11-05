@@ -61,10 +61,9 @@ coverage: all
 debug: all
 
 report:
-	lcov --base-directory . --directory . -c -o cutil.info
-	lcov --remove cutil.info "/usr*" -o cutil.info
+	lcov --base-directory . --directory . -c -o $(NAME).info
 	rm -rf $(COVERAGE)
-	genhtml -o $(COVERAGE) -t "cutil test coverage" --num-spaces 4 cutil.info
+	genhtml -o $(COVERAGE) -t "$(NAME) test coverage" --num-spaces 4 $(NAME).info
 
 clean:
 	rm -rf $(NAME)
