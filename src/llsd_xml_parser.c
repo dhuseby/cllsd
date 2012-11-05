@@ -25,8 +25,8 @@
 #include "llsd.h"
 #include "llsd_xml_parser.h"
 
-#define XML_SIG_LEN (38)
-static uint8_t const * const xml_header = "<?xml version\"1.0\" encoding=\"UTF-8\"?>\n";
+#define XML_SIG_LEN (39)
+static uint8_t const * const xml_header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 
 int llsd_xml_check_sig_file( FILE * fin )
 {

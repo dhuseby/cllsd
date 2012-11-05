@@ -30,7 +30,7 @@
 #include <llsd.h>
 
 /* offset of first by after header */
-#define XML_SIG_LEN (38)
+#define XML_SIG_LEN (39)
 static size_t const data_offset = XML_SIG_LEN;
 
 /* expected values */

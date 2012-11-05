@@ -194,7 +194,7 @@
 288	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="288"><span class="lineNum">     288 <\/span>                :            : }<\/a>$/;"	a
 288	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="288"><span class="lineNum">     288 <\/span>                :            : }<\/a>$/;"	a
 289	coverage/cllsd/src/llsd_xml_serializer.c.gcov.html	/^<a name="289"><span class="lineNum">     289 <\/span>                :            : }<\/a>$/;"	a
-29	coverage/cllsd/src/llsd_xml_parser.c.gcov.html	/^<a name="29"><span class="lineNum">      29 <\/span>                :            : static uint8_t const * const xml_header = &quot;&lt;?xml version\\&quot;1.0\\&quot; encoding=\\&quot;UTF-8\\&quot;?&gt;\\n&quot;;<\/a>$/;"	a
+29	coverage/cllsd/src/llsd_xml_parser.c.gcov.html	/^<a name="29"><span class="lineNum">      29 <\/span>                :            : static uint8_t const * const xml_header = &quot;&lt;?xml version=\\&quot;1.0\\&quot; encoding=\\&quot;UTF-8\\&quot;?&gt;\\n&quot;;<\/a>$/;"	a
 29	cutil/coverage/cutil/src/pair.c.gcov.html	/^<a name="29"><span class="lineNum">      29 <\/span>                :            : };<\/a>$/;"	a
 294	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="294"><span class="lineNum">     294 <\/span>                :            : }<\/a>$/;"	a
 298	coverage/cllsd/src/llsd_xml_parser.c.gcov.html	/^<a name="298"><span class="lineNum">     298 <\/span>                :            : }<\/a>$/;"	a
@@ -302,7 +302,7 @@
 447	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="447"><span class="lineNum">     447 <\/span>                :            : }<\/a>$/;"	a
 447	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="447"><span class="lineNum">     447 <\/span>                :            : <\/a>$/;"	a
 45	coverage/cllsd/src/llsd_json_parser.c.gcov.html	/^<a name="45"><span class="lineNum">      45 <\/span>                :            : #define BEGIN_VALUE_STATES ( TOP_LEVEL | ARRAY_BEGIN | ARRAY_VALUE_END | MAP_KEY_END )<\/a>$/;"	a
-451	coverage/cllsd/src/llsd_xml_serializer.c.gcov.html	/^<a name="451"><span class="lineNum">     451 <\/span>                :            : static uint8_t const * const xml_header = &quot;&lt;?xml version\\&quot;1.0\\&quot; encoding=\\&quot;UTF-8\\&quot;?&gt;\\n&quot;;<\/a>$/;"	a
+451	coverage/cllsd/src/llsd_xml_serializer.c.gcov.html	/^<a name="451"><span class="lineNum">     451 <\/span>                :            : static uint8_t const * const xml_header = &quot;&lt;?xml version=\\&quot;1.0\\&quot; encoding=\\&quot;UTF-8\\&quot;?&gt;\\n&quot;;<\/a>$/;"	a
 46	coverage/cllsd/src/llsd_serializer.c.gcov.html	/^<a name="46"><span class="lineNum">      46 <\/span>                :            : };<\/a>$/;"	a
 460	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="460"><span class="lineNum">     460 <\/span>                :            : }<\/a>$/;"	a
 460	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="460"><span class="lineNum">     460 <\/span>                :            : }<\/a>$/;"	a
@@ -624,7 +624,7 @@ GCOV	python/Makefile	/^GCOV=$(SRC:.c=.c.gcov)$/;"	m
 GCOV	ruby/Makefile	/^GCOV=$(SRC:.c=.c.gcov)$/;"	m
 GCOV	src/Makefile	/^GCOV=$(SRC:.c=.c.gcov)$/;"	m
 GCOV	tests/Makefile	/^GCOV=$(SRC:.c=.c.gcov)$/;"	m
-GCOVDIRS	Makefile	/^GCOVDIRS = $(BASEDIRS:%=gcov-%)$/;"	m
+GCOVDIRS	Makefile	/^GCOVDIRS = $(SRCDIR:%=gcov-%) $(TESTDIR:%=gcov-%)$/;"	m
 GCOVDIRS	cutil/Makefile	/^GCOVDIRS = $(DIRS:%=gcov-%)$/;"	m
 GETDTABLESIZE	cutil/src/macros.h	108;"	d
 GETDTABLESIZE	cutil/src/macros.h	199;"	d
@@ -855,7 +855,7 @@ REPEAT	cutil/tests/test_hashtable.c	34;"	d	file:
 REPEAT	cutil/tests/test_list.c	34;"	d	file:
 REPEAT	cutil/tests/test_privileges.c	33;"	d	file:
 REPEAT	cutil/tests/test_socket.c	34;"	d	file:
-REPORTDIRS	Makefile	/^REPORTDIRS = $(BASEDIRS:%=report-%)$/;"	m
+REPORTDIRS	Makefile	/^REPORTDIRS = $(SRCDIR:%=report-%) $(TESTDIR:%=report-%)$/;"	m
 REPORTDIRS	cutil/Makefile	/^REPORTDIRS = $(DIRS:%=report-%)$/;"	m
 SETEGID	cutil/src/macros.h	148;"	d
 SETEGID	cutil/src/macros.h	209;"	d
@@ -2448,8 +2448,8 @@ x_server_error_fn	cutil/tests/test_socket.c	/^static socket_ret_t x_server_error
 x_server_read_fn	cutil/tests/test_socket.c	/^static int32_t x_server_read_fn( socket_t * const s, size_t nread, void * user_data )$/;"	f	file:
 x_server_write_fn	cutil/tests/test_socket.c	/^static int32_t x_server_write_fn( socket_t * const s, uint8_t const * const buffer, void * user_data )$/;"	f	file:
 xml	tests/test_all.c	/^SUITE( xml );$/;"	v
-xml_header	src/llsd_xml_parser.c	/^static uint8_t const * const xml_header = "<?xml version\\"1.0\\" encoding=\\"UTF-8\\"?>\\n";$/;"	v	file:
-xml_header	src/llsd_xml_serializer.c	/^static uint8_t const * const xml_header = "<?xml version\\"1.0\\" encoding=\\"UTF-8\\"?>\\n";$/;"	v	file:
+xml_header	src/llsd_xml_parser.c	/^static uint8_t const * const xml_header = "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>\\n";$/;"	v	file:
+xml_header	src/llsd_xml_serializer.c	/^static uint8_t const * const xml_header = "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>\\n";$/;"	v	file:
 xp_state_s	src/llsd_xml_parser.c	/^typedef struct xp_state_s$/;"	s	file:
 xp_state_t	src/llsd_xml_parser.c	/^} xp_state_t;$/;"	t	typeref:struct:xp_state_s	file:
 xs_state_s	src/llsd_xml_serializer.c	/^typedef struct xs_state_s$/;"	s	file:

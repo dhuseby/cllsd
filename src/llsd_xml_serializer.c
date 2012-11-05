@@ -447,8 +447,8 @@ static int llsd_xml_map_end( uint32_t const size, void * const user_data )
 	return TRUE;
 }
 
-#define XML_SIG_LEN (38)
-static uint8_t const * const xml_header = "<?xml version\"1.0\" encoding=\"UTF-8\"?>\n";
+#define XML_SIG_LEN (39)
+static uint8_t const * const xml_header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 
 int llsd_xml_serializer_init( FILE * fout, llsd_ops_t * const ops, int const pretty, void ** const user_data )
 {

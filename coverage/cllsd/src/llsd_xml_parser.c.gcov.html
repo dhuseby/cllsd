@@ -96,8 +96,8 @@
 <span class="lineNum">      25 </span>                :            : #include &quot;llsd.h&quot;
 <span class="lineNum">      26 </span>                :            : #include &quot;llsd_xml_parser.h&quot;
 <span class="lineNum">      27 </span>                :            : 
-<span class="lineNum">      28 </span>                :            : #define XML_SIG_LEN (38)
-<a name="29"><span class="lineNum">      29 </span>                :            : static uint8_t const * const xml_header = &quot;&lt;?xml version\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;\n&quot;;</a>
+<span class="lineNum">      28 </span>                :            : #define XML_SIG_LEN (39)
+<a name="29"><span class="lineNum">      29 </span>                :            : static uint8_t const * const xml_header = &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;\n&quot;;</a>
 <span class="lineNum">      30 </span>                :            : 
 <span class="lineNum">      31 </span>                :<span class="lineCov">         56 : int llsd_xml_check_sig_file( FILE * fin )</span>
 <span class="lineNum">      32 </span>                :            : {

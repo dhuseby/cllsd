@@ -525,8 +525,8 @@
 <span class="lineNum">     447 </span>                :<span class="lineCov">      13874 :     return TRUE;</span>
 <span class="lineNum">     448 </span>                :            : }
 <span class="lineNum">     449 </span>                :            : 
-<span class="lineNum">     450 </span>                :            : #define XML_SIG_LEN (38)
-<a name="451"><span class="lineNum">     451 </span>                :            : static uint8_t const * const xml_header = &quot;&lt;?xml version\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;\n&quot;;</a>
+<span class="lineNum">     450 </span>                :            : #define XML_SIG_LEN (39)
+<a name="451"><span class="lineNum">     451 </span>                :            : static uint8_t const * const xml_header = &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;\n&quot;;</a>
 <span class="lineNum">     452 </span>                :            : 
 <span class="lineNum">     453 </span>                :<span class="lineCov">         28 : int llsd_xml_serializer_init( FILE * fout, llsd_ops_t * const ops, int const pretty, void ** const user_data )</span>
 <span class="lineNum">     454 </span>                :            : {
