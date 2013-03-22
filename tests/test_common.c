@@ -19,8 +19,6 @@
  * deserializer functions are specified when the suites are initialized.
  */
 
-#include "test_macros.h"
-
 extern FILE* tmpf;
 extern llsd_serializer_t format;
 
@@ -75,7 +73,7 @@ static llsd_t* get_random_uri( void )
 {
 	static uint8_t uri[1024];
 	uint8_t c;
-	int i;
+	int i = 0;
 	int len = (rand() % 128);
 
 	while( i < (len - 1) )
@@ -585,8 +583,6 @@ static void test_random_serialize( void )
 	uint32_t size = 1;
 	llsd_t * llsd_out = NULL;
 	llsd_t * llsd_in = NULL;
-	FILE* fin = NULL;
-	FILE* fout = NULL;
 
 	for ( i = 0; i < 17; i++ )
 	{

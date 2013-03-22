@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<llsd>
+	<map>
+		<!-- missing value -->
+		<key>foo</key>
+	</map>
+</llsd>

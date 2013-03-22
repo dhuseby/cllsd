@@ -29,6 +29,8 @@
 
 #include <llsd.h>
 
+#include "test_macros.h"
+
 /* offset of first by after header */
 #define XML_SIG_LEN (39)
 static size_t const data_offset = XML_SIG_LEN;
@@ -60,6 +62,7 @@ static uint8_t const uri_[] = "<llsd><uri>http://www.ixquick.com</uri></llsd>";
 static uint8_t const binary_[] = "<llsd><binary encoding=\"base64\">AQIDBAUGBwgJAAECAwQFBg==</binary></llsd>";
 static uint8_t const array_[] = "<llsd><array /></llsd>";
 static uint8_t const map_[] = "<llsd><map /></llsd>";
+static uint8_t const empty_[] = "<llsd />";
 
 static uint8_t const * const expected_data[ LLSD_TYPE_COUNT ] =
 {
@@ -79,6 +82,25 @@ static uint8_t const * const expected_data[ LLSD_TYPE_COUNT ] =
 static llsd_serializer_t format;
 static FILE* tmpf;
 
+static void test_recoverable_xml_error_1( void )
+{
+	FILE* fin = NULL;
+	llsd_t * llsd_in = NULL;
+
+	/* open the file */
+	fin = fopen("recoverable_xml_error_1.xml", "r+b" );
+	CU_ASSERT_PTR_NOT_NULL_FATAL( fin );
+
+	/* try to deserialize it */
+	llsd_in = (llsd_t*)llsd_parse_from_file( fin );
+	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_in );
+	fclose( fin );
+	fin = NULL;
+
+	llsd_delete( llsd_in );
+	llsd_in = NULL;
+}
+
 static int init_xml_suite( void )
 {
 	format = LLSD_ENC_XML;
@@ -92,6 +114,7 @@ static int deinit_xml_suite( void )
 
 static CU_pSuite add_xml_tests( CU_pSuite pSuite )
 {
+	ADD_TEST( "test recoverable xml error 1", test_recoverable_xml_error_1 );
 	return pSuite;
 }
 

@@ -25,8 +25,8 @@
 #include "llsd.h"
 #include "llsd_xml_parser.h"
 
-#define XML_SIG_LEN (39)
-static uint8_t const * const xml_header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+#define XML_SIG_LEN (5)
+static uint8_t const * const xml_header = "<?xml";
 
 int llsd_xml_check_sig_file( FILE * fin )
 {
@@ -52,6 +52,7 @@ typedef struct xp_state_s
 	buffer_t * buf;
 	llsd_ops_t * ops;
 	void * user_data;
+	XML_Parser p;
 } xp_state_t;
 
 #define PUSH(x) (list_push_head( parser_state->state_stack, (void*)x ))
@@ -870,7 +871,7 @@ static void XMLCALL llsd_xml_end_tag( void * data, char const * el )
 	return;
 
 xml_end_tag_fail:
-	WARN( "Failed %s step while processing %s data.\n", check_err_str_, TYPE_TO_STRING( t ) );
+	WARN( "Failed %s step while processing %s data. (line: %d, col: %d)\n", check_err_str_, TYPE_TO_STRING( t ), (int)XML_GetCurrentLineNumber( parser_state->p ), (int)XML_GetCurrentColumnNumber( parser_state->p ) );
 }
 
 static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len )
@@ -903,6 +904,7 @@ int llsd_xml_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_d
 	/* create the parser */
 	p = XML_ParserCreate( NULL );
 	CHECK_PTR_RET( p, FALSE );
+	state.p = p;
 
 	/* set up step stack, used to synthesize array value end, map key end, 
 	 * and map value end callbacks */
@@ -925,7 +927,7 @@ int llsd_xml_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_d
 	XML_SetUserData( p, (void*)(&state) );
 
 	/* seek past signature */
-	fseek( fin, XML_SIG_LEN, SEEK_SET );
+	/*fseek( fin, XML_SIG_LEN, SEEK_SET );*/
 
 	do
 	{

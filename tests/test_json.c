@@ -29,6 +29,8 @@
 
 #include <llsd.h>
 
+#include "test_macros.h"
+
 static size_t const data_offset = 0;
 
 /* expected values */
