@@ -82,23 +82,20 @@ static uint8_t const * const expected_data[ LLSD_TYPE_COUNT ] =
 static llsd_serializer_t format;
 static FILE* tmpf;
 
-static void test_recoverable_xml_error_1( void )
+static void test_unrecoverable_xml_error_1( void )
 {
 	FILE* fin = NULL;
 	llsd_t * llsd_in = NULL;
 
 	/* open the file */
-	fin = fopen("recoverable_xml_error_1.xml", "r+b" );
+	fin = fopen("unrecoverable_xml_error_1.xml", "r+b" );
 	CU_ASSERT_PTR_NOT_NULL_FATAL( fin );
 
 	/* try to deserialize it */
 	llsd_in = (llsd_t*)llsd_parse_from_file( fin );
-	CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_in );
+	CU_ASSERT_PTR_NULL_FATAL( llsd_in );
 	fclose( fin );
 	fin = NULL;
-
-	llsd_delete( llsd_in );
-	llsd_in = NULL;
 }
 
 static int init_xml_suite( void )
@@ -114,7 +111,7 @@ static int deinit_xml_suite( void )
 
 static CU_pSuite add_xml_tests( CU_pSuite pSuite )
 {
-	ADD_TEST( "test recoverable xml error 1", test_recoverable_xml_error_1 );
+	ADD_TEST( "test unrecoverable xml error 1", test_unrecoverable_xml_error_1 );
 	return pSuite;
 }
 

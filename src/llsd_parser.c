@@ -375,27 +375,22 @@ static int llsd_map_key_begin_fn( void * const user_data )
 
 	if ( !(state & (MAP_BEGIN | MAP_VALUE_END)) )
 	{
-		/* we could possibly be in MAP_KEY, MAP_KEY_END, or MAP_VALUE */
+		/* we could possibly be in MAP_KEY, MAP_KEY_END, or MAP_VALUE
+		 * try to be verbose about what the problem is */
 		if ( state & MAP_KEY )
 		{
-			WARN( "Found un-terminated map key, attempting to continue\n" );
-			POP; /* pop MAP_KEY */
+			WARN( "Found un-terminated map key\n" );
 		}
 		else if ( state & MAP_KEY_END )
 		{
-			WARN( "Found map key without a value, attempting to continue\n" );
-			POP; /* pop MAP_KEY_END */
+			WARN( "Found map key without a value\n" );
 		}
 		else if ( state & MAP_VALUE )
 		{
-			WARN( "Found un-terminated map value, attempting to continue\n" );
-			POP; /* pop MAP_VALUE */
+			WARN( "Found un-terminated map value\n" );
 		}
-		else
-		{
-			/* go ahead and fail */
-			return FALSE;
-		}
+		/* go ahead and fail */
+		return FALSE;
 	}
 	else
 	{
@@ -460,27 +455,22 @@ static int llsd_map_end_fn( uint32_t const size, void * const user_data )
 	state = TOP;
 	if ( !(state & (MAP_BEGIN | MAP_VALUE_END)) )
 	{
-		/* we could possibly be in MAP_KEY, MAP_KEY_END, or MAP_VALUE */
+		/* we could possibly be in MAP_KEY, MAP_KEY_END, or MAP_VALUE
+		 * try to be verbose about what the problem is */
 		if ( state & MAP_KEY )
 		{
-			WARN( "Found un-terminated map key, attempting to continue\n" );
-			POP; /* pop MAP_KEY */
+			WARN( "Found un-terminated map key\n" );
 		}
 		else if ( state & MAP_KEY_END )
 		{
-			WARN( "Found map key without a value, attempting to continue\n" );
-			POP; /* pop MAP_KEY_END */
+			WARN( "Found map key without a value\n" );
 		}
 		else if ( state & MAP_VALUE )
 		{
-			WARN( "Found un-terminated map value, attempting to continue\n" );
-			POP; /* pop MAP_VALUE */
+			WARN( "Found un-terminated map value\n" );
 		}
-		else
-		{
-			/* go ahead and fail */
-			return FALSE;
-		}
+		/* go ahead and fail */
+		return FALSE;
 	}
 	else
 	{
