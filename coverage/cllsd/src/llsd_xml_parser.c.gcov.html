@@ -31,13 +31,13 @@
             <td class="headerValue">cllsd test coverage</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">364</td>
-            <td class="headerCovTableEntry">423</td>
-            <td class="headerCovTableEntryMed">86.1 %</td>
+            <td class="headerCovTableEntry">363</td>
+            <td class="headerCovTableEntry">422</td>
+            <td class="headerCovTableEntryMed">86.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2013-03-22</td>
+            <td class="headerValue">2013-05-29</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">17</td>
@@ -127,12 +127,12 @@
 <span class="lineNum">      56 </span>                :            : } xp_state_t;
 <span class="lineNum">      57 </span>                :            : 
 <span class="lineNum">      58 </span>                :            : #define PUSH(x) (list_push_head( parser_state-&gt;state_stack, (void*)x ))
-<span class="lineNum">      59 </span>                :            : #define TOP     ((uint32_t)list_get_head( parser_state-&gt;state_stack ))
+<span class="lineNum">      59 </span>                :            : #define TOP     ((uint_t)list_get_head( parser_state-&gt;state_stack ))
 <span class="lineNum">      60 </span>                :            : #define POP     (list_pop_head( parser_state-&gt;state_stack))
 <span class="lineNum">      61 </span>                :            : 
 <a name="62"><span class="lineNum">      62 </span>                :            : #define BEGIN_VALUE_STATES ( TOP_LEVEL | ARRAY_BEGIN | ARRAY_VALUE_END | MAP_KEY_END )</a>
 <span class="lineNum">      63 </span>                :            : #define BEGIN_STRING_STATES ( BEGIN_VALUE_STATES | MAP_VALUE_END | MAP_BEGIN )
-<span class="lineNum">      64 </span>                :<span class="lineCov">     226760 : static int begin_value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_state )</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">     226760 : static int begin_value( uint_t valid_states, llsd_type_t type_, xp_state_t * parser_state )</span>
 <span class="lineNum">      65 </span>                :            : {
 <span class="lineNum">      66 </span>                :<span class="lineCov">     226760 :     state_t state = TOP_LEVEL;</span>
 <span class="lineNum">      67 </span>                :            : 
@@ -210,7 +210,7 @@
 <span class="lineNum">     138 </span>                :            : 
 <a name="139"><span class="lineNum">     139 </span>                :            : #define VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE_BEGIN | MAP_VALUE_BEGIN )</a>
 <span class="lineNum">     140 </span>                :            : #define STRING_STATES ( VALUE_STATES | MAP_KEY_BEGIN )
-<span class="lineNum">     141 </span>                :<span class="lineCov">     226759 : static int value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_state )</span>
+<span class="lineNum">     141 </span>                :<span class="lineCov">     226759 : static int value( uint_t valid_states, llsd_type_t type_, xp_state_t * parser_state )</span>
 <span class="lineNum">     142 </span>                :            : {
 <span class="lineNum">     143 </span>                :<span class="lineCov">     226759 :     state_t state = TOP_LEVEL;</span>
 <span class="lineNum">     144 </span>                :            : 
@@ -280,7 +280,7 @@
 <span class="lineNum">     207 </span>                :            : 
 <a name="208"><span class="lineNum">     208 </span>                :            : #define END_VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE | MAP_VALUE )</a>
 <span class="lineNum">     209 </span>                :            : #define END_STRING_STATES ( END_VALUE_STATES | MAP_KEY )
-<span class="lineNum">     210 </span>                :<span class="lineCov">     226759 : static int end_value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_state )</span>
+<span class="lineNum">     210 </span>                :<span class="lineCov">     226759 : static int end_value( uint_t valid_states, llsd_type_t type_, xp_state_t * parser_state )</span>
 <span class="lineNum">     211 </span>                :            : {
 <span class="lineNum">     212 </span>                :<span class="lineCov">     226759 :     state_t state = TOP_LEVEL;</span>
 <span class="lineNum">     213 </span>                :            : 
@@ -858,7 +858,7 @@
 <span class="lineNum">     779 </span>                :<span class="lineCov">     226789 :     llsd_type_t t = LLSD_UNDEF;</span>
 <span class="lineNum">     780 </span>                :<span class="lineCov">     226789 :     xp_state_t * parser_state = (xp_state_t*)data;</span>
 <span class="lineNum">     781 </span>                :            : 
-<span class="lineNum">     782 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 226789 times"> + </span>]:<span class="lineCov">     226789 :     CHECK_PTR( parser_state );</span>
+<span class="lineNum">     782 </span>        [<span class="branchCov" title="Branch 0 was taken 226789 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">     226789 :     CHECK_PTR( parser_state );</span>
 <span class="lineNum">     783 </span>                :            : 
 <span class="lineNum">     784 </span>                :            :     /* get the type */
 <span class="lineNum">     785 </span>                :<span class="lineCov">     226789 :     t = llsd_type_from_tag( el );</span>
@@ -949,22 +949,22 @@
 <span class="lineNum">     868 </span>                :            : 
 <span class="lineNum">     869 </span>                :            :     /* reset the buffer */
 <span class="lineNum">     870 </span>                :<span class="lineCov">     226788 :     buffer_deinitialize( parser_state-&gt;buf );</span>
-<span class="lineNum">     871 </span>                :<span class="lineCov">     226788 :     return;</span>
+<span class="lineNum">     871 </span>                :            :     return;
 <span class="lineNum">     872 </span>                :            : 
 <span class="lineNum">     873 </span>                :            : xml_end_tag_fail:
 <span class="lineNum">     874 </span>        [<span class="branchCov" title="Branch 2 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">     226789 :     WARN( &quot;Failed %s step while processing %s data. (line: %d, col: %d)\n&quot;, check_err_str_, TYPE_TO_STRING( t ), (int)XML_GetCurrentLineNumber( parser_state-&gt;p ), (int)XML_GetCurrentColumnNumber( parser_state-&gt;p ) );</span>
 <a name="875"><span class="lineNum">     875 </span>                :            : }</a>
 <span class="lineNum">     876 </span>                :            : 
-<span class="lineNum">     877 </span>                :<span class="lineCov">     574600 : static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len )</span>
+<span class="lineNum">     877 </span>                :<span class="lineCov">     574596 : static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len )</span>
 <span class="lineNum">     878 </span>                :            : {
 <span class="lineNum">     879 </span>                :            :     void * buf;
-<span class="lineNum">     880 </span>                :<span class="lineCov">     574600 :     xp_state_t *state = (xp_state_t*)data;</span>
+<span class="lineNum">     880 </span>                :<span class="lineCov">     574596 :     xp_state_t *state = (xp_state_t*)data;</span>
 <span class="lineNum">     881 </span>                :            : 
-<span class="lineNum">     882 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 574600 times"> + </span>]:<span class="lineCov">     574600 :     CHECK_PTR( state );</span>
+<span class="lineNum">     882 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 574596 times"> + </span>]:<span class="lineCov">     574596 :     CHECK_PTR( state );</span>
 <span class="lineNum">     883 </span>                :            : 
 <span class="lineNum">     884 </span>                :            :     /* extend the buffer and copy the new data into it */
-<span class="lineNum">     885 </span>                :<span class="lineCov">     574600 :     buf = buffer_append( state-&gt;buf, s, len );</span>
-<span class="lineNum">     886 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 574600 times"> + </span>]:<span class="lineCov">     574600 :     CHECK_PTR( buf );</span>
+<span class="lineNum">     885 </span>                :<span class="lineCov">     574596 :     buf = buffer_append( state-&gt;buf, s, len );</span>
+<span class="lineNum">     886 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 574596 times"> + </span>]:<span class="lineCov">     574596 :     CHECK_PTR( buf );</span>
 <span class="lineNum">     887 </span>                :            : }
 <span class="lineNum">     888 </span>                :            : 
 <a name="889"><span class="lineNum">     889 </span>                :            : #define XML_BUF_SIZE (4096)</a>

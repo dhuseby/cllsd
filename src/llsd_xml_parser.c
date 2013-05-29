@@ -56,12 +56,12 @@ typedef struct xp_state_s
 } xp_state_t;
 
 #define PUSH(x) (list_push_head( parser_state->state_stack, (void*)x ))
-#define TOP		((uint32_t)list_get_head( parser_state->state_stack ))
+#define TOP		((uint_t)list_get_head( parser_state->state_stack ))
 #define POP		(list_pop_head( parser_state->state_stack))
 
 #define BEGIN_VALUE_STATES ( TOP_LEVEL | ARRAY_BEGIN | ARRAY_VALUE_END | MAP_KEY_END )
 #define BEGIN_STRING_STATES ( BEGIN_VALUE_STATES | MAP_VALUE_END | MAP_BEGIN )
-static int begin_value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_state )
+static int begin_value( uint_t valid_states, llsd_type_t type_, xp_state_t * parser_state )
 {
 	state_t state = TOP_LEVEL;
 
@@ -138,7 +138,7 @@ static int begin_value( uint32_t valid_states, llsd_type_t type_, xp_state_t * p
 
 #define VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE_BEGIN | MAP_VALUE_BEGIN )
 #define STRING_STATES ( VALUE_STATES | MAP_KEY_BEGIN )
-static int value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_state )
+static int value( uint_t valid_states, llsd_type_t type_, xp_state_t * parser_state )
 {
 	state_t state = TOP_LEVEL;
 
@@ -207,7 +207,7 @@ static int value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_
 
 #define END_VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE | MAP_VALUE )
 #define END_STRING_STATES ( END_VALUE_STATES | MAP_KEY )
-static int end_value( uint32_t valid_states, llsd_type_t type_, xp_state_t * parser_state )
+static int end_value( uint_t valid_states, llsd_type_t type_, xp_state_t * parser_state )
 {
 	state_t state = TOP_LEVEL;
 

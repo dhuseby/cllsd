@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2013-03-22</td>
+            <td class="headerValue">2013-05-29</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -120,7 +120,7 @@
 <span class="lineNum">      49 </span>                :            : } bs_state_t;
 <span class="lineNum">      50 </span>                :            : 
 <span class="lineNum">      51 </span>                :            : #define PUSH(x) (list_push_head( parser_state-&gt;state_stack, (void*)x ))
-<span class="lineNum">      52 </span>                :            : #define TOP     ((uint32_t)list_get_head( parser_state-&gt;state_stack ))
+<span class="lineNum">      52 </span>                :            : #define TOP     ((uint_t)list_get_head( parser_state-&gt;state_stack ))
 <span class="lineNum">      53 </span>                :            : #define POP     (list_pop_head( parser_state-&gt;state_stack))
 <span class="lineNum">      54 </span>                :            : 
 <a name="55"><span class="lineNum">      55 </span>                :            : #define BEGIN_VALUE_STATES ( TOP_LEVEL | ARRAY_BEGIN | ARRAY_VALUE_END | MAP_KEY_END )</a>

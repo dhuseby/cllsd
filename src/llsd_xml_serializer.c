@@ -23,7 +23,7 @@
 #include "base64.h"
 
 #define PUSHML(x) (list_push_head( state->multiline_stack, (void*)x ))
-#define TOPML	  ((int)list_get_head( state->multiline_stack ))
+#define TOPML	  ((int_t)list_get_head( state->multiline_stack ))
 #define POPML	  (list_pop_head( state->multiline_stack ))
 
 typedef struct xs_state_s
@@ -315,7 +315,7 @@ static int llsd_xml_binary( uint8_t const * data, uint32_t const len, int const 
 	return TRUE;
 }
 
-static int llsd_xml_array_begin( uint32_t const size, void * const user_data )
+static int llsd_xml_array_begin( uint_t const size, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -324,7 +324,7 @@ static int llsd_xml_array_begin( uint32_t const size, void * const user_data )
 	INDENT;
 
 	/* if there is > 1 item in this array, we want to output items in multi-line format */
-	PUSHML( (size > 1) );
+	PUSHML( (int_t)(size > 1) );
 
 	if ( size == 0 )
 	{
@@ -357,7 +357,7 @@ static int llsd_xml_array_value_end( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_array_end( uint32_t const size, void * const user_data )
+static int llsd_xml_array_end( uint_t const size, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -372,7 +372,7 @@ static int llsd_xml_array_end( uint32_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_map_begin( uint32_t const size, void * const user_data )
+static int llsd_xml_map_begin( uint_t const size, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -381,7 +381,7 @@ static int llsd_xml_map_begin( uint32_t const size, void * const user_data )
 	INDENT;
 
 	/* if there is > 1 item in this array, we want to output items in multi-line format */
-	PUSHML( (size > 1) );
+	PUSHML( (int_t)(size > 1) );
 
 	if ( size == 0 )
 	{
@@ -432,7 +432,7 @@ static int llsd_xml_map_value_end( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_map_end( uint32_t const size, void * const user_data )
+static int llsd_xml_map_end( uint_t const size, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );

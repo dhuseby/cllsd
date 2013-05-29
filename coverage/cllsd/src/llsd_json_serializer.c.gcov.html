@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2013-03-22</td>
+            <td class="headerValue">2013-05-29</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">21</td>
@@ -102,11 +102,11 @@
 <span class="lineNum">      31 </span>                :            : } js_state_t;
 <span class="lineNum">      32 </span>                :            : 
 <span class="lineNum">      33 </span>                :            : #define PUSHML(x) (list_push_head( state-&gt;multiline_stack, (void*)x ))
-<span class="lineNum">      34 </span>                :            : #define TOPML     ((int)list_get_head( state-&gt;multiline_stack ))
+<span class="lineNum">      34 </span>                :            : #define TOPML     ((int_t)list_get_head( state-&gt;multiline_stack ))
 <span class="lineNum">      35 </span>                :            : #define POPML     (list_pop_head( state-&gt;multiline_stack ))
 <span class="lineNum">      36 </span>                :            : 
 <span class="lineNum">      37 </span>                :            : #define PUSHC(x)  (list_push_head( state-&gt;count_stack, (void*)x ))
-<span class="lineNum">      38 </span>                :            : #define TOPC      ((int)list_get_head( state-&gt;count_stack ))
+<span class="lineNum">      38 </span>                :            : #define TOPC      ((int_t)list_get_head( state-&gt;count_stack ))
 <span class="lineNum">      39 </span>                :            : #define POPC      (list_pop_head( state-&gt;count_stack ))
 <span class="lineNum">      40 </span>                :            : 
 <span class="lineNum">      41 </span>                :            : #define WRITE_STR(x,y) (fwrite( x, sizeof(uint8_t), y, state-&gt;fout ))
@@ -178,7 +178,7 @@
 <span class="lineNum">     107 </span>                :<span class="lineCov">      89147 :     size_t len = 0;</span>
 <span class="lineNum">     108 </span>                :<span class="lineCov">      89147 :     js_state_t * state = (js_state_t*)user_data;</span>
 <span class="lineNum">     109 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 89147 times"> + </span>]:<span class="lineCov">      89147 :     CHECK_PTR_RET( state, FALSE );</span>
-<span class="lineNum">     110 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 89147 times"> + </span>]:<span class="lineCov">      89147 :     CHECK_PTR( str );</span>
+<span class="lineNum">     110 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 89147 times"> + </span>]:<span class="lineCov">     178294 :     CHECK_PTR( str );</span>
 <span class="lineNum">     111 </span>                :            : 
 <span class="lineNum">     112 </span>                :            :     /* get the len */
 <span class="lineNum">     113 </span>                :<span class="lineCov">      89147 :     len = strlen( str );</span>
@@ -289,7 +289,7 @@
 <span class="lineNum">     216 </span>                :<span class="lineCov">      13866 :     return TRUE;</span>
 <a name="217"><span class="lineNum">     217 </span>                :            : }</a>
 <span class="lineNum">     218 </span>                :            : 
-<span class="lineNum">     219 </span>                :<span class="lineCov">      13790 : static int llsd_json_array_begin( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     219 </span>                :<span class="lineCov">      13790 : static int llsd_json_array_begin( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     220 </span>                :            : {
 <span class="lineNum">     221 </span>                :<span class="lineCov">      13790 :     js_state_t * state = (js_state_t*)user_data;</span>
 <span class="lineNum">     222 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13790 times"> + </span>]:<span class="lineCov">      13790 :     CHECK_PTR_RET( state, FALSE );</span>
@@ -298,7 +298,7 @@
 <span class="lineNum">     225 </span>                :<span class="lineCov">      13790 :     PUSHC( 0 );</span>
 <span class="lineNum">     226 </span>                :            : 
 <span class="lineNum">     227 </span>                :            :     /* if there is &gt; 1 item in this array, we want to output items in multi-line format */
-<span class="lineNum">     228 </span>        [<span class="branchCov" title="Branch 1 was taken 8259 times"> + </span><span class="branchCov" title="Branch 2 was taken 5531 times"> + </span>]:<span class="lineCov">      13790 :     PUSHML( (size &gt; 1) );</span>
+<span class="lineNum">     228 </span>        [<span class="branchCov" title="Branch 1 was taken 8259 times"> + </span><span class="branchCov" title="Branch 2 was taken 5531 times"> + </span>]:<span class="lineCov">      13790 :     PUSHML( (int_t)(size &gt; 1) );</span>
 <span class="lineNum">     229 </span>                :            : 
 <span class="lineNum">     230 </span>[<span class="branchCov" title="Branch 0 was taken 9589 times"> + </span><span class="branchCov" title="Branch 1 was taken 4201 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 5652 times"> + </span><span class="branchCov" title="Branch 3 was taken 3937 times"> + </span>]:<span class="lineCov">      13790 :     if ( map_value &amp;&amp; (size &gt; 1))</span>
 <span class="lineNum">     231 </span>                :            :     {
@@ -328,7 +328,7 @@
 <span class="lineNum">     253 </span>                :            : 
 <span class="lineNum">     254 </span>                :<span class="lineCov">      75848 : static int llsd_json_array_value_end( void * const user_data )</span>
 <span class="lineNum">     255 </span>                :            : {
-<span class="lineNum">     256 </span>                :<span class="lineCov">      75848 :     int c = 0;</span>
+<span class="lineNum">     256 </span>                :<span class="lineCov">      75848 :     int_t c = 0;</span>
 <span class="lineNum">     257 </span>                :<span class="lineCov">      75848 :     js_state_t * state = (js_state_t*)user_data;</span>
 <span class="lineNum">     258 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 75848 times"> + </span>]:<span class="lineCov">      75848 :     CHECK_PTR_RET( state, FALSE );</span>
 <span class="lineNum">     259 </span>                :            :     /* increment the item count */
@@ -339,7 +339,7 @@
 <span class="lineNum">     264 </span>                :            : }
 <a name="265"><span class="lineNum">     265 </span>                :            : </a>
 <span class="lineNum">     266 </span>                :            : 
-<span class="lineNum">     267 </span>                :<span class="lineCov">      13790 : static int llsd_json_array_end( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     267 </span>                :<span class="lineCov">      13790 : static int llsd_json_array_end( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     268 </span>                :            : {
 <span class="lineNum">     269 </span>                :<span class="lineCov">      13790 :     js_state_t * state = (js_state_t*)user_data;</span>
 <span class="lineNum">     270 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13790 times"> + </span>]:<span class="lineCov">      13790 :     CHECK_PTR_RET( state, FALSE );</span>
@@ -353,7 +353,7 @@
 <span class="lineNum">     277 </span>                :<span class="lineCov">      13790 :     return TRUE;</span>
 <a name="278"><span class="lineNum">     278 </span>                :            : }</a>
 <span class="lineNum">     279 </span>                :            : 
-<span class="lineNum">     280 </span>                :<span class="lineCov">      13779 : static int llsd_json_map_begin( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     280 </span>                :<span class="lineCov">      13779 : static int llsd_json_map_begin( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     281 </span>                :            : {
 <span class="lineNum">     282 </span>                :<span class="lineCov">      13779 :     js_state_t * state = (js_state_t*)user_data;</span>
 <span class="lineNum">     283 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13779 times"> + </span>]:<span class="lineCov">      13779 :     CHECK_PTR_RET( state, FALSE );</span>
@@ -362,7 +362,7 @@
 <span class="lineNum">     286 </span>                :<span class="lineCov">      13779 :     PUSHC( 0 );</span>
 <span class="lineNum">     287 </span>                :            : 
 <span class="lineNum">     288 </span>                :            :     /* if there is &gt; 1 item in this array, we want to output items in multi-line format */
-<span class="lineNum">     289 </span>        [<span class="branchCov" title="Branch 1 was taken 8350 times"> + </span><span class="branchCov" title="Branch 2 was taken 5429 times"> + </span>]:<span class="lineCov">      13779 :     PUSHML( (size &gt; 1) );</span>
+<span class="lineNum">     289 </span>        [<span class="branchCov" title="Branch 1 was taken 8350 times"> + </span><span class="branchCov" title="Branch 2 was taken 5429 times"> + </span>]:<span class="lineCov">      13779 :     PUSHML( (int_t)(size &gt; 1) );</span>
 <span class="lineNum">     290 </span>                :            : 
 <span class="lineNum">     291 </span>[<span class="branchCov" title="Branch 0 was taken 9508 times"> + </span><span class="branchCov" title="Branch 1 was taken 4271 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 5678 times"> + </span><span class="branchCov" title="Branch 3 was taken 3830 times"> + </span>]:<span class="lineCov">      13779 :     if ( map_value &amp;&amp; (size &gt; 1))</span>
 <span class="lineNum">     292 </span>                :            :     {
@@ -409,7 +409,7 @@
 <span class="lineNum">     331 </span>                :            : 
 <span class="lineNum">     332 </span>                :<span class="lineCov">      75441 : static int llsd_json_map_value_end( void * const user_data )</span>
 <span class="lineNum">     333 </span>                :            : {
-<span class="lineNum">     334 </span>                :<span class="lineCov">      75441 :     int c = 0;</span>
+<span class="lineNum">     334 </span>                :<span class="lineCov">      75441 :     int_t c = 0;</span>
 <span class="lineNum">     335 </span>                :<span class="lineCov">      75441 :     js_state_t * state = (js_state_t*)user_data;</span>
 <span class="lineNum">     336 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 75441 times"> + </span>]:<span class="lineCov">      75441 :     CHECK_PTR_RET( state, FALSE );</span>
 <span class="lineNum">     337 </span>                :<span class="lineCov">      75441 :     c = TOPC;</span>
@@ -419,7 +419,7 @@
 <span class="lineNum">     341 </span>                :<span class="lineCov">      75441 :     return TRUE;</span>
 <a name="342"><span class="lineNum">     342 </span>                :            : }</a>
 <span class="lineNum">     343 </span>                :            : 
-<span class="lineNum">     344 </span>                :<span class="lineCov">      13779 : static int llsd_json_map_end( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     344 </span>                :<span class="lineCov">      13779 : static int llsd_json_map_end( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     345 </span>                :            : {
 <span class="lineNum">     346 </span>                :<span class="lineCov">      13779 :     js_state_t * state = (js_state_t*)user_data;</span>
 <span class="lineNum">     347 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13779 times"> + </span>]:<span class="lineCov">      13779 :     CHECK_PTR_RET( state, FALSE );</span>

@@ -49,7 +49,7 @@ typedef struct bs_state_s
 } bs_state_t;
 
 #define PUSH(x) (list_push_head( parser_state->state_stack, (void*)x ))
-#define TOP		((uint32_t)list_get_head( parser_state->state_stack ))
+#define TOP		((uint_t)list_get_head( parser_state->state_stack ))
 #define POP		(list_pop_head( parser_state->state_stack))
 
 #define BEGIN_VALUE_STATES ( TOP_LEVEL | ARRAY_BEGIN | ARRAY_VALUE_END | MAP_KEY_END )

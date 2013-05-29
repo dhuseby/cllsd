@@ -176,6 +176,7 @@ uint32_t base64_decoded_len( uint8_t const * in, uint32_t inlen )
 {
 	uint32_t len = 0;
 	CHECK_PTR_RET( in, 0 );
+	CHECK_RET( inlen > 0, 0 );
 	
 	len = 3 * (inlen / 4);
 	if ( in[ inlen - 1 ] == '=' )

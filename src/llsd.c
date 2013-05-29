@@ -90,13 +90,19 @@ int8_t const * const llsd_notation_bin_enc_type_strings[LLSD_BIN_ENC_COUNT] =
 	T("b85")
 };
 
-#define FNV_PRIME (0x01000193)
-static uint32_t llsd_pair_hash( void const * const data )
+#if defined(PORTABLE_64_BIT)
+#define FNV_OFFSET (0xCBF29CE484222325ULL)
+#define FNV_PRIME  (0x0001099511628211ULL)
+#else /* 32-bit */
+#define FNV_OFFSET (0x811C9DC5)
+#define FNV_PRIME  (0x01000193)
+#endif
+static uint_t llsd_pair_hash( void const * const data )
 {
 	int i;
 	pair_t * pair = (pair_t*)data;
 	llsd_t * key = pair_first( pair );
-	uint_t hash = 0x811c9dc5;
+	uint_t hash = FNV_OFFSET;
 	uint8_t const * p = (uint8_t const *)key->string_;
 	uint32_t const len = ( p ? strnlen( p, 64 ) : 0 );
 	CHECK_RET( (key->type_ == LLSD_STRING), 0 );

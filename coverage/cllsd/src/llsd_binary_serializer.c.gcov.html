@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2013-03-22</td>
+            <td class="headerValue">2013-05-29</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">21</td>
@@ -189,7 +189,7 @@
 <span class="lineNum">     118 </span>                :<span class="lineCov">      13866 :     return TRUE;</span>
 <a name="119"><span class="lineNum">     119 </span>                :            : }</a>
 <span class="lineNum">     120 </span>                :            : 
-<span class="lineNum">     121 </span>                :<span class="lineCov">      13790 : static int llsd_binary_array_begin( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     121 </span>                :<span class="lineCov">      13790 : static int llsd_binary_array_begin( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     122 </span>                :            : {
 <span class="lineNum">     123 </span>                :<span class="lineCov">      13790 :     uint32_t be = 0;</span>
 <span class="lineNum">     124 </span>                :<span class="lineCov">      13790 :     bs_state_t * state = (bs_state_t*)user_data;</span>
@@ -214,7 +214,7 @@
 <span class="lineNum">     143 </span>                :<span class="lineCov">      75848 :     return TRUE;</span>
 <a name="144"><span class="lineNum">     144 </span>                :            : }</a>
 <span class="lineNum">     145 </span>                :            : 
-<span class="lineNum">     146 </span>                :<span class="lineCov">      13790 : static int llsd_binary_array_end( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     146 </span>                :<span class="lineCov">      13790 : static int llsd_binary_array_end( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     147 </span>                :            : {
 <span class="lineNum">     148 </span>                :<span class="lineCov">      13790 :     bs_state_t * state = (bs_state_t*)user_data;</span>
 <span class="lineNum">     149 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13790 times"> + </span>]:<span class="lineCov">      13790 :     CHECK_PTR_RET( state, FALSE );</span>
@@ -222,7 +222,7 @@
 <span class="lineNum">     151 </span>                :<span class="lineCov">      13790 :     return TRUE;</span>
 <a name="152"><span class="lineNum">     152 </span>                :            : }</a>
 <span class="lineNum">     153 </span>                :            : 
-<span class="lineNum">     154 </span>                :<span class="lineCov">      13779 : static int llsd_binary_map_begin( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     154 </span>                :<span class="lineCov">      13779 : static int llsd_binary_map_begin( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     155 </span>                :            : {
 <span class="lineNum">     156 </span>                :<span class="lineCov">      13779 :     uint32_t be = 0;</span>
 <span class="lineNum">     157 </span>                :<span class="lineCov">      13779 :     bs_state_t * state = (bs_state_t*)user_data;</span>
@@ -261,7 +261,7 @@
 <span class="lineNum">     190 </span>                :<span class="lineCov">      75441 :     return TRUE;</span>
 <a name="191"><span class="lineNum">     191 </span>                :            : }</a>
 <span class="lineNum">     192 </span>                :            : 
-<span class="lineNum">     193 </span>                :<span class="lineCov">      13779 : static int llsd_binary_map_end( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     193 </span>                :<span class="lineCov">      13779 : static int llsd_binary_map_end( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     194 </span>                :            : {
 <span class="lineNum">     195 </span>                :<span class="lineCov">      13779 :     bs_state_t * state = (bs_state_t*)user_data;</span>
 <span class="lineNum">     196 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13779 times"> + </span>]:<span class="lineCov">      13779 :     CHECK_PTR_RET( state, FALSE );</span>

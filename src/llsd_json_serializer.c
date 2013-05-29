@@ -31,11 +31,11 @@ typedef struct js_state_s
 } js_state_t;
 
 #define PUSHML(x) (list_push_head( state->multiline_stack, (void*)x ))
-#define TOPML	  ((int)list_get_head( state->multiline_stack ))
+#define TOPML	  ((int_t)list_get_head( state->multiline_stack ))
 #define POPML	  (list_pop_head( state->multiline_stack ))
 
 #define PUSHC(x)  (list_push_head( state->count_stack, (void*)x ))
-#define TOPC	  ((int)list_get_head( state->count_stack ))
+#define TOPC	  ((int_t)list_get_head( state->count_stack ))
 #define POPC	  (list_pop_head( state->count_stack ))
 
 #define WRITE_STR(x,y) (fwrite( x, sizeof(uint8_t), y, state->fout ))
@@ -216,7 +216,7 @@ static int llsd_json_binary( uint8_t const * data, uint32_t const len, int const
 	return TRUE;
 }
 
-static int llsd_json_array_begin( uint32_t const size, void * const user_data )
+static int llsd_json_array_begin( uint_t const size, void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -225,7 +225,7 @@ static int llsd_json_array_begin( uint32_t const size, void * const user_data )
 	PUSHC( 0 );
 
 	/* if there is > 1 item in this array, we want to output items in multi-line format */
-	PUSHML( (size > 1) );
+	PUSHML( (int_t)(size > 1) );
 
 	if ( map_value && (size > 1))
 	{
@@ -253,7 +253,7 @@ static int llsd_json_array_value_begin( void * const user_data )
 
 static int llsd_json_array_value_end( void * const user_data )
 {
-	int c = 0;
+	int_t c = 0;
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 	/* increment the item count */
@@ -264,7 +264,7 @@ static int llsd_json_array_value_end( void * const user_data )
 }
 
 
-static int llsd_json_array_end( uint32_t const size, void * const user_data )
+static int llsd_json_array_end( uint_t const size, void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -277,7 +277,7 @@ static int llsd_json_array_end( uint32_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_map_begin( uint32_t const size, void * const user_data )
+static int llsd_json_map_begin( uint_t const size, void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -286,7 +286,7 @@ static int llsd_json_map_begin( uint32_t const size, void * const user_data )
 	PUSHC( 0 );
 
 	/* if there is > 1 item in this array, we want to output items in multi-line format */
-	PUSHML( (size > 1) );
+	PUSHML( (int_t)(size > 1) );
 
 	if ( map_value && (size > 1))
 	{
@@ -331,7 +331,7 @@ static int llsd_json_map_value_begin( void * const user_data )
 
 static int llsd_json_map_value_end( void * const user_data )
 {
-	int c = 0;
+	int_t c = 0;
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 	c = TOPC;
@@ -341,7 +341,7 @@ static int llsd_json_map_value_end( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_map_end( uint32_t const size, void * const user_data )
+static int llsd_json_map_end( uint_t const size, void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );

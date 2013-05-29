@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2013-03-22</td>
+            <td class="headerValue">2013-05-29</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">22</td>
@@ -94,7 +94,7 @@
 <span class="lineNum">      23 </span>                :            : #include &quot;base64.h&quot;
 <span class="lineNum">      24 </span>                :            : 
 <span class="lineNum">      25 </span>                :            : #define PUSHML(x) (list_push_head( state-&gt;multiline_stack, (void*)x ))
-<span class="lineNum">      26 </span>                :            : #define TOPML     ((int)list_get_head( state-&gt;multiline_stack ))
+<span class="lineNum">      26 </span>                :            : #define TOPML     ((int_t)list_get_head( state-&gt;multiline_stack ))
 <span class="lineNum">      27 </span>                :            : #define POPML     (list_pop_head( state-&gt;multiline_stack ))
 <span class="lineNum">      28 </span>                :            : 
 <span class="lineNum">      29 </span>                :            : typedef struct xs_state_s
@@ -387,7 +387,7 @@
 <span class="lineNum">     315 </span>                :<span class="lineCov">      13866 :     return TRUE;</span>
 <a name="316"><span class="lineNum">     316 </span>                :            : }</a>
 <span class="lineNum">     317 </span>                :            : 
-<span class="lineNum">     318 </span>                :<span class="lineCov">      13790 : static int llsd_xml_array_begin( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     318 </span>                :<span class="lineCov">      13790 : static int llsd_xml_array_begin( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     319 </span>                :            : {
 <span class="lineNum">     320 </span>                :<span class="lineCov">      13790 :     xs_state_t * state = (xs_state_t*)user_data;</span>
 <span class="lineNum">     321 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13790 times"> + </span>]:<span class="lineCov">      13790 :     CHECK_PTR_RET( state, FALSE );</span>
@@ -397,7 +397,7 @@
 <span class="lineNum">         </span>        [<span class="branchCov" title="Branch 6 was taken 13463 times"> + </span><span class="branchCov" title="Branch 7 was taken 326 times"> + </span>]
 <span class="lineNum">     325 </span>                :            : 
 <span class="lineNum">     326 </span>                :            :     /* if there is &gt; 1 item in this array, we want to output items in multi-line format */
-<span class="lineNum">     327 </span>        [<span class="branchCov" title="Branch 1 was taken 8259 times"> + </span><span class="branchCov" title="Branch 2 was taken 5531 times"> + </span>]:<span class="lineCov">      13790 :     PUSHML( (size &gt; 1) );</span>
+<span class="lineNum">     327 </span>        [<span class="branchCov" title="Branch 1 was taken 8259 times"> + </span><span class="branchCov" title="Branch 2 was taken 5531 times"> + </span>]:<span class="lineCov">      13790 :     PUSHML( (int_t)(size &gt; 1) );</span>
 <span class="lineNum">     328 </span>                :            : 
 <span class="lineNum">     329 </span>        [<span class="branchCov" title="Branch 0 was taken 3619 times"> + </span><span class="branchCov" title="Branch 1 was taken 10171 times"> + </span>]:<span class="lineCov">      13790 :     if ( size == 0 )</span>
 <span class="lineNum">     330 </span>                :            :     {
@@ -431,7 +431,7 @@
 <span class="lineNum">     357 </span>                :<span class="lineCov">      75848 :     return TRUE;</span>
 <a name="358"><span class="lineNum">     358 </span>                :            : }</a>
 <span class="lineNum">     359 </span>                :            : 
-<span class="lineNum">     360 </span>                :<span class="lineCov">      13790 : static int llsd_xml_array_end( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     360 </span>                :<span class="lineCov">      13790 : static int llsd_xml_array_end( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     361 </span>                :            : {
 <span class="lineNum">     362 </span>                :<span class="lineCov">      13790 :     xs_state_t * state = (xs_state_t*)user_data;</span>
 <span class="lineNum">     363 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13790 times"> + </span>]:<span class="lineCov">      13790 :     CHECK_PTR_RET( state, FALSE );</span>
@@ -447,7 +447,7 @@
 <span class="lineNum">     372 </span>                :<span class="lineCov">      13790 :     return TRUE;</span>
 <a name="373"><span class="lineNum">     373 </span>                :            : }</a>
 <span class="lineNum">     374 </span>                :            : 
-<span class="lineNum">     375 </span>                :<span class="lineCov">      13779 : static int llsd_xml_map_begin( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     375 </span>                :<span class="lineCov">      13779 : static int llsd_xml_map_begin( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     376 </span>                :            : {
 <span class="lineNum">     377 </span>                :<span class="lineCov">      13779 :     xs_state_t * state = (xs_state_t*)user_data;</span>
 <span class="lineNum">     378 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13779 times"> + </span>]:<span class="lineCov">      13779 :     CHECK_PTR_RET( state, FALSE );</span>
@@ -457,7 +457,7 @@
 <span class="lineNum">         </span>        [<span class="branchCov" title="Branch 6 was taken 13458 times"> + </span><span class="branchCov" title="Branch 7 was taken 320 times"> + </span>]
 <span class="lineNum">     382 </span>                :            : 
 <span class="lineNum">     383 </span>                :            :     /* if there is &gt; 1 item in this array, we want to output items in multi-line format */
-<span class="lineNum">     384 </span>        [<span class="branchCov" title="Branch 1 was taken 8350 times"> + </span><span class="branchCov" title="Branch 2 was taken 5429 times"> + </span>]:<span class="lineCov">      13779 :     PUSHML( (size &gt; 1) );</span>
+<span class="lineNum">     384 </span>        [<span class="branchCov" title="Branch 1 was taken 8350 times"> + </span><span class="branchCov" title="Branch 2 was taken 5429 times"> + </span>]:<span class="lineCov">      13779 :     PUSHML( (int_t)(size &gt; 1) );</span>
 <span class="lineNum">     385 </span>                :            : 
 <span class="lineNum">     386 </span>        [<span class="branchCov" title="Branch 0 was taken 3715 times"> + </span><span class="branchCov" title="Branch 1 was taken 10064 times"> + </span>]:<span class="lineCov">      13779 :     if ( size == 0 )</span>
 <span class="lineNum">     387 </span>                :            :     {
@@ -509,7 +509,7 @@
 <span class="lineNum">     432 </span>                :<span class="lineCov">      75441 :     return TRUE;</span>
 <a name="433"><span class="lineNum">     433 </span>                :            : }</a>
 <span class="lineNum">     434 </span>                :            : 
-<span class="lineNum">     435 </span>                :<span class="lineCov">      13779 : static int llsd_xml_map_end( uint32_t const size, void * const user_data )</span>
+<span class="lineNum">     435 </span>                :<span class="lineCov">      13779 : static int llsd_xml_map_end( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     436 </span>                :            : {
 <span class="lineNum">     437 </span>                :<span class="lineCov">      13779 :     xs_state_t * state = (xs_state_t*)user_data;</span>
 <span class="lineNum">     438 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 13779 times"> + </span>]:<span class="lineCov">      13779 :     CHECK_PTR_RET( state, FALSE );</span>
