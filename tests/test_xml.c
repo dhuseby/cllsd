@@ -28,6 +28,7 @@
 #include <cutil/macros.h>
 
 #include <llsd.h>
+#include <llsd_parser.h>
 
 #include "test_macros.h"
 

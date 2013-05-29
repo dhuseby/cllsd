@@ -554,7 +554,7 @@ static void test_serialization( void )
 		CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
 		/* try to deserialize the llsd */
-		llsd = (llsd_t*)llsd_parse_from_file( tmpf );
+		llsd = llsd_parse_from_file( tmpf );
 		if ( !llsd )
 		{
 			WARN( "failed to parse type: %s\n", llsd_get_type_string( type_ ) );
@@ -600,7 +600,7 @@ static void test_random_serialize( void )
 		tmpf = fopen( "test.llsd", "r+b" );
 		CU_ASSERT_PTR_NOT_NULL_FATAL( tmpf );
 
-		llsd_in = (llsd_t*)llsd_parse_from_file( tmpf );
+		llsd_in = llsd_parse_from_file( tmpf );
 		CU_ASSERT_PTR_NOT_NULL_FATAL( llsd_in );
 		fclose( tmpf );
 		tmpf = NULL;
