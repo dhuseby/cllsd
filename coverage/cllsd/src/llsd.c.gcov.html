@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2013-05-29</td>
+            <td class="headerValue">2013-11-14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">22</td>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">167</td>
-            <td class="headerCovTableEntry">458</td>
-            <td class="headerCovTableEntryLo">36.5 %</td>
+            <td class="headerCovTableEntry">169</td>
+            <td class="headerCovTableEntry">462</td>
+            <td class="headerCovTableEntryLo">36.6 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -1117,9 +1117,9 @@
 <span class="lineNum">    1028 </span>                :            :         case LLSD_UUID:
 <span class="lineNum">    1029 </span>                :<span class="lineCov">      55104 :             return (MEMCMP( l-&gt;uuid_, r-&gt;uuid_, UUID_LEN) == 0);</span>
 <span class="lineNum">    1030 </span>                :            :         case LLSD_STRING:
-<span class="lineNum">    1031 </span>                :<span class="lineCov">    3505160 :             return (STRCMP( l-&gt;string_, r-&gt;string_ ) == 0);</span>
+<span class="lineNum">    1031 </span>        [<span class="branchCov" title="Branch 0 was taken 3505160 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    3505160 :             return (STRCMP( l-&gt;string_, r-&gt;string_ ) == 0);</span>
 <span class="lineNum">    1032 </span>                :            :         case LLSD_URI:
-<span class="lineNum">    1033 </span>                :<span class="lineCov">      54112 :             return (STRCMP( l-&gt;uri_, r-&gt;uri_ ) == 0);</span>
+<span class="lineNum">    1033 </span>        [<span class="branchCov" title="Branch 0 was taken 54112 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">      54112 :             return (STRCMP( l-&gt;uri_, r-&gt;uri_ ) == 0);</span>
 <span class="lineNum">    1034 </span>                :            :         case LLSD_BINARY:
 <span class="lineNum">    1035 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55460 times"> + </span>]:<span class="lineCov">      55460 :             CHECK_RET( l-&gt;binary_.iov_len == r-&gt;binary_.iov_len, FALSE );</span>
 <span class="lineNum">    1036 </span>                :<span class="lineCov">      55460 :             return (MEMCMP( l-&gt;binary_.iov_base, r-&gt;binary_.iov_base, l-&gt;binary_.iov_len ) == 0);</span>

@@ -15,3 +15,4 @@ src/lib
 src/cutil.info
 src/cllsd.info
 test.llsd
+coverage/usr
