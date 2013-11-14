@@ -26,6 +26,7 @@
 
 #include <cutil/debug.h>
 #include <cutil/macros.h>
+#include <cutil/tests/test_flags.h>
 
 #include <cllsd/llsd.h>
 

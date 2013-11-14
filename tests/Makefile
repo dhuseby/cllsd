@@ -3,10 +3,11 @@
 
 # configurable variables
 CUTIL_ROOT?=../cutil/src
+CUTIL_TESTS_ROOT?=../cutil/tests
 EXTRA_LIBS_ROOT?=/usr/local
 
 SHELL=/bin/sh
-SRC=test_all.c test_base16.c test_base64.c test_base85.c test_binary.c test_flags.c test_json.c test_notation.c test_xml.c
+SRC=test_all.c test_base16.c test_base64.c test_base85.c test_binary.c $(CUTIL_TESTS_ROOT)/test_flags.c test_flags.c test_json.c test_notation.c test_xml.c
 OBJ=$(SRC:.c=.o)
 GCDA=$(SRC:.c=.gcda)
 GCNO=$(SRC:.c=.gcno)
@@ -14,10 +15,10 @@ GCOV=$(SRC:.c=.c.gcov)
 OUT=test_all
 LIBS=-lcllsd -lcutil -lcunit -lexpat -lm
 CLLSD_ROOT=../src
-CFLAGS=-O0 -gstabs+ -I$(CLLSD_ROOT)/include -I$(CUTIL_ROOT)/include
-LDFLAGS=-gstabs+ -L$(CLLSD_ROOT)/lib -L$(CUTIL_ROOT)/lib
+CFLAGS=-O0 -gstabs+ -I$(CLLSD_ROOT)/include -I$(CUTIL_ROOT)/include -I$(CUTIL_TESTS_ROOT)
+LDFLAGS=-gstabs+ -L$(CLLSD_ROOT)/lib -L$(CUTIL_ROOT)/lib -L$(CUTIL_TESTS_ROOT)/lib
 # set LDFLAGS to something gcov can use
-coverage: LDFLAGS=-fprofile-arcs -O0 -gstabs+ -L$(CLLSD_ROOT)/lib -L$(CUTIL_ROOT)/lib -L$(EXTRA_LIBS_ROOT)/lib
+coverage: LDFLAGS=-fprofile-arcs -O0 -gstabs+ -L$(CLLSD_ROOT)/lib -L$(CUTIL_ROOT)/lib -L$(CUTIL_TESTS_ROOT)/lib -L$(EXTRA_LIBS_ROOT)/lib
 
 all:
 
