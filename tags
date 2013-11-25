@@ -18,6 +18,7 @@
 1	coverage/cllsd/src/llsd_serializer.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
 1	coverage/cllsd/src/llsd_xml_parser.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
 1	coverage/cllsd/src/llsd_xml_serializer.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
+1	coverage/usr/include/x86_64-linux-gnu/bits/byteswap.h.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/* Macros to swap the order of bytes in integer values.<\/a>$/;"	a
 1	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
 1	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
 1	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1"><span class="lineNum">       1 <\/span>                :            : \/*<\/a>$/;"	a
@@ -47,6 +48,7 @@
 1054	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1054"><span class="lineNum">    1054 <\/span>                :            : <\/a>$/;"	a
 1062	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1062"><span class="lineNum">    1062 <\/span>                :            : <\/a>$/;"	a
 107	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="107"><span class="lineNum">     107 <\/span>                :            : }<\/a>$/;"	a
+107	coverage/usr/include/x86_64-linux-gnu/bits/byteswap.h.gcov.html	/^<a name="107"><span class="lineNum">     107 <\/span>                :            : # if __GNUC_PREREQ (4, 3)<\/a>$/;"	a
 1073	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1073"><span class="lineNum">    1073 <\/span>                :            : <\/a>$/;"	a
 1079	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="1079"><span class="lineNum">    1079 <\/span>                :            : <\/a>$/;"	a
 1082	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="1082"><span class="lineNum">    1082 <\/span>                :            : }<\/a>$/;"	a
@@ -72,7 +74,6 @@
 123	cutil/coverage/cutil/src/privileges.c.gcov.html	/^<a name="123"><span class="lineNum">     123 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
 124	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="124"><span class="lineNum">     124 <\/span>                :            : }<\/a>$/;"	a
 1241	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="1241"><span class="lineNum">    1241 <\/span>                :            : }<\/a>$/;"	a
-125	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="125"><span class="lineNum">     125 <\/span>                :            : }<\/a>$/;"	a
 1272	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="1272"><span class="lineNum">    1272 <\/span>                :            : }<\/a>$/;"	a
 1278	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="1278"><span class="lineNum">    1278 <\/span>                :            : }<\/a>$/;"	a
 1293	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="1293"><span class="lineNum">    1293 <\/span>                :            : }<\/a>$/;"	a
@@ -80,10 +81,10 @@
 1308	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="1308"><span class="lineNum">    1308 <\/span>                :            : }<\/a>$/;"	a
 132	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="132"><span class="lineNum">     132 <\/span>                :<span class="lineCov">     750276 : }<\/span><\/a>$/;"	a
 132	coverage/cllsd/src/llsd_binary_parser.c.gcov.html	/^<a name="132"><span class="lineNum">     132 <\/span>                :            : #define VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE_BEGIN | MAP_VALUE_BEGIN )<\/a>$/;"	a
+132	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="132"><span class="lineNum">     132 <\/span>                :            : }<\/a>$/;"	a
 1325	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="1325"><span class="lineNum">    1325 <\/span>                :            : }<\/a>$/;"	a
 133	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="133"><span class="lineNum">     133 <\/span>                :            : }<\/a>$/;"	a
 133	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="133"><span class="lineNum">     133 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
-133	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="133"><span class="lineNum">     133 <\/span>                :            : }<\/a>$/;"	a
 134	coverage/cllsd/src/llsd_json_parser.c.gcov.html	/^<a name="134"><span class="lineNum">     134 <\/span>                :            : #define VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE_BEGIN | MAP_VALUE_BEGIN )<\/a>$/;"	a
 134	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="134"><span class="lineNum">     134 <\/span>                :            : <\/a>$/;"	a
 1342	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="1342"><span class="lineNum">    1342 <\/span>                :            : }<\/a>$/;"	a
@@ -98,6 +99,7 @@
 139	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="139"><span class="lineNum">     139 <\/span>                :            : <\/a>$/;"	a
 139	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="139"><span class="lineNum">     139 <\/span>                :            : }<\/a>$/;"	a
 1392	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="1392"><span class="lineNum">    1392 <\/span>                :            : }<\/a>$/;"	a
+140	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="140"><span class="lineNum">     140 <\/span>                :            : }<\/a>$/;"	a
 1417	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="1417"><span class="lineNum">    1417 <\/span>                :            : <\/a>$/;"	a
 142	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="142"><span class="lineNum">     142 <\/span>                :            : }<\/a>$/;"	a
 1430	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="1430"><span class="lineNum">    1430 <\/span>                :            : socket_ret_t test_connect_fn_ret = SOCKET_OK;<\/a>$/;"	a
@@ -107,16 +109,15 @@
 144	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="144"><span class="lineNum">     144 <\/span>                :            : }<\/a>$/;"	a
 1442	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="1442"><span class="lineNum">    1442 <\/span>                :            : }<\/a>$/;"	a
 145	cutil/coverage/cutil/src/buffer.c.gcov.html	/^<a name="145"><span class="lineNum">     145 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
-145	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="145"><span class="lineNum">     145 <\/span>                :            : }<\/a>$/;"	a
 147	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="147"><span class="lineNum">     147 <\/span>                :            : #define VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE_BEGIN | MAP_VALUE_BEGIN )<\/a>$/;"	a
 148	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="148"><span class="lineNum">     148 <\/span>                :            : }<\/a>$/;"	a
 151	coverage/cllsd/src/base85.c.gcov.html	/^<a name="151"><span class="lineNum">     151 <\/span>                :            : }<\/a>$/;"	a
 151	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="151"><span class="lineNum">     151 <\/span>                :            : }<\/a>$/;"	a
 152	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="152"><span class="lineNum">     152 <\/span>                :            : }<\/a>$/;"	a
 152	coverage/cllsd/src/llsd_json_serializer.c.gcov.html	/^<a name="152"><span class="lineNum">     152 <\/span>                :            : }<\/a>$/;"	a
+152	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="152"><span class="lineNum">     152 <\/span>                :            : }<\/a>$/;"	a
 153	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="153"><span class="lineNum">     153 <\/span>                :            : }<\/a>$/;"	a
 154	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="154"><span class="lineNum">     154 <\/span>                :            : }<\/a>$/;"	a
-160	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="160"><span class="lineNum">     160 <\/span>                :            : }<\/a>$/;"	a
 162	coverage/cllsd/src/llsd_xml_serializer.c.gcov.html	/^<a name="162"><span class="lineNum">     162 <\/span>                :            : }<\/a>$/;"	a
 162	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="162"><span class="lineNum">     162 <\/span>                :            : <\/a>$/;"	a
 163	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="163"><span class="lineNum">     163 <\/span>                :            : }<\/a>$/;"	a
@@ -126,33 +127,34 @@
 169	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="169"><span class="lineNum">     169 <\/span>                :            : }<\/a>$/;"	a
 170	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="170"><span class="lineNum">     170 <\/span>                :            : }<\/a>$/;"	a
 170	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="170"><span class="lineNum">     170 <\/span>                :            : }<\/a>$/;"	a
-172	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="172"><span class="lineNum">     172 <\/span>                :            : }<\/a>$/;"	a
 173	coverage/cllsd/src/base64.c.gcov.html	/^<a name="173"><span class="lineNum">     173 <\/span>                :            : }<\/a>$/;"	a
 173	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="173"><span class="lineNum">     173 <\/span>                :            : }<\/a>$/;"	a
+174	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="174"><span class="lineNum">     174 <\/span>                :            : }<\/a>$/;"	a
 177	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="177"><span class="lineNum">     177 <\/span>                :            : }<\/a>$/;"	a
 177	coverage/cllsd/src/llsd_json_serializer.c.gcov.html	/^<a name="177"><span class="lineNum">     177 <\/span>                :            : }<\/a>$/;"	a
 177	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="177"><span class="lineNum">     177 <\/span>                :            : \/* NOTE: If NULL is passed in for the bt_key_cmp_fn function, the default<\/a>$/;"	a
 179	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="179"><span class="lineNum">     179 <\/span>                :            : <\/a>$/;"	a
-181	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="181"><span class="lineNum">     181 <\/span>                :            : }<\/a>$/;"	a
+179	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="179"><span class="lineNum">     179 <\/span>                :            : }<\/a>$/;"	a
 182	cutil/coverage/cutil/src/socket.c.gcov.html	/^<a name="182"><span class="lineNum">     182 <\/span>                :            : }<\/a>$/;"	a
 183	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="183"><span class="lineNum">     183 <\/span>                :            : }<\/a>$/;"	a
 184	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="184"><span class="lineNum">     184 <\/span>                :            : }<\/a>$/;"	a
 186	coverage/cllsd/src/llsd_json_serializer.c.gcov.html	/^<a name="186"><span class="lineNum">     186 <\/span>                :            : }<\/a>$/;"	a
+188	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="188"><span class="lineNum">     188 <\/span>                :            : }<\/a>$/;"	a
 189	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="189"><span class="lineNum">     189 <\/span>                :            : }<\/a>$/;"	a
 191	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="191"><span class="lineNum">     191 <\/span>                :            : }<\/a>$/;"	a
-193	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="193"><span class="lineNum">     193 <\/span>                :            : }<\/a>$/;"	a
 195	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="195"><span class="lineNum">     195 <\/span>                :            : }<\/a>$/;"	a
 199	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="199"><span class="lineNum">     199 <\/span>                :            : }<\/a>$/;"	a
 20	coverage/cllsd/src/llsd_json_parser.c.gcov.html	/^<a name="20"><span class="lineNum">      20 <\/span>                :            : #include &quot;llsd_json_parser.h&quot;<\/a>$/;"	a
 200	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="200"><span class="lineNum">     200 <\/span>                :            : <\/a>$/;"	a
+200	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="200"><span class="lineNum">     200 <\/span>                :            : }<\/a>$/;"	a
 201	coverage/cllsd/src/llsd_binary_parser.c.gcov.html	/^<a name="201"><span class="lineNum">     201 <\/span>                :            : #define END_VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE | MAP_VALUE )<\/a>$/;"	a
 202	coverage/cllsd/src/llsd_binary_serializer.c.gcov.html	/^<a name="202"><span class="lineNum">     202 <\/span>                :            : static uint8_t const * const binary_header = &quot;&lt;? LLSD\/Binary ?&gt;\\n&quot;;<\/a>$/;"	a
 202	coverage/cllsd/src/llsd_xml_serializer.c.gcov.html	/^<a name="202"><span class="lineNum">     202 <\/span>                :            : }<\/a>$/;"	a
 205	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="205"><span class="lineNum">     205 <\/span>                :            : }<\/a>$/;"	a
-205	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="205"><span class="lineNum">     205 <\/span>                :            : }<\/a>$/;"	a
 207	coverage/cllsd/src/llsd_json_parser.c.gcov.html	/^<a name="207"><span class="lineNum">     207 <\/span>                :            : #define END_VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE | MAP_VALUE )<\/a>$/;"	a
 208	coverage/cllsd/src/llsd_xml_parser.c.gcov.html	/^<a name="208"><span class="lineNum">     208 <\/span>                :            : #define END_VALUE_STATES ( TOP_LEVEL | ARRAY_VALUE | MAP_VALUE )<\/a>$/;"	a
 21	coverage/cllsd/src/base16.c.gcov.html	/^<a name="21"><span class="lineNum">      21 <\/span>                :            : #include &quot;base16.h&quot;<\/a>$/;"	a
+212	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="212"><span class="lineNum">     212 <\/span>                :            : }<\/a>$/;"	a
 215	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="215"><span class="lineNum">     215 <\/span>                :            : }<\/a>$/;"	a
 216	coverage/cllsd/src/base85.c.gcov.html	/^<a name="216"><span class="lineNum">     216 <\/span>                :            : }<\/a>$/;"	a
 216	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="216"><span class="lineNum">     216 <\/span>                :            : #define PIPE_WRITE_IDX   (1)<\/a>$/;"	a
@@ -215,10 +217,10 @@
 29	coverage/cllsd/src/llsd_xml_parser.c.gcov.html	/^<a name="29"><span class="lineNum">      29 <\/span>                :            : static uint8_t const * const xml_header = &quot;&lt;?xml&quot;;<\/a>$/;"	a
 29	cutil/coverage/cutil/src/pair.c.gcov.html	/^<a name="29"><span class="lineNum">      29 <\/span>                :            : };<\/a>$/;"	a
 295	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="295"><span class="lineNum">     295 <\/span>                :            : }<\/a>$/;"	a
-297	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="297"><span class="lineNum">     297 <\/span>                :            : }<\/a>$/;"	a
 299	coverage/cllsd/src/llsd_xml_parser.c.gcov.html	/^<a name="299"><span class="lineNum">     299 <\/span>                :            : }<\/a>$/;"	a
 301	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="301"><span class="lineNum">     301 <\/span>                :            : }<\/a>$/;"	a
 303	coverage/cllsd/src/llsd_json_serializer.c.gcov.html	/^<a name="303"><span class="lineNum">     303 <\/span>                :            : }<\/a>$/;"	a
+304	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="304"><span class="lineNum">     304 <\/span>                :            : }<\/a>$/;"	a
 305	coverage/cllsd/src/llsd_json_parser.c.gcov.html	/^<a name="305"><span class="lineNum">     305 <\/span>                :            : <\/a>$/;"	a
 31	cutil/coverage/cutil/src/buffer.c.gcov.html	/^<a name="31"><span class="lineNum">      31 <\/span>                :            :  *\/<\/a>$/;"	a
 310	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="310"><span class="lineNum">     310 <\/span>                :<span class="lineCov">     220432 : }<\/span><\/a>$/;"	a
@@ -238,21 +240,21 @@
 330	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="330"><span class="lineNum">     330 <\/span>                :            : };<\/a>$/;"	a
 336	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="336"><span class="lineNum">     336 <\/span>                :            : }<\/a>$/;"	a
 336	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="336"><span class="lineNum">     336 <\/span>                :            : }<\/a>$/;"	a
-336	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="336"><span class="lineNum">     336 <\/span>                :            : }<\/a>$/;"	a
 34	cutil/coverage/cutil/src/privileges.c.gcov.html	/^<a name="34"><span class="lineNum">      34 <\/span>                :            :  *\/<\/a>$/;"	a
 342	coverage/cllsd/src/llsd_json_serializer.c.gcov.html	/^<a name="342"><span class="lineNum">     342 <\/span>                :            : }<\/a>$/;"	a
 342	coverage/cllsd/src/llsd_xml_serializer.c.gcov.html	/^<a name="342"><span class="lineNum">     342 <\/span>                :            : }<\/a>$/;"	a
+343	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="343"><span class="lineNum">     343 <\/span>                :            : }<\/a>$/;"	a
 344	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="344"><span class="lineNum">     344 <\/span>                :            : }<\/a>$/;"	a
 344	coverage/cllsd/src/llsd_xml_parser.c.gcov.html	/^<a name="344"><span class="lineNum">     344 <\/span>                :            : }<\/a>$/;"	a
 344	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="344"><span class="lineNum">     344 <\/span>                :            : \/********** PRIVATE **********\/<\/a>$/;"	a
 345	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="345"><span class="lineNum">     345 <\/span>                :            : }<\/a>$/;"	a
 348	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="348"><span class="lineNum">     348 <\/span>                :<span class="lineCov">        416 : }<\/span><\/a>$/;"	a
 351	coverage/cllsd/src/llsd_xml_serializer.c.gcov.html	/^<a name="351"><span class="lineNum">     351 <\/span>                :            : }<\/a>$/;"	a
-354	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="354"><span class="lineNum">     354 <\/span>                :            : \/* removes the item at index &quot;itr&quot; and returns the iterator of the<\/a>$/;"	a
 355	coverage/cllsd/src/llsd_json_serializer.c.gcov.html	/^<a name="355"><span class="lineNum">     355 <\/span>                :            : }<\/a>$/;"	a
 358	coverage/cllsd/src/llsd_xml_parser.c.gcov.html	/^<a name="358"><span class="lineNum">     358 <\/span>                :            : }<\/a>$/;"	a
 358	coverage/cllsd/src/llsd_xml_serializer.c.gcov.html	/^<a name="358"><span class="lineNum">     358 <\/span>                :            : }<\/a>$/;"	a
 360	cutil/coverage/cutil/src/hashtable.c.gcov.html	/^<a name="360"><span class="lineNum">     360 <\/span>                :            : }<\/a>$/;"	a
+361	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="361"><span class="lineNum">     361 <\/span>                :            : \/* removes the item at index &quot;itr&quot; and returns the iterator of the<\/a>$/;"	a
 363	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="363"><span class="lineNum">     363 <\/span>                :            : }<\/a>$/;"	a
 364	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="364"><span class="lineNum">     364 <\/span>                :            : }<\/a>$/;"	a
 366	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="366"><span class="lineNum">     366 <\/span>                :            : }<\/a>$/;"	a
@@ -265,9 +267,9 @@
 375	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="375"><span class="lineNum">     375 <\/span>                :            : }<\/a>$/;"	a
 376	coverage/cllsd/src/llsd_xml_parser.c.gcov.html	/^<a name="376"><span class="lineNum">     376 <\/span>                :            : }<\/a>$/;"	a
 377	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="377"><span class="lineNum">     377 <\/span>                :            : }<\/a>$/;"	a
-378	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="378"><span class="lineNum">     378 <\/span>                :            : \/* inserts the item at index &quot;item&quot; before the item at &quot;itr&quot; and returns<\/a>$/;"	a
 381	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="381"><span class="lineNum">     381 <\/span>                :            : }<\/a>$/;"	a
 382	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="382"><span class="lineNum">     382 <\/span>                :            : }<\/a>$/;"	a
+385	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="385"><span class="lineNum">     385 <\/span>                :            : \/* inserts the item at index &quot;item&quot; before the item at &quot;itr&quot; and returns<\/a>$/;"	a
 387	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="387"><span class="lineNum">     387 <\/span>                :            : }<\/a>$/;"	a
 39	cutil/coverage/cutil/src/pair.c.gcov.html	/^<a name="39"><span class="lineNum">      39 <\/span>                :            : }<\/a>$/;"	a
 394	coverage/cllsd/src/llsd_xml_parser.c.gcov.html	/^<a name="394"><span class="lineNum">     394 <\/span>                :            : }<\/a>$/;"	a
@@ -277,11 +279,11 @@
 400	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="400"><span class="lineNum">     400 <\/span>                :            : }<\/a>$/;"	a
 402	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="402"><span class="lineNum">     402 <\/span>                :            : }<\/a>$/;"	a
 402	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="402"><span class="lineNum">     402 <\/span>                :            : }<\/a>$/;"	a
-402	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="402"><span class="lineNum">     402 <\/span>                :            : }<\/a>$/;"	a
 405	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="405"><span class="lineNum">     405 <\/span>                :            : }<\/a>$/;"	a
 406	coverage/cllsd/src/llsd_json_parser.c.gcov.html	/^<a name="406"><span class="lineNum">     406 <\/span>                :            : }<\/a>$/;"	a
 409	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="409"><span class="lineNum">     409 <\/span>                :            : }<\/a>$/;"	a
 409	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="409"><span class="lineNum">     409 <\/span>                :            : <\/a>$/;"	a
+409	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="409"><span class="lineNum">     409 <\/span>                :            : }<\/a>$/;"	a
 410	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="410"><span class="lineNum">     410 <\/span>                :<span class="lineCov">     762352 : }<\/span><\/a>$/;"	a
 410	coverage/cllsd/src/llsd_xml_serializer.c.gcov.html	/^<a name="410"><span class="lineNum">     410 <\/span>                :            : }<\/a>$/;"	a
 415	coverage/cllsd/src/llsd_xml_parser.c.gcov.html	/^<a name="415"><span class="lineNum">     415 <\/span>                :<span class="lineCov">     220432 : }<\/span><\/a>$/;"	a
@@ -319,7 +321,6 @@
 466	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="466"><span class="lineNum">     466 <\/span>                :            : }<\/a>$/;"	a
 47	cutil/coverage/cutil/src/pair.c.gcov.html	/^<a name="47"><span class="lineNum">      47 <\/span>                :            : }<\/a>$/;"	a
 471	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="471"><span class="lineNum">     471 <\/span>                :            : }<\/a>$/;"	a
-476	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="476"><span class="lineNum">     476 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
 477	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="477"><span class="lineNum">     477 <\/span>                :            : }<\/a>$/;"	a
 478	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="478"><span class="lineNum">     478 <\/span>                :            : extern long timezone;<\/a>$/;"	a
 48	cutil/coverage/cutil/src/buffer.c.gcov.html	/^<a name="48"><span class="lineNum">      48 <\/span>                :            : }<\/a>$/;"	a
@@ -327,6 +328,7 @@
 480	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="480"><span class="lineNum">     480 <\/span>                :            : static int_t test_flag = FALSE;<\/a>$/;"	a
 482	coverage/cllsd/src/llsd_parser.c.gcov.html	/^<a name="482"><span class="lineNum">     482 <\/span>                :            : }<\/a>$/;"	a
 483	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="483"><span class="lineNum">     483 <\/span>                :            : }<\/a>$/;"	a
+483	cutil/coverage/cutil/src/list.c.gcov.html	/^<a name="483"><span class="lineNum">     483 <\/span>                :            : #include &lt;CUnit\/Basic.h&gt;<\/a>$/;"	a
 485	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="485"><span class="lineNum">     485 <\/span>                :            : }<\/a>$/;"	a
 485	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="485"><span class="lineNum">     485 <\/span>                :<span class="lineCov">          3 : }<\/span><\/a>$/;"	a
 490	cutil/coverage/cutil/src/child.c.gcov.html	/^<a name="490"><span class="lineNum">     490 <\/span>                :            : <\/a>$/;"	a
