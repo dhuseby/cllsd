@@ -80,7 +80,7 @@ typedef struct xs_state_s
 #define LLSD_BEGIN		WRITE_STR("<llsd>",6)
 #define LLSD_END		WRITE_STR("</llsd>",7)
 
-static int llsd_xml_undef( void * const user_data )
+static int_t llsd_xml_undef( void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -88,7 +88,7 @@ static int llsd_xml_undef( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_boolean( int const value, void * const user_data )
+static int_t llsd_xml_boolean( int const value, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -99,7 +99,7 @@ static int llsd_xml_boolean( int const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_integer( int32_t const value, void * const user_data )
+static int_t llsd_xml_integer( int32_t const value, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -116,7 +116,7 @@ static int llsd_xml_integer( int32_t const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_real( double const value, void * const user_data )
+static int_t llsd_xml_real( double const value, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -134,7 +134,7 @@ static int llsd_xml_real( double const value, void * const user_data )
 }
 
 
-static int llsd_xml_uuid( uint8_t const value[UUID_LEN], void * const user_data )
+static int_t llsd_xml_uuid( uint8_t const value[UUID_LEN], void * const user_data )
 {
 	int ret = 0;
 	static const zero_uuid[UUID_LEN] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
@@ -201,7 +201,7 @@ static void llsd_xml_write_string( uint8_t const * str, uint32_t len, xs_state_t
 	}
 }
 
-static int llsd_xml_string( uint8_t const * str, int const own_it, void * const user_data )
+static int_t llsd_xml_string( uint8_t const * str, int const own_it, void * const user_data )
 {
 	uint8_t * xml_encoded = NULL;
 	size_t len = 0;
@@ -229,7 +229,7 @@ static int llsd_xml_string( uint8_t const * str, int const own_it, void * const 
 	return TRUE;
 }
 
-static int llsd_xml_date( double const value, void * const user_data )
+static int_t llsd_xml_date( double const value, void * const user_data )
 {
 	double int_time;
 	int32_t useconds;
@@ -264,7 +264,7 @@ static int llsd_xml_date( double const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_uri( uint8_t const * uri, int const own_it, void * const user_data )
+static int_t llsd_xml_uri( uint8_t const * uri, int const own_it, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	size_t len;
@@ -288,7 +288,7 @@ static int llsd_xml_uri( uint8_t const * uri, int const own_it, void * const use
 	return TRUE;
 }
 
-static int llsd_xml_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )
+static int_t llsd_xml_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )
 {
 	uint8_t * buf;
 	uint32_t outlen = 0;
@@ -315,7 +315,7 @@ static int llsd_xml_binary( uint8_t const * data, uint32_t const len, int const 
 	return TRUE;
 }
 
-static int llsd_xml_array_begin( uint_t const size, void * const user_data )
+static int_t llsd_xml_array_begin( uint_t const size, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -341,7 +341,7 @@ static int llsd_xml_array_begin( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_array_value_begin( void * const user_data )
+static int_t llsd_xml_array_value_begin( void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -350,14 +350,14 @@ static int llsd_xml_array_value_begin( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_array_value_end( void * const user_data )
+static int_t llsd_xml_array_value_end( void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 	return TRUE;
 }
 
-static int llsd_xml_array_end( uint_t const size, void * const user_data )
+static int_t llsd_xml_array_end( uint_t const size, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -372,7 +372,7 @@ static int llsd_xml_array_end( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_map_begin( uint_t const size, void * const user_data )
+static int_t llsd_xml_map_begin( uint_t const size, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -398,7 +398,7 @@ static int llsd_xml_map_begin( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_map_key_begin( void * const user_data )
+static int_t llsd_xml_map_key_begin( void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -409,7 +409,7 @@ static int llsd_xml_map_key_begin( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_map_key_end( void * const user_data )
+static int_t llsd_xml_map_key_end( void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -418,21 +418,21 @@ static int llsd_xml_map_key_end( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_xml_map_value_begin( void * const user_data )
+static int_t llsd_xml_map_value_begin( void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 	return TRUE;
 }
 
-static int llsd_xml_map_value_end( void * const user_data )
+static int_t llsd_xml_map_value_end( void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 	return TRUE;
 }
 
-static int llsd_xml_map_end( uint_t const size, void * const user_data )
+static int_t llsd_xml_map_end( uint_t const size, void * const user_data )
 {
 	xs_state_t * state = (xs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );

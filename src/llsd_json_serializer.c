@@ -48,9 +48,9 @@ typedef struct js_state_s
 #define INC_INDENT { if(state->pretty) state->indent++; }
 #define DEC_INDENT { if(state->pretty) state->indent--; }
 
-static int map_value = FALSE;
+static int_t map_value = FALSE;
 
-static int llsd_json_undef( void * const user_data )
+static int_t llsd_json_undef( void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -58,7 +58,7 @@ static int llsd_json_undef( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_boolean( int const value, void * const user_data )
+static int_t llsd_json_boolean( int const value, void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -69,7 +69,7 @@ static int llsd_json_boolean( int const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_integer( int32_t const value, void * const user_data )
+static int_t llsd_json_integer( int32_t const value, void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -77,7 +77,7 @@ static int llsd_json_integer( int32_t const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_real( double const value, void * const user_data )
+static int_t llsd_json_real( double const value, void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -85,7 +85,7 @@ static int llsd_json_real( double const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_uuid( uint8_t const value[UUID_LEN], void * const user_data )
+static int_t llsd_json_uuid( uint8_t const value[UUID_LEN], void * const user_data )
 {
 	int ret = 0;
 	js_state_t * state = (js_state_t*)user_data;
@@ -101,7 +101,7 @@ static int llsd_json_uuid( uint8_t const value[UUID_LEN], void * const user_data
 	return TRUE;
 }
 
-static int llsd_json_string( uint8_t const * str, int const own_it, void * const user_data )
+static int_t llsd_json_string( uint8_t const * str, int const own_it, void * const user_data )
 {
 	int i;
 	size_t len = 0;
@@ -151,7 +151,7 @@ static int llsd_json_string( uint8_t const * str, int const own_it, void * const
 	return TRUE;
 }
 
-static int llsd_json_date( double const value, void * const user_data )
+static int_t llsd_json_date( double const value, void * const user_data )
 {
 	double int_time;
 	int32_t useconds;
@@ -176,7 +176,7 @@ static int llsd_json_date( double const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_uri( uint8_t const * uri, int const own_it, void * const user_data )
+static int_t llsd_json_uri( uint8_t const * uri, int const own_it, void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -185,7 +185,7 @@ static int llsd_json_uri( uint8_t const * uri, int const own_it, void * const us
 	return TRUE;
 }
 
-static int llsd_json_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )
+static int_t llsd_json_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )
 {
 	/* so the draft standard for LLSD JSON encoding has binary data encoded as a JSON
 	 * array of integer values where each value in the array is an octet of binary data.
@@ -216,7 +216,7 @@ static int llsd_json_binary( uint8_t const * data, uint32_t const len, int const
 	return TRUE;
 }
 
-static int llsd_json_array_begin( uint_t const size, void * const user_data )
+static int_t llsd_json_array_begin( uint_t const size, void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -241,7 +241,7 @@ static int llsd_json_array_begin( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_array_value_begin( void * const user_data )
+static int_t llsd_json_array_value_begin( void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -251,7 +251,7 @@ static int llsd_json_array_value_begin( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_array_value_end( void * const user_data )
+static int_t llsd_json_array_value_end( void * const user_data )
 {
 	int_t c = 0;
 	js_state_t * state = (js_state_t*)user_data;
@@ -264,7 +264,7 @@ static int llsd_json_array_value_end( void * const user_data )
 }
 
 
-static int llsd_json_array_end( uint_t const size, void * const user_data )
+static int_t llsd_json_array_end( uint_t const size, void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -277,7 +277,7 @@ static int llsd_json_array_end( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_map_begin( uint_t const size, void * const user_data )
+static int_t llsd_json_map_begin( uint_t const size, void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -302,7 +302,7 @@ static int llsd_json_map_begin( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_map_key_begin( void * const user_data )
+static int_t llsd_json_map_key_begin( void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -312,7 +312,7 @@ static int llsd_json_map_key_begin( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_map_key_end( void * const user_data )
+static int_t llsd_json_map_key_end( void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -321,7 +321,7 @@ static int llsd_json_map_key_end( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_map_value_begin( void * const user_data )
+static int_t llsd_json_map_value_begin( void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -329,7 +329,7 @@ static int llsd_json_map_value_begin( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_map_value_end( void * const user_data )
+static int_t llsd_json_map_value_end( void * const user_data )
 {
 	int_t c = 0;
 	js_state_t * state = (js_state_t*)user_data;
@@ -341,7 +341,7 @@ static int llsd_json_map_value_end( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_json_map_end( uint_t const size, void * const user_data )
+static int_t llsd_json_map_end( uint_t const size, void * const user_data )
 {
 	js_state_t * state = (js_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );

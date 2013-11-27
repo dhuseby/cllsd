@@ -125,10 +125,10 @@ typedef struct llsd_itr_s {
 
 #define LLSD_ITR_EQ( i, j ) ((i.li == j.li) && ITR_EQ(i.hi,j.hi))
 
-int llsd_array_append( llsd_t * arr, llsd_t * data );
-int llsd_array_unappend( llsd_t * arr );
-int llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data );
-int llsd_map_remove( llsd_t * map, llsd_t * key );
+int_t llsd_array_append( llsd_t * arr, llsd_t * data );
+int_t llsd_array_unappend( llsd_t * arr );
+int_t llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * data );
+int_t llsd_map_remove( llsd_t * map, llsd_t * key );
 
 llsd_itr_t llsd_itr_begin( llsd_t * llsd );
 llsd_itr_t llsd_itr_end( llsd_t * llsd );
@@ -137,47 +137,47 @@ llsd_itr_t llsd_itr_rbegin( llsd_t * llsd );
 llsd_itr_t llsd_itr_next( llsd_t * llsd, llsd_itr_t itr );
 llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr );
 
-int llsd_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key );
+int_t llsd_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key );
 llsd_t * llsd_map_find_llsd( llsd_t * map, llsd_t * key );
 llsd_t * llsd_map_find( llsd_t * map, uint8_t const * const key );
 
 /* conversion interface */
-int llsd_as_boolean( llsd_t * llsd, int * v );
-int llsd_as_integer( llsd_t * llsd, int32_t * v );
-int llsd_as_double( llsd_t * llsd, double * v );
-int llsd_as_uuid( llsd_t * llsd, uint8_t uuid[UUID_LEN] );
-int llsd_as_string( llsd_t * llsd, uint8_t ** v );
-int llsd_as_binary( llsd_t * llsd, uint8_t ** v, uint32_t * len );
+int_t llsd_as_boolean( llsd_t * llsd, int * v );
+int_t llsd_as_integer( llsd_t * llsd, int32_t * v );
+int_t llsd_as_double( llsd_t * llsd, double * v );
+int_t llsd_as_uuid( llsd_t * llsd, uint8_t uuid[UUID_LEN] );
+int_t llsd_as_string( llsd_t * llsd, uint8_t ** v );
+int_t llsd_as_binary( llsd_t * llsd, uint8_t ** v, uint32_t * len );
 
 /* compare two llsd items */
-int llsd_equal( llsd_t * l, llsd_t * r );
+int_t llsd_equal( llsd_t * l, llsd_t * r );
 
 /* get the count of the cotainer types */
-int llsd_get_count( llsd_t * llsd );
+uint_t llsd_get_count( llsd_t * llsd );
 #define llsd_is_empty(x) (llsd_get_count(x) == 0)
 
 /* callback functions used for parsing/serializing */
 typedef struct llsd_ops_s
 {
-	int (*undef_fn)( void * const user_data );
-	int (*boolean_fn)( int const value, void * const user_data );
-	int (*integer_fn)( int32_t const value, void * const user_data );
-	int (*real_fn)( double const value, void * const user_data );
-	int (*uuid_fn)( uint8_t const value[UUID_LEN], void * const user_data );
-	int (*string_fn)( uint8_t const * str, int const own_it, void * const user_data );
-	int (*date_fn)( double const value, void * const user_data );
-	int (*uri_fn)( uint8_t const * uri, int const own_it, void * const user_data );
-	int (*binary_fn)( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data );
-	int (*array_begin_fn)( uint_t const size, void * const user_data );
-	int (*array_value_begin_fn)(void * const user_data);
-	int (*array_value_end_fn)( void * const user_data );
-	int (*array_end_fn)( uint_t const size, void * const user_data );
-	int (*map_begin_fn)( uint_t const size, void * const user_data );
-	int (*map_key_begin_fn)( void * const user_data );
-	int (*map_key_end_fn)( void * const user_data );
-	int (*map_value_begin_fn)( void * const user_data );
-	int (*map_value_end_fn)( void * const user_data );
-	int (*map_end_fn)( uint_t const size, void * const user_data );
+	int_t (*undef_fn)( void * const user_data );
+	int_t (*boolean_fn)( int const value, void * const user_data );
+	int_t (*integer_fn)( int32_t const value, void * const user_data );
+	int_t (*real_fn)( double const value, void * const user_data );
+	int_t (*uuid_fn)( uint8_t const value[UUID_LEN], void * const user_data );
+	int_t (*string_fn)( uint8_t const * str, int const own_it, void * const user_data );
+	int_t (*date_fn)( double const value, void * const user_data );
+	int_t (*uri_fn)( uint8_t const * uri, int const own_it, void * const user_data );
+	int_t (*binary_fn)( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data );
+	int_t (*array_begin_fn)( uint_t const size, void * const user_data );
+	int_t (*array_value_begin_fn)(void * const user_data);
+	int_t (*array_value_end_fn)( void * const user_data );
+	int_t (*array_end_fn)( uint_t const size, void * const user_data );
+	int_t (*map_begin_fn)( uint_t const size, void * const user_data );
+	int_t (*map_key_begin_fn)( void * const user_data );
+	int_t (*map_key_end_fn)( void * const user_data );
+	int_t (*map_value_begin_fn)( void * const user_data );
+	int_t (*map_value_end_fn)( void * const user_data );
+	int_t (*map_end_fn)( uint_t const size, void * const user_data );
 
 } llsd_ops_t;
 

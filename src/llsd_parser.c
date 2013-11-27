@@ -43,7 +43,7 @@ typedef struct parser_state_s
 
 } parser_state_t;
 
-static int add_to_container( llsd_t * const container, llsd_t * const key, llsd_t * const value )
+static int_t add_to_container( llsd_t * const container, llsd_t * const key, llsd_t * const value )
 {
 	CHECK_PTR_RET( container, FALSE );
 	CHECK_PTR_RET( value, FALSE );
@@ -61,7 +61,7 @@ static int add_to_container( llsd_t * const container, llsd_t * const key, llsd_
 	return TRUE;
 }
 
-static int update_state( uint_t valid_states, void * const user_data, llsd_t * const v )
+static int_t update_state( uint_t valid_states, void * const user_data, llsd_t * const v )
 {
 	llsd_t * container = NULL;
 	state_t state = TOP_LEVEL;
@@ -134,7 +134,7 @@ static int update_state( uint_t valid_states, void * const user_data, llsd_t * c
 	return TRUE;
 }
 
-static int llsd_undef_fn( void * const user_data )
+static int_t llsd_undef_fn( void * const user_data )
 {
 	llsd_t * v = NULL;
 	
@@ -150,7 +150,7 @@ static int llsd_undef_fn( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_boolean_fn( int const value, void * const user_data )
+static int_t llsd_boolean_fn( int const value, void * const user_data )
 {
 	llsd_t * v = NULL;
 
@@ -166,7 +166,7 @@ static int llsd_boolean_fn( int const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_integer_fn( int32_t const value, void * const user_data )
+static int_t llsd_integer_fn( int32_t const value, void * const user_data )
 {
 	llsd_t * v = NULL;
 
@@ -182,7 +182,7 @@ static int llsd_integer_fn( int32_t const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_real_fn( double const value, void * const user_data )
+static int_t llsd_real_fn( double const value, void * const user_data )
 {
 	llsd_t * v = NULL;
 
@@ -198,7 +198,7 @@ static int llsd_real_fn( double const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )
+static int_t llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )
 {
 	llsd_t * v = NULL;
 
@@ -214,7 +214,7 @@ static int llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )
 	return TRUE;
 }
 
-static int llsd_string_fn( uint8_t const * str, int own_it, void * const user_data )
+static int_t llsd_string_fn( uint8_t const * str, int own_it, void * const user_data )
 {
 	llsd_t * v = NULL;
 
@@ -230,7 +230,7 @@ static int llsd_string_fn( uint8_t const * str, int own_it, void * const user_da
 	return TRUE;
 }
 
-static int llsd_date_fn( double const value, void * const user_data )
+static int_t llsd_date_fn( double const value, void * const user_data )
 {
 	llsd_t * v = NULL;
 
@@ -246,7 +246,7 @@ static int llsd_date_fn( double const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_uri_fn( uint8_t const * uri, int own_it, void * const user_data )
+static int_t llsd_uri_fn( uint8_t const * uri, int own_it, void * const user_data )
 {
 	llsd_t * v = NULL;
 
@@ -262,7 +262,7 @@ static int llsd_uri_fn( uint8_t const * uri, int own_it, void * const user_data 
 	return TRUE;
 }
 
-static int llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it, void * const user_data )
+static int_t llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it, void * const user_data )
 {
 	llsd_t * v = NULL;
 
@@ -278,7 +278,7 @@ static int llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it,
 	return TRUE;
 }
 
-static int llsd_array_begin_fn( uint_t const size, void * const user_data )
+static int_t llsd_array_begin_fn( uint_t const size, void * const user_data )
 {
 	llsd_t * v = NULL;
 	parser_state_t * parser_state = (parser_state_t*)user_data;
@@ -300,7 +300,7 @@ static int llsd_array_begin_fn( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_array_value_begin_fn( void * const user_data )
+static int_t llsd_array_value_begin_fn( void * const user_data )
 {
 	parser_state_t * parser_state = (parser_state_t*)user_data;
 	state_t state = TOP_LEVEL;
@@ -315,7 +315,7 @@ static int llsd_array_value_begin_fn( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_array_value_end_fn( void * const user_data )
+static int_t llsd_array_value_end_fn( void * const user_data )
 {
 	parser_state_t * parser_state = (parser_state_t*)user_data;
 	state_t state = TOP_LEVEL;
@@ -329,7 +329,7 @@ static int llsd_array_value_end_fn( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_array_end_fn( uint_t const size, void * const user_data )
+static int_t llsd_array_end_fn( uint_t const size, void * const user_data )
 {
 	parser_state_t * parser_state = (parser_state_t*)user_data;
 	state_t state = TOP_LEVEL;
@@ -343,7 +343,7 @@ static int llsd_array_end_fn( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_map_begin_fn( uint_t const size, void * const user_data )
+static int_t llsd_map_begin_fn( uint_t const size, void * const user_data )
 {
 	llsd_t * v = NULL;
 	parser_state_t * parser_state = (parser_state_t*)user_data;
@@ -365,7 +365,7 @@ static int llsd_map_begin_fn( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_map_key_begin_fn( void * const user_data )
+static int_t llsd_map_key_begin_fn( void * const user_data )
 {
 	parser_state_t * parser_state = (parser_state_t*)user_data;
 	state_t state = TOP_LEVEL;
@@ -401,7 +401,7 @@ static int llsd_map_key_begin_fn( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_map_key_end_fn( void * const user_data )
+static int_t llsd_map_key_end_fn( void * const user_data )
 {
 	parser_state_t * parser_state = (parser_state_t*)user_data;
 	state_t state = TOP_LEVEL;
@@ -416,7 +416,7 @@ static int llsd_map_key_end_fn( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_map_value_begin_fn( void * const user_data )
+static int_t llsd_map_value_begin_fn( void * const user_data )
 {
 	parser_state_t * parser_state = (parser_state_t*)user_data;
 	state_t state = TOP_LEVEL;
@@ -431,7 +431,7 @@ static int llsd_map_value_begin_fn( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_map_value_end_fn( void * const user_data )
+static int_t llsd_map_value_end_fn( void * const user_data )
 {
 	parser_state_t * parser_state = (parser_state_t*)user_data;
 	state_t state = TOP_LEVEL;
@@ -446,7 +446,7 @@ static int llsd_map_value_end_fn( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_map_end_fn( uint_t const size, void * const user_data )
+static int_t llsd_map_end_fn( uint_t const size, void * const user_data )
 {
 	parser_state_t * parser_state = (parser_state_t*)user_data;
 	state_t state = TOP_LEVEL;

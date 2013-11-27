@@ -49,9 +49,9 @@ typedef struct ns_state_s
 #define INC_INDENT { if(state->pretty) state->indent++; }
 #define DEC_INDENT { if(state->pretty) state->indent--; }
 
-static int map_value = FALSE;
+static int_t map_value = FALSE;
 
-static int llsd_notation_undef( void * const user_data )
+static int_t llsd_notation_undef( void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -59,7 +59,7 @@ static int llsd_notation_undef( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_notation_boolean( int const value, void * const user_data )
+static int_t llsd_notation_boolean( int const value, void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -68,7 +68,7 @@ static int llsd_notation_boolean( int const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_notation_integer( int32_t const value, void * const user_data )
+static int_t llsd_notation_integer( int32_t const value, void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -76,7 +76,7 @@ static int llsd_notation_integer( int32_t const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_notation_real( double const value, void * const user_data )
+static int_t llsd_notation_real( double const value, void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -84,7 +84,7 @@ static int llsd_notation_real( double const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_notation_uuid( uint8_t const value[UUID_LEN], void * const user_data )
+static int_t llsd_notation_uuid( uint8_t const value[UUID_LEN], void * const user_data )
 {
 	int ret = 0;
 	ns_state_t * state = (ns_state_t*)user_data;
@@ -100,7 +100,7 @@ static int llsd_notation_uuid( uint8_t const value[UUID_LEN], void * const user_
 	return TRUE;
 }
 
-static int llsd_notation_string( uint8_t const * str, int const own_it, void * const user_data )
+static int_t llsd_notation_string( uint8_t const * str, int const own_it, void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -109,7 +109,7 @@ static int llsd_notation_string( uint8_t const * str, int const own_it, void * c
 	return TRUE;
 }
 
-static int llsd_notation_date( double const value, void * const user_data )
+static int_t llsd_notation_date( double const value, void * const user_data )
 {
 	double int_time;
 	int32_t useconds;
@@ -134,7 +134,7 @@ static int llsd_notation_date( double const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_notation_uri( uint8_t const * uri, int const own_it, void * const user_data )
+static int_t llsd_notation_uri( uint8_t const * uri, int const own_it, void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -143,7 +143,7 @@ static int llsd_notation_uri( uint8_t const * uri, int const own_it, void * cons
 	return TRUE;
 }
 
-static int llsd_notation_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )
+static int_t llsd_notation_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )
 {
 	uint8_t * buf;
 	uint32_t outlen = 0;
@@ -169,7 +169,7 @@ static int llsd_notation_binary( uint8_t const * data, uint32_t const len, int c
 	return TRUE;
 }
 
-static int llsd_notation_array_begin( uint_t const size, void * const user_data )
+static int_t llsd_notation_array_begin( uint_t const size, void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -194,7 +194,7 @@ static int llsd_notation_array_begin( uint_t const size, void * const user_data 
 	return TRUE;
 }
 
-static int llsd_notation_array_value_begin( void * const user_data )
+static int_t llsd_notation_array_value_begin( void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -204,7 +204,7 @@ static int llsd_notation_array_value_begin( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_notation_array_value_end( void * const user_data )
+static int_t llsd_notation_array_value_end( void * const user_data )
 {
 	int_t c = 0;
 	ns_state_t * state = (ns_state_t*)user_data;
@@ -217,7 +217,7 @@ static int llsd_notation_array_value_end( void * const user_data )
 }
 
 
-static int llsd_notation_array_end( uint_t const size, void * const user_data )
+static int_t llsd_notation_array_end( uint_t const size, void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -230,7 +230,7 @@ static int llsd_notation_array_end( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_notation_map_begin( uint_t const size, void * const user_data )
+static int_t llsd_notation_map_begin( uint_t const size, void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -255,7 +255,7 @@ static int llsd_notation_map_begin( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_notation_map_key_begin( void * const user_data )
+static int_t llsd_notation_map_key_begin( void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -265,7 +265,7 @@ static int llsd_notation_map_key_begin( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_notation_map_key_end( void * const user_data )
+static int_t llsd_notation_map_key_end( void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -274,7 +274,7 @@ static int llsd_notation_map_key_end( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_notation_map_value_begin( void * const user_data )
+static int_t llsd_notation_map_value_begin( void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -282,7 +282,7 @@ static int llsd_notation_map_value_begin( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_notation_map_value_end( void * const user_data )
+static int_t llsd_notation_map_value_end( void * const user_data )
 {
 	int_t c = 0;
 	ns_state_t * state = (ns_state_t*)user_data;
@@ -294,7 +294,7 @@ static int llsd_notation_map_value_end( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_notation_map_end( uint_t const size, void * const user_data )
+static int_t llsd_notation_map_end( uint_t const size, void * const user_data )
 {
 	ns_state_t * state = (ns_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );

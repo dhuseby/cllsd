@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2013-11-25</td>
+            <td class="headerValue">2013-11-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">22</td>
@@ -114,7 +114,7 @@
 <span class="lineNum">      43 </span>                :            : 
 <a name="44"><span class="lineNum">      44 </span>                :            : } parser_state_t;</a>
 <span class="lineNum">      45 </span>                :            : 
-<span class="lineNum">      46 </span>                :<span class="lineCov">     605156 : static int add_to_container( llsd_t * const container, llsd_t * const key, llsd_t * const value )</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">     605156 : static int_t add_to_container( llsd_t * const container, llsd_t * const key, llsd_t * const value )</span>
 <span class="lineNum">      47 </span>                :            : {
 <span class="lineNum">      48 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 605156 times"> + </span>]:<span class="lineCov">     605156 :     CHECK_PTR_RET( container, FALSE );</span>
 <span class="lineNum">      49 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 605156 times"> + </span>]:<span class="lineCov">     605156 :     CHECK_PTR_RET( value, FALSE );</span>
@@ -132,7 +132,7 @@
 <span class="lineNum">      61 </span>                :<span class="lineCov">     605156 :     return TRUE;</span>
 <a name="62"><span class="lineNum">      62 </span>                :            : }</a>
 <span class="lineNum">      63 </span>                :            : 
-<span class="lineNum">      64 </span>                :<span class="lineCov">     907034 : static int update_state( uint_t valid_states, void * const user_data, llsd_t * const v )</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">     907034 : static int_t update_state( uint_t valid_states, void * const user_data, llsd_t * const v )</span>
 <span class="lineNum">      65 </span>                :            : {
 <span class="lineNum">      66 </span>                :<span class="lineCov">     907034 :     llsd_t * container = NULL;</span>
 <span class="lineNum">      67 </span>                :<span class="lineCov">     907034 :     state_t state = TOP_LEVEL;</span>
@@ -206,7 +206,7 @@
 <span class="lineNum">     134 </span>                :<span class="lineCov">     907034 :     return TRUE;</span>
 <a name="135"><span class="lineNum">     135 </span>                :            : }</a>
 <span class="lineNum">     136 </span>                :            : 
-<span class="lineNum">     137 </span>                :<span class="lineCov">      55096 : static int llsd_undef_fn( void * const user_data )</span>
+<span class="lineNum">     137 </span>                :<span class="lineCov">      55096 : static int_t llsd_undef_fn( void * const user_data )</span>
 <span class="lineNum">     138 </span>                :            : {
 <span class="lineNum">     139 </span>                :<span class="lineCov">      55096 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     140 </span>                :            :     
@@ -222,7 +222,7 @@
 <span class="lineNum">     150 </span>                :<span class="lineCov">      55096 :     return TRUE;</span>
 <a name="151"><span class="lineNum">     151 </span>                :            : }</a>
 <span class="lineNum">     152 </span>                :            : 
-<span class="lineNum">     153 </span>                :<span class="lineCov">      54348 : static int llsd_boolean_fn( int const value, void * const user_data )</span>
+<span class="lineNum">     153 </span>                :<span class="lineCov">      54348 : static int_t llsd_boolean_fn( int const value, void * const user_data )</span>
 <span class="lineNum">     154 </span>                :            : {
 <span class="lineNum">     155 </span>                :<span class="lineCov">      54348 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     156 </span>                :            : 
@@ -238,7 +238,7 @@
 <span class="lineNum">     166 </span>                :<span class="lineCov">      54348 :     return TRUE;</span>
 <a name="167"><span class="lineNum">     167 </span>                :            : }</a>
 <span class="lineNum">     168 </span>                :            : 
-<span class="lineNum">     169 </span>                :<span class="lineCov">      55188 : static int llsd_integer_fn( int32_t const value, void * const user_data )</span>
+<span class="lineNum">     169 </span>                :<span class="lineCov">      55188 : static int_t llsd_integer_fn( int32_t const value, void * const user_data )</span>
 <span class="lineNum">     170 </span>                :            : {
 <span class="lineNum">     171 </span>                :<span class="lineCov">      55188 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     172 </span>                :            : 
@@ -254,7 +254,7 @@
 <span class="lineNum">     182 </span>                :<span class="lineCov">      55188 :     return TRUE;</span>
 <a name="183"><span class="lineNum">     183 </span>                :            : }</a>
 <span class="lineNum">     184 </span>                :            : 
-<span class="lineNum">     185 </span>                :<span class="lineCov">      55336 : static int llsd_real_fn( double const value, void * const user_data )</span>
+<span class="lineNum">     185 </span>                :<span class="lineCov">      55336 : static int_t llsd_real_fn( double const value, void * const user_data )</span>
 <span class="lineNum">     186 </span>                :            : {
 <span class="lineNum">     187 </span>                :<span class="lineCov">      55336 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     188 </span>                :            : 
@@ -270,7 +270,7 @@
 <span class="lineNum">     198 </span>                :<span class="lineCov">      55336 :     return TRUE;</span>
 <a name="199"><span class="lineNum">     199 </span>                :            : }</a>
 <span class="lineNum">     200 </span>                :            : 
-<span class="lineNum">     201 </span>                :<span class="lineCov">      55108 : static int llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )</span>
+<span class="lineNum">     201 </span>                :<span class="lineCov">      55108 : static int_t llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )</span>
 <span class="lineNum">     202 </span>                :            : {
 <span class="lineNum">     203 </span>                :<span class="lineCov">      55108 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     204 </span>                :            : 
@@ -286,7 +286,7 @@
 <span class="lineNum">     214 </span>                :<span class="lineCov">      55108 :     return TRUE;</span>
 <a name="215"><span class="lineNum">     215 </span>                :            : }</a>
 <span class="lineNum">     216 </span>                :            : 
-<span class="lineNum">     217 </span>                :<span class="lineCov">     356589 : static int llsd_string_fn( uint8_t const * str, int own_it, void * const user_data )</span>
+<span class="lineNum">     217 </span>                :<span class="lineCov">     356589 : static int_t llsd_string_fn( uint8_t const * str, int own_it, void * const user_data )</span>
 <span class="lineNum">     218 </span>                :            : {
 <span class="lineNum">     219 </span>                :<span class="lineCov">     356589 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     220 </span>                :            : 
@@ -302,7 +302,7 @@
 <span class="lineNum">     230 </span>                :<span class="lineCov">     356589 :     return TRUE;</span>
 <a name="231"><span class="lineNum">     231 </span>                :            : }</a>
 <span class="lineNum">     232 </span>                :            : 
-<span class="lineNum">     233 </span>                :<span class="lineCov">      55512 : static int llsd_date_fn( double const value, void * const user_data )</span>
+<span class="lineNum">     233 </span>                :<span class="lineCov">      55512 : static int_t llsd_date_fn( double const value, void * const user_data )</span>
 <span class="lineNum">     234 </span>                :            : {
 <span class="lineNum">     235 </span>                :<span class="lineCov">      55512 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     236 </span>                :            : 
@@ -318,7 +318,7 @@
 <span class="lineNum">     246 </span>                :<span class="lineCov">      55512 :     return TRUE;</span>
 <a name="247"><span class="lineNum">     247 </span>                :            : }</a>
 <span class="lineNum">     248 </span>                :            : 
-<span class="lineNum">     249 </span>                :<span class="lineCov">      54116 : static int llsd_uri_fn( uint8_t const * uri, int own_it, void * const user_data )</span>
+<span class="lineNum">     249 </span>                :<span class="lineCov">      54116 : static int_t llsd_uri_fn( uint8_t const * uri, int own_it, void * const user_data )</span>
 <span class="lineNum">     250 </span>                :            : {
 <span class="lineNum">     251 </span>                :<span class="lineCov">      54116 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     252 </span>                :            : 
@@ -334,7 +334,7 @@
 <span class="lineNum">     262 </span>                :<span class="lineCov">      54116 :     return TRUE;</span>
 <a name="263"><span class="lineNum">     263 </span>                :            : }</a>
 <span class="lineNum">     264 </span>                :            : 
-<span class="lineNum">     265 </span>                :<span class="lineCov">      55464 : static int llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it, void * const user_data )</span>
+<span class="lineNum">     265 </span>                :<span class="lineCov">      55464 : static int_t llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it, void * const user_data )</span>
 <span class="lineNum">     266 </span>                :            : {
 <span class="lineNum">     267 </span>                :<span class="lineCov">      55464 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     268 </span>                :            : 
@@ -350,7 +350,7 @@
 <span class="lineNum">     278 </span>                :<span class="lineCov">      55464 :     return TRUE;</span>
 <a name="279"><span class="lineNum">     279 </span>                :            : }</a>
 <span class="lineNum">     280 </span>                :            : 
-<span class="lineNum">     281 </span>                :<span class="lineCov">      55160 : static int llsd_array_begin_fn( uint_t const size, void * const user_data )</span>
+<span class="lineNum">     281 </span>                :<span class="lineCov">      55160 : static int_t llsd_array_begin_fn( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     282 </span>                :            : {
 <span class="lineNum">     283 </span>                :<span class="lineCov">      55160 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     284 </span>                :<span class="lineCov">      55160 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
@@ -372,7 +372,7 @@
 <span class="lineNum">     300 </span>                :<span class="lineCov">      55160 :     return TRUE;</span>
 <a name="301"><span class="lineNum">     301 </span>                :            : }</a>
 <span class="lineNum">     302 </span>                :            : 
-<span class="lineNum">     303 </span>                :<span class="lineCov">     303392 : static int llsd_array_value_begin_fn( void * const user_data )</span>
+<span class="lineNum">     303 </span>                :<span class="lineCov">     303392 : static int_t llsd_array_value_begin_fn( void * const user_data )</span>
 <span class="lineNum">     304 </span>                :            : {
 <span class="lineNum">     305 </span>                :<span class="lineCov">     303392 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
 <span class="lineNum">     306 </span>                :<span class="lineCov">     303392 :     state_t state = TOP_LEVEL;</span>
@@ -387,7 +387,7 @@
 <span class="lineNum">     315 </span>                :<span class="lineCov">     303392 :     return TRUE;</span>
 <a name="316"><span class="lineNum">     316 </span>                :            : }</a>
 <span class="lineNum">     317 </span>                :            : 
-<span class="lineNum">     318 </span>                :<span class="lineCov">     303392 : static int llsd_array_value_end_fn( void * const user_data )</span>
+<span class="lineNum">     318 </span>                :<span class="lineCov">     303392 : static int_t llsd_array_value_end_fn( void * const user_data )</span>
 <span class="lineNum">     319 </span>                :            : {
 <span class="lineNum">     320 </span>                :<span class="lineCov">     303392 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
 <span class="lineNum">     321 </span>                :<span class="lineCov">     303392 :     state_t state = TOP_LEVEL;</span>
@@ -401,7 +401,7 @@
 <span class="lineNum">     329 </span>                :<span class="lineCov">     303392 :     return TRUE;</span>
 <a name="330"><span class="lineNum">     330 </span>                :            : }</a>
 <span class="lineNum">     331 </span>                :            : 
-<span class="lineNum">     332 </span>                :<span class="lineCov">      55160 : static int llsd_array_end_fn( uint_t const size, void * const user_data )</span>
+<span class="lineNum">     332 </span>                :<span class="lineCov">      55160 : static int_t llsd_array_end_fn( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     333 </span>                :            : {
 <span class="lineNum">     334 </span>                :<span class="lineCov">      55160 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
 <span class="lineNum">     335 </span>                :<span class="lineCov">      55160 :     state_t state = TOP_LEVEL;</span>
@@ -415,7 +415,7 @@
 <span class="lineNum">     343 </span>                :<span class="lineCov">      55160 :     return TRUE;</span>
 <a name="344"><span class="lineNum">     344 </span>                :            : }</a>
 <span class="lineNum">     345 </span>                :            : 
-<span class="lineNum">     346 </span>                :<span class="lineCov">      55117 : static int llsd_map_begin_fn( uint_t const size, void * const user_data )</span>
+<span class="lineNum">     346 </span>                :<span class="lineCov">      55117 : static int_t llsd_map_begin_fn( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     347 </span>                :            : {
 <span class="lineNum">     348 </span>                :<span class="lineCov">      55117 :     llsd_t * v = NULL;</span>
 <span class="lineNum">     349 </span>                :<span class="lineCov">      55117 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
@@ -437,7 +437,7 @@
 <span class="lineNum">     365 </span>                :<span class="lineCov">      55117 :     return TRUE;</span>
 <a name="366"><span class="lineNum">     366 </span>                :            : }</a>
 <span class="lineNum">     367 </span>                :            : 
-<span class="lineNum">     368 </span>                :<span class="lineCov">     301765 : static int llsd_map_key_begin_fn( void * const user_data )</span>
+<span class="lineNum">     368 </span>                :<span class="lineCov">     301765 : static int_t llsd_map_key_begin_fn( void * const user_data )</span>
 <span class="lineNum">     369 </span>                :            : {
 <span class="lineNum">     370 </span>                :<span class="lineCov">     301765 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
 <span class="lineNum">     371 </span>                :<span class="lineCov">     301765 :     state_t state = TOP_LEVEL;</span>
@@ -473,7 +473,7 @@
 <span class="lineNum">     401 </span>                :<span class="lineCov">     301765 :     return TRUE;</span>
 <a name="402"><span class="lineNum">     402 </span>                :            : }</a>
 <span class="lineNum">     403 </span>                :            : 
-<span class="lineNum">     404 </span>                :<span class="lineCov">     301765 : static int llsd_map_key_end_fn( void * const user_data )</span>
+<span class="lineNum">     404 </span>                :<span class="lineCov">     301765 : static int_t llsd_map_key_end_fn( void * const user_data )</span>
 <span class="lineNum">     405 </span>                :            : {
 <span class="lineNum">     406 </span>                :<span class="lineCov">     301765 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
 <span class="lineNum">     407 </span>                :<span class="lineCov">     301765 :     state_t state = TOP_LEVEL;</span>
@@ -488,7 +488,7 @@
 <span class="lineNum">     416 </span>                :<span class="lineCov">     301765 :     return TRUE;</span>
 <a name="417"><span class="lineNum">     417 </span>                :            : }</a>
 <span class="lineNum">     418 </span>                :            : 
-<span class="lineNum">     419 </span>                :<span class="lineCov">     301764 : static int llsd_map_value_begin_fn( void * const user_data )</span>
+<span class="lineNum">     419 </span>                :<span class="lineCov">     301764 : static int_t llsd_map_value_begin_fn( void * const user_data )</span>
 <span class="lineNum">     420 </span>                :            : {
 <span class="lineNum">     421 </span>                :<span class="lineCov">     301764 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
 <span class="lineNum">     422 </span>                :<span class="lineCov">     301764 :     state_t state = TOP_LEVEL;</span>
@@ -503,7 +503,7 @@
 <span class="lineNum">     431 </span>                :<span class="lineCov">     301764 :     return TRUE;</span>
 <a name="432"><span class="lineNum">     432 </span>                :            : }</a>
 <span class="lineNum">     433 </span>                :            : 
-<span class="lineNum">     434 </span>                :<span class="lineCov">     301764 : static int llsd_map_value_end_fn( void * const user_data )</span>
+<span class="lineNum">     434 </span>                :<span class="lineCov">     301764 : static int_t llsd_map_value_end_fn( void * const user_data )</span>
 <span class="lineNum">     435 </span>                :            : {
 <span class="lineNum">     436 </span>                :<span class="lineCov">     301764 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
 <span class="lineNum">     437 </span>                :<span class="lineCov">     301764 :     state_t state = TOP_LEVEL;</span>
@@ -518,7 +518,7 @@
 <span class="lineNum">     446 </span>                :<span class="lineCov">     301764 :     return TRUE;</span>
 <a name="447"><span class="lineNum">     447 </span>                :            : }</a>
 <span class="lineNum">     448 </span>                :            : 
-<span class="lineNum">     449 </span>                :<span class="lineCov">      55117 : static int llsd_map_end_fn( uint_t const size, void * const user_data )</span>
+<span class="lineNum">     449 </span>                :<span class="lineCov">      55117 : static int_t llsd_map_end_fn( uint_t const size, void * const user_data )</span>
 <span class="lineNum">     450 </span>                :            : {
 <span class="lineNum">     451 </span>                :<span class="lineCov">      55117 :     parser_state_t * parser_state = (parser_state_t*)user_data;</span>
 <span class="lineNum">     452 </span>                :<span class="lineCov">      55117 :     state_t state = TOP_LEVEL;</span>

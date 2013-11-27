@@ -114,7 +114,7 @@ static uint_t llsd_pair_hash( void const * const data )
 	return hash;
 }
 
-static int llsd_pair_eq(void const * const l, void const * const r)
+static int_t llsd_pair_eq(void const * const l, void const * const r)
 {
 	pair_t * left = (pair_t*)l;
 	pair_t * right = (pair_t*)r;
@@ -131,12 +131,12 @@ static void llsd_pair_delete(void * value)
 	pair_delete( p );
 }
 
-static int llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
+static int_t llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 {
 	va_list args;
 	uint8_t * p;
 	uint32_t len;
-	int own_it;
+	int_t own_it;
 
 	CHECK_PTR( llsd );
 	
@@ -183,7 +183,7 @@ static int llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 		case LLSD_STRING:
 			va_start( args, type_ );
 			p = va_arg( args, uint8_t* );
-			own_it = va_arg( args, int );
+			own_it = va_arg( args, int_t );
 			va_end( args );
 
 			if ( !own_it && p )
@@ -205,7 +205,7 @@ static int llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 		case LLSD_URI:
 			va_start( args, type_ );
 			p = va_arg( args, uint8_t* );
-			own_it = va_arg( args, int );
+			own_it = va_arg( args, int_t );
 			va_end( args );
 
 			if ( !own_it && p )
@@ -221,7 +221,7 @@ static int llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )
 			va_start( args, type_ );
 			p = va_arg( args, uint8_t* );
 			llsd->binary_.iov_len = va_arg( args, uint32_t );
-			own_it = va_arg( args, int );
+			own_it = va_arg( args, int_t );
 			va_end( args );
 
 			if ( !own_it && p )
@@ -401,7 +401,7 @@ int8_t const * llsd_get_bin_enc_type_string( llsd_bin_enc_t enc, llsd_serializer
 	return NULL;
 }
 
-int llsd_array_append( llsd_t * arr, llsd_t * value )
+int_t llsd_array_append( llsd_t * arr, llsd_t * value )
 {
 	CHECK_PTR_RET( arr, FALSE );
 	CHECK_PTR_RET( value, FALSE );
@@ -409,14 +409,14 @@ int llsd_array_append( llsd_t * arr, llsd_t * value )
 	list_push_tail( &(arr->array_), (void*)value );
 }
 
-int llsd_array_unappend( llsd_t * arr )
+int_t llsd_array_unappend( llsd_t * arr )
 {
 	CHECK_PTR_RET( arr, FALSE );
 	CHECK_RET( llsd_get_type( arr ) == LLSD_ARRAY, FALSE );
 	list_pop_tail( &(arr->array_) );
 }
 
-int llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * value )
+int_t llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * value )
 {
 	pair_t * p = NULL;
 	CHECK_PTR_RET( map, FALSE );
@@ -434,7 +434,7 @@ int llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * value )
 	return TRUE;
 }
 
-int llsd_map_remove( llsd_t * map, llsd_t * key )
+int_t llsd_map_remove( llsd_t * map, llsd_t * key )
 {
 	int ret = FALSE;
 	pair_t * p = NULL;
@@ -550,7 +550,7 @@ llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr )
 	return ret;
 }
 
-int llsd_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key )
+int_t llsd_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key )
 {
 	pair_t * p;
 	CHECK_PTR_RET( value, FALSE );
@@ -615,7 +615,7 @@ llsd_t * llsd_map_find( llsd_t * map, uint8_t const * const key )
 
 static llsd_uuid_t zero_uuid = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-int llsd_as_boolean( llsd_t * llsd, int * v )
+int_t llsd_as_boolean( llsd_t * llsd, int * v )
 {
 	int i;
 	CHECK_PTR_RET( llsd, FALSE );
@@ -655,7 +655,7 @@ int llsd_as_boolean( llsd_t * llsd, int * v )
 	return TRUE;
 }
 
-int llsd_as_integer( llsd_t * llsd, int32_t * v )
+int_t llsd_as_integer( llsd_t * llsd, int32_t * v )
 {
 	int i;
 	uint32_t be = 0;
@@ -716,7 +716,7 @@ int llsd_as_integer( llsd_t * llsd, int32_t * v )
 	return TRUE;
 }
 
-int llsd_as_double( llsd_t * llsd, double * v )
+int_t llsd_as_double( llsd_t * llsd, double * v )
 {
 	int i;
 	uint64_t be;
@@ -790,7 +790,7 @@ static uint8_t hex_to_byte( uint8_t hi, uint8_t lo )
 	}
 }
 
-int llsd_as_uuid( llsd_t * llsd, uint8_t uuid[UUID_LEN] )
+int_t llsd_as_uuid( llsd_t * llsd, uint8_t uuid[UUID_LEN] )
 {
 	int i;
 	uint8_t * p = NULL;
@@ -879,7 +879,7 @@ int llsd_as_uuid( llsd_t * llsd, uint8_t uuid[UUID_LEN] )
 	return TRUE;
 }
 
-int llsd_as_string( llsd_t * llsd, uint8_t ** v )
+int_t llsd_as_string( llsd_t * llsd, uint8_t ** v )
 {
 	double int_time;
 	int32_t useconds;
@@ -951,7 +951,7 @@ int llsd_as_string( llsd_t * llsd, uint8_t ** v )
 	return TRUE;
 }
 
-int llsd_as_binary( llsd_t * llsd, uint8_t ** v, uint32_t * len )
+int_t llsd_as_binary( llsd_t * llsd, uint8_t ** v, uint32_t * len )
 {
 	static uint8_t dummy = 0;
 	static uint32_t be32;
@@ -1004,9 +1004,9 @@ int llsd_as_binary( llsd_t * llsd, uint8_t ** v, uint32_t * len )
 	return TRUE;
 }
 
-int llsd_equal( llsd_t * l, llsd_t * r )
+int_t llsd_equal( llsd_t * l, llsd_t * r )
 {
-	int ret = TRUE;
+	int_t ret = TRUE;
 	llsd_itr_t litr, lend, ritr, rend;
 	llsd_t * lk, * lv, * rk, * rv;
 	CHECK_PTR_RET( l, FALSE );
@@ -1081,7 +1081,7 @@ int llsd_equal( llsd_t * l, llsd_t * r )
 	return FALSE;
 }
 
-int llsd_get_count( llsd_t * llsd )
+uint_t llsd_get_count( llsd_t * llsd )
 {
 	CHECK_PTR_RET( llsd, 0 );
 	switch( llsd->type_ )

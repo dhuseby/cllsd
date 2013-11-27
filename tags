@@ -339,7 +339,7 @@
 500	coverage/cllsd/src/llsd_json_parser.c.gcov.html	/^<a name="500"><span class="lineNum">     500 <\/span>                :            : <\/a>$/;"	a
 501	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="501"><span class="lineNum">     501 <\/span>                :            : }<\/a>$/;"	a
 506	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="506"><span class="lineNum">     506 <\/span>                :<span class="lineCov">          1 : }<\/span><\/a>$/;"	a
-51	coverage/cllsd/src/llsd_json_serializer.c.gcov.html	/^<a name="51"><span class="lineNum">      51 <\/span>                :            : static int map_value = FALSE;<\/a>$/;"	a
+51	coverage/cllsd/src/llsd_json_serializer.c.gcov.html	/^<a name="51"><span class="lineNum">      51 <\/span>                :            : static int_t map_value = FALSE;<\/a>$/;"	a
 510	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="510"><span class="lineNum">     510 <\/span>                :            : }<\/a>$/;"	a
 511	coverage/cllsd/src/llsd_notation_parser.c.gcov.html	/^<a name="511"><span class="lineNum">     511 <\/span>                :            : }<\/a>$/;"	a
 511	coverage/cllsd/src/llsd_xml_serializer.c.gcov.html	/^<a name="511"><span class="lineNum">     511 <\/span>                :            : <\/a>$/;"	a
@@ -348,7 +348,7 @@
 517	coverage/cllsd/src/llsd.c.gcov.html	/^<a name="517"><span class="lineNum">     517 <\/span>                :            : }<\/a>$/;"	a
 519	cutil/coverage/cutil/src/btree.c.gcov.html	/^<a name="519"><span class="lineNum">     519 <\/span>                :            : }<\/a>$/;"	a
 52	coverage/cllsd/src/base64.c.gcov.html	/^<a name="52"><span class="lineNum">      52 <\/span>                :            : }<\/a>$/;"	a
-52	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="52"><span class="lineNum">      52 <\/span>                :            : static int map_value = FALSE;<\/a>$/;"	a
+52	coverage/cllsd/src/llsd_notation_serializer.c.gcov.html	/^<a name="52"><span class="lineNum">      52 <\/span>                :            : static int_t map_value = FALSE;<\/a>$/;"	a
 52	cutil/coverage/cutil/src/bitset.c.gcov.html	/^<a name="52"><span class="lineNum">      52 <\/span>                :            : }<\/a>$/;"	a
 527	cutil/coverage/cutil/src/events.c.gcov.html	/^<a name="527"><span class="lineNum">     527 <\/span>                :<span class="lineCov">          1 : }<\/span><\/a>$/;"	a
 529	cutil/coverage/cutil/src/aiofd.c.gcov.html	/^<a name="529"><span class="lineNum">     529 <\/span>                :            : }<\/a>$/;"	a
@@ -1711,7 +1711,7 @@ add_socket_test_suite	cutil/tests/test_socket.c	/^CU_pSuite add_socket_test_suit
 add_socket_tests	cutil/tests/test_socket.c	/^static CU_pSuite add_socket_tests( CU_pSuite pSuite )$/;"	f	file:
 add_tests	tests/test_base_common.c	/^static CU_pSuite add_tests( CU_pSuite pSuite )$/;"	f	file:
 add_tests	tests/test_common.c	/^static CU_pSuite add_tests( CU_pSuite pSuite )$/;"	f	file:
-add_to_container	src/llsd_parser.c	/^static int add_to_container( llsd_t * const container, llsd_t * const key, llsd_t * const value )$/;"	f	file:
+add_to_container	src/llsd_parser.c	/^static int_t add_to_container( llsd_t * const container, llsd_t * const key, llsd_t * const value )$/;"	f	file:
 add_xml_test_suite	tests/test_xml.c	/^CU_pSuite add_xml_test_suite()$/;"	f
 add_xml_tests	tests/test_xml.c	/^static CU_pSuite add_xml_tests( CU_pSuite pSuite )$/;"	f	file:
 added_tz	cutil/tests/test_sanitize.c	/^static int added_tz = FALSE;$/;"	v	file:
@@ -1755,10 +1755,10 @@ array_	tests/test_binary.c	/^static uint8_t const array_[] = { '[', 0x00, 0x00, 
 array_	tests/test_json.c	/^static uint8_t const array_[] = "[]";$/;"	v	file:
 array_	tests/test_notation.c	/^static uint8_t const array_[] = "[]";$/;"	v	file:
 array_	tests/test_xml.c	/^static uint8_t const array_[] = "<llsd><array \/><\/llsd>";$/;"	v	file:
-array_begin_fn	src/llsd.h	/^	int (*array_begin_fn)( uint_t const size, void * const user_data );$/;"	m	struct:llsd_ops_s
-array_end_fn	src/llsd.h	/^	int (*array_end_fn)( uint_t const size, void * const user_data );$/;"	m	struct:llsd_ops_s
-array_value_begin_fn	src/llsd.h	/^	int (*array_value_begin_fn)(void * const user_data);$/;"	m	struct:llsd_ops_s
-array_value_end_fn	src/llsd.h	/^	int (*array_value_end_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
+array_begin_fn	src/llsd.h	/^	int_t (*array_begin_fn)( uint_t const size, void * const user_data );$/;"	m	struct:llsd_ops_s
+array_end_fn	src/llsd.h	/^	int_t (*array_end_fn)( uint_t const size, void * const user_data );$/;"	m	struct:llsd_ops_s
+array_value_begin_fn	src/llsd.h	/^	int_t (*array_value_begin_fn)(void * const user_data);$/;"	m	struct:llsd_ops_s
+array_value_end_fn	src/llsd.h	/^	int_t (*array_value_end_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
 bad	tests/test_base16.c	/^static uint8_t * bad = "jk2e23r3";$/;"	v	file:
 balance	cutil/src/btree.c	/^    int32_t balance;            \/* balance factor *\/$/;"	m	struct:node_s	file:
 base16	tests/test_all.c	/^SUITE( base16 );$/;"	v
@@ -1783,7 +1783,7 @@ binary_	tests/test_binary.c	/^static uint8_t const binary_[] = { 'b', 0x00, 0x00
 binary_	tests/test_json.c	/^static uint8_t const binary_[] = "\\"||b64||AQIDBAUGBwgJAAECAwQFBg==\\"";$/;"	v	file:
 binary_	tests/test_notation.c	/^static uint8_t const binary_[] = "b64\\"AQIDBAUGBwgJAAECAwQFBg==\\"";$/;"	v	file:
 binary_	tests/test_xml.c	/^static uint8_t const binary_[] = "<llsd><binary encoding=\\"base64\\">AQIDBAUGBwgJAAECAwQFBg==<\/binary><\/llsd>";$/;"	v	file:
-binary_fn	src/llsd.h	/^	int (*binary_fn)( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data );$/;"	m	struct:llsd_ops_s
+binary_fn	src/llsd.h	/^	int_t (*binary_fn)( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data );$/;"	m	struct:llsd_ops_s
 binary_from_buf	src/llsd_xml_parser.c	/^static int binary_from_buf( buffer_t * const buf, llsd_bin_enc_t enc, uint8_t ** data, uint32_t * len)$/;"	f	file:
 binary_header	src/llsd_binary_parser.c	/^static uint8_t const * const binary_header = "<? LLSD\/Binary ?>\\n";$/;"	v	file:
 binary_header	src/llsd_binary_serializer.c	/^static uint8_t const * const binary_header = "<? LLSD\/Binary ?>\\n";$/;"	v	file:
@@ -1796,7 +1796,7 @@ boolean_	tests/test_binary.c	/^static uint8_t const boolean_[]= { '1' };$/;"	v	f
 boolean_	tests/test_json.c	/^static uint8_t const boolean_[] = "true";$/;"	v	file:
 boolean_	tests/test_notation.c	/^static uint8_t const boolean_[] = "1";$/;"	v	file:
 boolean_	tests/test_xml.c	/^static uint8_t const boolean_[] = "<llsd><boolean>1<\/boolean><\/llsd>";$/;"	v	file:
-boolean_fn	src/llsd.h	/^	int (*boolean_fn)( int const value, void * const user_data );$/;"	m	struct:llsd_ops_s
+boolean_fn	src/llsd.h	/^	int_t (*boolean_fn)( int const value, void * const user_data );$/;"	m	struct:llsd_ops_s
 boolean_from_buf	src/llsd_xml_parser.c	/^static int boolean_from_buf( buffer_t * const buf )$/;"	f	file:
 bound	cutil/src/socket.c	/^    int_t           bound;          \/* is the socket bound? *\/$/;"	m	struct:socket_s	file:
 bs_state_s	src/llsd_binary_parser.c	/^typedef struct bs_state_s$/;"	s	file:
@@ -1918,7 +1918,7 @@ date_	tests/test_binary.c	/^static uint8_t const date_[] = { 'd', 0x3f, 0xf0, 0x
 date_	tests/test_json.c	/^static uint8_t const date_[] = "\\"1970-01-01T00:00:01.000Z\\"";$/;"	v	file:
 date_	tests/test_notation.c	/^static uint8_t const date_[] = "d\\"1970-01-01T00:00:01.000Z\\"";$/;"	v	file:
 date_	tests/test_xml.c	/^static uint8_t const date_[] = "<llsd><date>1970-01-01T00:00:01.000Z<\/date><\/llsd>";$/;"	v	file:
-date_fn	src/llsd.h	/^	int (*date_fn)( double const value, void * const user_data );$/;"	m	struct:llsd_ops_s
+date_fn	src/llsd.h	/^	int_t (*date_fn)( double const value, void * const user_data );$/;"	m	struct:llsd_ops_s
 date_from_buf	src/llsd_xml_parser.c	/^static int date_from_buf( buffer_t * const buf, double * rval )$/;"	f	file:
 debug_signals_dump	cutil/src/events.c	/^void debug_signals_dump(uint8_t const * const prefix)$/;"	f
 decode_fn	tests/test_base16.c	/^static int (*decode_fn)(uint8_t const * in, uint32_t inlen, uint8_t * out, uint32_t * outlen);$/;"	v	file:
@@ -2303,7 +2303,7 @@ integer_	tests/test_binary.c	/^static uint8_t const integer_[] = { 'i', 0x00, 0x
 integer_	tests/test_json.c	/^static uint8_t const integer_[] = "1";$/;"	v	file:
 integer_	tests/test_notation.c	/^static uint8_t const integer_[] = "i1";$/;"	v	file:
 integer_	tests/test_xml.c	/^static uint8_t const integer_[] = "<llsd><integer>1<\/integer><\/llsd>";$/;"	v	file:
-integer_fn	src/llsd.h	/^	int (*integer_fn)( int32_t const value, void * const user_data );$/;"	m	struct:llsd_ops_s
+integer_fn	src/llsd.h	/^	int_t (*integer_fn)( int32_t const value, void * const user_data );$/;"	m	struct:llsd_ops_s
 integer_from_buf	src/llsd_xml_parser.c	/^static int integer_from_buf( buffer_t * const buf, int * ival )$/;"	f	file:
 io	cutil/src/events.h	/^    struct ev_io        io;$/;"	m	union:ev_data_u	typeref:struct:ev_data_u::ev_io
 io_params	cutil/src/events.h	/^    } io_params;$/;"	m	union:evt_params_u	typeref:struct:evt_params_u::__anon3
@@ -2369,62 +2369,62 @@ listlog_writer	cutil/src/log.c	/^static ssize_t listlog_writer( void * cookie, c
 lists	cutil/src/hashtable.h	/^    list_t*             lists;              \/* pointer to list array *\/$/;"	m	struct:ht_s
 llsd	go/llsd.go	/^package llsd$/;"	p
 llsd	src/llsd_parser.c	/^	llsd_t * llsd;$/;"	m	struct:parser_state_s	file:
-llsd_array_append	src/llsd.c	/^int llsd_array_append( llsd_t * arr, llsd_t * value )$/;"	f
-llsd_array_begin_fn	src/llsd_parser.c	/^static int llsd_array_begin_fn( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_array_end_fn	src/llsd_parser.c	/^static int llsd_array_end_fn( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_array_append	src/llsd.c	/^int_t llsd_array_append( llsd_t * arr, llsd_t * value )$/;"	f
+llsd_array_begin_fn	src/llsd_parser.c	/^static int_t llsd_array_begin_fn( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_array_end_fn	src/llsd_parser.c	/^static int_t llsd_array_end_fn( uint_t const size, void * const user_data )$/;"	f	file:
 llsd_array_t	src/llsd.c	/^typedef list_t			llsd_array_t;$/;"	t	file:
-llsd_array_unappend	src/llsd.c	/^int llsd_array_unappend( llsd_t * arr )$/;"	f
-llsd_array_value_begin_fn	src/llsd_parser.c	/^static int llsd_array_value_begin_fn( void * const user_data )$/;"	f	file:
-llsd_array_value_end_fn	src/llsd_parser.c	/^static int llsd_array_value_end_fn( void * const user_data )$/;"	f	file:
-llsd_as_binary	src/llsd.c	/^int llsd_as_binary( llsd_t * llsd, uint8_t ** v, uint32_t * len )$/;"	f
-llsd_as_boolean	src/llsd.c	/^int llsd_as_boolean( llsd_t * llsd, int * v )$/;"	f
-llsd_as_double	src/llsd.c	/^int llsd_as_double( llsd_t * llsd, double * v )$/;"	f
-llsd_as_integer	src/llsd.c	/^int llsd_as_integer( llsd_t * llsd, int32_t * v )$/;"	f
-llsd_as_string	src/llsd.c	/^int llsd_as_string( llsd_t * llsd, uint8_t ** v )$/;"	f
-llsd_as_uuid	src/llsd.c	/^int llsd_as_uuid( llsd_t * llsd, uint8_t uuid[UUID_LEN] )$/;"	f
+llsd_array_unappend	src/llsd.c	/^int_t llsd_array_unappend( llsd_t * arr )$/;"	f
+llsd_array_value_begin_fn	src/llsd_parser.c	/^static int_t llsd_array_value_begin_fn( void * const user_data )$/;"	f	file:
+llsd_array_value_end_fn	src/llsd_parser.c	/^static int_t llsd_array_value_end_fn( void * const user_data )$/;"	f	file:
+llsd_as_binary	src/llsd.c	/^int_t llsd_as_binary( llsd_t * llsd, uint8_t ** v, uint32_t * len )$/;"	f
+llsd_as_boolean	src/llsd.c	/^int_t llsd_as_boolean( llsd_t * llsd, int * v )$/;"	f
+llsd_as_double	src/llsd.c	/^int_t llsd_as_double( llsd_t * llsd, double * v )$/;"	f
+llsd_as_integer	src/llsd.c	/^int_t llsd_as_integer( llsd_t * llsd, int32_t * v )$/;"	f
+llsd_as_string	src/llsd.c	/^int_t llsd_as_string( llsd_t * llsd, uint8_t ** v )$/;"	f
+llsd_as_uuid	src/llsd.c	/^int_t llsd_as_uuid( llsd_t * llsd, uint8_t uuid[UUID_LEN] )$/;"	f
 llsd_bin_enc_from_attr	src/llsd_xml_parser.c	/^static llsd_bin_enc_t llsd_bin_enc_from_attr( char const * attr )$/;"	f	file:
 llsd_bin_enc_s	src/llsd.h	/^typedef enum llsd_bin_enc_s$/;"	g
 llsd_bin_enc_t	src/llsd.h	/^} llsd_bin_enc_t;$/;"	t	typeref:enum:llsd_bin_enc_s
-llsd_binary_array_begin	src/llsd_binary_serializer.c	/^static int llsd_binary_array_begin( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_binary_array_end	src/llsd_binary_serializer.c	/^static int llsd_binary_array_end( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_binary_array_value_begin	src/llsd_binary_serializer.c	/^static int llsd_binary_array_value_begin( void * const user_data )$/;"	f	file:
-llsd_binary_array_value_end	src/llsd_binary_serializer.c	/^static int llsd_binary_array_value_end( void * const user_data )$/;"	f	file:
-llsd_binary_binary	src/llsd_binary_serializer.c	/^static int llsd_binary_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )$/;"	f	file:
-llsd_binary_boolean	src/llsd_binary_serializer.c	/^static int llsd_binary_boolean( int const value, void * const user_data )$/;"	f	file:
+llsd_binary_array_begin	src/llsd_binary_serializer.c	/^static int_t llsd_binary_array_begin( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_binary_array_end	src/llsd_binary_serializer.c	/^static int_t llsd_binary_array_end( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_binary_array_value_begin	src/llsd_binary_serializer.c	/^static int_t llsd_binary_array_value_begin( void * const user_data )$/;"	f	file:
+llsd_binary_array_value_end	src/llsd_binary_serializer.c	/^static int_t llsd_binary_array_value_end( void * const user_data )$/;"	f	file:
+llsd_binary_binary	src/llsd_binary_serializer.c	/^static int_t llsd_binary_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )$/;"	f	file:
+llsd_binary_boolean	src/llsd_binary_serializer.c	/^static int_t llsd_binary_boolean( int const value, void * const user_data )$/;"	f	file:
 llsd_binary_check_sig_file	src/llsd_binary_parser.c	/^int llsd_binary_check_sig_file( FILE * fin )$/;"	f
-llsd_binary_date	src/llsd_binary_serializer.c	/^static int llsd_binary_date( double const value, void * const user_data )$/;"	f	file:
-llsd_binary_fn	src/llsd_parser.c	/^static int llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it, void * const user_data )$/;"	f	file:
-llsd_binary_integer	src/llsd_binary_serializer.c	/^static int llsd_binary_integer( int32_t const value, void * const user_data )$/;"	f	file:
-llsd_binary_map_begin	src/llsd_binary_serializer.c	/^static int llsd_binary_map_begin( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_binary_map_end	src/llsd_binary_serializer.c	/^static int llsd_binary_map_end( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_binary_map_key_begin	src/llsd_binary_serializer.c	/^static int llsd_binary_map_key_begin( void * const user_data )$/;"	f	file:
-llsd_binary_map_key_end	src/llsd_binary_serializer.c	/^static int llsd_binary_map_key_end( void * const user_data )$/;"	f	file:
-llsd_binary_map_value_begin	src/llsd_binary_serializer.c	/^static int llsd_binary_map_value_begin( void * const user_data )$/;"	f	file:
-llsd_binary_map_value_end	src/llsd_binary_serializer.c	/^static int llsd_binary_map_value_end( void * const user_data )$/;"	f	file:
+llsd_binary_date	src/llsd_binary_serializer.c	/^static int_t llsd_binary_date( double const value, void * const user_data )$/;"	f	file:
+llsd_binary_fn	src/llsd_parser.c	/^static int_t llsd_binary_fn( uint8_t const * data, uint32_t const len, int own_it, void * const user_data )$/;"	f	file:
+llsd_binary_integer	src/llsd_binary_serializer.c	/^static int_t llsd_binary_integer( int32_t const value, void * const user_data )$/;"	f	file:
+llsd_binary_map_begin	src/llsd_binary_serializer.c	/^static int_t llsd_binary_map_begin( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_binary_map_end	src/llsd_binary_serializer.c	/^static int_t llsd_binary_map_end( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_binary_map_key_begin	src/llsd_binary_serializer.c	/^static int_t llsd_binary_map_key_begin( void * const user_data )$/;"	f	file:
+llsd_binary_map_key_end	src/llsd_binary_serializer.c	/^static int_t llsd_binary_map_key_end( void * const user_data )$/;"	f	file:
+llsd_binary_map_value_begin	src/llsd_binary_serializer.c	/^static int_t llsd_binary_map_value_begin( void * const user_data )$/;"	f	file:
+llsd_binary_map_value_end	src/llsd_binary_serializer.c	/^static int_t llsd_binary_map_value_end( void * const user_data )$/;"	f	file:
 llsd_binary_parse_file	src/llsd_binary_parser.c	/^int llsd_binary_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data )$/;"	f
-llsd_binary_real	src/llsd_binary_serializer.c	/^static int llsd_binary_real( double const value, void * const user_data )$/;"	f	file:
+llsd_binary_real	src/llsd_binary_serializer.c	/^static int_t llsd_binary_real( double const value, void * const user_data )$/;"	f	file:
 llsd_binary_serializer_deinit	src/llsd_binary_serializer.c	/^int llsd_binary_serializer_deinit( FILE * fout, void * user_data )$/;"	f
 llsd_binary_serializer_init	src/llsd_binary_serializer.c	/^int llsd_binary_serializer_init( FILE * fout, llsd_ops_t * const ops, int const pretty, void ** const user_data )$/;"	f
-llsd_binary_string	src/llsd_binary_serializer.c	/^static int llsd_binary_string( uint8_t const * str, int const own_it, void * const user_data )$/;"	f	file:
+llsd_binary_string	src/llsd_binary_serializer.c	/^static int_t llsd_binary_string( uint8_t const * str, int const own_it, void * const user_data )$/;"	f	file:
 llsd_binary_t	src/llsd.c	/^typedef struct iovec	llsd_binary_t;$/;"	t	typeref:struct:iovec	file:
-llsd_binary_undef	src/llsd_binary_serializer.c	/^static int llsd_binary_undef( void * const user_data )$/;"	f	file:
-llsd_binary_uri	src/llsd_binary_serializer.c	/^static int llsd_binary_uri( uint8_t const * uri, int const own_it, void * const user_data )$/;"	f	file:
-llsd_binary_uuid	src/llsd_binary_serializer.c	/^static int llsd_binary_uuid( uint8_t const value[UUID_LEN], void * const user_data )$/;"	f	file:
+llsd_binary_undef	src/llsd_binary_serializer.c	/^static int_t llsd_binary_undef( void * const user_data )$/;"	f	file:
+llsd_binary_uri	src/llsd_binary_serializer.c	/^static int_t llsd_binary_uri( uint8_t const * uri, int const own_it, void * const user_data )$/;"	f	file:
+llsd_binary_uuid	src/llsd_binary_serializer.c	/^static int_t llsd_binary_uuid( uint8_t const value[UUID_LEN], void * const user_data )$/;"	f	file:
 llsd_bool_t	src/llsd.c	/^typedef int				llsd_bool_t;$/;"	t	file:
-llsd_boolean_fn	src/llsd_parser.c	/^static int llsd_boolean_fn( int const value, void * const user_data )$/;"	f	file:
-llsd_date_fn	src/llsd_parser.c	/^static int llsd_date_fn( double const value, void * const user_data )$/;"	f	file:
+llsd_boolean_fn	src/llsd_parser.c	/^static int_t llsd_boolean_fn( int const value, void * const user_data )$/;"	f	file:
+llsd_date_fn	src/llsd_parser.c	/^static int_t llsd_date_fn( double const value, void * const user_data )$/;"	f	file:
 llsd_date_t	src/llsd.c	/^typedef double			llsd_date_t;$/;"	t	file:
 llsd_deinitialize	src/llsd.c	/^static void llsd_deinitialize( llsd_t * llsd )$/;"	f	file:
 llsd_delete	src/llsd.c	/^void llsd_delete( void * p )$/;"	f
-llsd_equal	src/llsd.c	/^int llsd_equal( llsd_t * l, llsd_t * r )$/;"	f
-llsd_get	src/llsd.c	/^int llsd_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key )$/;"	f
+llsd_equal	src/llsd.c	/^int_t llsd_equal( llsd_t * l, llsd_t * r )$/;"	f
+llsd_get	src/llsd.c	/^int_t llsd_get( llsd_t * llsd, llsd_itr_t itr, llsd_t ** value, llsd_t ** key )$/;"	f
 llsd_get_bin_enc_type_string	src/llsd.c	/^int8_t const * llsd_get_bin_enc_type_string( llsd_bin_enc_t enc, llsd_serializer_t fmt )$/;"	f
-llsd_get_count	src/llsd.c	/^int llsd_get_count( llsd_t * llsd )$/;"	f
+llsd_get_count	src/llsd.c	/^uint_t llsd_get_count( llsd_t * llsd )$/;"	f
 llsd_get_type	src/llsd.c	/^llsd_type_t llsd_get_type( llsd_t * llsd )$/;"	f
 llsd_get_type_string	src/llsd.c	/^int8_t const * llsd_get_type_string( llsd_type_t type_ )$/;"	f
-llsd_initialize	src/llsd.c	/^static int llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )$/;"	f	file:
+llsd_initialize	src/llsd.c	/^static int_t llsd_initialize( llsd_t * llsd, llsd_type_t type_, ... )$/;"	f	file:
 llsd_int_t	src/llsd.c	/^typedef int32_t			llsd_int_t;$/;"	t	file:
-llsd_integer_fn	src/llsd_parser.c	/^static int llsd_integer_fn( int32_t const value, void * const user_data )$/;"	f	file:
+llsd_integer_fn	src/llsd_parser.c	/^static int_t llsd_integer_fn( int32_t const value, void * const user_data )$/;"	f	file:
 llsd_is_array	src/llsd.h	117;"	d
 llsd_is_empty	src/llsd.h	157;"	d
 llsd_is_map	src/llsd.h	118;"	d
@@ -2436,51 +2436,51 @@ llsd_itr_rend	src/llsd.h	136;"	d
 llsd_itr_rnext	src/llsd.c	/^llsd_itr_t llsd_itr_rnext( llsd_t * llsd, llsd_itr_t itr )$/;"	f
 llsd_itr_s	src/llsd.h	/^typedef struct llsd_itr_s {$/;"	s
 llsd_itr_t	src/llsd.h	/^} llsd_itr_t;$/;"	t	typeref:struct:llsd_itr_s
-llsd_json_array_begin	src/llsd_json_serializer.c	/^static int llsd_json_array_begin( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_json_array_end	src/llsd_json_serializer.c	/^static int llsd_json_array_end( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_json_array_value_begin	src/llsd_json_serializer.c	/^static int llsd_json_array_value_begin( void * const user_data )$/;"	f	file:
-llsd_json_array_value_end	src/llsd_json_serializer.c	/^static int llsd_json_array_value_end( void * const user_data )$/;"	f	file:
-llsd_json_binary	src/llsd_json_serializer.c	/^static int llsd_json_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )$/;"	f	file:
-llsd_json_boolean	src/llsd_json_serializer.c	/^static int llsd_json_boolean( int const value, void * const user_data )$/;"	f	file:
+llsd_json_array_begin	src/llsd_json_serializer.c	/^static int_t llsd_json_array_begin( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_json_array_end	src/llsd_json_serializer.c	/^static int_t llsd_json_array_end( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_json_array_value_begin	src/llsd_json_serializer.c	/^static int_t llsd_json_array_value_begin( void * const user_data )$/;"	f	file:
+llsd_json_array_value_end	src/llsd_json_serializer.c	/^static int_t llsd_json_array_value_end( void * const user_data )$/;"	f	file:
+llsd_json_binary	src/llsd_json_serializer.c	/^static int_t llsd_json_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )$/;"	f	file:
+llsd_json_boolean	src/llsd_json_serializer.c	/^static int_t llsd_json_boolean( int const value, void * const user_data )$/;"	f	file:
 llsd_json_check_sig_file	src/llsd_json_parser.c	/^int llsd_json_check_sig_file( FILE * fin )$/;"	f
 llsd_json_convert_quoted	src/llsd_json_parser.c	/^static int llsd_json_convert_quoted( uint8_t const * const encoded, uint32_t const enc_len, $/;"	f	file:
-llsd_json_date	src/llsd_json_serializer.c	/^static int llsd_json_date( double const value, void * const user_data )$/;"	f	file:
+llsd_json_date	src/llsd_json_serializer.c	/^static int_t llsd_json_date( double const value, void * const user_data )$/;"	f	file:
 llsd_json_decode_binary	src/llsd_json_parser.c	/^static int llsd_json_decode_binary( uint8_t const * const encoded, uint32_t const enc_len,$/;"	f	file:
 llsd_json_decode_date	src/llsd_json_parser.c	/^static int llsd_json_decode_date( uint8_t const * const data, double * real_val )$/;"	f	file:
 llsd_json_decode_string	src/llsd_json_parser.c	/^static int llsd_json_decode_string( uint8_t const * const encoded, uint32_t const enc_len,$/;"	f	file:
 llsd_json_decode_uri	src/llsd_json_parser.c	/^static int llsd_json_decode_uri( uint8_t const * const encoded, uint32_t const enc_len,$/;"	f	file:
 llsd_json_decode_uuid	src/llsd_json_parser.c	/^static int llsd_json_decode_uuid( uint8_t const * const buf, uint8_t uuid[UUID_LEN] )$/;"	f	file:
-llsd_json_integer	src/llsd_json_serializer.c	/^static int llsd_json_integer( int32_t const value, void * const user_data )$/;"	f	file:
-llsd_json_map_begin	src/llsd_json_serializer.c	/^static int llsd_json_map_begin( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_json_map_end	src/llsd_json_serializer.c	/^static int llsd_json_map_end( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_json_map_key_begin	src/llsd_json_serializer.c	/^static int llsd_json_map_key_begin( void * const user_data )$/;"	f	file:
-llsd_json_map_key_end	src/llsd_json_serializer.c	/^static int llsd_json_map_key_end( void * const user_data )$/;"	f	file:
-llsd_json_map_value_begin	src/llsd_json_serializer.c	/^static int llsd_json_map_value_begin( void * const user_data )$/;"	f	file:
-llsd_json_map_value_end	src/llsd_json_serializer.c	/^static int llsd_json_map_value_end( void * const user_data )$/;"	f	file:
+llsd_json_integer	src/llsd_json_serializer.c	/^static int_t llsd_json_integer( int32_t const value, void * const user_data )$/;"	f	file:
+llsd_json_map_begin	src/llsd_json_serializer.c	/^static int_t llsd_json_map_begin( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_json_map_end	src/llsd_json_serializer.c	/^static int_t llsd_json_map_end( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_json_map_key_begin	src/llsd_json_serializer.c	/^static int_t llsd_json_map_key_begin( void * const user_data )$/;"	f	file:
+llsd_json_map_key_end	src/llsd_json_serializer.c	/^static int_t llsd_json_map_key_end( void * const user_data )$/;"	f	file:
+llsd_json_map_value_begin	src/llsd_json_serializer.c	/^static int_t llsd_json_map_value_begin( void * const user_data )$/;"	f	file:
+llsd_json_map_value_end	src/llsd_json_serializer.c	/^static int_t llsd_json_map_value_end( void * const user_data )$/;"	f	file:
 llsd_json_parse_file	src/llsd_json_parser.c	/^int llsd_json_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data )$/;"	f
 llsd_json_parse_number	src/llsd_json_parser.c	/^static int llsd_json_parse_number( FILE * fin, llsd_type_t * const type_, int * const ival, double * dval )$/;"	f	file:
 llsd_json_parse_quoted	src/llsd_json_parser.c	/^static int llsd_json_parse_quoted( FILE * fin, uint8_t ** buffer, uint32_t * len, uint8_t quote )$/;"	f	file:
-llsd_json_real	src/llsd_json_serializer.c	/^static int llsd_json_real( double const value, void * const user_data )$/;"	f	file:
+llsd_json_real	src/llsd_json_serializer.c	/^static int_t llsd_json_real( double const value, void * const user_data )$/;"	f	file:
 llsd_json_serializer_deinit	src/llsd_json_serializer.c	/^int llsd_json_serializer_deinit( FILE * fout, void * user_data )$/;"	f
 llsd_json_serializer_init	src/llsd_json_serializer.c	/^int llsd_json_serializer_init( FILE * fout, llsd_ops_t * const ops, int const pretty, void ** const user_data )$/;"	f
-llsd_json_string	src/llsd_json_serializer.c	/^static int llsd_json_string( uint8_t const * str, int const own_it, void * const user_data )$/;"	f	file:
+llsd_json_string	src/llsd_json_serializer.c	/^static int_t llsd_json_string( uint8_t const * str, int const own_it, void * const user_data )$/;"	f	file:
 llsd_json_surrogate_pair	src/llsd_json_parser.c	/^static int llsd_json_surrogate_pair( uint8_t const * const data )$/;"	f	file:
-llsd_json_undef	src/llsd_json_serializer.c	/^static int llsd_json_undef( void * const user_data )$/;"	f	file:
-llsd_json_uri	src/llsd_json_serializer.c	/^static int llsd_json_uri( uint8_t const * uri, int const own_it, void * const user_data )$/;"	f	file:
+llsd_json_undef	src/llsd_json_serializer.c	/^static int_t llsd_json_undef( void * const user_data )$/;"	f	file:
+llsd_json_uri	src/llsd_json_serializer.c	/^static int_t llsd_json_uri( uint8_t const * uri, int const own_it, void * const user_data )$/;"	f	file:
 llsd_json_utf8_decode	src/llsd_json_parser.c	/^static int llsd_json_utf8_decode( uint8_t const * const first, uint8_t const * const second, $/;"	f	file:
 llsd_json_utf8_len	src/llsd_json_parser.c	/^static int llsd_json_utf8_len( uint8_t const * const first, uint8_t const * const second )$/;"	f	file:
-llsd_json_uuid	src/llsd_json_serializer.c	/^static int llsd_json_uuid( uint8_t const value[UUID_LEN], void * const user_data )$/;"	f	file:
-llsd_map_begin_fn	src/llsd_parser.c	/^static int llsd_map_begin_fn( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_map_end_fn	src/llsd_parser.c	/^static int llsd_map_end_fn( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_json_uuid	src/llsd_json_serializer.c	/^static int_t llsd_json_uuid( uint8_t const value[UUID_LEN], void * const user_data )$/;"	f	file:
+llsd_map_begin_fn	src/llsd_parser.c	/^static int_t llsd_map_begin_fn( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_map_end_fn	src/llsd_parser.c	/^static int_t llsd_map_end_fn( uint_t const size, void * const user_data )$/;"	f	file:
 llsd_map_find	src/llsd.c	/^llsd_t * llsd_map_find( llsd_t * map, uint8_t const * const key )$/;"	f
 llsd_map_find_llsd	src/llsd.c	/^llsd_t * llsd_map_find_llsd( llsd_t * map, llsd_t * key )$/;"	f
-llsd_map_insert	src/llsd.c	/^int llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * value )$/;"	f
-llsd_map_key_begin_fn	src/llsd_parser.c	/^static int llsd_map_key_begin_fn( void * const user_data )$/;"	f	file:
-llsd_map_key_end_fn	src/llsd_parser.c	/^static int llsd_map_key_end_fn( void * const user_data )$/;"	f	file:
-llsd_map_remove	src/llsd.c	/^int llsd_map_remove( llsd_t * map, llsd_t * key )$/;"	f
+llsd_map_insert	src/llsd.c	/^int_t llsd_map_insert( llsd_t * map, llsd_t * key, llsd_t * value )$/;"	f
+llsd_map_key_begin_fn	src/llsd_parser.c	/^static int_t llsd_map_key_begin_fn( void * const user_data )$/;"	f	file:
+llsd_map_key_end_fn	src/llsd_parser.c	/^static int_t llsd_map_key_end_fn( void * const user_data )$/;"	f	file:
+llsd_map_remove	src/llsd.c	/^int_t llsd_map_remove( llsd_t * map, llsd_t * key )$/;"	f
 llsd_map_t	src/llsd.c	/^typedef ht_t			llsd_map_t;$/;"	t	file:
-llsd_map_value_begin_fn	src/llsd_parser.c	/^static int llsd_map_value_begin_fn( void * const user_data )$/;"	f	file:
-llsd_map_value_end_fn	src/llsd_parser.c	/^static int llsd_map_value_end_fn( void * const user_data )$/;"	f	file:
+llsd_map_value_begin_fn	src/llsd_parser.c	/^static int_t llsd_map_value_begin_fn( void * const user_data )$/;"	f	file:
+llsd_map_value_end_fn	src/llsd_parser.c	/^static int_t llsd_map_value_end_fn( void * const user_data )$/;"	f	file:
 llsd_new	src/llsd.c	/^llsd_t * llsd_new( llsd_type_t type_, ... )$/;"	f
 llsd_new_array	src/llsd.h	110;"	d
 llsd_new_binary	src/llsd.h	108;"	d
@@ -2493,24 +2493,24 @@ llsd_new_string	src/llsd.h	106;"	d
 llsd_new_undef	src/llsd.h	101;"	d
 llsd_new_uri	src/llsd.h	107;"	d
 llsd_new_uuid	src/llsd.h	105;"	d
-llsd_notation_array_begin	src/llsd_notation_serializer.c	/^static int llsd_notation_array_begin( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_notation_array_end	src/llsd_notation_serializer.c	/^static int llsd_notation_array_end( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_notation_array_value_begin	src/llsd_notation_serializer.c	/^static int llsd_notation_array_value_begin( void * const user_data )$/;"	f	file:
-llsd_notation_array_value_end	src/llsd_notation_serializer.c	/^static int llsd_notation_array_value_end( void * const user_data )$/;"	f	file:
+llsd_notation_array_begin	src/llsd_notation_serializer.c	/^static int_t llsd_notation_array_begin( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_notation_array_end	src/llsd_notation_serializer.c	/^static int_t llsd_notation_array_end( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_notation_array_value_begin	src/llsd_notation_serializer.c	/^static int_t llsd_notation_array_value_begin( void * const user_data )$/;"	f	file:
+llsd_notation_array_value_end	src/llsd_notation_serializer.c	/^static int_t llsd_notation_array_value_end( void * const user_data )$/;"	f	file:
 llsd_notation_bin_enc_type_strings	src/llsd.c	/^int8_t const * const llsd_notation_bin_enc_type_strings[LLSD_BIN_ENC_COUNT] =$/;"	v
-llsd_notation_binary	src/llsd_notation_serializer.c	/^static int llsd_notation_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )$/;"	f	file:
-llsd_notation_boolean	src/llsd_notation_serializer.c	/^static int llsd_notation_boolean( int const value, void * const user_data )$/;"	f	file:
+llsd_notation_binary	src/llsd_notation_serializer.c	/^static int_t llsd_notation_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )$/;"	f	file:
+llsd_notation_boolean	src/llsd_notation_serializer.c	/^static int_t llsd_notation_boolean( int const value, void * const user_data )$/;"	f	file:
 llsd_notation_check_sig_file	src/llsd_notation_parser.c	/^int llsd_notation_check_sig_file( FILE * fin )$/;"	f
 llsd_notation_consume_boolean	src/llsd_notation_parser.c	/^static int llsd_notation_consume_boolean( FILE * fin, int bval )$/;"	f	file:
-llsd_notation_date	src/llsd_notation_serializer.c	/^static int llsd_notation_date( double const value, void * const user_data )$/;"	f	file:
+llsd_notation_date	src/llsd_notation_serializer.c	/^static int_t llsd_notation_date( double const value, void * const user_data )$/;"	f	file:
 llsd_notation_decode_date	src/llsd_notation_parser.c	/^static int llsd_notation_decode_date( uint8_t * data, double * real_val )$/;"	f	file:
-llsd_notation_integer	src/llsd_notation_serializer.c	/^static int llsd_notation_integer( int32_t const value, void * const user_data )$/;"	f	file:
-llsd_notation_map_begin	src/llsd_notation_serializer.c	/^static int llsd_notation_map_begin( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_notation_map_end	src/llsd_notation_serializer.c	/^static int llsd_notation_map_end( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_notation_map_key_begin	src/llsd_notation_serializer.c	/^static int llsd_notation_map_key_begin( void * const user_data )$/;"	f	file:
-llsd_notation_map_key_end	src/llsd_notation_serializer.c	/^static int llsd_notation_map_key_end( void * const user_data )$/;"	f	file:
-llsd_notation_map_value_begin	src/llsd_notation_serializer.c	/^static int llsd_notation_map_value_begin( void * const user_data )$/;"	f	file:
-llsd_notation_map_value_end	src/llsd_notation_serializer.c	/^static int llsd_notation_map_value_end( void * const user_data )$/;"	f	file:
+llsd_notation_integer	src/llsd_notation_serializer.c	/^static int_t llsd_notation_integer( int32_t const value, void * const user_data )$/;"	f	file:
+llsd_notation_map_begin	src/llsd_notation_serializer.c	/^static int_t llsd_notation_map_begin( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_notation_map_end	src/llsd_notation_serializer.c	/^static int_t llsd_notation_map_end( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_notation_map_key_begin	src/llsd_notation_serializer.c	/^static int_t llsd_notation_map_key_begin( void * const user_data )$/;"	f	file:
+llsd_notation_map_key_end	src/llsd_notation_serializer.c	/^static int_t llsd_notation_map_key_end( void * const user_data )$/;"	f	file:
+llsd_notation_map_value_begin	src/llsd_notation_serializer.c	/^static int_t llsd_notation_map_value_begin( void * const user_data )$/;"	f	file:
+llsd_notation_map_value_end	src/llsd_notation_serializer.c	/^static int_t llsd_notation_map_value_end( void * const user_data )$/;"	f	file:
 llsd_notation_parse_base_number	src/llsd_notation_parser.c	/^static int llsd_notation_parse_base_number( FILE * fin, llsd_bin_enc_t * enc )$/;"	f	file:
 llsd_notation_parse_file	src/llsd_notation_parser.c	/^int llsd_notation_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data )$/;"	f
 llsd_notation_parse_integer	src/llsd_notation_parser.c	/^static int llsd_notation_parse_integer( FILE * fin, int * ival )$/;"	f	file:
@@ -2519,27 +2519,27 @@ llsd_notation_parse_quoted	src/llsd_notation_parser.c	/^static int llsd_notation
 llsd_notation_parse_raw	src/llsd_notation_parser.c	/^static int llsd_notation_parse_raw( FILE * fin, uint8_t ** buffer, uint32_t len, int str )$/;"	f	file:
 llsd_notation_parse_real	src/llsd_notation_parser.c	/^static int llsd_notation_parse_real( FILE * fin, double * dval )$/;"	f	file:
 llsd_notation_parse_uuid	src/llsd_notation_parser.c	/^static int llsd_notation_parse_uuid( FILE * fin, uint8_t uuid[UUID_LEN] )$/;"	f	file:
-llsd_notation_real	src/llsd_notation_serializer.c	/^static int llsd_notation_real( double const value, void * const user_data )$/;"	f	file:
+llsd_notation_real	src/llsd_notation_serializer.c	/^static int_t llsd_notation_real( double const value, void * const user_data )$/;"	f	file:
 llsd_notation_serializer_deinit	src/llsd_notation_serializer.c	/^int llsd_notation_serializer_deinit( FILE * fout, void * user_data )$/;"	f
 llsd_notation_serializer_init	src/llsd_notation_serializer.c	/^int llsd_notation_serializer_init( FILE * fout, llsd_ops_t * const ops, int const pretty, void ** const user_data )$/;"	f
-llsd_notation_string	src/llsd_notation_serializer.c	/^static int llsd_notation_string( uint8_t const * str, int const own_it, void * const user_data )$/;"	f	file:
-llsd_notation_undef	src/llsd_notation_serializer.c	/^static int llsd_notation_undef( void * const user_data )$/;"	f	file:
-llsd_notation_uri	src/llsd_notation_serializer.c	/^static int llsd_notation_uri( uint8_t const * uri, int const own_it, void * const user_data )$/;"	f	file:
-llsd_notation_uuid	src/llsd_notation_serializer.c	/^static int llsd_notation_uuid( uint8_t const value[UUID_LEN], void * const user_data )$/;"	f	file:
+llsd_notation_string	src/llsd_notation_serializer.c	/^static int_t llsd_notation_string( uint8_t const * str, int const own_it, void * const user_data )$/;"	f	file:
+llsd_notation_undef	src/llsd_notation_serializer.c	/^static int_t llsd_notation_undef( void * const user_data )$/;"	f	file:
+llsd_notation_uri	src/llsd_notation_serializer.c	/^static int_t llsd_notation_uri( uint8_t const * uri, int const own_it, void * const user_data )$/;"	f	file:
+llsd_notation_uuid	src/llsd_notation_serializer.c	/^static int_t llsd_notation_uuid( uint8_t const value[UUID_LEN], void * const user_data )$/;"	f	file:
 llsd_ops_s	src/llsd.h	/^typedef struct llsd_ops_s$/;"	s
 llsd_ops_t	src/llsd.h	/^} llsd_ops_t;$/;"	t	typeref:struct:llsd_ops_s
 llsd_pair_delete	src/llsd.c	/^static void llsd_pair_delete(void * value)$/;"	f	file:
-llsd_pair_eq	src/llsd.c	/^static int llsd_pair_eq(void const * const l, void const * const r)$/;"	f	file:
+llsd_pair_eq	src/llsd.c	/^static int_t llsd_pair_eq(void const * const l, void const * const r)$/;"	f	file:
 llsd_pair_hash	src/llsd.c	/^static uint_t llsd_pair_hash( void const * const data )$/;"	f	file:
 llsd_parse_from_file	src/llsd_parser.c	/^llsd_t * llsd_parse_from_file( FILE * fin )$/;"	f
-llsd_real_fn	src/llsd_parser.c	/^static int llsd_real_fn( double const value, void * const user_data )$/;"	f	file:
+llsd_real_fn	src/llsd_parser.c	/^static int_t llsd_real_fn( double const value, void * const user_data )$/;"	f	file:
 llsd_real_t	src/llsd.c	/^typedef double			llsd_real_t;$/;"	t	file:
 llsd_s	src/llsd.c	/^typedef struct llsd_s$/;"	s	file:
 llsd_serialize	src/llsd_serializer.c	/^static int llsd_serialize( llsd_t * const llsd, FILE * fout, llsd_ops_t * const ops, void * user_data )$/;"	f	file:
 llsd_serialize_to_file	src/llsd_serializer.c	/^int llsd_serialize_to_file( llsd_t * const llsd, FILE * fout, llsd_serializer_t const fmt, int const pretty )$/;"	f
 llsd_serializer_s	src/llsd.h	/^typedef enum llsd_serializer_s$/;"	g
 llsd_serializer_t	src/llsd.h	/^} llsd_serializer_t;$/;"	t	typeref:enum:llsd_serializer_s
-llsd_string_fn	src/llsd_parser.c	/^static int llsd_string_fn( uint8_t const * str, int own_it, void * const user_data )$/;"	f	file:
+llsd_string_fn	src/llsd_parser.c	/^static int_t llsd_string_fn( uint8_t const * str, int own_it, void * const user_data )$/;"	f	file:
 llsd_string_t	src/llsd.c	/^typedef uint8_t *		llsd_string_t;$/;"	t	file:
 llsd_t	src/llsd.c	/^} llsd_t;$/;"	t	typeref:struct:llsd_s	file:
 llsd_t	src/llsd.h	/^typedef struct llsd_s llsd_t;$/;"	t	typeref:struct:llsd_s
@@ -2547,38 +2547,38 @@ llsd_type_e	src/llsd.h	/^typedef enum llsd_type_e$/;"	g
 llsd_type_from_tag	src/llsd_xml_parser.c	/^static llsd_type_t llsd_type_from_tag( char const * tag )$/;"	f	file:
 llsd_type_strings	src/llsd.c	/^int8_t const * const llsd_type_strings[LLSD_TYPE_COUNT] =$/;"	v
 llsd_type_t	src/llsd.h	/^} llsd_type_t;$/;"	t	typeref:enum:llsd_type_e
-llsd_undef_fn	src/llsd_parser.c	/^static int llsd_undef_fn( void * const user_data )$/;"	f	file:
-llsd_uri_fn	src/llsd_parser.c	/^static int llsd_uri_fn( uint8_t const * uri, int own_it, void * const user_data )$/;"	f	file:
+llsd_undef_fn	src/llsd_parser.c	/^static int_t llsd_undef_fn( void * const user_data )$/;"	f	file:
+llsd_uri_fn	src/llsd_parser.c	/^static int_t llsd_uri_fn( uint8_t const * uri, int own_it, void * const user_data )$/;"	f	file:
 llsd_uri_t	src/llsd.c	/^typedef uint8_t *		llsd_uri_t;$/;"	t	file:
-llsd_uuid_fn	src/llsd_parser.c	/^static int llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )$/;"	f	file:
+llsd_uuid_fn	src/llsd_parser.c	/^static int_t llsd_uuid_fn( uint8_t const value[UUID_LEN], void * const user_data )$/;"	f	file:
 llsd_uuid_t	src/llsd.c	/^typedef uint8_t			llsd_uuid_t[UUID_LEN];$/;"	t	file:
-llsd_xml_array_begin	src/llsd_xml_serializer.c	/^static int llsd_xml_array_begin( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_xml_array_end	src/llsd_xml_serializer.c	/^static int llsd_xml_array_end( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_xml_array_value_begin	src/llsd_xml_serializer.c	/^static int llsd_xml_array_value_begin( void * const user_data )$/;"	f	file:
-llsd_xml_array_value_end	src/llsd_xml_serializer.c	/^static int llsd_xml_array_value_end( void * const user_data )$/;"	f	file:
+llsd_xml_array_begin	src/llsd_xml_serializer.c	/^static int_t llsd_xml_array_begin( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_xml_array_end	src/llsd_xml_serializer.c	/^static int_t llsd_xml_array_end( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_xml_array_value_begin	src/llsd_xml_serializer.c	/^static int_t llsd_xml_array_value_begin( void * const user_data )$/;"	f	file:
+llsd_xml_array_value_end	src/llsd_xml_serializer.c	/^static int_t llsd_xml_array_value_end( void * const user_data )$/;"	f	file:
 llsd_xml_bin_enc_type_strings	src/llsd.c	/^int8_t const * const llsd_xml_bin_enc_type_strings[LLSD_BIN_ENC_COUNT] =$/;"	v
-llsd_xml_binary	src/llsd_xml_serializer.c	/^static int llsd_xml_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )$/;"	f	file:
-llsd_xml_boolean	src/llsd_xml_serializer.c	/^static int llsd_xml_boolean( int const value, void * const user_data )$/;"	f	file:
+llsd_xml_binary	src/llsd_xml_serializer.c	/^static int_t llsd_xml_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )$/;"	f	file:
+llsd_xml_boolean	src/llsd_xml_serializer.c	/^static int_t llsd_xml_boolean( int const value, void * const user_data )$/;"	f	file:
 llsd_xml_check_sig_file	src/llsd_xml_parser.c	/^int llsd_xml_check_sig_file( FILE * fin )$/;"	f
 llsd_xml_data_handler	src/llsd_xml_parser.c	/^static void XMLCALL llsd_xml_data_handler( void * data, char const * s, int len )$/;"	f	file:
-llsd_xml_date	src/llsd_xml_serializer.c	/^static int llsd_xml_date( double const value, void * const user_data )$/;"	f	file:
+llsd_xml_date	src/llsd_xml_serializer.c	/^static int_t llsd_xml_date( double const value, void * const user_data )$/;"	f	file:
 llsd_xml_end_tag	src/llsd_xml_parser.c	/^static void XMLCALL llsd_xml_end_tag( void * data, char const * el )$/;"	f	file:
-llsd_xml_integer	src/llsd_xml_serializer.c	/^static int llsd_xml_integer( int32_t const value, void * const user_data )$/;"	f	file:
-llsd_xml_map_begin	src/llsd_xml_serializer.c	/^static int llsd_xml_map_begin( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_xml_map_end	src/llsd_xml_serializer.c	/^static int llsd_xml_map_end( uint_t const size, void * const user_data )$/;"	f	file:
-llsd_xml_map_key_begin	src/llsd_xml_serializer.c	/^static int llsd_xml_map_key_begin( void * const user_data )$/;"	f	file:
-llsd_xml_map_key_end	src/llsd_xml_serializer.c	/^static int llsd_xml_map_key_end( void * const user_data )$/;"	f	file:
-llsd_xml_map_value_begin	src/llsd_xml_serializer.c	/^static int llsd_xml_map_value_begin( void * const user_data )$/;"	f	file:
-llsd_xml_map_value_end	src/llsd_xml_serializer.c	/^static int llsd_xml_map_value_end( void * const user_data )$/;"	f	file:
+llsd_xml_integer	src/llsd_xml_serializer.c	/^static int_t llsd_xml_integer( int32_t const value, void * const user_data )$/;"	f	file:
+llsd_xml_map_begin	src/llsd_xml_serializer.c	/^static int_t llsd_xml_map_begin( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_xml_map_end	src/llsd_xml_serializer.c	/^static int_t llsd_xml_map_end( uint_t const size, void * const user_data )$/;"	f	file:
+llsd_xml_map_key_begin	src/llsd_xml_serializer.c	/^static int_t llsd_xml_map_key_begin( void * const user_data )$/;"	f	file:
+llsd_xml_map_key_end	src/llsd_xml_serializer.c	/^static int_t llsd_xml_map_key_end( void * const user_data )$/;"	f	file:
+llsd_xml_map_value_begin	src/llsd_xml_serializer.c	/^static int_t llsd_xml_map_value_begin( void * const user_data )$/;"	f	file:
+llsd_xml_map_value_end	src/llsd_xml_serializer.c	/^static int_t llsd_xml_map_value_end( void * const user_data )$/;"	f	file:
 llsd_xml_parse_file	src/llsd_xml_parser.c	/^int llsd_xml_parse_file( FILE * fin, llsd_ops_t * const ops, void * const user_data )$/;"	f
-llsd_xml_real	src/llsd_xml_serializer.c	/^static int llsd_xml_real( double const value, void * const user_data )$/;"	f	file:
+llsd_xml_real	src/llsd_xml_serializer.c	/^static int_t llsd_xml_real( double const value, void * const user_data )$/;"	f	file:
 llsd_xml_serializer_deinit	src/llsd_xml_serializer.c	/^int llsd_xml_serializer_deinit( FILE * fout, void * user_data )$/;"	f
 llsd_xml_serializer_init	src/llsd_xml_serializer.c	/^int llsd_xml_serializer_init( FILE * fout, llsd_ops_t * const ops, int const pretty, void ** const user_data )$/;"	f
 llsd_xml_start_tag	src/llsd_xml_parser.c	/^static void XMLCALL llsd_xml_start_tag( void * data, char const * el, char const ** attr )$/;"	f	file:
-llsd_xml_string	src/llsd_xml_serializer.c	/^static int llsd_xml_string( uint8_t const * str, int const own_it, void * const user_data )$/;"	f	file:
-llsd_xml_undef	src/llsd_xml_serializer.c	/^static int llsd_xml_undef( void * const user_data )$/;"	f	file:
-llsd_xml_uri	src/llsd_xml_serializer.c	/^static int llsd_xml_uri( uint8_t const * uri, int const own_it, void * const user_data )$/;"	f	file:
-llsd_xml_uuid	src/llsd_xml_serializer.c	/^static int llsd_xml_uuid( uint8_t const value[UUID_LEN], void * const user_data )$/;"	f	file:
+llsd_xml_string	src/llsd_xml_serializer.c	/^static int_t llsd_xml_string( uint8_t const * str, int const own_it, void * const user_data )$/;"	f	file:
+llsd_xml_undef	src/llsd_xml_serializer.c	/^static int_t llsd_xml_undef( void * const user_data )$/;"	f	file:
+llsd_xml_uri	src/llsd_xml_serializer.c	/^static int_t llsd_xml_uri( uint8_t const * uri, int const own_it, void * const user_data )$/;"	f	file:
+llsd_xml_uuid	src/llsd_xml_serializer.c	/^static int_t llsd_xml_uuid( uint8_t const value[UUID_LEN], void * const user_data )$/;"	f	file:
 llsd_xml_write_string	src/llsd_xml_serializer.c	/^static void llsd_xml_write_string( uint8_t const * str, uint32_t len, xs_state_t * const state )$/;"	f	file:
 log_s	cutil/src/log.h	/^typedef struct log_s$/;"	s
 log_t	cutil/src/log.h	/^} log_t;$/;"	t	typeref:struct:log_s
@@ -2592,14 +2592,14 @@ map_	tests/test_binary.c	/^static uint8_t const map_[] = { '{', 0x00, 0x00, 0x00
 map_	tests/test_json.c	/^static uint8_t const map_[] = "{}";$/;"	v	file:
 map_	tests/test_notation.c	/^static uint8_t const map_[] = "{}";$/;"	v	file:
 map_	tests/test_xml.c	/^static uint8_t const map_[] = "<llsd><map \/><\/llsd>";$/;"	v	file:
-map_begin_fn	src/llsd.h	/^	int (*map_begin_fn)( uint_t const size, void * const user_data );$/;"	m	struct:llsd_ops_s
-map_end_fn	src/llsd.h	/^	int (*map_end_fn)( uint_t const size, void * const user_data );$/;"	m	struct:llsd_ops_s
-map_key_begin_fn	src/llsd.h	/^	int (*map_key_begin_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
-map_key_end_fn	src/llsd.h	/^	int (*map_key_end_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
-map_value	src/llsd_json_serializer.c	/^static int map_value = FALSE;$/;"	v	file:
-map_value	src/llsd_notation_serializer.c	/^static int map_value = FALSE;$/;"	v	file:
-map_value_begin_fn	src/llsd.h	/^	int (*map_value_begin_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
-map_value_end_fn	src/llsd.h	/^	int (*map_value_end_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
+map_begin_fn	src/llsd.h	/^	int_t (*map_begin_fn)( uint_t const size, void * const user_data );$/;"	m	struct:llsd_ops_s
+map_end_fn	src/llsd.h	/^	int_t (*map_end_fn)( uint_t const size, void * const user_data );$/;"	m	struct:llsd_ops_s
+map_key_begin_fn	src/llsd.h	/^	int_t (*map_key_begin_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
+map_key_end_fn	src/llsd.h	/^	int_t (*map_key_end_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
+map_value	src/llsd_json_serializer.c	/^static int_t map_value = FALSE;$/;"	v	file:
+map_value	src/llsd_notation_serializer.c	/^static int_t map_value = FALSE;$/;"	v	file:
+map_value_begin_fn	src/llsd.h	/^	int_t (*map_value_begin_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
+map_value_end_fn	src/llsd.h	/^	int_t (*map_value_end_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
 match_fn	cutil/tests/test_hashtable.c	/^static int_t match_fn( void const * const l, void const * const r )$/;"	f	file:
 max	cutil/src/btree.c	34;"	d	file:
 mfn	cutil/src/hashtable.h	/^    ht_match_fn         mfn;                \/* match function *\/$/;"	m	struct:ht_s
@@ -2687,7 +2687,7 @@ real_	tests/test_binary.c	/^static uint8_t const real_[] = { 'r', 0x3f, 0xf0, 0x
 real_	tests/test_json.c	/^static uint8_t const real_[] = "1.000000";$/;"	v	file:
 real_	tests/test_notation.c	/^static uint8_t const real_[] = "r1.000000";$/;"	v	file:
 real_	tests/test_xml.c	/^static uint8_t const real_[] = "<llsd><real>1.000000<\/real><\/llsd>";$/;"	v	file:
-real_fn	src/llsd.h	/^	int (*real_fn)( double const value, void * const user_data );$/;"	m	struct:llsd_ops_s
+real_fn	src/llsd.h	/^	int_t (*real_fn)( double const value, void * const user_data );$/;"	m	struct:llsd_ops_s
 real_from_buf	src/llsd_xml_parser.c	/^static int real_from_buf( buffer_t * const buf, double * rval )$/;"	f	file:
 remove_item	cutil/src/list.c	/^static list_itr_t remove_item( list_item_t * const items, list_itr_t const itr )$/;"	f	file:
 reset_signals_to_default	cutil/src/sanitize.c	/^int_t reset_signals_to_default( sigset_t const * const sigs )$/;"	f
@@ -2784,7 +2784,7 @@ string_	tests/test_binary.c	/^static uint8_t const string_[] = { 's', 0x00, 0x00
 string_	tests/test_json.c	/^static uint8_t const string_[] = "\\"Hello World!\\"";$/;"	v	file:
 string_	tests/test_notation.c	/^static uint8_t const string_[] = "s(12)\\"Hello World!\\"";$/;"	v	file:
 string_	tests/test_xml.c	/^static uint8_t const string_[] = "<llsd><string>Hello World!<\/string><\/llsd>";$/;"	v	file:
-string_fn	src/llsd.h	/^	int (*string_fn)( uint8_t const * str, int const own_it, void * const user_data );$/;"	m	struct:llsd_ops_s
+string_fn	src/llsd.h	/^	int_t (*string_fn)( uint8_t const * str, int const own_it, void * const user_data );$/;"	m	struct:llsd_ops_s
 swiggo_long_long	go/llsd.c	/^typedef long long swiggo_long_long;$/;"	t	file:
 swiggo_size_assert	go/llsd.c	131;"	d	file:
 swiggo_size_assert_eq	go/llsd.c	130;"	d	file:
@@ -3050,14 +3050,14 @@ undef_	tests/test_binary.c	/^static uint8_t const undef_[] = { '!' };$/;"	v	file
 undef_	tests/test_json.c	/^static uint8_t const undef_[] = "null";$/;"	v	file:
 undef_	tests/test_notation.c	/^static uint8_t const undef_[] = "!";$/;"	v	file:
 undef_	tests/test_xml.c	/^static uint8_t const undef_[] = "<llsd><undef \/><\/llsd>";$/;"	v	file:
-undef_fn	src/llsd.h	/^	int (*undef_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
-update_state	src/llsd_parser.c	/^static int update_state( uint_t valid_states, void * const user_data, llsd_t * const v )$/;"	f	file:
+undef_fn	src/llsd.h	/^	int_t (*undef_fn)( void * const user_data );$/;"	m	struct:llsd_ops_s
+update_state	src/llsd_parser.c	/^static int_t update_state( uint_t valid_states, void * const user_data, llsd_t * const v )$/;"	f	file:
 uri_	src/llsd.c	/^		llsd_uri_t		uri_;$/;"	m	union:llsd_s::__anon6	file:
 uri_	tests/test_binary.c	/^static uint8_t const uri_[] = { 'l', 0x00, 0x00, 0x00, 0x16, 'h', 't', 't', 'p', ':', '\/', '\/', 'w', 'w', 'w', '.', 'i', 'x', 'q', 'u', 'i', 'c', 'k', '.', 'c', 'o', 'm' };$/;"	v	file:
 uri_	tests/test_json.c	/^static uint8_t const uri_[] = "\\"||uri||http:\/\/www.ixquick.com\\"";$/;"	v	file:
 uri_	tests/test_notation.c	/^static uint8_t const uri_[] = "l\\"http:\/\/www.ixquick.com\\"";$/;"	v	file:
 uri_	tests/test_xml.c	/^static uint8_t const uri_[] = "<llsd><uri>http:\/\/www.ixquick.com<\/uri><\/llsd>";$/;"	v	file:
-uri_fn	src/llsd.h	/^	int (*uri_fn)( uint8_t const * uri, int const own_it, void * const user_data );$/;"	m	struct:llsd_ops_s
+uri_fn	src/llsd.h	/^	int_t (*uri_fn)( uint8_t const * uri, int const own_it, void * const user_data );$/;"	m	struct:llsd_ops_s
 used	cutil/src/list.c	/^    int_t   used;   \/* bool to mark used nodes *\/$/;"	m	struct:list_item_s	file:
 used_head	cutil/src/list.h	/^    list_itr_t      used_head;              \/* head node of the used circular list *\/$/;"	m	struct:list_s
 user_data	cutil/src/aiofd.h	/^    void *      user_data;      \/* context to pass to callbacks *\/$/;"	m	struct:aiofd_s
@@ -3073,7 +3073,7 @@ uuid_	tests/test_binary.c	/^static uint8_t const uuid_[] = { 'u', 0x01, 0x02, 0x
 uuid_	tests/test_json.c	/^static uint8_t const uuid_[] = "\\"01020304-0506-0708-0900-010203040506\\"";$/;"	v	file:
 uuid_	tests/test_notation.c	/^static uint8_t const uuid_[] = "u01020304-0506-0708-0900-010203040506";$/;"	v	file:
 uuid_	tests/test_xml.c	/^static uint8_t const uuid_[] = "<llsd><uuid>01020304-0506-0708-0900-010203040506<\/uuid><\/llsd>";$/;"	v	file:
-uuid_fn	src/llsd.h	/^	int (*uuid_fn)( uint8_t const value[UUID_LEN], void * const user_data );$/;"	m	struct:llsd_ops_s
+uuid_fn	src/llsd.h	/^	int_t (*uuid_fn)( uint8_t const value[UUID_LEN], void * const user_data );$/;"	m	struct:llsd_ops_s
 uuid_from_buf	src/llsd_xml_parser.c	/^static int uuid_from_buf( buffer_t * const buf, uint8_t uuid[UUID_LEN] )$/;"	f	file:
 val	cutil/src/btree.c	/^    void * val;                 \/* value *\/$/;"	m	struct:node_s	file:
 value	src/llsd_binary_parser.c	/^static int value( uint32_t valid_states, llsd_type_t type_, bs_state_t * parser_state )$/;"	f	file:

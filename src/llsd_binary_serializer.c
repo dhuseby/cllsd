@@ -23,7 +23,7 @@ typedef struct bs_state_s
 	FILE * fout;
 } bs_state_t;
 
-static int llsd_binary_undef( void * const user_data )
+static int_t llsd_binary_undef( void * const user_data )
 {
 	bs_state_t * state = (bs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -31,7 +31,7 @@ static int llsd_binary_undef( void * const user_data )
 	return TRUE;
 }
 
-static int llsd_binary_boolean( int const value, void * const user_data )
+static int_t llsd_binary_boolean( int const value, void * const user_data )
 {
 	bs_state_t * state = (bs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -39,7 +39,7 @@ static int llsd_binary_boolean( int const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_binary_integer( int32_t const value, void * const user_data )
+static int_t llsd_binary_integer( int32_t const value, void * const user_data )
 {
 	uint32_t be = htonl( value );
 	bs_state_t * state = (bs_state_t*)user_data;
@@ -49,7 +49,7 @@ static int llsd_binary_integer( int32_t const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_binary_real( double const value, void * const user_data )
+static int_t llsd_binary_real( double const value, void * const user_data )
 {
 	uint64_t be = htobe64( *((uint64_t*)&value) );
 	bs_state_t * state = (bs_state_t*)user_data;
@@ -59,7 +59,7 @@ static int llsd_binary_real( double const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_binary_uuid( uint8_t const value[UUID_LEN], void * const user_data )
+static int_t llsd_binary_uuid( uint8_t const value[UUID_LEN], void * const user_data )
 {
 	bs_state_t * state = (bs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -68,7 +68,7 @@ static int llsd_binary_uuid( uint8_t const value[UUID_LEN], void * const user_da
 	return TRUE;
 }
 
-static int llsd_binary_string( uint8_t const * str, int const own_it, void * const user_data )
+static int_t llsd_binary_string( uint8_t const * str, int const own_it, void * const user_data )
 {
 	uint32_t be = 0;
 	uint32_t len = 0;
@@ -82,7 +82,7 @@ static int llsd_binary_string( uint8_t const * str, int const own_it, void * con
 	return TRUE;
 }
 
-static int llsd_binary_date( double const value, void * const user_data )
+static int_t llsd_binary_date( double const value, void * const user_data )
 {
 	uint64_t be = htobe64( *((uint64_t*)&value) );
 	bs_state_t * state = (bs_state_t*)user_data;
@@ -92,7 +92,7 @@ static int llsd_binary_date( double const value, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_binary_uri( uint8_t const * uri, int const own_it, void * const user_data )
+static int_t llsd_binary_uri( uint8_t const * uri, int const own_it, void * const user_data )
 {
 	uint32_t be = 0;
 	uint32_t len = 0;
@@ -106,7 +106,7 @@ static int llsd_binary_uri( uint8_t const * uri, int const own_it, void * const 
 	return TRUE;
 }
 
-static int llsd_binary_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )
+static int_t llsd_binary_binary( uint8_t const * data, uint32_t const len, int const own_it, void * const user_data )
 {
 	uint32_t be = 0;
 	bs_state_t * state = (bs_state_t*)user_data;
@@ -118,7 +118,7 @@ static int llsd_binary_binary( uint8_t const * data, uint32_t const len, int con
 	return TRUE;
 }
 
-static int llsd_binary_array_begin( uint_t const size, void * const user_data )
+static int_t llsd_binary_array_begin( uint_t const size, void * const user_data )
 {
 	uint32_t be = 0;
 	bs_state_t * state = (bs_state_t*)user_data;
@@ -129,21 +129,21 @@ static int llsd_binary_array_begin( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_binary_array_value_begin( void * const user_data )
+static int_t llsd_binary_array_value_begin( void * const user_data )
 {
 	bs_state_t * state = (bs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 	return TRUE;
 }
 
-static int llsd_binary_array_value_end( void * const user_data )
+static int_t llsd_binary_array_value_end( void * const user_data )
 {
 	bs_state_t * state = (bs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 	return TRUE;
 }
 
-static int llsd_binary_array_end( uint_t const size, void * const user_data )
+static int_t llsd_binary_array_end( uint_t const size, void * const user_data )
 {
 	bs_state_t * state = (bs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
@@ -151,7 +151,7 @@ static int llsd_binary_array_end( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_binary_map_begin( uint_t const size, void * const user_data )
+static int_t llsd_binary_map_begin( uint_t const size, void * const user_data )
 {
 	uint32_t be = 0;
 	bs_state_t * state = (bs_state_t*)user_data;
@@ -162,35 +162,35 @@ static int llsd_binary_map_begin( uint_t const size, void * const user_data )
 	return TRUE;
 }
 
-static int llsd_binary_map_key_begin( void * const user_data )
+static int_t llsd_binary_map_key_begin( void * const user_data )
 {
 	bs_state_t * state = (bs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 	return TRUE;
 }
 
-static int llsd_binary_map_key_end( void * const user_data )
+static int_t llsd_binary_map_key_end( void * const user_data )
 {
 	bs_state_t * state = (bs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 	return TRUE;
 }
 
-static int llsd_binary_map_value_begin( void * const user_data )
+static int_t llsd_binary_map_value_begin( void * const user_data )
 {
 	bs_state_t * state = (bs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 	return TRUE;
 }
 
-static int llsd_binary_map_value_end( void * const user_data )
+static int_t llsd_binary_map_value_end( void * const user_data )
 {
 	bs_state_t * state = (bs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
 	return TRUE;
 }
 
-static int llsd_binary_map_end( uint_t const size, void * const user_data )
+static int_t llsd_binary_map_end( uint_t const size, void * const user_data )
 {
 	bs_state_t * state = (bs_state_t*)user_data;
 	CHECK_PTR_RET( state, FALSE );
