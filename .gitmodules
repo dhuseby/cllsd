@@ -1,0 +1,3 @@
+[submodule "cutil"]
+	path = cutil
+	url = gh-dhuseby:dhuseby/cutil.git
